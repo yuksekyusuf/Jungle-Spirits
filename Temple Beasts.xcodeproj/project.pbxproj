@@ -10,7 +10,6 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
-		4D3A83CF2A0DEAAD0059E2F0 /* Group1822View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D3A83CE2A0DEAAD0059E2F0 /* Group1822View.swift */; };
 		4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */; };
 		4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2422A055190002E9C0A /* Assets.xcassets */; };
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
@@ -23,7 +22,6 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
-		4D3A83CE2A0DEAAD0059E2F0 /* Group1822View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group1822View.swift; sourceTree = "<group>"; };
 		4D70D23B2A05518F002E9C0A /* Temple Beasts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Beasts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
 		4D70D2422A055190002E9C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,7 +96,6 @@
 				4D15F0B52A0C31AB00539383 /* BoardView.swift */,
 				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
-				4D3A83CE2A0DEAAD0059E2F0 /* Group1822View.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -176,7 +173,6 @@
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D70D24F2A05546A002E9C0A /* GroundView.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
-				4D3A83CF2A0DEAAD0059E2F0 /* Group1822View.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,

@@ -69,9 +69,9 @@ struct BoardView: View {
 }
 
 
-
-struct BoardView_Previews: PreviewProvider {
-    static var previews: some View {
-        BoardView(board: Board(size: 7), cellSize: 7.0)
-    }
-}
+//
+//struct BoardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BoardView(board: Board(size: 7), cellSize: 7.0)
+//    }
+//}

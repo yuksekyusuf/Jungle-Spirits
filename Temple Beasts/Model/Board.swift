@@ -16,7 +16,11 @@ enum CellState: Int {
 
 class Board: ObservableObject {
     let size = 7
-    private var grid: [[CellState]]
+    @Published private(set) var grid: [[CellState]]
+    
+    var getPieceCount: (player1: Int, player2: Int) {
+        return countPieces()
+    }
     
     init(size: Int) {
         grid = Array(repeating: Array(repeating: .empty, count: size), count: size)
