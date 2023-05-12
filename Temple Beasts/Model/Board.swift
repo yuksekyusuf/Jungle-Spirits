@@ -24,11 +24,10 @@ class Board: ObservableObject {
     
     init(size: Int) {
         grid = Array(repeating: Array(repeating: .empty, count: size), count: size)
-        let mid = size / 2
         grid[0][0] = .player1
-//        grid[mid][mid] = .player1
-        grid[size-1][size-1] = .player2
-//        grid[mid][mid - 1] = .player2
+        grid[size-1][0] = .player2
+        grid[size-1][size-1] = .player1
+        grid[0][size - 1] = .player2
     }
     private func setupInitialBoard() {
         grid[0][0] = .player1

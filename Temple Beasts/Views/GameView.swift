@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GameView: View {
     @StateObject private var board = Board(size: 7)
+    @State private var isPaused = false
+    @State private var remainingTime = 100
     
     private var player1PieceCount: Int {
         board.countPieces().player1
@@ -19,25 +21,60 @@ struct GameView: View {
     }
     private let cellSize: CGFloat = 40
     var body: some View {
+        
         VStack {
             HStack {
-                Text("Player 1")
-                    .font(.headline)
-                    .padding(.leading)
+                
+                HStack {
+                    
+                    Circle()
+                        .fill(Color.red)
+                        .frame(width: 20)
+                        .padding(.leading, 50)
+                    
+                    Text("\(player1PieceCount)")
+                        .font(.headline)
+                }
                 Spacer()
-                Text("\(player1PieceCount)")
+                
+                Button(action:  {
+                    isPaused.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: isPaused ? "play" : "pause")
+//                        Text(isPaused ? "Play" : "Pause")
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+                Spacer()
+                
+                HStack {
+                    Text("\(player2PieceCount)")
+                        .font(.headline)
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 20)
+                        .padding(.trailing, 50)
+                }
             }
             .padding(.top)
+            TimeBar(remainingTime: remainingTime, totalTime: 100)
+                .padding(.horizontal)
+                .padding()
             BoardView(board: board, cellSize: cellSize)
             
-            HStack {
-                Text("Player 2")
-                    .font(.headline)
-                    .padding(.leading)
-                Spacer()
-                Text("\(player2PieceCount)")
-                    .font(.headline)
-                    .padding(.trailing)
+            
+        }
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if !isPaused && remainingTime > 0 {
+                    remainingTime -= 1
+                } else if remainingTime == 0 {
+                    timer.invalidate()
+                }
             }
         }
     }
@@ -46,5 +83,19 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView()
+    }
+}
+
+struct TimeBar: View {
+    var remainingTime: Int
+    var totalTime: Int
+    var body: some View {
+        GeometryReader { geo in
+            let width = geo.size.width * CGFloat(remainingTime) / CGFloat (totalTime)
+            RoundedRectangle(cornerRadius: 3)
+                .frame(width: width, height: 13)
+                .foregroundColor(.blue)
+        }
+        .frame(height: 10)
     }
 }
