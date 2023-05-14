@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct GameView: View {
-    @StateObject private var board = Board(size: 7)
+    @StateObject private var board = Board(size: (8, 5))
     @State private var isPaused = false
     @State private var remainingTime = 100
+    let cellSize: CGFloat = 40
     
+    
+
     private var player1PieceCount: Int {
         board.countPieces().player1
     }
@@ -19,65 +22,71 @@ struct GameView: View {
     private var player2PieceCount: Int {
         board.countPieces().player2
     }
-    private let cellSize: CGFloat = 40
+    //    private let cellSize: CGFloat = 40
     var body: some View {
-        
-        VStack {
-            HStack {
-                
+        GeometryReader { geometry in
+            let screenHeight = geometry.size.height
+            let cellSize = screenHeight * 0.8 / 8
+            VStack {
                 HStack {
                     
-                    Circle()
-                        .fill(Color.red)
-                        .frame(width: 20)
-                        .padding(.leading, 50)
-                    
-                    Text("\(player1PieceCount)")
-                        .font(.headline)
-                }
-                Spacer()
-                
-                Button(action:  {
-                    isPaused.toggle()
-                }) {
                     HStack {
-                        Image(systemName: isPaused ? "play" : "pause")
-//                        Text(isPaused ? "Play" : "Pause")
+                        
+                        Circle()
+                            .fill(Color.red)
+                            .frame(width: 20)
+                            .padding(.leading, 50)
+                        
+                        Text("\(player1PieceCount)")
+                            .font(.headline)
                     }
+                    Spacer()
+                    
+                    Button(action:  {
+                        isPaused.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: isPaused ? "play" : "pause")
+                            //                        Text(isPaused ? "Play" : "Pause")
+                        }
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                    }
+                    Spacer()
+                    
+                    HStack {
+                        Text("\(player2PieceCount)")
+                            .font(.headline)
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 20)
+                            .padding(.trailing, 50)
+                    }
+                }
+                .padding(.top)
+                TimeBar(remainingTime: remainingTime, totalTime: 100)
+                    .padding(.horizontal)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
-                Spacer()
+                BoardView(board: board, cellSize: cellSize)
                 
-                HStack {
-                    Text("\(player2PieceCount)")
-                        .font(.headline)
-                    Circle()
-                        .fill(Color.blue)
-                        .frame(width: 20)
-                        .padding(.trailing, 50)
+                
+            }
+            .onAppear {
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                    if !isPaused && remainingTime > 0 {
+                        remainingTime -= 1
+                    } else if remainingTime == 0 {
+                        timer.invalidate()
+                    }
                 }
             }
-            .padding(.top)
-            TimeBar(remainingTime: remainingTime, totalTime: 100)
-                .padding(.horizontal)
-                .padding()
-            BoardView(board: board, cellSize: cellSize)
-            
+
             
         }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if !isPaused && remainingTime > 0 {
-                    remainingTime -= 1
-                } else if remainingTime == 0 {
-                    timer.invalidate()
-                }
+        
             }
-        }
-    }
 }
 
 struct GameView_Previews: PreviewProvider {

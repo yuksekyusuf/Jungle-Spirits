@@ -11,13 +11,13 @@ struct BoardView: View {
     @ObservedObject var board: Board
     @State private var selectedCell: (row: Int, col: Int)?
     @State private var currentPlayer: CellState = .player1
+        
     let cellSize: CGFloat
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<board.size, id: \.self) { row in
-                HStack(spacing: 0) {
-                    ForEach(0..<board.size, id:\.self) { col in
-//                        CellView(state: board.cellState(at: (row: row, col: col)), size: cellSize, isSelected: selectedCell != nil && selectedCell! == (row: row, col: col))
+        VStack(spacing: 1) {
+            ForEach(0..<board.size.rows, id: \.self) { row in
+                HStack(spacing: 1) {
+                    ForEach(0..<board.size.columns, id:\.self) { col in
                         CellView(
                             state: board.cellState(at: (row: row, col: col)),
                             size: cellSize,
@@ -32,7 +32,7 @@ struct BoardView: View {
                 }
                 
             }
-        }
+        }.frame(width: cellSize * CGFloat(board.size.columns), height: cellSize * CGFloat(board.size.rows))
     }
     
     private func handleTap(row: Int, col: Int) {
@@ -69,9 +69,9 @@ struct BoardView: View {
 }
 
 
-//
-//struct BoardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BoardView(board: Board(size: 7), cellSize: 7.0)
-//    }
-//}
+
+struct BoardView_Previews: PreviewProvider {
+    static var previews: some View {
+        BoardView(board: Board(size: (rows: 8, columns: 5)), cellSize: 40)
+    }
+}
