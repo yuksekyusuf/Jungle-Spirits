@@ -11,22 +11,18 @@ struct PlayerView: View {
     var player: CellState
     var body: some View {
         HStack {
-            //Group 1788 1
             if player == .player1 {
-                Image(uiImage: UIImage(named: "Group 1788 1")!)
+                Image(uiImage: UIImage(named: "Red")!)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 62, height: 66)
+                    .aspectRatio(contentMode: .fit)
                     .clipped()
             } else if player == .player2 {
-                Image(uiImage:  UIImage(named: "Group 1798")!)
+                Image(uiImage:  UIImage(named: "Blue")!)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 62, height: 66)
+                    .aspectRatio(contentMode: .fit)
                     .clipped()
             }
             
-//                .frame(width: 64, height: 69)
         }
     }
     
