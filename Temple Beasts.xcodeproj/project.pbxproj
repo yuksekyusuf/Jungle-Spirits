@@ -15,9 +15,13 @@
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
 		4D70D2512A0555D5002E9C0A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2502A0555D5002E9C0A /* Board.swift */; };
 		4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2522A055910002E9C0A /* PlayerView.swift */; };
+		4DA579EA2A1A7CF400C989BE /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */; };
+		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
+		4DA579EE2A1AAF1900C989BE /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */; };
 		4DC62BF12A19402500CD2007 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF02A19402500CD2007 /* BarView.swift */; };
 		4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */; };
 		4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */; };
+		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,9 +35,13 @@
 		4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Temple_Beasts.entitlements; sourceTree = "<group>"; };
 		4D70D2502A0555D5002E9C0A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		4D70D2522A055910002E9C0A /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Watermelon-Regular.otf"; path = "../../../Downloads/Watermelon Font/Watermelon-Regular.otf"; sourceTree = "<group>"; };
+		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
+		4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		4DC62BF02A19402500CD2007 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+InnerShadow.swift"; sourceTree = "<group>"; };
+		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +82,7 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
+				4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */,
 				4DC62BF62A1955F700CD2007 /* Utils */,
 				4D3A83CD2A0D33200059E2F0 /* Model */,
 				4D70D24D2A05545B002E9C0A /* Views */,
@@ -102,6 +111,9 @@
 				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4DC62BF02A19402500CD2007 /* BarView.swift */,
 				4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */,
+				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
+				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
+				4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,6 +186,7 @@
 			files = (
 				4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
+				4DA579EA2A1A7CF400C989BE /* Watermelon-Regular.otf in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,8 +200,11 @@
 			files = (
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
+				4DA579EE2A1AAF1900C989BE /* SwiftUIView.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
+				4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */,
+				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
@@ -327,6 +343,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
@@ -362,6 +379,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;

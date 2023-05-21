@@ -19,10 +19,6 @@ class Board: ObservableObject {
     let size: (rows: Int, columns: Int)
 
     
-//    var getPieceCount: (player1: Int, player2: Int) {
-//        return countPieces()
-//    }
-    
     init(size: (rows: Int, columns: Int)) {
         self.size = size
         cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
@@ -37,12 +33,21 @@ class Board: ObservableObject {
         cells[topRight.row][topRight.col] = .player2
         cells[bottomLeft.row][bottomLeft.col] = .player2
     }
-//    private func setupInitialBoard() {
-//        cells[0][0] = .player1
-////        grid[size - 1][size - 1] = .player1
-////        grid[0][size - 1] = .player2
-//        cells[size.columns - 1][0] = .player2
-//    }
+    
+    func reset() {
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                cells[row][col] = .empty
+            }
+        }
+        
+        cells[0][0] = .player1
+        cells[0][size.columns - 1] = .player2
+        cells[size.rows - 1][0] = .player2
+        cells[size.rows - 1][size.columns - 1] = .player1
+        notifyChange()
+    }
+
     func cellState(at position: (row: Int, col: Int)) -> CellState {
         return cells[position.row][position.col]
     }
@@ -67,10 +72,6 @@ class Board: ObservableObject {
     }
     
     
-   
-    
-    
-    
     func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) {
         guard isLegalMove(from: source, to: destination, player: player) else {
             return
@@ -84,11 +85,11 @@ class Board: ObservableObject {
         cells[destination.row][destination.col] = player
         
         convertOpponentPieces(at: destination, player: player)
+        notifyChange()
     }
     
     func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) {
         let opponent: CellState = player == .player1 ? .player2 : .player1
-//        let directions: [(Int, Int)] = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         
         for drow in -1...1 {
                for dcol in -1...1 {
@@ -108,8 +109,15 @@ class Board: ObservableObject {
     }
     
     func isGameOver() -> Bool {
-        return countPieces().empty == 0 || !hasLegalMoves(player: .player1) && !hasLegalMoves(player: .player2)
+        
+        let (player1Count, player2Count, _) = countPieces()
+        if player1Count == 0 || player2Count == 0 {
+            return true
+        }
+        return !(hasLegalMoves(player: .player1) || hasLegalMoves(player: .player2))
     }
+    
+    
     
 //    func isGameOver() -> Bool {
 //        for row in 0..<size {
@@ -143,19 +151,32 @@ class Board: ObservableObject {
                 for col in 0..<size.columns {
                     if cells[row][col] == player {
                         let source = (row: row, col: col)
-                        for drow in -2...2 {
-                            for dcol in -2...2 {
-                                let destination = (row: row + drow, col: col + dcol)
-                                if isLegalMove(from: source, to: destination, player: player) {
-                                    return true
-                                }
-                            }
+                        if hasAnyLegalMove(from: source) {
+                            return true
                         }
                     }
                 }
             }
             return false
         }
+    
+    private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
+        for drow in [-2, -1, 0, 1, 2] {
+            for dcol in [-2, -1, 0, 1, 2] {
+                let newRow = source.row + drow
+                let newCol = source.col + dcol
+                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == .empty {
+                    return true
+                }
+                
+            }
+        }
+        return false
+    }
+    
+    func notifyChange() {
+        self.objectWillChange.send()
+    }
 
     
     func countPieces() -> (player1: Int, player2: Int, empty: Int) {

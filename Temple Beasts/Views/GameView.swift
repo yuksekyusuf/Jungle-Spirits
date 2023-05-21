@@ -9,9 +9,12 @@ import SwiftUI
 
 struct GameView: View {
     @StateObject private var board = Board(size: (8, 5))
+    
+    @State private var showPauseMenu = false
     @State private var isPaused = false
     @State private var remainingTime = 100
     @State var currentPlayer: CellState = .player1
+    @State private var isGameOver: Bool = false
     let cellSize: CGFloat = 40
     
     
@@ -23,6 +26,8 @@ struct GameView: View {
         board.countPieces().player2
     }
     var body: some View {
+        
+        
         
         ZStack {
             Image("backgroundImage")
@@ -49,6 +54,8 @@ struct GameView: View {
                     
                     Button(action:  {
                         isPaused.toggle()
+                        showPauseMenu.toggle()
+                        
                     }) {
                         HStack {
                             Image("Pause button")
@@ -83,23 +90,54 @@ struct GameView: View {
                 BoardView(board: board, currentPlayer: currentPlayer, onMoveCompleted: {
                     self.currentPlayer = (self.currentPlayer == .player1) ? .player2 : .player1
                 })
-                    .padding(.bottom, 102)
+                .padding(.bottom, 102)
                 
             }
             
-            .onAppear {
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                    if !isPaused && remainingTime > 0 {
-                        remainingTime -= 1
-                    } else if remainingTime == 0 {
-                        timer.invalidate()
-                    }
+            PauseMenuView(showPauseMenu: $showPauseMenu)
+                .padding(.top, 100)
+                .offset(y: showPauseMenu ? 0 : UIScreen.main.bounds.height)
+                        
+        }
+        .navigationBarHidden(true)
+        .alert(isPresented: $isGameOver) {
+            Alert(title: Text("Game Over"),
+                  message: Text(winnerMessage),
+                  dismissButton: .default(Text("Restart")) {
+                board.reset()
+                currentPlayer = .player1
+            }
+            )
+        }
+
+        .onChange(of: board.cells) { newValue in
+            if board.isGameOver() {
+                isGameOver = true
+            }
+        }
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if !isPaused && remainingTime > 0 {
+                    remainingTime -= 1
+                } else if remainingTime == 0 {
+                    timer.invalidate()
                 }
             }
-            
-            
         }
     }
+    
+    
+    var winnerMessage: String {
+        let (player1Count, player2Count, _) = board.countPieces()
+        if player1Count == player2Count {
+            return "The game is a draw"
+        } else if player1Count > player2Count {
+            return "Player 1 wins!"
+        } else {
+            return "Player 2 wins!"
+        }
+    }
+    
 }
 
 struct GameView_Previews: PreviewProvider {

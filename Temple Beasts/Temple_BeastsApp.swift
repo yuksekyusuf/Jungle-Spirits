@@ -11,7 +11,9 @@ import SwiftUI
 struct Temple_BeastsApp: App {
     var body: some Scene {
         WindowGroup {
-            GameView()
+//            GameView()
+            MenuView()
+//            PauseMenuView()
         }
     }
 }
