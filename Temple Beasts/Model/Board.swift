@@ -22,7 +22,7 @@ struct Move {
 class Board: ObservableObject {
     @Published private(set) var cells: [[CellState]]
     let size: (rows: Int, columns: Int)
-
+    
     
     init(size: (rows: Int, columns: Int)) {
         self.size = size
@@ -57,16 +57,22 @@ class Board: ObservableObject {
         cells[size.rows - 1][size.columns - 1] = .player1
         notifyChange()
     }
-
+    
     func cellState(at position: (row: Int, col: Int)) -> CellState {
         return cells[position.row][position.col]
     }
     
     private func isValidCoordinate(_ coordinate: (row: Int, col: Int)) -> Bool {
-           return coordinate.row >= 0 && coordinate.row < size.rows && coordinate.col >= 0 && coordinate.col < size.columns
-       }
+        return coordinate.row >= 0 && coordinate.row < size.rows && coordinate.col >= 0 && coordinate.col < size.columns
+    }
     
     func isLegalMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Bool {
+        
+        let isCorner = (destination.row == 0 && destination.col == 0) ||
+        (destination.row == 0 && destination.col == size.columns - 1) ||
+        (destination.row == size.rows - 1 && destination.col == 0) ||
+        (destination.row == size.rows - 1 && destination.col == size.columns - 1)
+        
         if !isValidCoordinate(source) || !isValidCoordinate(destination) {
             return false
         }
@@ -78,7 +84,21 @@ class Board: ObservableObject {
         }
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
-        return (rowDifference <= 1 && colDifference <= 1) || (rowDifference <= 2 && colDifference <= 2)
+        
+        
+        if rowDifference <= 1 && colDifference <= 1 {
+               return true
+           }
+           
+           // Check for a jump move of 2 steps, horizontal or vertical (not diagonal)
+           if (rowDifference == 2 && colDifference == 0) || (rowDifference == 0 && colDifference == 2) {
+               return true
+           }
+        if (rowDifference == 1 && colDifference == 2) || (rowDifference == 2 && colDifference == 1) {
+                return true
+            }
+        return false
+//        return (rowDifference <= 1 && colDifference <= 1) || (rowDifference <= 2 && colDifference <= 2 && !isCorner)
     }
     
     
@@ -102,19 +122,19 @@ class Board: ObservableObject {
         let opponent: CellState = player == .player1 ? .player2 : .player1
         
         for drow in -1...1 {
-               for dcol in -1...1 {
-                   if drow == 0 && dcol == 0 {
-                       continue
-                   }
-                   
-                   let newRow = destination.row + drow
-                   let newCol = destination.col + dcol
-
-                   if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == opponent {
-                       cells[newRow][newCol] = player
-                   }
-               }
-           }
+            for dcol in -1...1 {
+                if drow == 0 && dcol == 0 {
+                    continue
+                }
+                
+                let newRow = destination.row + drow
+                let newCol = destination.col + dcol
+                
+                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == opponent {
+                    cells[newRow][newCol] = player
+                }
+            }
+        }
         
     }
     
@@ -129,18 +149,18 @@ class Board: ObservableObject {
     
     
     func hasLegalMoves(player: CellState) -> Bool {
-            for row in 0..<size.rows {
-                for col in 0..<size.columns {
-                    if cells[row][col] == player {
-                        let source = (row: row, col: col)
-                        if hasAnyLegalMove(from: source) {
-                            return true
-                        }
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                if cells[row][col] == player {
+                    let source = (row: row, col: col)
+                    if hasAnyLegalMove(from: source) {
+                        return true
                     }
                 }
             }
-            return false
         }
+        return false
+    }
     
     private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
         for drow in [-2, -1, 0, 1, 2] {
@@ -159,29 +179,29 @@ class Board: ObservableObject {
     func notifyChange() {
         self.objectWillChange.send()
     }
-
+    
     
     func countPieces() -> (player1: Int, player2: Int, empty: Int) {
-            var player1Count = 0
-            var player2Count = 0
-            var emptyCount = 0
-
-            for row in 0..<size.rows {
-                for col in 0..<size.columns {
-                    let cellState = cells[row][col]
-                    if cellState == .player1 {
-                        player1Count += 1
-                    } else if cellState == .player2 {
-                        player2Count += 1
-                    } else {
-                        emptyCount += 1
-                    }
+        var player1Count = 0
+        var player2Count = 0
+        var emptyCount = 0
+        
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                let cellState = cells[row][col]
+                if cellState == .player1 {
+                    player1Count += 1
+                } else if cellState == .player2 {
+                    player2Count += 1
+                } else {
+                    emptyCount += 1
                 }
             }
-
-            return (player1: player1Count, player2: player2Count, empty: emptyCount)
         }
-   
+        
+        return (player1: player1Count, player2: player2Count, empty: emptyCount)
+    }
+    
 }
 
 
@@ -223,7 +243,7 @@ extension Board {
     private func chooseAIMove(from moves: [Move]) -> Move {
         var bestMove: Move? = nil
         var bestScore = Int.min
-
+        
         for move in moves {
             var tempBoard = Board(cells: self.cells.map { $0 })
             
@@ -231,21 +251,21 @@ extension Board {
             
             let (aiPieces, opponentPieces, _) = tempBoard.countPieces()
             var score = aiPieces - opponentPieces
-
+            
             // Check if AI successfully captured an opponent's piece
             if tempBoard.cellState(at: move.destination) == .player2 {
                 score += 100
             }
-
+            
             // Check if the AI's piece could be captured in the next turn
             if couldBeCaptured(next: move.destination, player: .player2) {
                 score -= 200
             }
-
+            
             let center = (row: size.rows / 2, col: size.columns / 2)
             let distanceToCenter = abs(move.destination.row - center.row) + abs(move.destination.col - center.col)
             score -= distanceToCenter
-
+            
             if score > bestScore {
                 bestScore = score
                 bestMove = move
@@ -253,7 +273,7 @@ extension Board {
         }
         return bestMove ?? moves.randomElement()!
     }
-
+    
     
     private func couldBeCaptured(next: (row: Int, col: Int), player: CellState) -> Bool{
         for dr in -1...1 {
@@ -266,5 +286,8 @@ extension Board {
         }
         return false
     }
+    
+    
+    
 }
 
