@@ -15,6 +15,8 @@ struct GameView: View {
     @State private var remainingTime = 100
     @State var currentPlayer: CellState = .player1
     @State private var isGameOver: Bool = false
+    @State var selectedCell: (row: Int, col: Int)? = nil
+
     let cellSize: CGFloat = 40
     
     
@@ -87,9 +89,7 @@ struct GameView: View {
                 TimeBar(remainingTime: remainingTime, totalTime: 100)
                     .padding(.horizontal)
                     .padding(.trailing)
-                BoardView(board: board, currentPlayer: currentPlayer, onMoveCompleted: {
-                    self.currentPlayer = (self.currentPlayer == .player1) ? .player2 : .player1
-                })
+                BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted)
                 .padding(.bottom, 102)
                 
             }
@@ -136,6 +136,32 @@ struct GameView: View {
         } else {
             return "Player 2 wins!"
         }
+    }
+    
+        
+    func onMoveCompleted() {
+        
+        if self.board.isGameOver() {
+            self.isGameOver = true
+            return
+        }
+//        self.currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+        
+        if currentPlayer == .player2 && board.hasLegalMoves(player: .player2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                
+                if let _ = self.board.performAIMove() {
+                    self.currentPlayer = .player1
+//                    self.onMoveCompleted()
+                }
+                
+            }
+        } else {
+            self.currentPlayer = .player1
+        }
+//        else if !board.hasLegalMoves(player: .player1) {
+//            self.currentPlayer = .player2
+//        }
     }
     
 }

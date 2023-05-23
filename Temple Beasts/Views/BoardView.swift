@@ -9,9 +9,9 @@ import SwiftUI
 
 struct BoardView: View {
     @ObservedObject var board: Board
-    @State private var selectedCell: (row: Int, col: Int)?
-    @State var currentPlayer: CellState
-    var onMoveCompleted: (()->Void)?
+    @Binding var selectedCell: (row: Int, col: Int)?
+    @Binding var currentPlayer: CellState
+    let onMoveCompleted: () -> Void
     
     //    let cellSize: CGFloat
     var body: some View {
@@ -30,7 +30,8 @@ struct BoardView: View {
                                 outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col)
                             )
                             .onTapGesture {
-                                handleTap(row: row, col: col)
+                                self.handleTap(from: selectedCell, to: (row: row, col: col))
+//                                self.handleTap(row: row, col: col)
                             }
                         }
                     }
@@ -44,21 +45,29 @@ struct BoardView: View {
 //        }
     }
     
-    private func handleTap(row: Int, col: Int) {
+    private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
+        guard let source = source else {
+            selectedCell = destination
+            return
+        }
+        
         if let selected = selectedCell {
-            if board.isLegalMove(from: selected, to: (row: row, col: col), player: currentPlayer) {
-                board.performMove(from: selected, to: (row: row, col: col), player: currentPlayer)
-                onMoveCompleted?()
-                currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+            if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
+                board.performMove(from: source, to: destination, player: currentPlayer)
+//                currentPlayer = .player2
+                currentPlayer = .player2
                 selectedCell = nil
+                onMoveCompleted()
+
             } else {
-                selectedCell = board.cellState(at: (row: row, col: col)) == currentPlayer ? (row: row, col: col) : nil
-            }
-        } else {
-            if board.cellState(at: (row: row, col: col)) == currentPlayer {
-                selectedCell = (row: row, col: col)
+                selectedCell = destination
             }
         }
+//        else {
+//            if board.cellState(at: (row: row, col: col)) == currentPlayer {
+//                selectedCell = (row: row, col: col)
+//            }
+//        }
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
@@ -79,9 +88,9 @@ struct BoardView: View {
 }
 
 
-
-struct BoardView_Previews: PreviewProvider {
-    static var previews: some View {
-        BoardView(board: Board(size: (rows: 8, columns: 5)), currentPlayer: .player1)
-    }
-}
+//
+//struct BoardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        BoardView(board: Board(size: (rows: 8, columns: 5)), currentPlayer: .player1)
+//    }
+//}

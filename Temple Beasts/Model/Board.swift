@@ -13,6 +13,11 @@ enum CellState: Int {
     case player2 = 2
 }
 
+struct Move {
+    let source: (row: Int, col: Int)
+    let destination: (row: Int, col: Int)
+}
+
 
 class Board: ObservableObject {
     @Published private(set) var cells: [[CellState]]
@@ -32,6 +37,11 @@ class Board: ObservableObject {
         cells[bottomRight.row][bottomRight.col] = .player1
         cells[topRight.row][topRight.col] = .player2
         cells[bottomLeft.row][bottomLeft.col] = .player2
+    }
+    
+    init(cells: [[CellState]]) {
+        self.cells = cells
+        self.size = (rows: cells.count, columns: cells.first?.count ?? 0)
     }
     
     func reset() {
@@ -118,35 +128,7 @@ class Board: ObservableObject {
     }
     
     
-    
-//    func isGameOver() -> Bool {
-//        for row in 0..<size {
-//            for col in 0..<size {
-//                let coordinate = (row: row, col: col)
-//                if grid[row][col] == .player1 || grid[row][col] == .player2 {
-//                    let player = grid[row][col]
-//                    if hasLegalMoves(from: coordinate, player: player) {
-//                        return false
-//                    }
-//                }
-//            }
-//        }
-//        return true
-//    }
-    
-//    private func hasLegalMoves(from source: (row: Int, col: Int), player: CellState) -> Bool{
-//        for row in max(source.row - 2, 0)..<min(source.row + 3, size) {
-//            for col in max(source.col - 2, 0)..<min(source.col + 3, size) {
-//                let destination = (row: row, col: col)
-//                if isLegalMove(from: source, to: destination, player: player) {
-//                    return true
-//                }
-//            }
-//        }
-//        return false
-//    }
-    
-    private func hasLegalMoves(player: CellState) -> Bool {
+    func hasLegalMoves(player: CellState) -> Bool {
             for row in 0..<size.rows {
                 for col in 0..<size.columns {
                     if cells[row][col] == player {
@@ -200,5 +182,89 @@ class Board: ObservableObject {
             return (player1: player1Count, player2: player2Count, empty: emptyCount)
         }
    
+}
+
+
+extension Board {
+    
+    
+    func performAIMove() -> Move? {
+        let possibleMoves = generateAIMoves()
+        
+        if possibleMoves.isEmpty { return nil }
+        let chosenMove = chooseAIMove(from: possibleMoves)
+        performMove(from: chosenMove.source, to: chosenMove.destination, player: .player2)
+        
+        return chosenMove
+    }
+    
+    private func generateAIMoves() -> [Move] {
+        var moves: [Move] = []
+        
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                let source = (row: row, col: col)
+                
+                if cellState(at: source) == .player2 {
+                    for dr in -2...2 {
+                        for dc in -2...2 {
+                            let destination = (row: row + dr, col: col + dc)
+                            if isValidCoordinate(destination) && (cells[destination.row][destination.col] == .empty || cells[destination.row][destination.col] == .player1) && isLegalMove(from: source, to: destination, player: .player2){
+                                moves.append(Move(source: source, destination: destination))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return moves
+    }
+    
+    private func chooseAIMove(from moves: [Move]) -> Move {
+        var bestMove: Move? = nil
+        var bestScore = Int.min
+
+        for move in moves {
+            var tempBoard = Board(cells: self.cells.map { $0 })
+            
+            tempBoard.performMove(from: move.source, to: move.destination, player: .player2)
+            
+            let (aiPieces, opponentPieces, _) = tempBoard.countPieces()
+            var score = aiPieces - opponentPieces
+
+            // Check if AI successfully captured an opponent's piece
+            if tempBoard.cellState(at: move.destination) == .player2 {
+                score += 100
+            }
+
+            // Check if the AI's piece could be captured in the next turn
+            if couldBeCaptured(next: move.destination, player: .player2) {
+                score -= 200
+            }
+
+            let center = (row: size.rows / 2, col: size.columns / 2)
+            let distanceToCenter = abs(move.destination.row - center.row) + abs(move.destination.col - center.col)
+            score -= distanceToCenter
+
+            if score > bestScore {
+                bestScore = score
+                bestMove = move
+            }
+        }
+        return bestMove ?? moves.randomElement()!
+    }
+
+    
+    private func couldBeCaptured(next: (row: Int, col: Int), player: CellState) -> Bool{
+        for dr in -1...1 {
+            for dc in -1...1 {
+                let opponentPos = (row: next.row + dr, col: next.col + dc)
+                if isValidCoordinate(opponentPos) && cells[opponentPos.row][opponentPos.col] == (player == .player1 ? .player2 : .player1) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 }
 
