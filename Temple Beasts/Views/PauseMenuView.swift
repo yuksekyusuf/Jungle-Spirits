@@ -22,7 +22,7 @@ struct PauseMenuView: View {
                 .padding(.top, -200)
                 .overlay{
                     ZStack {
-                        RoundedRectangle(cornerRadius: 44)
+                        RoundedRectangle(cornerRadius: 46)
                             .fill(LinearGradient(
                                 gradient: Gradient(stops: [
                                     .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
@@ -31,11 +31,14 @@ struct PauseMenuView: View {
                                 endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447)))
                             .frame(width: 271, height: 258)
                             .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius:16, x:0, y:10)
-                        Rectangle()
-                            .fill(LinearGradient(gradient: Gradient(colors: [Color("PauseMenuColor1"), Color("PauseMenuColor2")]), startPoint: .top, endPoint: .bottom))
-                            .frame(width: 240, height: 240)
-                            .cornerRadius(44)
                         
+                        Image("pausemenubackground1")
+                            .frame(width: 240, height: 240)
+
+//                        Rectangle()
+//                            .fill(LinearGradient(gradient: Gradient(colors: [Color("PauseMenuColor1"), Color("PauseMenuColor2")]), startPoint: .top, endPoint: .bottom))
+//                            .cornerRadius(44)
+//
                         //pauseMenuPattern
                         Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
                             .resizable()
@@ -156,8 +159,9 @@ struct CustomToggleStyle: ToggleStyle {
     
 }
 
-//struct PauseMenuView_Previews: PreviewProvider {
-//    static var previews: some View {
-////        PauseMenuView(showPauseMenu: $true)
-//    }
-//}
+struct PauseMenuView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var check = true
+        PauseMenuView(showPauseMenu: $check)
+    }
+}

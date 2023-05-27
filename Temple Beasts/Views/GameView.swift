@@ -6,8 +6,15 @@
 //
 
 import SwiftUI
+import PopupView
+
+
+
 
 struct GameView: View {
+    
+
+    
     @StateObject private var board = Board(size: (8, 5))
     
     @State private var showPauseMenu = false
@@ -16,7 +23,7 @@ struct GameView: View {
     @State var currentPlayer: CellState = .player1
     @State private var isGameOver: Bool = false
     @State var selectedCell: (row: Int, col: Int)? = nil
-
+    
     let cellSize: CGFloat = 40
     
     
@@ -32,72 +39,128 @@ struct GameView: View {
         
         
         ZStack {
-            Image("backgroundImage")
-                .ignoresSafeArea()
-            VStack {
+            
+            
+            ZStack {
                 
-                HStack {
-                    
-                    HStack {
-                        
-                        Image(currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
-                            .frame(width: 55)
-                            .padding(.leading, 20)
-                        
-                        Text("\(player1PieceCount)")
-                            .font(.system(size: 30, weight: .heavy, design: .rounded))
-                            .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
-                            .tracking(0.9)
-                            .multilineTextAlignment(.center)
-                            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:0, y:2)
-                        
-                    }
-                    Spacer()
-                    
-                    Button(action:  {
-                        isPaused.toggle()
-                        showPauseMenu.toggle()
-                        
-                    }) {
-                        HStack {
-                            Image("Pause button")
-                                .frame(width: 69, height: 40)
-                        }
-                        .padding()
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                    }
-                    .padding(.leading, 10)
-                    .padding(.trailing, 10)
-                    Spacer()
-                    
-                    HStack {
-                        Text("\(player2PieceCount)")
-                            .font(.system(size: 30, weight: .heavy, design: .rounded))
-                            .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
-                            .tracking(0.9)
-                            .multilineTextAlignment(.center)
-                            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:0, y:2)
-                        
-                        
-                        Image(currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
-                            .frame(width: 55)
-                            .padding(.trailing, 20)
-                    }
+                
+                VStack {
+                    BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted)
+                        .offset(y: 28)
                 }
-                .padding(.top, 35)
-                TimeBar(remainingTime: remainingTime, totalTime: 100)
-                    .padding(.horizontal)
-                    .padding(.trailing)
-                BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted)
-                .padding(.bottom, 102)
+                .overlay {
+                    Image("Lights")
+                        .blendMode(.overlay)
+                        .allowsHitTesting(false)
+                    Image("Shadow")
+                        .opacity(0.80)
+                        .blendMode(.overlay)
+                        .allowsHitTesting(false)
+                    
+                    
+                }
+                
+                Image("backgroundImage")
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+                
+                
+                
+                VStack {
+                    HStack {
+                        
+                        HStack {
+                            
+                            Image(currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                .frame(width: 55)
+                                .padding(.leading, 20)
+                            
+                            Text("\(player1PieceCount)")
+                                .font(.system(size: 30, weight: .heavy, design: .rounded))
+                                .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
+                                .tracking(0.9)
+                                .multilineTextAlignment(.center)
+                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:0, y:2)
+                            
+                        }
+                        Spacer()
+                        
+                        Button(action:  {
+                            isPaused.toggle()
+                            showPauseMenu.toggle()
+                            
+                        })
+                       
+                        {
+                            HStack {
+                                Image("Pause button")
+                                    .frame(width: 69, height: 40)
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                        }
+                        
+                        //                        .popover(isPresented: $showPauseMenu, content: {
+//                            PauseMenuView()
+//                        })
+                        .padding(.leading, 10)
+                        .padding(.trailing, 10)
+                        Spacer()
+                        
+                        HStack {
+                            Text("\(player2PieceCount)")
+                                .font(.system(size: 30, weight: .heavy, design: .rounded))
+                                .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
+                                .tracking(0.9)
+                                .multilineTextAlignment(.center)
+                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:0, y:2)
+                            
+                            
+                            Image(currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                .frame(width: 55)
+                                .padding(.trailing, 20)
+                        }
+                    }
+                    .padding(.top, 35)
+                    TimeBar(remainingTime: remainingTime, totalTime: 100)
+                        .padding(.horizontal)
+                        .padding(.trailing)
+                }
                 
             }
+            .popup(isPresented: $showPauseMenu) {
+                PauseMenuView(showPauseMenu: $showPauseMenu)
+                        .padding(.top, 100)
+                        .offset(y: showPauseMenu ? 0 : UIScreen.main.bounds.height)
+            } customize: {
+                $0.type(.floater())
+                    .position(.top)
+                    .animation(.spring())
+                    .closeOnTapOutside(true)
+                    .backgroundColor(.black.opacity(0.5))
+            }
             
-            PauseMenuView(showPauseMenu: $showPauseMenu)
-                .padding(.top, 100)
-                .offset(y: showPauseMenu ? 0 : UIScreen.main.bounds.height)
-                        
+            
+
+//            }
+            
+            
+            //            .overlay {
+            //                Image("Shadow")
+            //                    .blendMode(.multiply)
+            //                    .allowsHitTesting(false)
+            //            }
+            
+            
+            
+            
+            
+            
+        }
+//        .popup(isPresented: showPauseMenu, alignment: .center, content: PauseMenuView.init)
+        .background {
+            Color("background")
         }
         .navigationBarHidden(true)
         .alert(isPresented: $isGameOver) {
@@ -109,7 +172,7 @@ struct GameView: View {
             }
             )
         }
-
+        
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
                 isGameOver = true
@@ -138,30 +201,30 @@ struct GameView: View {
         }
     }
     
-        
+    
     func onMoveCompleted() {
         
-        if self.board.isGameOver() {
-            self.isGameOver = true
-            return
-        }
-//        self.currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+        //        if self.board.isGameOver() {
+        //            self.isGameOver = true
+        //            return
+        //        }
+        //        self.currentPlayer = currentPlayer == .player1 ? .player2 : .player1
         
-        if currentPlayer == .player2 && board.hasLegalMoves(player: .player2) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                
-                if let _ = self.board.performAIMove() {
-                    self.currentPlayer = .player1
-//                    self.onMoveCompleted()
-                }
-                
-            }
-        } else {
-            self.currentPlayer = .player1
-        }
-//        else if !board.hasLegalMoves(player: .player1) {
-//            self.currentPlayer = .player2
-//        }
+        //        if currentPlayer == .player2 && board.hasLegalMoves(player: .player2) {
+        //            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        //
+        //                if let _ = self.board.performAIMove() {
+        //                    self.currentPlayer = .player1
+        ////                    self.onMoveCompleted()
+        //                }
+        //
+        //            }
+        //        } else {
+        //            self.currentPlayer = .player1
+        //        }
+        //        else if !board.hasLegalMoves(player: .player1) {
+        //            self.currentPlayer = .player2
+        //        }
     }
     
 }
@@ -183,7 +246,6 @@ struct TimeBar: View {
                     .fill(.black)
                     .cornerRadius(24)
                     .frame(width: 360, height: 24)
-                
                 Capsule()
                     .fill(LinearGradient(
                         gradient: Gradient(stops: [
@@ -192,12 +254,19 @@ struct TimeBar: View {
                             .init(color: Color(#colorLiteral(red: 0.5583333373069763, green: 0, blue: 0.1675001084804535, alpha: 1)), location: 1)]),
                         startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
                         endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)))
-                    .frame(width: width, height: 20)
-                    .innerShadow(5, opacity: 0.8, x: 2, y: 2)
+//                    .modifier(InnerShadowModifier())
+                    .innerShadow(5, opacity: 0.5, x: 2, y: 2)
                     .padding(.leading, 4)
+                    .frame(width: width, height: 20)
+                
+                
                 
             }
+            
         }
         
     }
 }
+
+
+

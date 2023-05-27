@@ -44,6 +44,12 @@ class Board: ObservableObject {
         self.size = (rows: cells.count, columns: cells.first?.count ?? 0)
     }
     
+    func copy() -> Board {
+        let newCells = self.cells.map { $0 }
+        let copiedBoard = Board(cells: newCells)
+        return copiedBoard
+    }
+    
     func reset() {
         for row in 0..<size.rows {
             for col in 0..<size.columns {
@@ -98,7 +104,6 @@ class Board: ObservableObject {
                 return true
             }
         return false
-//        return (rowDifference <= 1 && colDifference <= 1) || (rowDifference <= 2 && colDifference <= 2 && !isCorner)
     }
     
     
@@ -245,48 +250,80 @@ extension Board {
         var bestScore = Int.min
         
         for move in moves {
-            var tempBoard = Board(cells: self.cells.map { $0 })
-            
-            tempBoard.performMove(from: move.source, to: move.destination, player: .player2)
-            
-            let (aiPieces, opponentPieces, _) = tempBoard.countPieces()
-            var score = aiPieces - opponentPieces
-            
-            // Check if AI successfully captured an opponent's piece
-            if tempBoard.cellState(at: move.destination) == .player2 {
-                score += 100
-            }
-            
-            // Check if the AI's piece could be captured in the next turn
-            if couldBeCaptured(next: move.destination, player: .player2) {
-                score -= 200
-            }
-            
-            let center = (row: size.rows / 2, col: size.columns / 2)
-            let distanceToCenter = abs(move.destination.row - center.row) + abs(move.destination.col - center.col)
-            score -= distanceToCenter
-            
-            if score > bestScore {
-                bestScore = score
-                bestMove = move
-            }
-        }
-        return bestMove ?? moves.randomElement()!
-    }
-    
-    
-    private func couldBeCaptured(next: (row: Int, col: Int), player: CellState) -> Bool{
-        for dr in -1...1 {
-            for dc in -1...1 {
-                let opponentPos = (row: next.row + dr, col: next.col + dc)
-                if isValidCoordinate(opponentPos) && cells[opponentPos.row][opponentPos.col] == (player == .player1 ? .player2 : .player1) {
-                    return true
+                var tempBoard = Board(cells: self.cells.map { $0 })
+                tempBoard.performMove(from: move.source, to: move.destination, player: .player2)
+                
+                let scoreBeforeMove = minimax(board: tempBoard, depth: 3, alpha: Int.min, beta: Int.max, maximizingPlayer: false)
+                
+                // Determine score after move
+                tempBoard.convertOpponentPieces(at: move.destination, player: .player2)
+                let scoreAfterMove = minimax(board: tempBoard, depth: 3, alpha: Int.min, beta: Int.max, maximizingPlayer: false)
+                
+                // Use the change in score as the actual score for this move
+                let score = scoreAfterMove - scoreBeforeMove
+
+                if score > bestScore {
+                    bestScore = score
+                    bestMove = move
                 }
             }
-        }
-        return false
+        return bestMove ?? moves.randomElement()!
     }
+//
+//
+//    private func couldBeCaptured(next: (row: Int, col: Int), player: CellState) -> Bool{
+//        for dr in -1...1 {
+//            for dc in -1...1 {
+//                let opponentPos = (row: next.row + dr, col: next.col + dc)
+//                if isValidCoordinate(opponentPos) && cells[opponentPos.row][opponentPos.col] == (player == .player1 ? .player2 : .player1) {
+//                    return true
+//                }
+//            }
+//        }
+//        return false
+//    }
+//
     
+    private func minimax(board: Board, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool) -> Int {
+        if depth == 0 || board.isGameOver() {
+            let (player1Count, player2Count, _) = board.countPieces()
+            return maximizingPlayer ? player2Count - player1Count : player1Count - player2Count
+        }
+        
+        if maximizingPlayer {
+            var maxEval = Int.min
+            var alpha = alpha
+            let possibleMoves = board.generateAIMoves()
+            
+            for move in possibleMoves {
+                let newBoard = board.copy()
+                newBoard.performMove(from: move.source, to: move.destination, player: .player2)
+                let eval = minimax(board: newBoard, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: false)
+                maxEval = max(maxEval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha {
+                    break
+                }
+            }
+            return maxEval
+        } else {
+            var minEval = Int.max
+            var beta = beta
+            let possibleMoves = board.generateAIMoves()
+            
+            for move in possibleMoves {
+                let newBoard = board.copy()
+                newBoard.performMove(from: move.source, to: move.destination, player: .player1)
+                let eval = minimax(board: newBoard, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: true)
+                minEval = min(minEval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha {
+                    break
+                }
+            }
+            return minEval
+        }
+    }
     
     
 }

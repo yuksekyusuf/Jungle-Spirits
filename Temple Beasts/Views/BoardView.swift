@@ -31,18 +31,12 @@ struct BoardView: View {
                             )
                             .onTapGesture {
                                 self.handleTap(from: selectedCell, to: (row: row, col: col))
-//                                self.handleTap(row: row, col: col)
                             }
                         }
                     }
                     
                 }
             }
-            //            .frame(width: geo.size.width, height: geo.size.height)
-            //            .frame(width: cellSize * CGFloat(board.size.columns), height: cellSize * CGFloat(board.size.rows))
-            
-            
-//        }
     }
     
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
@@ -54,11 +48,9 @@ struct BoardView: View {
         if let selected = selectedCell {
             if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
                 board.performMove(from: source, to: destination, player: currentPlayer)
-//                currentPlayer = .player2
                 currentPlayer = .player2
                 selectedCell = nil
                 onMoveCompleted()
-
             } else {
                 selectedCell = destination
             }
@@ -88,9 +80,12 @@ struct BoardView: View {
 }
 
 
-//
+
 //struct BoardView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        BoardView(board: Board(size: (rows: 8, columns: 5)), currentPlayer: .player1)
+//        @State var selectedCell: (row: Int, col: Int)? = (row: 5, col: 5)
+//        BoardView(board: Board(size: (rows: 8, columns: 5)), selectedCell: $selectedCell, currentPlayer: .player1) {
+//
+//        }
 //    }
 //}

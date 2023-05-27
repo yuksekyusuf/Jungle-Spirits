@@ -9,49 +9,83 @@ import SwiftUI
 
 struct SwiftUIView: View {
     var body: some View {
-        //Rectangle 5622
         
-        //Rectangle 5621
-//        ZStack{
-//            RoundedRectangle(cornerRadius: 44)
-//                .fill(Color(#colorLiteral(red: 0.16862745583057404, green: 0.07058823853731155, blue: 0.4000000059604645, alpha: 1)))
-//            .frame(width: 56, height: 32)
-//            RoundedRectangle(cornerRadius: 44)
-//                .fill(Color(#colorLiteral(red: 0.4125000238418579, green: 1, blue: 0.8589999675750732, alpha: 1)))
-//            .frame(width: 24, height: 24)
-//        }
-        
-        var systemImage: String = "checkmark"
-            var activeColor: Color = .green
-         
+        VStack {
+            Capsule()
+                .frame(width: 360, height: 24)
+                .foregroundColor(.black)
+                .overlay(
+                    Capsule()
+                        .stroke(Color(red: 236/255, green: 234/255, blue: 235/255),
+                                lineWidth: 3)
+                        .shadow(color: Color(red: 192/255, green: 189/255, blue: 191/255),
+                                radius: 3, x: 1.5, y: 1.5)
+                        .clipShape(
+                            Capsule()
+                        )
+                )
+                .overlay(
+                    Capsule()
+                        .frame(width: 50)
+                        .foregroundColor(.blue)
+                    ,alignment: .leading
+                )
             
-                HStack {
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(.black)
+                    .cornerRadius(24)
+                    .frame(width: 360, height: 24)
+                    .overlay {
+                        Capsule()
+//                        .stroke(Color(red: 236/255, green: 234/255, blue: 235/255),
+//                                lineWidth: 3)
+                            .shadow(color: Color.white,
+                                radius:5, x: 2, y: 2)
+                        .clipShape(
+                            Capsule()
+                        )
+                    }
+                Capsule()
+                    .fill(LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: Color(#colorLiteral(red: 1, green: 0.45366665720939636, blue: 0.3791666626930237, alpha: 1)), location: 0),
+                            .init(color: Color(#colorLiteral(red: 1, green: 0.2078431397676468, blue: 0.3490196168422699, alpha: 1)), location: 0.5104166865348816),
+                            .init(color: Color(#colorLiteral(red: 0.5583333373069763, green: 0, blue: 0.1675001084804535, alpha: 1)), location: 1)]),
+                        startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
+                        endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)))
+                    .innerShadow(5, opacity: 0.5, x: 2, y: 2)
+                    .padding(.leading, 4)
+                    .frame(width: 250, height: 20)
                     
-         
-                    Spacer()
-         
-                    RoundedRectangle(cornerRadius: 30)
-                        .fill(activeColor)
-                        .overlay {
-                            Circle()
-                                .fill(.white)
-                                .padding(3)
-                                .overlay {
-                                    Image(systemName: systemImage)
-                                        .foregroundColor(activeColor)
-                                }
-                                .offset(x: -10)
-         
-                        }
-                        .frame(width: 50, height: 32)
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                
-                            }
-                        }
-                }
-            
+                
+                
+                
+            }
+        }
         
+        
+        //        ZStack {
+        //            Color.black
+        //            VStack {
+        Capsule()
+            .fill(LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color(#colorLiteral(red: 1, green: 0.45366665720939636, blue: 0.3791666626930237, alpha: 1)), location: 0),
+                    .init(color: Color(#colorLiteral(red: 1, green: 0.2078431397676468, blue: 0.3490196168422699, alpha: 1)), location: 0.5104166865348816),
+                    .init(color: Color(#colorLiteral(red: 0.5583333373069763, green: 0, blue: 0.1675001084804535, alpha: 1)), location: 1)]),
+                startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
+                endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)))
+        //                .innerShadow(5, opacity: 0.5, x: 2, y: 2)
+            .padding(.leading, 4)
+            .frame(width: 300, height: 20)
+        //            }
+        //            .foregroundStyle(
+        //                    .blue.gradient.shadow(
+        //                        .inner(color: .black, radius: 5, x: 2, y: 2)
+        //                    )
+        //        )
+        //        }
     }
 }
 

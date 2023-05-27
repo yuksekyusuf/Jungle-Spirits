@@ -9,18 +9,33 @@ import SwiftUI
 
 struct PlayerView: View {
     var player: CellState
+    var selected: Bool
     var body: some View {
         HStack {
-            if player == .player1 {
-                Image(uiImage: UIImage(named: "Red")!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipped()
-            } else if player == .player2 {
-                Image(uiImage:  UIImage(named: "Blue")!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .clipped()
+            if selected == true {
+                if player == .player1 {
+                    Image(uiImage: UIImage(named: "redActive")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipped()
+                } else if player == .player2 {
+                    Image(uiImage:  UIImage(named: "blueActive")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipped()
+                }
+            } else if selected == false {
+                if player == .player1 {
+                    Image(uiImage: UIImage(named: "Red")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipped()
+                } else if player == .player2 {
+                    Image(uiImage:  UIImage(named: "Blue")!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .clipped()
+                }
             }
             
         }
@@ -34,6 +49,6 @@ struct PlayerView: View {
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView(player: .player2)
+        PlayerView(player: .player2, selected: false)
     }
 }

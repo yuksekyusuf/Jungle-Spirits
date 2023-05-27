@@ -15,10 +15,14 @@ struct CellView: View {
     let outerHighlighted: Bool
 
     var body: some View {
+        
         VStack {
             ZStack {
                 Image("Unselected cell")
-                PlayerView(player: state)
+//                if selected {
+//                    PlayerView(player: <#T##CellState#>)
+//                }
+                PlayerView(player: state, selected: isSelected)
                     .frame(width: 64)
                 
             }
