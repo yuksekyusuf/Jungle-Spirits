@@ -12,6 +12,7 @@ struct BoardView: View {
     @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
     let onMoveCompleted: () -> Void
+    let gameType: GameType
     
     //    let cellSize: CGFloat
     var body: some View {
@@ -40,26 +41,26 @@ struct BoardView: View {
     }
     
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
-        guard let source = source else {
-            selectedCell = destination
+        if currentPlayer == .player2 && gameType == .ai {
             return
         }
         
-        if let selected = selectedCell {
-            if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-                board.performMove(from: source, to: destination, player: currentPlayer)
-                currentPlayer = .player2
-                selectedCell = nil
-                onMoveCompleted()
-            } else {
+        guard let source = source else {
+            if board.cellState(at: destination) == currentPlayer {
                 selectedCell = destination
             }
+            return
         }
-//        else {
-//            if board.cellState(at: (row: row, col: col)) == currentPlayer {
-//                selectedCell = (row: row, col: col)
-//            }
-//        }
+        
+        if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
+            board.performMove(from: source, to: destination, player: currentPlayer)
+            selectedCell = nil
+            currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+            onMoveCompleted()
+        }
+        else if board.cellState(at: destination) == currentPlayer {
+            selectedCell = destination
+        }
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }

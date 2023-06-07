@@ -9,11 +9,10 @@ import SwiftUI
 
 @main
 struct Temple_BeastsApp: App {
+    
     var body: some Scene {
         WindowGroup {
-//            GameView()
             MenuView()
-//            PauseMenuView()
         }
     }
 }

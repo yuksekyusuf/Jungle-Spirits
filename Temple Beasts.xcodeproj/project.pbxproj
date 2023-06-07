@@ -15,14 +15,20 @@
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
 		4D70D2512A0555D5002E9C0A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2502A0555D5002E9C0A /* Board.swift */; };
 		4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2522A055910002E9C0A /* PlayerView.swift */; };
-		4DA579EA2A1A7CF400C989BE /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */; };
+		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
+		4D84F5D92A311F2200B6E35C /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D82A311F2200B6E35C /* AppState.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
-		4DA579EE2A1AAF1900C989BE /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */; };
 		4DC62BF12A19402500CD2007 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF02A19402500CD2007 /* BarView.swift */; };
 		4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */; };
 		4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
 		4DE0EF2D2A1F21D80012DC18 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DE0EF2C2A1F21D80012DC18 /* PopupView */; };
+		4DED054D2A31346E00B2362A /* MenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED054C2A31346E00B2362A /* MenuButtonView.swift */; };
+		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
+		4DED05532A31413600B2362A /* PieceCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05522A31413600B2362A /* PieceCountView.swift */; };
+		4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05582A3145D400B2362A /* CustomToggleView.swift */; };
+		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
+		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,13 +42,19 @@
 		4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Temple_Beasts.entitlements; sourceTree = "<group>"; };
 		4D70D2502A0555D5002E9C0A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		4D70D2522A055910002E9C0A /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
-		4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Watermelon-Regular.otf"; path = "../../../Downloads/Watermelon Font/Watermelon-Regular.otf"; sourceTree = "<group>"; };
+		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		4D84F5D82A311F2200B6E35C /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
-		4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		4DC62BF02A19402500CD2007 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+InnerShadow.swift"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4DED054C2A31346E00B2362A /* MenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonView.swift; sourceTree = "<group>"; };
+		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
+		4DED05522A31413600B2362A /* PieceCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceCountView.swift; sourceTree = "<group>"; };
+		4DED05562A31449100B2362A /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Watermelon-Regular.otf"; sourceTree = "<group>"; };
+		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
+		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +72,8 @@
 		4D3A83CD2A0D33200059E2F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4D84F5D82A311F2200B6E35C /* AppState.swift */,
+				4D84F5D42A30BF5100B6E35C /* GameType.swift */,
 				4D70D2502A0555D5002E9C0A /* Board.swift */,
 			);
 			path = Model;
@@ -84,12 +98,11 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
-				4DA579E92A1A7CD500C989BE /* Watermelon-Regular.otf */,
+				4DED05552A31448900B2362A /* Assets */,
 				4DC62BF62A1955F700CD2007 /* Utils */,
 				4D3A83CD2A0D33200059E2F0 /* Model */,
 				4D70D24D2A05545B002E9C0A /* Views */,
 				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
-				4D70D2422A055190002E9C0A /* Assets.xcassets */,
 				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
 				4D70D2442A055190002E9C0A /* Preview Content */,
 			);
@@ -107,15 +120,12 @@
 		4D70D24D2A05545B002E9C0A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4D70D2522A055910002E9C0A /* PlayerView.swift */,
+				4DED05542A31439100B2362A /* Subviews */,
 				4D15F0B52A0C31AB00539383 /* BoardView.swift */,
-				4D15F0B72A0C355E00539383 /* GameView.swift */,
-				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
-				4DC62BF02A19402500CD2007 /* BarView.swift */,
-				4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
+				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
-				4DA579ED2A1AAF1900C989BE /* SwiftUIView.swift */,
+				4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -126,6 +136,30 @@
 				4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		4DED05542A31439100B2362A /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				4DED05522A31413600B2362A /* PieceCountView.swift */,
+				4D70D2522A055910002E9C0A /* PlayerView.swift */,
+				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
+				4DC62BF02A19402500CD2007 /* BarView.swift */,
+				4DED054C2A31346E00B2362A /* MenuButtonView.swift */,
+				4DED05502A31402900B2362A /* TimeBarView.swift */,
+				4DED05582A3145D400B2362A /* CustomToggleView.swift */,
+				4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		4DED05552A31448900B2362A /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				4DED05562A31449100B2362A /* Watermelon-Regular.otf */,
+				4D70D2422A055190002E9C0A /* Assets.xcassets */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,7 +228,7 @@
 			files = (
 				4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
-				4DA579EA2A1A7CF400C989BE /* Watermelon-Regular.otf in Resources */,
+				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,12 +242,18 @@
 			files = (
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
-				4DA579EE2A1AAF1900C989BE /* SwiftUIView.swift in Sources */,
+				4DED054D2A31346E00B2362A /* MenuButtonView.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
+				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
+				4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */,
 				4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */,
 				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
+				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
+				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
+				4D84F5D92A311F2200B6E35C /* AppState.swift in Sources */,
+				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
 				4DC62BF12A19402500CD2007 /* BarView.swift in Sources */,
