@@ -69,8 +69,6 @@ struct GameView: View {
                     .ignoresSafeArea()
                     .allowsHitTesting(false)
                 
-                
-                
                 VStack {
                     HStack {
                         HStack {

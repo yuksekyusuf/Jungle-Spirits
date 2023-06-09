@@ -8,9 +8,9 @@
 import Foundation
 
 enum CellState: Int {
-    case empty = 0
-    case player1 = 1
-    case player2 = 2
+    case empty
+    case player1
+    case player2
 }
 
 struct Move {
@@ -95,7 +95,6 @@ class Board: ObservableObject {
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
         
-        
         if rowDifference <= 1 && colDifference <= 1 {
                return true
            }
@@ -110,23 +109,26 @@ class Board: ObservableObject {
         return false
     }
     
-    
     func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) {
-        guard isLegalMove(from: source, to: destination, player: player) else {
-            return
-        }
         let rowDifference = abs(destination.row - source.row)
-        let colDifference = abs(destination.col - source.row)
-        if rowDifference == 2 || colDifference == 2 {
-            cells[source.row][source.col] = .empty
+        let colDifference = abs(destination.col - source.col)
+        
+        // Copying the piece if moving to an adjacent cell
+        if rowDifference <= 1 && colDifference <= 1 {
+            cells[destination.row][destination.col] = player
         }
         
-        cells[destination.row][destination.col] = player
+        else {
+            cells[source.row][source.col] = .empty
+            cells[destination.row][destination.col] = player
+        }
         
         convertOpponentPieces(at: destination, player: player)
-        notifyChange()
+
+
     }
-    
+
+
     func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) {
         let opponent: CellState = player == .player1 ? .player2 : .player1
         
@@ -188,7 +190,6 @@ class Board: ObservableObject {
     func notifyChange() {
         self.objectWillChange.send()
     }
-    
     
     func countPieces() -> (player1: Int, player2: Int, empty: Int) {
         var player1Count = 0
@@ -330,5 +331,51 @@ extension Board {
     }
     
     
+//    private func getBestMove() -> (row: Int, col: Int)? {
+//        let aiPlayer: CellState = .player2
+//        var bestCell: [(row: Int, col: Int)] = []
+//        var bestScore = -9999
+//
+//        // Iterate through all the cells.
+//        for row in 0..<size.rows {
+//            for col in 0..<size.columns {
+//                let cell = (row: row, col: col)
+//                if board.cellState(at: cell) != .empty && cellState(at: cell) != aiPlayer {
+//                    continue
+//                }
+//
+//                var cellsToCapture = cellsToCapture(from: cell, player: aiPlayer)
+//
+//                // Calculate score based on the cells to be captured.
+//                var score = cellsToCapture.count * 10
+//
+//                // Add a penalty if the cell is adjacent to an opponent's cell.
+//                for drow in -1...1 {
+//                    for dcol in -1...1 {
+//                        let adjacentCell = (row: row + drow, col: col + dcol)
+//                        if cellState(at: adjacentCell) == .player1 {
+//                            score -= 5
+//                        }
+//                    }
+//                }
+//
+//                // Update the best cell if the score is higher than the current best score.
+//                if score > bestScore {
+//                    bestScore = score
+//                    bestCell = [cell]
+//                } else if score == bestScore {
+//                    bestCell.append(cell)
+//                }
+//            }
+//        }
+//
+//        if bestCell.isEmpty {
+//            return nil
+//        }
+//
+//        // Select a cell from the best cells.
+//        return bestCell.randomElement()
+//    }
+
 }
 
