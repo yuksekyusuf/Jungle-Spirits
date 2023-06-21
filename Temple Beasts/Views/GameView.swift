@@ -18,7 +18,7 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _isPaused = State(initialValue: false)
-        _remainingTime = State(initialValue: 100)
+        _remainingTime = State(initialValue: 10)
         _currentPlayer = State(initialValue: .player1)
         _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
@@ -32,7 +32,7 @@ struct GameView: View {
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     
-    
+    @EnvironmentObject var menuViewModel: MenuViewModel
     let cellSize: CGFloat = 40
     
     
@@ -81,8 +81,9 @@ struct GameView: View {
                         }
                         Spacer()
                         Button(action:  {
-                                isPaused.toggle()
-                                showPauseMenu.toggle()
+                            isPaused.toggle()
+                            showPauseMenu.toggle()
+                            //                                menuViewModel.path.append(2)
                         })
                         {
                             HStack {
@@ -107,7 +108,7 @@ struct GameView: View {
                         }
                     }
                     .padding(.top, 35)
-                    TimeBarView(remainingTime: remainingTime, totalTime: 100)
+                    TimeBarView(remainingTime: remainingTime, totalTime: 10)
                         .padding(.horizontal)
                         .padding(.trailing)
                 }
@@ -127,6 +128,7 @@ struct GameView: View {
             Alert(title: Text("Game Over"),
                   message: Text(winnerMessage),
                   dismissButton: .default(Text("Restart")) {
+                self.isPaused.toggle()
                 board.reset()
                 currentPlayer = .player1
             }
@@ -135,18 +137,25 @@ struct GameView: View {
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
                 isGameOver = true
+                self.isPaused.toggle()
             }
         }
+        .onChange(of: remainingTime, perform: { newValue in
+            if newValue == 0 {
+                switchPlayer()
+                remainingTime = 10
+            }
+        })
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 if !isPaused && remainingTime > 0 {
                     remainingTime -= 1
-                } else if remainingTime == 0 {
-                    timer.invalidate()
                 }
             }
         }
+        .environmentObject(board)
     }
+    
     
     
     var winnerMessage: String {
@@ -160,20 +169,35 @@ struct GameView: View {
         }
     }
     
-    
     func onMoveCompleted() {
+        // Switch the current player
+        currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+
+        remainingTime = 10
+
         if self.board.isGameOver() {
             self.isGameOver = true
             return
         }
-
+        
         if gameType == .ai && currentPlayer == .player2 && board.hasLegalMoves(player: .player2) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                if let _ = self.board.performAIMove() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                if self.board.performAIMove() != nil {
+                    // AI made a move, keep the current player as .player1
                     self.currentPlayer = .player1
+                } else {
+                    // AI had no legal move available, switch the current player back to .player2
+                    self.currentPlayer = .player2
                 }
             }
+        } else if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
+            self.isGameOver = true
+            self.isPaused.toggle()
         }
+    }
+    
+    func switchPlayer() {
+        currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
     }
     
 }
@@ -185,31 +209,3 @@ struct GameView_Previews: PreviewProvider {
 }
 
 
-
-
-
-
-//                .popup(isPresented: $showPauseMenu) {
-//                    PauseMenuView(showPauseMenu: $showPauseMenu
-//    //                              , activeView: $activeView
-//                    )
-//    //                        .padding(.top, 100)
-//                        .offset(y: UIScreen.main.bounds.height/2.5)
-//                } customize: {
-//                    $0.type(.floater())
-//                        .position(.top)
-//                        .animation(.spring())
-//                        .closeOnTapOutside(true)
-//                        .backgroundColor(.black.opacity(0.5))
-//                }
-
-
-
-//            }
-
-
-//            .overlay {
-//                Image("Shadow")
-//                    .blendMode(.multiply)
-//                    .allowsHitTesting(false)
-//            }

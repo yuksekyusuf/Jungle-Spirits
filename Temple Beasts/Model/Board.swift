@@ -11,6 +11,16 @@ enum CellState: Int {
     case empty
     case player1
     case player2
+    func opposite() -> CellState {
+            switch self {
+            case .player1:
+                return .player2
+            case .player2:
+                return .player1
+            default:
+                return .empty
+            }
+        }
 }
 
 struct Move {
@@ -219,13 +229,62 @@ extension Board {
     
     
     func performAIMove() -> Move? {
-        let possibleMoves = generateAIMoves()
+        let aiPlayer: CellState = .player2
+            guard let move = getBestMove(for: aiPlayer) else {
+                print("No valid move found for AI player.")
+                // No move found, return nil
+                return nil
+            }
+            
+            // Perform the move and return the move
+            performMove(from: move.source, to: move.destination, player: aiPlayer)
 
-        if possibleMoves.isEmpty { return nil }
-        let chosenMove = chooseAIMove(from: possibleMoves)
-        performMove(from: chosenMove.source, to: chosenMove.destination, player: .player2)
+            print("AI moved from \(move.source) to \(move.destination)")
+            print("Current game board state: \(cells)") // If 'cells' is the game board
 
-        return chosenMove
+            return move
+    }
+    
+    func getBestMove(for player: CellState) -> Move? {
+        var bestMove: Move? = nil
+        var maxCapture: Int = -1
+
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                let source = (row: row, col: col)
+                if cellState(at: source) == player {
+                    for dx in -2...2 {
+                        for dy in -2...2 {
+                            let destination = (row: row + dx, col: col + dy)
+                            if isLegalMove(from: source, to: destination, player: player) {
+                                let captured = cellsToCapture(from: source, to: destination, player: player)
+                                if captured.count > maxCapture {
+                                    bestMove = Move(source: source, destination: destination)
+                                    maxCapture = captured.count
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return bestMove
+    }
+    
+    private func cellsToCapture(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
+        var cells: [(row: Int, col: Int)] = []
+
+        for dx in -1...1 {
+            for dy in -1...1 {
+                let cell = (row: destination.row + dx, col: destination.col + dy)
+                if isValidCoordinate(cell) && cellState(at: cell) == player.opposite() {
+                    cells.append(cell)
+                }
+            }
+        }
+
+        return cells
     }
     
     private func generateAIMoves() -> [Move] {

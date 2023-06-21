@@ -14,6 +14,8 @@ struct PauseMenuView: View {
     @Binding var isPaused: Bool
     @State private var isMusicOn = false
     @State private var isSoundOn = false
+    @EnvironmentObject var menuViewModel: MenuViewModel
+    @EnvironmentObject var board: Board
     var body: some View {
         
         
@@ -25,11 +27,11 @@ struct PauseMenuView: View {
                         RoundedRectangle(cornerRadius: 46)
                             .fill(
                                 LinearGradient(
-                                gradient: Gradient(stops: [
-                                    .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
-                                    .init(color: Color(#colorLiteral(red: 0.5364739298820496, green: 0.4752604365348816, blue: 0.9125000238418579, alpha: 1)), location: 1)]),
-                                startPoint: UnitPoint(x: 0.9999999999999999, y: 0),
-                                endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
+                                    gradient: Gradient(stops: [
+                                        .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
+                                        .init(color: Color(#colorLiteral(red: 0.5364739298820496, green: 0.4752604365348816, blue: 0.9125000238418579, alpha: 1)), location: 1)]),
+                                    startPoint: UnitPoint(x: 0.9999999999999999, y: 0),
+                                    endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
                             )
                             .frame(width: 271, height: 258)
                             .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius:16, x:0, y:10)
@@ -85,10 +87,12 @@ struct PauseMenuView: View {
                             Spacer()
                             HStack {
                                 Button {
-                                    
+                                    board.reset()
+                                    showPauseMenu.toggle()
+                                    isPaused.toggle()
                                 } label: {
                                     PauseMenuIconView(imageName: "iconReplay")
-
+                                    
                                 }
                                 
                                 Button {
@@ -96,16 +100,16 @@ struct PauseMenuView: View {
                                     isPaused.toggle()
                                 } label: {
                                     PauseMenuIconView(imageName: "iconResume")
-
+                                    
                                 }
                                 
                                 Button {
-                                    
+                                    menuViewModel.path.removeAll()
                                 } label: {
                                     PauseMenuIconView(imageName: "iconHome")
-
+                                    
                                 }
-
+                                
                             }
                             .padding(.bottom, 20)
                             Spacer()

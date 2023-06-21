@@ -16,28 +16,28 @@ struct BoardView: View {
     
     //    let cellSize: CGFloat
     var body: some View {
-//        GeometryReader { geo in
-//            let screenHeight = geo.size.height
-//            let cellSize = screenHeight * 0.8 / 8
-            VStack(spacing: -7) {
-                ForEach(0..<board.size.rows, id: \.self) { row in
-                    HStack(spacing: 1) {
-                        ForEach(0..<board.size.columns, id:\.self) { col in
-                            CellView(
-                                state: board.cellState(at: (row: row, col: col)),
-                                size: 72,
-                                isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
-                                highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                                outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col)
-                            )
-                            .onTapGesture {
-                                self.handleTap(from: selectedCell, to: (row: row, col: col))
-                            }
+        //        GeometryReader { geo in
+        //            let screenHeight = geo.size.height
+        //            let cellSize = screenHeight * 0.8 / 8
+        VStack(spacing: -7) {
+            ForEach(0..<board.size.rows, id: \.self) { row in
+                HStack(spacing: 1) {
+                    ForEach(0..<board.size.columns, id:\.self) { col in
+                        CellView(
+                            state: board.cellState(at: (row: row, col: col)),
+                            size: 72,
+                            isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
+                            highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
+                            outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col)
+                        )
+                        .onTapGesture {
+                            self.handleTap(from: selectedCell, to: (row: row, col: col))
                         }
                     }
-                    
                 }
+                
             }
+        }
     }
     
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
@@ -53,14 +53,13 @@ struct BoardView: View {
         }
         
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-            board.performMove(from: source, to: destination, player: currentPlayer)
-            selectedCell = nil
-            currentPlayer = currentPlayer == .player1 ? .player2 : .player1
-            onMoveCompleted()
-        }
-        else if board.cellState(at: destination) == currentPlayer {
-            selectedCell = destination
-        }
+                board.performMove(from: source, to: destination, player: currentPlayer)
+                selectedCell = nil
+                onMoveCompleted()
+            }
+            else if board.cellState(at: destination) == currentPlayer {
+                selectedCell = destination
+            }
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
@@ -75,7 +74,16 @@ struct BoardView: View {
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
         
-        return (deltaRow <= 2 && deltaCol <= 2) && !(deltaRow <= 1 && deltaCol <= 1)
+        if (deltaRow == 2 && deltaCol == 0) || (deltaRow == 0 && deltaCol == 2) {
+            return true
+        }
+        if (deltaRow == 1 && deltaCol == 2) || (deltaRow == 2 && deltaCol == 1) {
+             return true
+        }
+        return false
+        
+//        return (deltaRow == 1 && deltaCol == 2) || (deltaRow == 2 && deltaCol == 1) && (deltaRow == 2 && deltaCol == 0) || (deltaRow == 0 && deltaCol == 2)
+//        return (deltaRow <= 2 && deltaCol <= 2) && !(deltaRow <= 1 && deltaCol <= 1)
     }
     
 }

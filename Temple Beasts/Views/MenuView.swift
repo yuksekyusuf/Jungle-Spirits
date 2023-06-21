@@ -7,43 +7,49 @@
 
 import SwiftUI
 
-
+class MenuViewModel: ObservableObject {
+    @Published var path: [Int] = []
+}
 
 struct MenuView: View {
     
     @State var gameType: GameType? = nil
-    @State var views: [String] = ["Menu", "Game", "PauseMenu"]
-    @State var stackPath = NavigationPath()
-    
+    var views: [String] = ["Menu", "Game", "PauseMenu"]
+    @StateObject var menuViewModel = MenuViewModel()
+
+
     var body: some View {
         
         
-        NavigationStack(path: $stackPath) {
+        NavigationStack(path: $menuViewModel.path) {
             ZStack {
                 Image("Menu Screen")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 VStack(spacing: 0) {
+                    
                     //Single Player
-//                    NavigationLink(value: views) {
-//                        
-//                    }
-//                    .navigationDestination(for: String.self) { _ in
-//                        GameView(gameType: .ai)
-//                    }
-                    NavigationLink(destination: GameView(gameType: .ai)) {
+                    
+                    NavigationLink {
+                        GameView(gameType: .ai)
+                    } label: {
                         MenuButtonView(text: "Single Player")
-                        .padding(.bottom, -10)
+                            .padding(.bottom, -10)
                     }
+                    .simultaneousGesture(TapGesture().onEnded({
+                        menuViewModel.path.append(1)
+                    }))
 
-                    
                     //1 vs 1
-                    NavigationLink(destination: GameView(gameType: .oneVone)) {
+                    NavigationLink {
+                        GameView(gameType: .oneVone)
+                    } label: {
                         MenuButtonView(text: "1 vs 1")
-                                                .padding(.bottom, -10)
-
+                            .padding(.bottom, -10)
                     }
-                    
+                    .simultaneousGesture(TapGesture().onEnded({
+                        menuViewModel.path.append(2)
+                    }))
 
                     //Settings
                     Button {
@@ -58,6 +64,7 @@ struct MenuView: View {
             .ignoresSafeArea()
 
         }
+        .environmentObject(menuViewModel)
     }
 }
 
@@ -67,3 +74,4 @@ struct MenuView_Previews: PreviewProvider {
         MenuView()
     }
 }
+

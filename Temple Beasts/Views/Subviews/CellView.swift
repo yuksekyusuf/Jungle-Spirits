@@ -19,11 +19,24 @@ struct CellView: View {
         VStack {
             ZStack {
                 Image("Unselected cell")
-//                if selected {
-//                    PlayerView(player: <#T##CellState#>)
-//                }
+                
                 PlayerView(player: state, selected: isSelected)
                     .frame(width: 64)
+                
+                if highlighted && state == .empty {
+                    Image("Highlighted")
+                        .offset(y: -3)
+                }
+                
+                if outerHighlighted && state == .empty {
+                    Image("OuterHighlighted")
+                        .offset(y: -3)
+                }
+                
+                if isSelected && state != .empty {
+                    
+                }
+                
                 
             }
             .frame(width: size, height: size + 8)
@@ -33,6 +46,6 @@ struct CellView: View {
 }
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        CellView(state: .player1, size: 40, isSelected: false, highlighted: false, outerHighlighted: false)
+        CellView(state: .player1, size: 40, isSelected: true, highlighted: false, outerHighlighted: false)
     }
 }
