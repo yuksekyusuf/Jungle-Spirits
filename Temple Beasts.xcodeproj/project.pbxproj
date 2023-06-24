@@ -10,19 +10,18 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
+		4D6C26672A47243B00C166F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C26662A47243B00C166F9 /* Node.swift */; };
 		4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */; };
 		4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2422A055190002E9C0A /* Assets.xcassets */; };
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
 		4D70D2512A0555D5002E9C0A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2502A0555D5002E9C0A /* Board.swift */; };
 		4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2522A055910002E9C0A /* PlayerView.swift */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
-		4D84F5D92A311F2200B6E35C /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D82A311F2200B6E35C /* AppState.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
 		4DC62BF12A19402500CD2007 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF02A19402500CD2007 /* BarView.swift */; };
 		4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */; };
 		4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
-		4DC9BF6F2A43AF8300A81BF8 /* Test2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC9BF6E2A43AF8300A81BF8 /* Test2.swift */; };
 		4DE0EF2D2A1F21D80012DC18 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 4DE0EF2C2A1F21D80012DC18 /* PopupView */; };
 		4DED054D2A31346E00B2362A /* MenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED054C2A31346E00B2362A /* MenuButtonView.swift */; };
 		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
@@ -36,6 +35,7 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		4D6C26662A47243B00C166F9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		4D70D23B2A05518F002E9C0A /* Temple Beasts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Beasts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
 		4D70D2422A055190002E9C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,13 +44,11 @@
 		4D70D2502A0555D5002E9C0A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		4D70D2522A055910002E9C0A /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
-		4D84F5D82A311F2200B6E35C /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
 		4DC62BF02A19402500CD2007 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+InnerShadow.swift"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		4DC9BF6E2A43AF8300A81BF8 /* Test2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test2.swift; sourceTree = "<group>"; };
 		4DED054C2A31346E00B2362A /* MenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonView.swift; sourceTree = "<group>"; };
 		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
 		4DED05522A31413600B2362A /* PieceCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceCountView.swift; sourceTree = "<group>"; };
@@ -74,9 +72,9 @@
 		4D3A83CD2A0D33200059E2F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4D84F5D82A311F2200B6E35C /* AppState.swift */,
 				4D84F5D42A30BF5100B6E35C /* GameType.swift */,
 				4D70D2502A0555D5002E9C0A /* Board.swift */,
+				4D6C26662A47243B00C166F9 /* Node.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -128,7 +126,6 @@
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
 				4DC62BF42A194E1900CD2007 /* LaunchScreen.storyboard */,
-				4DC9BF6E2A43AF8300A81BF8 /* Test2.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -250,13 +247,12 @@
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
 				4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */,
+				4D6C26672A47243B00C166F9 /* Node.swift in Sources */,
 				4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */,
 				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
-				4DC9BF6F2A43AF8300A81BF8 /* Test2.swift in Sources */,
-				4D84F5D92A311F2200B6E35C /* AppState.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,

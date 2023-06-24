@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PopupView
 
 
 
@@ -18,7 +17,7 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _isPaused = State(initialValue: false)
-        _remainingTime = State(initialValue: 10)
+        _remainingTime = State(initialValue: 15)
         _currentPlayer = State(initialValue: .player1)
         _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
@@ -31,7 +30,6 @@ struct GameView: View {
     @State private var isGameOver: Bool
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
-    
     @EnvironmentObject var menuViewModel: MenuViewModel
     let cellSize: CGFloat = 40
     
@@ -83,7 +81,6 @@ struct GameView: View {
                         Button(action:  {
                             isPaused.toggle()
                             showPauseMenu.toggle()
-                            //                                menuViewModel.path.append(2)
                         })
                         {
                             HStack {
@@ -108,9 +105,12 @@ struct GameView: View {
                         }
                     }
                     .padding(.top, 35)
-                    TimeBarView(remainingTime: remainingTime, totalTime: 10)
+                    TimeBarView(remainingTime: remainingTime, totalTime: 15)
                         .padding(.horizontal)
                         .padding(.trailing)
+                        .animation(.linear(duration: 1.0), value: remainingTime)
+                    
+                    
                 }
                 if showPauseMenu {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused)
@@ -141,16 +141,36 @@ struct GameView: View {
             }
         }
         .onChange(of: remainingTime, perform: { newValue in
-            if newValue == 0 {
+            if newValue == 0 && gameType == .oneVone{
                 switchPlayer()
-                remainingTime = 10
+                remainingTime = 15
+            }
+            else if newValue == 0 && gameType == .ai {
+                remainingTime = 15
+                switchPlayer()
+                DispatchQueue.global().async {
+                    self.board.performAIMoveForMCTS()
+                    print("after ai performs, current player: ", currentPlayer)
+                    DispatchQueue.main.async {
+                        self.currentPlayer = .player1
+                        self.remainingTime = 15
+                    }
+                    
+                }
+                self.remainingTime = 15
+                
+                
             }
         })
         .onAppear {
+            
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                
                 if !isPaused && remainingTime > 0 {
                     remainingTime -= 1
                 }
+                
+                
             }
         }
         .environmentObject(board)
@@ -168,32 +188,33 @@ struct GameView: View {
             return "Player 2 wins!"
         }
     }
-    
     func onMoveCompleted() {
-        // Switch the current player
-        currentPlayer = currentPlayer == .player1 ? .player2 : .player1
-
-        remainingTime = 10
-
+        
         if self.board.isGameOver() {
             self.isGameOver = true
             return
         }
         
-        if gameType == .ai && currentPlayer == .player2 && board.hasLegalMoves(player: .player2) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                if self.board.performAIMove() != nil {
-                    // AI made a move, keep the current player as .player1
-                    self.currentPlayer = .player1
-                } else {
-                    // AI had no legal move available, switch the current player back to .player2
-                    self.currentPlayer = .player2
-                }
-            }
-        } else if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
+        currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+        remainingTime = 15
+        
+        if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
             self.isGameOver = true
             self.isPaused.toggle()
+        } else if gameType == .ai && currentPlayer == .player2 {
+            DispatchQueue.global().async {
+                self.board.performAIMoveForMCTS()
+                print("after ai performs, current player: ", currentPlayer)
+                DispatchQueue.main.async {
+                    self.currentPlayer = .player1
+                    self.remainingTime = 15
+                }
+                
+            }
+            self.remainingTime = 15
         }
+        
+        
     }
     
     func switchPlayer() {

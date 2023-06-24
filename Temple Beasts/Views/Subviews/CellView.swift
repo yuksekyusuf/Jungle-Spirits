@@ -13,6 +13,8 @@ struct CellView: View {
     let isSelected: Bool
     let highlighted: Bool
     let outerHighlighted: Bool
+    
+    @State private var justChanged: Bool = false
 
     var body: some View {
         
@@ -20,8 +22,12 @@ struct CellView: View {
             ZStack {
                 Image("Unselected cell")
                 
+                
                 PlayerView(player: state, selected: isSelected)
                     .frame(width: 64)
+                    .transition(.opacity)
+                    .animation(.easeIn(duration: 0.5), value: state)
+                    .offset(y: -4)
                 
                 if highlighted && state == .empty {
                     Image("Highlighted")
@@ -33,11 +39,17 @@ struct CellView: View {
                         .offset(y: -3)
                 }
                 
-                if isSelected && state != .empty {
-                    
+                if isSelected && state == .player1 {
+                    Image("EllipseRed")
+                        .blendMode(.overlay)
+                        .allowsHitTesting(false)
                 }
                 
-                
+                if isSelected && state == .player2 {
+                    Image("EllipseBlue")
+                        .blendMode(.overlay)
+                        .allowsHitTesting(false)
+                }
             }
             .frame(width: size, height: size + 8)
 

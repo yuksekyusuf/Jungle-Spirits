@@ -14,8 +14,8 @@
             filePath = "Temple Beasts/Views/GameView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "GameView"
             landmarkType = "14">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Temple Beasts/Views/GameView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "Temple Beasts/Views/GameView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "GameView"
             landmarkType = "14">
             <Locations>
@@ -140,6 +140,86 @@
                   startingLineNumber = "30"
                   endingLineNumber = "30"
                   offsetFromSymbolStart = "172">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ECA955B5-6CC8-4E01-85D3-8C2DC00D2AEE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Views/GameView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B8AF1EFF-ACA8-45EE-9798-E5320DA0397B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Views/GameView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "onMoveCompleted()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B5986FE-5540-40EF-9358-2251BE3B73C2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Model/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
+            landmarkName = "performAIMoveForMCTS()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9B5986FE-5540-40EF-9358-2251BE3B73C2 - 73eab98cc4c7d78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Temple_Beasts.Board.performAIMoveForMCTS() -&gt; ()"
+                  moduleName = "Temple Beasts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Model/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "461"
+                  endingLineNumber = "461"
+                  offsetFromSymbolStart = "248">
+               </Location>
+               <Location
+                  uuid = "9B5986FE-5540-40EF-9358-2251BE3B73C2 - 73eab98cc4c7d59"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Temple_Beasts.Board.performAIMoveForMCTS() -&gt; ()"
+                  moduleName = "Temple Beasts"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Model/Board.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "460"
+                  endingLineNumber = "460"
+                  offsetFromSymbolStart = "248">
                </Location>
             </Locations>
          </BreakpointContent>
