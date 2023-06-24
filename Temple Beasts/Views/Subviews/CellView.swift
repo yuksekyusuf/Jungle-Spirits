@@ -21,10 +21,11 @@ struct CellView: View {
         VStack {
             ZStack {
                 Image("Unselected cell")
+                    
                 
                 
                 PlayerView(player: state, selected: isSelected)
-                    .frame(width: 64)
+                    .frame(width: 72)
                     .transition(.opacity)
                     .animation(.easeIn(duration: 0.5), value: state)
                     .offset(y: -4)
@@ -58,6 +59,6 @@ struct CellView: View {
 }
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        CellView(state: .player1, size: 40, isSelected: true, highlighted: false, outerHighlighted: false)
+        CellView(state: .player1, size: 40, isSelected: false, highlighted: false, outerHighlighted: false)
     }
 }
