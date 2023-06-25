@@ -138,6 +138,7 @@ struct GameView: View {
             if board.isGameOver() {
                 isGameOver = true
                 self.isPaused.toggle()
+                SoundManager.shared.playOverSound()
             }
         }
         .onChange(of: remainingTime, perform: { newValue in
@@ -208,13 +209,17 @@ struct GameView: View {
                 DispatchQueue.main.async {
                     self.currentPlayer = .player1
                     self.remainingTime = 15
-                    SoundManager.shared.playSound()
+                    SoundManager.shared.playMoveSound()
                 }
                 
             }
             self.remainingTime = 15
         } else {
-            SoundManager.shared.playSound()
+//            let conversionResult = self.board.convertOpponentPieces(currentPlayer: currentPlayer)
+            SoundManager.shared.playMoveSound()
+//            if conversionResult > 0 {
+//                SoundManager.shared.playConvertSound()
+//            }
         }
         
         

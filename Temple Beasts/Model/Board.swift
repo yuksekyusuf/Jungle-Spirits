@@ -150,7 +150,7 @@ class Board: ObservableObject {
     
     
     
-    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) {
+    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Int? {
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
         
@@ -164,14 +164,19 @@ class Board: ObservableObject {
             cells[destination.row][destination.col] = player
         }
         
-        convertOpponentPieces(at: destination, player: player)
+        let convertedPieces = convertOpponentPieces(at: destination, player: player)
+        
         turn += 1
         
+        return convertedPieces
     }
     
     
-    func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) {
+    func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> Int? {
         let opponent: CellState = player == .player1 ? .player2 : .player1
+        
+        var convertedPieceCount = 0
+
         
         for drow in -1...1 {
             for dcol in -1...1 {
@@ -184,11 +189,32 @@ class Board: ObservableObject {
                 
                 if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == opponent {
                     cells[newRow][newCol] = player
+                    convertedPieceCount += 1
+
                 }
             }
         }
+
+        return convertedPieceCount
         
     }
+    
+//    func convertOpponentPieces(currentPlayer: CellState) -> Int {
+//        var conversionCount = 0
+//        
+//        let opponentPlayer = currentPlayer.opposite()
+//        
+//        for row in 0..<size.rows {
+//            for col in 0..<size.columns {
+//                if cellState(at: (row, col)) == opponentPlayer {
+//                    cells[row][col] = currentPlayer
+//                    conversionCount += 1
+//                }
+//            }
+//        }
+//        
+//        return conversionCount
+//    }
     
     func isGameOver() -> Bool {
         

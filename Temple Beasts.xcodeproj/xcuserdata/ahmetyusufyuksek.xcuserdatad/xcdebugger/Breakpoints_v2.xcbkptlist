@@ -170,8 +170,8 @@
             filePath = "Temple Beasts/Views/GameView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "onMoveCompleted()"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,8 +186,8 @@
             filePath = "Temple Beasts/Model/Board.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "454"
-            endingLineNumber = "454"
+            startingLineNumber = "480"
+            endingLineNumber = "480"
             landmarkName = "performAIMoveForMCTS()"
             landmarkType = "7">
             <Locations>
@@ -222,6 +222,22 @@
                   offsetFromSymbolStart = "248">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C443A270-6237-4EDD-B2CC-DC3BDB4DFAD4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Model/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "convertOpponentPieces(at:player:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -6,27 +6,58 @@
 //
 
 import Foundation
-import AVKit
+import AVFoundation
 
 class SoundManager {
     
     static let shared = SoundManager()
     
-    var player: AVAudioPlayer?
+    var player1: AVAudioPlayer?
+    var player2: AVAudioPlayer?
     
     
-    func playSound() {
-        guard let url = Bundle.main.url(forResource: "tada", withExtension: ".mp3") else { return }
+    enum SoundOption: String {
+        case move = "move"
+    }
+    
+    
+    func playMoveSound() {
+        guard let url = Bundle.main.url(forResource: "move", withExtension: ".aiff") else { return }
         
         do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player?.play()
+            player1 = try AVAudioPlayer(contentsOf: url)
+            player1?.play()
 
         } catch let error {
             print("Audio player error: \(error.localizedDescription)")
         }
 
     }
+    
+    func playConvertSound() {
+        guard let url = Bundle.main.url(forResource: "tada", withExtension: ".wav") else { return }
+        
+        do {
+            player2 = try AVAudioPlayer(contentsOf: url)
+            player2?.play()
+
+        } catch let error {
+            print("Audio player error: \(error.localizedDescription)")
+        }
+    }
+    
+    func playOverSound() {
+        guard let url = Bundle.main.url(forResource: "victory", withExtension: ".wav") else { return }
+        
+        do {
+            player1 = try AVAudioPlayer(contentsOf: url)
+            player1?.play()
+
+        } catch let error {
+            print("Audio player error: \(error.localizedDescription)")
+        }
+    }
+    
     
     
 }

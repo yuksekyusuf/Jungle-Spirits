@@ -53,7 +53,11 @@ struct BoardView: View {
         }
         
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-                board.performMove(from: source, to: destination, player: currentPlayer)
+            if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
+                SoundManager.shared.playConvertSound()
+
+            }
+           
                 selectedCell = nil
                 onMoveCompleted()
             }
