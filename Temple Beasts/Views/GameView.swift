@@ -208,10 +208,13 @@ struct GameView: View {
                 DispatchQueue.main.async {
                     self.currentPlayer = .player1
                     self.remainingTime = 15
+                    SoundManager.shared.playSound()
                 }
                 
             }
             self.remainingTime = 15
+        } else {
+            SoundManager.shared.playSound()
         }
         
         

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F06992A48D60C00B53823 /* SoundManager.swift */; };
+		4D0F069D2A48D8AA00B53823 /* Movements-04.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F069C2A48D8AA00B53823 /* Movements-04.wav */; };
+		4D0F069F2A48DA3500B53823 /* tada.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F069E2A48DA3500B53823 /* tada.mp3 */; };
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
@@ -32,6 +35,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D0F06992A48D60C00B53823 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		4D0F069C2A48D8AA00B53823 /* Movements-04.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Movements-04.wav"; sourceTree = "<group>"; };
+		4D0F069E2A48DA3500B53823 /* tada.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tada.mp3; sourceTree = "<group>"; };
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -69,6 +75,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D0F06982A48D5CE00B53823 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				4D0F06992A48D60C00B53823 /* SoundManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		4D0F069B2A48D89600B53823 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				4D0F069E2A48DA3500B53823 /* tada.mp3 */,
+				4D0F069C2A48D8AA00B53823 /* Movements-04.wav */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		4D3A83CD2A0D33200059E2F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +121,8 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
+				4D0F069B2A48D89600B53823 /* Sounds */,
+				4D0F06982A48D5CE00B53823 /* Services */,
 				4DED05552A31448900B2362A /* Assets */,
 				4DC62BF62A1955F700CD2007 /* Utils */,
 				4D3A83CD2A0D33200059E2F0 /* Model */,
@@ -228,6 +253,8 @@
 			files = (
 				4DC62BF52A194E1900CD2007 /* LaunchScreen.storyboard in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
+				4D0F069F2A48DA3500B53823 /* tada.mp3 in Resources */,
+				4D0F069D2A48D8AA00B53823 /* Movements-04.wav in Resources */,
 				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 			);
@@ -257,6 +284,7 @@
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
 				4DC62BF12A19402500CD2007 /* BarView.swift in Sources */,
+				4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
