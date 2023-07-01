@@ -28,14 +28,13 @@ extension View {
 //
         
         return self
-            .compositingGroup()
+//            .compositingGroup()
             .background(
-
-                Color(white: 1 - opacity)
+                Color(white: opacity)
                     .overlay(content: {
                         Color.white
                             .mask(self)
-                            .blur(radius: 0)
+//                            .blur(radius: 0)
                             .offset(x: x, y: y)
                     })
                     .mask(self)

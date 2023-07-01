@@ -10,6 +10,8 @@ import AVFoundation
 
 class SoundManager {
     
+    
+    
     static let shared = SoundManager()
     
     var player1: AVAudioPlayer?
@@ -22,9 +24,12 @@ class SoundManager {
     
     
     func playMoveSound() {
+        
+        guard UserDefaults.standard.bool(forKey: "sound") else { return }
         guard let url = Bundle.main.url(forResource: "move", withExtension: ".aiff") else { return }
         
         do {
+            
             player1 = try AVAudioPlayer(contentsOf: url)
             player1?.play()
 
@@ -35,6 +40,8 @@ class SoundManager {
     }
     
     func playConvertSound() {
+        guard UserDefaults.standard.bool(forKey: "sound") else { return }
+
         guard let url = Bundle.main.url(forResource: "tada", withExtension: ".wav") else { return }
         
         do {
@@ -47,6 +54,8 @@ class SoundManager {
     }
     
     func playOverSound() {
+        guard UserDefaults.standard.bool(forKey: "sound") else { return }
+
         guard let url = Bundle.main.url(forResource: "victory", withExtension: ".wav") else { return }
         
         do {

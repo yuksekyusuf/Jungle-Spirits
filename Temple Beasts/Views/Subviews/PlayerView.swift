@@ -49,6 +49,6 @@ struct PlayerView: View {
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView(player: .player2, selected: false)
+        PlayerView(player: .player2, selected: true)
     }
 }

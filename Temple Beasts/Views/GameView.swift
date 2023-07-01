@@ -16,6 +16,7 @@ struct GameView: View {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
+        _showWinMenu = State(initialValue: false)
         _isPaused = State(initialValue: false)
         _remainingTime = State(initialValue: 15)
         _currentPlayer = State(initialValue: .player1)
@@ -24,6 +25,7 @@ struct GameView: View {
     }
     
     @State private var showPauseMenu: Bool
+    @State private var showWinMenu: Bool
     @State private var isPaused: Bool
     @State private var remainingTime: Int
     @State var currentPlayer: CellState
@@ -105,40 +107,32 @@ struct GameView: View {
                         }
                     }
                     .padding(.top, 35)
-                    TimeBarView(remainingTime: remainingTime, totalTime: 15)
+                    TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: currentPlayer)
                         .padding(.horizontal)
                         .padding(.trailing)
                         .animation(.linear(duration: 1.0), value: remainingTime)
-                    
-                    
                 }
                 if showPauseMenu {
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused)
-                        .transition(.opacity.animation(.easeIn))
                     
+                        PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, currentPlayer: $currentPlayer)
+                        .animation(Animation.easeInOut, value: showPauseMenu)
                 }
-                
+                if showWinMenu {
+                    WinView(showWinMenu: $showWinMenu, isPaused: $isPaused, winner: winner, currentPlayer: $currentPlayer)
+                }
             }
         }
         .background {
             Color("background")
         }
         .navigationBarHidden(true)
-        .alert(isPresented: $isGameOver) {
-            Alert(title: Text("Game Over"),
-                  message: Text(winnerMessage),
-                  dismissButton: .default(Text("Restart")) {
-                self.isPaused.toggle()
-                board.reset()
-                currentPlayer = .player1
-            }
-            )
-        }
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
-                isGameOver = true
-                self.isPaused.toggle()
+                isGameOver.toggle()
+                isPaused.toggle()
+                showWinMenu.toggle()
                 SoundManager.shared.playOverSound()
+                HapticManager.shared.impact(style: .heavy)
             }
         }
         .onChange(of: remainingTime, perform: { newValue in
@@ -179,14 +173,12 @@ struct GameView: View {
     
     
     
-    var winnerMessage: String {
+    var winner: CellState {
         let (player1Count, player2Count, _) = board.countPieces()
-        if player1Count == player2Count {
-            return "The game is a draw"
-        } else if player1Count > player2Count {
-            return "Player 1 wins!"
+        if player1Count > player2Count {
+            return .player1
         } else {
-            return "Player 2 wins!"
+            return .player2
         }
     }
     func onMoveCompleted() {

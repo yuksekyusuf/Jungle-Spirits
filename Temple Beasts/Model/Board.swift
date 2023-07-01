@@ -79,6 +79,7 @@ class Board: ObservableObject {
         cells[0][size.columns - 1] = .player2
         cells[size.rows - 1][0] = .player2
         cells[size.rows - 1][size.columns - 1] = .player1
+        
         turn = 0
         notifyChange()
     }

@@ -11,11 +11,11 @@ struct PauseMenuIconView: View {
     let imageName: String
     var body: some View {
         RoundedRectangle(cornerRadius: 14)
-            .frame(width: 59, height: 44)
             .foregroundColor(Color("AnotherPause"))
             .overlay{
                 Image(imageName)
             }
+            .frame(width: 59, height: 44)
     }
 }
 

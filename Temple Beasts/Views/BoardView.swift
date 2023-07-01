@@ -32,6 +32,7 @@ struct BoardView: View {
                         )
                         .onTapGesture {
                             self.handleTap(from: selectedCell, to: (row: row, col: col))
+                            HapticManager.shared.impact(style: .soft)
                         }
                     }
                 }
@@ -45,6 +46,14 @@ struct BoardView: View {
             return
         }
         
+        // If the destination cell is the currently selected cell, unselect it.
+            if let source = source, source == destination {
+                withAnimation(.easeInOut) {
+                    selectedCell = nil
+                }
+                return
+            }
+        
         guard let source = source else {
             if board.cellState(at: destination) == currentPlayer {
                 selectedCell = destination
@@ -55,9 +64,9 @@ struct BoardView: View {
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
             if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
                 SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
 
             }
-           
                 selectedCell = nil
                 onMoveCompleted()
             }
@@ -74,7 +83,6 @@ struct BoardView: View {
     }
     private func isOuterToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
-        
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
         
@@ -85,9 +93,6 @@ struct BoardView: View {
              return true
         }
         return false
-        
-//        return (deltaRow == 1 && deltaCol == 2) || (deltaRow == 2 && deltaCol == 1) && (deltaRow == 2 && deltaCol == 0) || (deltaRow == 0 && deltaCol == 2)
-//        return (deltaRow <= 2 && deltaCol <= 2) && !(deltaRow <= 1 && deltaCol <= 1)
     }
     
 }

@@ -14,12 +14,10 @@ struct CellView: View {
     let highlighted: Bool
     let outerHighlighted: Bool
     
-    @State private var justChanged: Bool = false
-
     var body: some View {
         
         VStack {
-            ZStack {
+            ZStack {            
                 Image("Unselected cell")
                     
                 
@@ -30,14 +28,20 @@ struct CellView: View {
                     .animation(.easeIn(duration: 0.5), value: state)
                     .offset(y: -4)
                 
+               
                 if highlighted && state == .empty {
                     Image("Highlighted")
-                        .offset(y: -3)
+                        .cornerRadius(6)
+                        .offset(y: -4)
+                    
                 }
+                
                 
                 if outerHighlighted && state == .empty {
                     Image("OuterHighlighted")
-                        .offset(y: -3)
+                        .cornerRadius(6)
+                        .offset(y: -4)
+
                 }
                 
                 if isSelected && state == .player1 {
@@ -59,6 +63,6 @@ struct CellView: View {
 }
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        CellView(state: .player1, size: 40, isSelected: false, highlighted: false, outerHighlighted: false)
+        CellView(state: .empty, size: 40, isSelected: true, highlighted: true, outerHighlighted: false)
     }
 }
