@@ -480,10 +480,8 @@ extension Board {
     // Function to perform AI move using MCTS
     func performAIMoveForMCTS() {
         let currentPlayerCells = getPlayerCells(player: .player2, board: self)
-        
-        
         let rootNode = Node(move: Move(source: (-1, -1), destination: (-1, -1)), parent: nil, untriedMoves: getLegalMoves(for: currentPlayerCells.first!), player: .player2)
-        let MCTSIterations = 250
+        let MCTSIterations = 550
         
         for _ in 0..<MCTSIterations {
             let promisingNode = selectPromisingNode(rootNode: rootNode)
@@ -499,7 +497,6 @@ extension Board {
                 
             }
         }
-        
     }
     
     func getRandomAdjacentCell(cell: (Int, Int)) -> (Int, Int)? {

@@ -150,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				4DED05542A31439100B2362A /* Subviews */,
+				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4D15F0B52A0C31AB00539383 /* BoardView.swift */,
 				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
@@ -172,7 +173,6 @@
 			children = (
 				4DED05522A31413600B2362A /* PieceCountView.swift */,
 				4D70D2522A055910002E9C0A /* PlayerView.swift */,
-				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4DC62BF02A19402500CD2007 /* BarView.swift */,
 				4DED054C2A31346E00B2362A /* MenuButtonView.swift */,
 				4DED05502A31402900B2362A /* TimeBarView.swift */,
@@ -429,6 +429,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,6 +466,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

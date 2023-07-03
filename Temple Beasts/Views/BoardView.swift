@@ -13,19 +13,13 @@ struct BoardView: View {
     @Binding var currentPlayer: CellState
     let onMoveCompleted: () -> Void
     let gameType: GameType
-    
-    //    let cellSize: CGFloat
-    var body: some View {
-        //        GeometryReader { geo in
-        //            let screenHeight = geo.size.height
-        //            let cellSize = screenHeight * 0.8 / 8
-        VStack(spacing: -7) {
+        var body: some View {
+        VStack(spacing: 1) {
             ForEach(0..<board.size.rows, id: \.self) { row in
                 HStack(spacing: 1) {
                     ForEach(0..<board.size.columns, id:\.self) { col in
                         CellView(
                             state: board.cellState(at: (row: row, col: col)),
-                            size: 72,
                             isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
                             highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
                             outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col)

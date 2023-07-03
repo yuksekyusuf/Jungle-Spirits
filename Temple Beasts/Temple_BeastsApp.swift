@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct Temple_BeastsApp: App {
+    init() {
+        print("Screen height: ", UIScreen.main.bounds.height)
+        print("Screen width: ", UIScreen.main.bounds.width)
+    }
     
     var body: some Scene {
         WindowGroup {

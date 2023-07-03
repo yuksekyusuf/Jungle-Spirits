@@ -45,31 +45,13 @@ struct GameView: View {
     }
     
     var body: some View {
+        
         ZStack {
-            
+            //            Color.black.ignoresSafeArea()
             ZStack {
-                
-                
-                VStack {
-                    BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted, gameType: gameType)
-                        .offset(y: 28)
-                        .allowsHitTesting(!showPauseMenu)
-                    
-                }
-                .overlay {
-                    Image("Lights")
-                        .blendMode(.overlay)
-                        .allowsHitTesting(false)
-                    Image("Shadow")
-                        .opacity(0.80)
-                        .blendMode(.overlay)
-                        .allowsHitTesting(false)
-                }
-                Image("backgroundImage")
+                Image("backgroundImage").resizable()
                     .ignoresSafeArea()
-                    .allowsHitTesting(false)
-                
-                VStack {
+                VStack(spacing: 0) {
                     HStack {
                         HStack {
                             Image(currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
@@ -92,13 +74,8 @@ struct GameView: View {
                             .padding()
                             .foregroundColor(.white)
                             .cornerRadius(8)
-                            
-                            
                         }
-                        .padding(.leading, 10)
-                        .padding(.trailing, 10)
                         Spacer()
-                        
                         HStack {
                             PieceCountView(pieceCount: player2PieceCount)
                             Image(currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
@@ -106,25 +83,64 @@ struct GameView: View {
                                 .padding(.trailing, 20)
                         }
                     }
-                    .padding(.top, 35)
-                    TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: currentPlayer)
-                        .padding(.horizontal)
-                        .padding(.trailing)
-                        .animation(.linear(duration: 1.0), value: remainingTime)
+                    HStack {
+                        TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: currentPlayer)
+                            .padding([.horizontal, .trailing], 5)
+                            .animation(.linear(duration: 1.0), value: remainingTime)
+                    }
+                    BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted, gameType: gameType)
+                        .allowsHitTesting(!showPauseMenu)
+                        .overlay {
+                            Image("Lights")
+                                .blendMode(.overlay)
+                                .allowsHitTesting(false)
+                            Image("Shadow")
+                                .opacity(0.80)
+                                .blendMode(.overlay)
+                                .allowsHitTesting(false)
+                        }
                 }
+                Image("randomLights")
+                    .resizable()
+                    .scaledToFit()
+                    .allowsHitTesting(false)
                 if showPauseMenu {
-                    
-                        PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, currentPlayer: $currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, currentPlayer: $currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
                 if showWinMenu {
                     WinView(showWinMenu: $showWinMenu, isPaused: $isPaused, winner: winner, currentPlayer: $currentPlayer)
                 }
             }
+            VStack {
+                Spacer()
+                if UIScreen.main.bounds.height <= 667 {
+                    Image("Bottom")
+                        .resizable()
+                        .scaledToFit()
+                        .edgesIgnoringSafeArea(.bottom)
+                        .allowsHitTesting(false)
+                        .offset(y: 65)
+                } else {
+                    Image("Bottom")
+                        .resizable()
+                        .scaledToFit()
+                        .allowsHitTesting(false)
+                        .edgesIgnoringSafeArea(.bottom)
+                }
+                
+                //
+                
+                
+            }
+            .frame(height: UIScreen.main.bounds.height * 1)
+//            //            .edgesIgnoringSafeArea(.bottom)
+//            //            .ignoresSafeArea()
+            
         }
-        .background {
-            Color("background")
-        }
+        //        .ignoresSafeArea()
+        .edgesIgnoringSafeArea(.bottom)
+        
         .navigationBarHidden(true)
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
@@ -158,14 +174,11 @@ struct GameView: View {
             }
         })
         .onAppear {
-            
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                 
                 if !isPaused && remainingTime > 0 {
                     remainingTime -= 1
                 }
-                
-                
             }
         }
         .environmentObject(board)
@@ -207,16 +220,15 @@ struct GameView: View {
             }
             self.remainingTime = 15
         } else {
-//            let conversionResult = self.board.convertOpponentPieces(currentPlayer: currentPlayer)
+            //            let conversionResult = self.board.convertOpponentPieces(currentPlayer: currentPlayer)
             SoundManager.shared.playMoveSound()
-//            if conversionResult > 0 {
-//                SoundManager.shared.playConvertSound()
-//            }
+            //            if conversionResult > 0 {
+            //                SoundManager.shared.playConvertSound()
+            //            }
         }
         
         
     }
-    
     func switchPlayer() {
         currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
     }

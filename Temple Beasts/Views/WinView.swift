@@ -49,19 +49,47 @@ struct WinView: View {
                                 .cornerRadius(44)
                             
                             
-                            Image(winner == .player1 ? "redActive" : "blueActive")
-                                .resizable()
-                                .frame(width: 138, height: 138)
-                                .scaledToFit()
-                                .padding(.bottom, 20)
-                                .background {
-                                    Image("winStar")
-                                        .offset(y: -20)
-                                        .allowsHitTesting(false)
-                                }
-                            Image("Winner")
+                            if winner == .player1 {
+                                Image("redWinner")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 138, height: 138)
+                                    .padding(.bottom, 20)
+                                    .background {
+                                        Image("winStar")
+                                            .offset(y: -20)
+                                            .allowsHitTesting(false)
+                                    }
+                            } else if winner == .player2 {
+                                Image("blueWinner")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 138, height: 138)
+                                    .padding(.bottom, 20)
+                                    .background {
+                                        Image("winStar")
+                                            .offset(y: -20)
+                                            .allowsHitTesting(false)
+                                    }
+                            } else {
+                                Image("drawFaces")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 266.01456, height: 169.01501)
+                                    .padding(.bottom, 20)
+                                    .background {
+                                        Image("winStar")
+                                            .offset(y: -20)
+                                            .allowsHitTesting(false)
+                                    }
+                            }
+                            
+                            
+                            Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
                                 .offset(y: -135)
                                 .allowsHitTesting(false)
+                            
+                            
                             VStack {
                                 Spacer()
                                 Spacer()
@@ -124,6 +152,6 @@ struct WinView_Previews: PreviewProvider {
         @State var check = true
         @State var player: CellState = .player1
         @State var paused: Bool = true
-        WinView(showWinMenu: $check, isPaused: $paused, winner: .player1, currentPlayer: $player)
+        WinView(showWinMenu: $check, isPaused: $paused, winner: .empty, currentPlayer: $player)
     }
 }

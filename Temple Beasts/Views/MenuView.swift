@@ -22,6 +22,8 @@ struct MenuView: View {
     var views: [String] = ["Menu", "Game", "PauseMenu"]
     @StateObject var menuViewModel = MenuViewModel()
 
+    let buttonWidth = UIScreen.main.bounds.width * 0.71
+    let smallButtonWidth = UIScreen.main.bounds.width * 0.198
 
     var body: some View {
         NavigationStack(path: $menuViewModel.path) {
@@ -30,7 +32,6 @@ struct MenuView: View {
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
-                
                 VStack(spacing: 0) {
                     HStack {
                         Button {
@@ -42,8 +43,6 @@ struct MenuView: View {
                                 .frame(height: 50)
                                 .padding(.leading, 20)
                         }
-
-                        
                         Spacer()
                         Image("info")
                             .resizable()
@@ -53,17 +52,21 @@ struct MenuView: View {
                     }
                     .padding(.top, 10)
                     Spacer()
+                    Image("menuLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 245, height: 214)
+                        .offset(y: -90)
+                        
+                    Spacer()
                     VStack {
-                        
-                        
                         NavigationLink {
                             GameView(gameType: .ai)
                         } label: {
                             Image("SinglePlayer")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: 280)
-                            
+                                .frame(maxWidth: buttonWidth)
                         }
                         .simultaneousGesture(TapGesture().onEnded({
                             menuViewModel.path.append(1)
@@ -76,7 +79,7 @@ struct MenuView: View {
                             Image("1 vs 1")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(maxWidth: 280)
+                                .frame(maxWidth: buttonWidth)
                                 
                         }
                         .simultaneousGesture(TapGesture().onEnded({
@@ -92,7 +95,7 @@ struct MenuView: View {
                                 Image("sound")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 78)
+                                    .frame(width: smallButtonWidth)
                                 
                             }
 
@@ -102,7 +105,7 @@ struct MenuView: View {
                                 Image("music")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 78)
+                                    .frame(width: smallButtonWidth)
                                     .padding(.trailing, 16)
                                     .padding(.leading, 16)
                             }
@@ -118,12 +121,12 @@ struct MenuView: View {
                                 Image("vibrate")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 78)
+                                    .frame(width: smallButtonWidth)
                             }
                             Spacer()
                         }
                     }
-                    .padding(.bottom, 130)
+                    .padding(.bottom, 40)
                     
                 }
             }
