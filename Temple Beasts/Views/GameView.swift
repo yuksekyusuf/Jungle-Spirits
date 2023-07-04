@@ -6,9 +6,6 @@
 //
 
 import SwiftUI
-import PopupView
-
-
 
 struct GameView: View {
     @StateObject private var board: Board
@@ -22,8 +19,10 @@ struct GameView: View {
         _currentPlayer = State(initialValue: .player1)
         _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
+        _isCountDownVisible = State(initialValue: true)
     }
     
+    @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
     @State private var isPaused: Bool
@@ -45,9 +44,7 @@ struct GameView: View {
     }
     
     var body: some View {
-        
         ZStack {
-            //            Color.black.ignoresSafeArea()
             ZStack {
                 Image("backgroundImage").resizable()
                     .ignoresSafeArea()
@@ -105,13 +102,17 @@ struct GameView: View {
                     .scaledToFit()
                     .allowsHitTesting(false)
                 if showPauseMenu {
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, currentPlayer: $currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, remainingTime: $remainingTime, currentPlayer: $currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
                 
                 if isGameOver {
-                    WinView(showWinMenu: $isGameOver, isPaused: $isPaused, winner: winner, currentPlayer: $currentPlayer)
+                    WinView(showWinMenu: $isGameOver, isPaused: $isPaused, remainingTime: $remainingTime, winner: winner, currentPlayer: $currentPlayer)
                 }
+                if isCountDownVisible {
+                    CountDownView(isVisible: $isCountDownVisible)
+                }
+                
             }
             VStack {
                 Spacer()
@@ -135,8 +136,6 @@ struct GameView: View {
         .navigationBarHidden(true)
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
-                SoundManager.shared.playOverSound()
-                HapticManager.shared.impact(style: .heavy)
                 isGameOver = true
                 self.isPaused.toggle()
             }
@@ -162,7 +161,7 @@ struct GameView: View {
         })
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if !isPaused && remainingTime > 0 {
+                if !isPaused && remainingTime > 0 && !isCountDownVisible {
                     remainingTime -= 1
                 }
             }

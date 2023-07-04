@@ -24,11 +24,11 @@ class SoundManager {
     }
     
     func playMusic() {
-        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: "wav") else { return }
+        guard UserDefaults.standard.bool(forKey: "music") else { return }
+        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: ".wav") else { return }
 
         do {
             musicPlayer = try AVAudioPlayer(contentsOf: url)
-            
             musicPlayer?.numberOfLoops = -1 // add this line to loop the music indefinitely
             musicPlayer?.prepareToPlay() // prepare the player for playback by preloading its buffers.
             musicPlayer?.play()
@@ -51,7 +51,7 @@ class SoundManager {
     func playMoveSound() {
         
         guard UserDefaults.standard.bool(forKey: "sound") else { return }
-        guard let url = Bundle.main.url(forResource: "move", withExtension: ".aiff") else { return }
+        guard let url = Bundle.main.url(forResource: "move", withExtension: ".wav") else { return }
         
         do {
             
@@ -67,7 +67,7 @@ class SoundManager {
     func playConvertSound() {
         guard UserDefaults.standard.bool(forKey: "sound") else { return }
 
-        guard let url = Bundle.main.url(forResource: "tada", withExtension: ".wav") else { return }
+        guard let url = Bundle.main.url(forResource: "convert", withExtension: ".wav") else { return }
         
         do {
             player2 = try AVAudioPlayer(contentsOf: url)
@@ -91,7 +91,4 @@ class SoundManager {
             print("Audio player error: \(error.localizedDescription)")
         }
     }
-    
-    
-    
 }

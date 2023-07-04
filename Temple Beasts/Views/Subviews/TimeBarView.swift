@@ -47,8 +47,6 @@ struct TimeBarView: View {
                                 endPoint: UnitPoint(x: 0, y: 0.5)
                             )
                                 .shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
-                            
-//                            .innerShadow(5, opacity: 0.5, x: 2, y: 2)
                             .padding(.leading, 4)
                             .frame(width: width, height: 20)
                     }

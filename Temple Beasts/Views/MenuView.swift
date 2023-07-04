@@ -16,15 +16,16 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @State var gameType: GameType? = nil
     @State var hapticState: Bool = true
-    @State var soundState: Bool = true
-//    @AppStorage("haptic") var hapticState: Bool?
-//    @AppStorage("sound") var soundState: Bool?
+    @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
+    @State var musicState: Bool = true
+    //    @AppStorage("haptic") var hapticState: Bool?
+    //    @AppStorage("sound") var soundState: Bool?
     var views: [String] = ["Menu", "Game", "PauseMenu"]
     @StateObject var menuViewModel = MenuViewModel()
-
+    
     let buttonWidth = UIScreen.main.bounds.width * 0.71
     let smallButtonWidth = UIScreen.main.bounds.width * 0.198
-
+    
     var body: some View {
         NavigationStack(path: $menuViewModel.path) {
             ZStack {
@@ -57,7 +58,7 @@ struct MenuView: View {
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width * 0.8)
                         .offset(y: -110)
-                        
+                    
                     Spacer()
                     VStack {
                         NavigationLink {
@@ -71,7 +72,7 @@ struct MenuView: View {
                         .simultaneousGesture(TapGesture().onEnded({
                             menuViewModel.path.append(1)
                         }))
-
+                        
                         //1 vs 1
                         NavigationLink {
                             GameView(gameType: .oneVone)
@@ -80,54 +81,51 @@ struct MenuView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: buttonWidth)
-                                
+                            
                         }
                         .simultaneousGesture(TapGesture().onEnded({
                             menuViewModel.path.append(2)
                         }))
-
                         HStack(spacing: 0) {
                             Spacer()
-                            Button {
-                                soundState.toggle()
-                                UserDefaults.standard.set(soundState, forKey: "sound")
-                            } label: {
-                                Image("sound")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: smallButtonWidth)
-                            }
-                            Button {
-                                SoundManager.shared.pauseOrPlayMusic()
-                            } label: {
-                                Image("music")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: smallButtonWidth)
-                                    .padding(.trailing, 16)
-                                    .padding(.leading, 16)
-                            }
-                            Button {
-                                //When hit, give also a long haptic
-                                hapticState.toggle()
-                                UserDefaults.standard.set(hapticState, forKey: "haptic")
-                            } label: {
-                                Image("vibrate")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: smallButtonWidth)
-                            }
+                            Image(soundState ? "soundOn" : "soundOff")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: smallButtonWidth)
+                                .onTapGesture {
+                                    soundState.toggle()
+                                    UserDefaults.standard.set(soundState, forKey: "sound")
+                                }
+                            Image(musicState ? "musicOn" : "musicOff" )
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: smallButtonWidth)
+                                .padding(.trailing, 16)
+                                .padding(.leading, 16)
+                                .onTapGesture {
+                                    SoundManager.shared.pauseOrPlayMusic()
+                                    musicState.toggle()
+                                    UserDefaults.standard.set(soundState, forKey: "music")
+                                }
+                            Image(hapticState ? "vibrationOn" : "vibrationOff")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: smallButtonWidth)
+                                .onTapGesture {
+                                    hapticState.toggle()
+                                    UserDefaults.standard.set(hapticState, forKey: "haptic")
+                                }
                             Spacer()
                         }
                     }
                     .padding(.bottom, 40)
-                    
                 }
             }
         }
         .onAppear{
             UserDefaults.standard.set(soundState, forKey: "sound")
-//            SoundManager.shared.playMusic()
+            
+            SoundManager.shared.playMusic()
         }
         .environmentObject(menuViewModel)
     }
@@ -135,7 +133,7 @@ struct MenuView: View {
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-//        @State var active: ActiveView = .menuView
+        //        @State var active: ActiveView = .menuView
         MenuView()
     }
 }

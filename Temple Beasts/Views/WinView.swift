@@ -11,6 +11,7 @@ struct WinView: View {
     
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
+    @Binding var remainingTime: Int
     @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
     let winner: CellState
@@ -99,6 +100,7 @@ struct WinView: View {
                                         showWinMenu.toggle()
                                         isPaused.toggle()
                                         currentPlayer = .player1
+                                        remainingTime = 15
                                     } label: {
                                         RoundedRectangle(cornerRadius: 14)
                                             .foregroundColor(Color("AnotherPause"))
@@ -152,6 +154,7 @@ struct WinView_Previews: PreviewProvider {
         @State var check = true
         @State var player: CellState = .player1
         @State var paused: Bool = true
-        WinView(showWinMenu: $check, isPaused: $paused, winner: .draw, currentPlayer: $player)
+        @State var remainingTime = 15
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, winner: .draw, currentPlayer: $player)
     }
 }

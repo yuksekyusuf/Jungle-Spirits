@@ -11,8 +11,10 @@ struct PauseMenuView: View {
     
     @Binding var showPauseMenu: Bool
     @Binding var isPaused: Bool
+    @Binding var remainingTime: Int
     @State private var isMusicOn: Bool = false
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
+    @State private var musicState: Bool = UserDefaults.standard.bool(forKey: "music")
     @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
     @Binding var currentPlayer: CellState
@@ -79,6 +81,10 @@ struct PauseMenuView: View {
                                                     Text("")
                                                 }
                                                 .toggleStyle(CustomToggleView())
+                                                .onChange(of: musicState) { newValue in
+                                                    UserDefaults.standard.set(newValue, forKey: "music")
+                                                    SoundManager.shared.playMusic()
+                                                }
                                                 
                                                 Toggle(isOn: $soundState) {
                                                     Text("")
@@ -98,6 +104,7 @@ struct PauseMenuView: View {
                                         showPauseMenu.toggle()
                                         isPaused.toggle()
                                         currentPlayer = .player1
+                                        remainingTime = 15
                                     } label: {
                                         PauseMenuIconView(imageName: "iconReplay")
                                         
@@ -110,14 +117,11 @@ struct PauseMenuView: View {
                                         PauseMenuIconView(imageName: "iconResume")
                                         
                                     }
-                                    
                                     Button {
                                         menuViewModel.path.removeAll()
                                     } label: {
                                         PauseMenuIconView(imageName: "iconHome")
-                                        
                                     }
-                                    
                                 }
                                 .padding(.bottom, 20)
                                 Spacer()
@@ -127,7 +131,7 @@ struct PauseMenuView: View {
                     }
             }
         }
-
+        
     }
 }
 
@@ -137,7 +141,8 @@ struct PauseMenuView_Previews: PreviewProvider {
         @State var check = true
         @State var show = true
         @State var player: CellState = .player1
-        PauseMenuView(showPauseMenu: $check, isPaused: $show, currentPlayer: $player)
+        @State var remainingTime: Int = 15
+        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, currentPlayer: $player)
     }
 }
 
