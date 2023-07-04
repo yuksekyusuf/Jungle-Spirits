@@ -7,146 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FEB2F609-E001-4A96-8244-420EA12F42F3"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Temple Beasts/Views/GameView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "GameView"
-            landmarkType = "14">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "BB56A199-B259-4A58-A7F6-B7997380C973"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Temple Beasts/Views/GameView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "GameView"
-            landmarkType = "14">
-            <Locations>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - 6898a1d82c68b942"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "property wrapper backing initializer of Temple_Beasts.GameView.currentPlayer : Temple_Beasts.CellState"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "28">
-               </Location>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - 74a23bfe8ff7245"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Temple_Beasts.GameView.currentPlayer.getter : Temple_Beasts.CellState"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "148">
-               </Location>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - b7830a72157b7ff9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Temple_Beasts.GameView.currentPlayer.setter : Temple_Beasts.CellState"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "120">
-               </Location>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - 8617acda287d60e8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Temple_Beasts.GameView.currentPlayer.modify : Temple_Beasts.CellState"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "184">
-               </Location>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - 5a553a262ea44028"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Temple_Beasts.GameView.currentPlayer.modify : Temple_Beasts.CellState with unmangled suffix &quot;.resume.0&quot;"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  uuid = "BB56A199-B259-4A58-A7F6-B7997380C973 - 601ac96836a55481"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Temple_Beasts.GameView.$currentPlayer.getter : SwiftUI.Binding&lt;Temple_Beasts.CellState&gt;"
-                  moduleName = "Temple Beasts"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/ahmetyusufyuksek/Desktop/Temple%20Beasts/Temple%20Beasts/Views/GameView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "172">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B8AF1EFF-ACA8-45EE-9798-E5320DA0397B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Temple Beasts/Views/GameView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "onMoveCompleted()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9B5986FE-5540-40EF-9358-2251BE3B73C2"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -202,8 +62,8 @@
             filePath = "Temple Beasts/Model/Board.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "convertOpponentPieces(at:player:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -270,6 +130,22 @@
                   offsetFromSymbolStart = "84">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8E4A32EE-FB30-4108-B2E5-516A2D19B079"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Model/Board.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
+            landmarkName = "hasLegalMoves(player:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

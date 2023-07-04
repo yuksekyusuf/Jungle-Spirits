@@ -16,12 +16,37 @@ class SoundManager {
     
     var player1: AVAudioPlayer?
     var player2: AVAudioPlayer?
+    var musicPlayer: AVAudioPlayer?
     
     
     enum SoundOption: String {
         case move = "move"
     }
     
+    func playMusic() {
+        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: "wav") else { return }
+
+        do {
+            musicPlayer = try AVAudioPlayer(contentsOf: url)
+            
+            musicPlayer?.numberOfLoops = -1 // add this line to loop the music indefinitely
+            musicPlayer?.prepareToPlay() // prepare the player for playback by preloading its buffers.
+            musicPlayer?.play()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func pauseOrPlayMusic() {
+        // Check if the player is currently playing
+        if musicPlayer?.isPlaying == true {
+            // If it is, pause the music
+            musicPlayer?.pause()
+        } else {
+            // If it's not, play the music
+            musicPlayer?.play()
+        }
+    }
     
     func playMoveSound() {
         

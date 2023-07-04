@@ -71,7 +71,7 @@ struct WinView: View {
                                             .offset(y: -20)
                                             .allowsHitTesting(false)
                                     }
-                            } else {
+                            } else if winner == .draw {
                                 Image("drawFaces")
                                     .resizable()
                                     .scaledToFit()
@@ -152,6 +152,6 @@ struct WinView_Previews: PreviewProvider {
         @State var check = true
         @State var player: CellState = .player1
         @State var paused: Bool = true
-        WinView(showWinMenu: $check, isPaused: $paused, winner: .empty, currentPlayer: $player)
+        WinView(showWinMenu: $check, isPaused: $paused, winner: .draw, currentPlayer: $player)
     }
 }

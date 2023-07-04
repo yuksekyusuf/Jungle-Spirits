@@ -11,6 +11,7 @@ enum CellState: Int {
     case empty
     case player1
     case player2
+    case draw
     func opposite() -> CellState {
         switch self {
         case .player1:
@@ -35,11 +36,8 @@ struct Move {
 class Board: ObservableObject {
     @Published private(set) var cells: [[CellState]]
     let size: (rows: Int, columns: Int)
-    
     var gameType: GameType
     var turn = 0
-    
-    
     init(size: (rows: Int, columns: Int), gameType: GameType) {
         self.gameType = gameType
         self.size = size
@@ -55,19 +53,16 @@ class Board: ObservableObject {
         cells[topRight.row][topRight.col] = .player2
         cells[bottomLeft.row][bottomLeft.col] = .player2
     }
-    
     init(cells: [[CellState]], gameType: GameType) {
         self.gameType = gameType
         self.cells = cells
         self.size = (rows: cells.count, columns: cells.first?.count ?? 0)
     }
-    
     func copy() -> Board {
         let newCells = self.cells.map { $0 }
         let copiedBoard = Board(cells: newCells, gameType: gameType)
         return copiedBoard
     }
-    
     func reset() {
         for row in 0..<size.rows {
             for col in 0..<size.columns {
@@ -83,22 +78,20 @@ class Board: ObservableObject {
         turn = 0
         notifyChange()
     }
-    
     func cellState(at position: (row: Int, col: Int)) -> CellState {
         return cells[position.row][position.col]
     }
-    
     private func isValidCoordinate(_ coordinate: (row: Int, col: Int)) -> Bool {
         return coordinate.row >= 0 && coordinate.row < size.rows && coordinate.col >= 0 && coordinate.col < size.columns
     }
-    
+    var eitherPlayerNoLegalMoves: Bool {
+        return !(hasLegalMoves(player: .player1) || hasLegalMoves(player: .player2))
+    }
     func isLegalMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Bool {
-        
         let isCorner = (destination.row == 0 && destination.col == 0) ||
         (destination.row == 0 && destination.col == size.columns - 1) ||
         (destination.row == size.rows - 1 && destination.col == 0) ||
         (destination.row == size.rows - 1 && destination.col == size.columns - 1)
-        
         if !isValidCoordinate(source) || !isValidCoordinate(destination) {
             return false
         }
@@ -114,7 +107,6 @@ class Board: ObservableObject {
         if rowDifference <= 1 && colDifference <= 1 {
             return true
         }
-        
         // Check for a jump move of 2 steps, horizontal or vertical (not diagonal)
         if (rowDifference == 2 && colDifference == 0) || (rowDifference == 0 && colDifference == 2) {
             return true
@@ -129,7 +121,6 @@ class Board: ObservableObject {
     var currentPlayer: CellState {
         return turn % 2 == 0 ? .player1 : .player2
     }
-    
     func getMoves() -> [Move] {
         var moves: [Move] = []
         
@@ -148,9 +139,6 @@ class Board: ObservableObject {
         
         return moves
     }
-    
-    
-    
     func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Int? {
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
@@ -171,8 +159,6 @@ class Board: ObservableObject {
         
         return convertedPieces
     }
-    
-    
     func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> Int? {
         let opponent: CellState = player == .player1 ? .player2 : .player1
         
@@ -199,31 +185,14 @@ class Board: ObservableObject {
         return convertedPieceCount
         
     }
-    
-//    func convertOpponentPieces(currentPlayer: CellState) -> Int {
-//        var conversionCount = 0
-//        
-//        let opponentPlayer = currentPlayer.opposite()
-//        
-//        for row in 0..<size.rows {
-//            for col in 0..<size.columns {
-//                if cellState(at: (row, col)) == opponentPlayer {
-//                    cells[row][col] = currentPlayer
-//                    conversionCount += 1
-//                }
-//            }
-//        }
-//        
-//        return conversionCount
-//    }
-    
+
+    /// Determines whether the game is over.
+    /// The game is considered to be over if either player has no pieces remaining or if neither player has any legal moves left.
     func isGameOver() -> Bool {
-        
         let (player1Count, player2Count, _) = countPieces()
-        if player1Count == 0 || player2Count == 0 {
-            return true
-        }
-        return !(hasLegalMoves(player: .player1) || hasLegalMoves(player: .player2))
+        
+        // The game is over if one player has no pieces remaining, or if neither player has any legal moves.
+        return player1Count == 0 || player2Count == 0 || !(hasLegalMoves(player: .player1) || hasLegalMoves(player: .player2))
     }
     
     
@@ -232,7 +201,7 @@ class Board: ObservableObject {
             for col in 0..<size.columns {
                 if cells[row][col] == player {
                     let source = (row: row, col: col)
-                    if hasAnyLegalMove(from: source) {
+                    if hasAnyLegalMoves(from: source, player: player) {
                         return true
                     }
                 }
@@ -288,15 +257,36 @@ class Board: ObservableObject {
     }
     
     
-    private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
-        for drow in [-2, -1, 0, 1, 2] {
-            for dcol in [-2, -1, 0, 1, 2] {
-                let newRow = source.row + drow
-                let newCol = source.col + dcol
-                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == .empty {
+//    private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
+//        for drow in [-2, -1, 0, 1, 2] {
+//            for dcol in [-2, -1, 0, 1, 2] {
+//                let newRow = source.row + drow
+//                let newCol = source.col + dcol
+//                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == .empty {
+//                    return true
+//                }
+//
+//            }
+//        }
+//        return false
+//    }
+    
+    func hasAnyLegalMoves(from source: (row: Int, col: Int), player: CellState) -> Bool {
+        // Check for a neighboring cell, two-cell jumps, or an L-shaped jump
+        let deltas = [(0, 1), (1, 0), (-1, 0), (0, -1),
+                      (0, 2), (2, 0), (-2, 0), (0, -2),
+                      (1, 2), (-1, 2), (1, -2), (-1, -2),
+                      (2, 1), (-2, 1), (2, -1), (-2, -1)]
+
+        for delta in deltas {
+            let newRow = source.row + delta.0
+            let newCol = source.col + delta.1
+            let newDestination = (row: newRow, col: newCol)
+            
+            if isValidCoordinate(newDestination) && cellState(at: newDestination) == .empty {
+                if isLegalMove(from: source, to: newDestination, player: player) {
                     return true
                 }
-                
             }
         }
         return false
@@ -328,6 +318,17 @@ class Board: ObservableObject {
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 //MARK: Simple AI algorithm
@@ -457,7 +458,6 @@ extension Board {
         }
         let (player1Count, player2Count, _) = currentState.countPieces()
         let result = player2Count - player1Count
-        print("Result: ", result)
         node.update(result: result)
         return result
         
@@ -592,3 +592,22 @@ extension Board {
         return moves
     }
 }
+
+
+
+//    func convertOpponentPieces(currentPlayer: CellState) -> Int {
+//        var conversionCount = 0
+//
+//        let opponentPlayer = currentPlayer.opposite()
+//
+//        for row in 0..<size.rows {
+//            for col in 0..<size.columns {
+//                if cellState(at: (row, col)) == opponentPlayer {
+//                    cells[row][col] = currentPlayer
+//                    conversionCount += 1
+//                }
+//            }
+//        }
+//
+//        return conversionCount
+//    }

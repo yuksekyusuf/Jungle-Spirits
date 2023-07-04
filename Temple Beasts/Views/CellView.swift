@@ -33,12 +33,16 @@ struct CellView: View {
             
             if highlighted && state == .empty {
                 Image("Highlighted")
+                    .resizable()
+                    .scaledToFit()
                     .cornerRadius(6)
 //                    .offset(y: -offsetY)
                 
             }
             if outerHighlighted && state == .empty {
                 Image("OuterHighlighted")
+                    .resizable()
+                    .scaledToFit()
                     .cornerRadius(6)
 //                    .offset(y: -offsetY)
                 
@@ -59,6 +63,6 @@ struct CellView: View {
 }
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        CellView(state: .empty, isSelected: false, highlighted: false, outerHighlighted: false)
+        CellView(state: .empty, isSelected: false, highlighted: false, outerHighlighted: true)
     }
 }

@@ -14,6 +14,8 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
+		4D18F8A92A54620500B38986 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 4D18F8A82A54620500B38986 /* PopupView */; };
+		4D2477B32A548D4700F5C72D /* soundtrack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D2477B22A548D4700F5C72D /* soundtrack.wav */; };
 		4D6C26672A47243B00C166F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C26662A47243B00C166F9 /* Node.swift */; };
 		4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */; };
 		4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2422A055190002E9C0A /* Assets.xcassets */; };
@@ -43,6 +45,7 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		4D2477B22A548D4700F5C72D /* soundtrack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = soundtrack.wav; sourceTree = "<group>"; };
 		4D6C26662A47243B00C166F9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		4D70D23B2A05518F002E9C0A /* Temple Beasts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Beasts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
@@ -71,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D18F8A92A54620500B38986 /* PopupView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +93,7 @@
 		4D0F069B2A48D89600B53823 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				4D2477B22A548D4700F5C72D /* soundtrack.wav */,
 				4D0F06A42A48EBB800B53823 /* victory.wav */,
 				4D0F06A22A48EB1A00B53823 /* tada.wav */,
 				4D0F06A02A48DF7100B53823 /* move.aiff */,
@@ -208,6 +213,7 @@
 			);
 			name = "Temple Beasts";
 			packageProductDependencies = (
+				4D18F8A82A54620500B38986 /* PopupView */,
 			);
 			productName = "Temple Beasts";
 			productReference = 4D70D23B2A05518F002E9C0A /* Temple Beasts.app */;
@@ -238,6 +244,7 @@
 			);
 			mainGroup = 4D70D2322A05518F002E9C0A;
 			packageReferences = (
+				4D18F8A72A54620500B38986 /* XCRemoteSwiftPackageReference "PopupView" */,
 			);
 			productRefGroup = 4D70D23C2A05518F002E9C0A /* Products */;
 			projectDirPath = "";
@@ -254,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D0F06A52A48EBB800B53823 /* victory.wav in Resources */,
+				4D2477B32A548D4700F5C72D /* soundtrack.wav in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
 				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
@@ -506,6 +514,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4D18F8A72A54620500B38986 /* XCRemoteSwiftPackageReference "PopupView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/PopupView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4D18F8A82A54620500B38986 /* PopupView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D18F8A72A54620500B38986 /* XCRemoteSwiftPackageReference "PopupView" */;
+			productName = PopupView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4D70D2332A05518F002E9C0A /* Project object */;
 }

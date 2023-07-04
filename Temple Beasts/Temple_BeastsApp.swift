@@ -8,12 +8,7 @@
 import SwiftUI
 
 @main
-struct Temple_BeastsApp: App {
-    init() {
-        print("Screen height: ", UIScreen.main.bounds.height)
-        print("Screen width: ", UIScreen.main.bounds.width)
-    }
-    
+struct Temple_BeastsApp: App {    
     var body: some Scene {
         WindowGroup {
             MenuView()

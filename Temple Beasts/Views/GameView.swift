@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import PopupView
 
 
 
@@ -108,8 +108,9 @@ struct GameView: View {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, currentPlayer: $currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
-                if showWinMenu {
-                    WinView(showWinMenu: $showWinMenu, isPaused: $isPaused, winner: winner, currentPlayer: $currentPlayer)
+                
+                if isGameOver {
+                    WinView(showWinMenu: $isGameOver, isPaused: $isPaused, winner: winner, currentPlayer: $currentPlayer)
                 }
             }
             VStack {
@@ -128,27 +129,16 @@ struct GameView: View {
                         .allowsHitTesting(false)
                         .edgesIgnoringSafeArea(.bottom)
                 }
-                
-                //
-                
-                
             }
             .frame(height: UIScreen.main.bounds.height * 1)
-//            //            .edgesIgnoringSafeArea(.bottom)
-//            //            .ignoresSafeArea()
-            
         }
-        //        .ignoresSafeArea()
-        .edgesIgnoringSafeArea(.bottom)
-        
         .navigationBarHidden(true)
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
-                isGameOver.toggle()
-                isPaused.toggle()
-                showWinMenu.toggle()
                 SoundManager.shared.playOverSound()
                 HapticManager.shared.impact(style: .heavy)
+                isGameOver = true
+                self.isPaused.toggle()
             }
         }
         .onChange(of: remainingTime, perform: { newValue in
@@ -166,16 +156,12 @@ struct GameView: View {
                         self.currentPlayer = .player1
                         self.remainingTime = 15
                     }
-                    
                 }
                 self.remainingTime = 15
-                
-                
             }
         })
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                
                 if !isPaused && remainingTime > 0 {
                     remainingTime -= 1
                 }
@@ -183,27 +169,24 @@ struct GameView: View {
         }
         .environmentObject(board)
     }
-    
-    
-    
     var winner: CellState {
         let (player1Count, player2Count, _) = board.countPieces()
         if player1Count > player2Count {
             return .player1
-        } else {
+        } else if player2Count > player1Count {
             return .player2
+        }
+        else {
+            return .draw
         }
     }
     func onMoveCompleted() {
-        
         if self.board.isGameOver() {
             self.isGameOver = true
             return
         }
-        
         currentPlayer = currentPlayer == .player1 ? .player2 : .player1
         remainingTime = 15
-        
         if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
             self.isGameOver = true
             self.isPaused.toggle()
@@ -216,29 +199,25 @@ struct GameView: View {
                     self.remainingTime = 15
                     SoundManager.shared.playMoveSound()
                 }
-                
             }
             self.remainingTime = 15
         } else {
-            //            let conversionResult = self.board.convertOpponentPieces(currentPlayer: currentPlayer)
             SoundManager.shared.playMoveSound()
-            //            if conversionResult > 0 {
-            //                SoundManager.shared.playConvertSound()
-            //            }
         }
-        
-        
     }
     func switchPlayer() {
         currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
     }
-    
 }
+
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(gameType: .oneVone)
     }
 }
+
+
+
 
 

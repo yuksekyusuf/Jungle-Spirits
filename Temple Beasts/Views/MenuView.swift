@@ -55,8 +55,8 @@ struct MenuView: View {
                     Image("menuLogo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 245, height: 214)
-                        .offset(y: -90)
+                        .frame(width: UIScreen.main.bounds.width * 0.8)
+                        .offset(y: -110)
                         
                     Spacer()
                     VStack {
@@ -96,11 +96,9 @@ struct MenuView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: smallButtonWidth)
-                                
                             }
-
                             Button {
-                                
+                                SoundManager.shared.pauseOrPlayMusic()
                             } label: {
                                 Image("music")
                                     .resizable()
@@ -109,12 +107,8 @@ struct MenuView: View {
                                     .padding(.trailing, 16)
                                     .padding(.leading, 16)
                             }
-
-                            
-                            
-                            
-                            
                             Button {
+                                //When hit, give also a long haptic
                                 hapticState.toggle()
                                 UserDefaults.standard.set(hapticState, forKey: "haptic")
                             } label: {
@@ -133,6 +127,7 @@ struct MenuView: View {
         }
         .onAppear{
             UserDefaults.standard.set(soundState, forKey: "sound")
+//            SoundManager.shared.playMusic()
         }
         .environmentObject(menuViewModel)
     }
