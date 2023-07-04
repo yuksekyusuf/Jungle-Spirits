@@ -18,7 +18,7 @@ struct CountDownView: View {
                 .ignoresSafeArea()
             if counter > 0 {
                 Text("\(counter)")
-                            .font(Font.custom("Tricky Jimmy", size: 156))
+                            .font(Font.custom("Tricky Jimmy", size: 90))
                             .shadow(color: .black, radius: 24, y: 8)
                             .scaleEffect(scale)
                             .opacity(opacity)
