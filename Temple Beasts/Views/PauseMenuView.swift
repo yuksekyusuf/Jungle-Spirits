@@ -12,9 +12,9 @@ struct PauseMenuView: View {
     @Binding var showPauseMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
-    @State private var isMusicOn: Bool = false
+//    @State private var isMusicOn: Bool = false
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
-    @State private var musicState: Bool = UserDefaults.standard.bool(forKey: "music")
+    @AppStorage("music") private var musicState: Bool = false
     @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
     @Binding var currentPlayer: CellState
@@ -77,13 +77,17 @@ struct PauseMenuView: View {
                                             }
                                             
                                             VStack(spacing: 5) {
-                                                Toggle(isOn: $isMusicOn) {
+                                                Toggle(isOn: $musicState) {
                                                     Text("")
                                                 }
                                                 .toggleStyle(CustomToggleView())
                                                 .onChange(of: musicState) { newValue in
                                                     UserDefaults.standard.set(newValue, forKey: "music")
-                                                    SoundManager.shared.playMusic()
+                                                    if newValue {
+                                                        SoundManager.shared.playBackgroundMusic()
+                                                    } else {
+                                                        SoundManager.shared.stopBackgroundMusic()
+                                                    }
                                                 }
                                                 
                                                 Toggle(isOn: $soundState) {
@@ -131,6 +135,9 @@ struct PauseMenuView: View {
                     }
             }
         }
+//        .onAppear {
+//            SoundManager.shared.startPlayingIfNeeded()
+//        }
         
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 class SoundManager {
     
@@ -18,35 +19,45 @@ class SoundManager {
     var player2: AVAudioPlayer?
     var musicPlayer: AVAudioPlayer?
     
+    private init() {}
+    
     
     enum SoundOption: String {
         case move = "move"
     }
     
-    func playMusic() {
-        guard UserDefaults.standard.bool(forKey: "music") else { return }
-        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: ".wav") else { return }
-
-        do {
-            musicPlayer = try AVAudioPlayer(contentsOf: url)
-            musicPlayer?.numberOfLoops = -1 // add this line to loop the music indefinitely
-            musicPlayer?.prepareToPlay() // prepare the player for playback by preloading its buffers.
-            musicPlayer?.play()
-        } catch let error {
-            print(error.localizedDescription)
+    
+    func startPlayingIfNeeded() {
+        if UserDefaults.standard.bool(forKey: "music") {
+            playBackgroundMusic()
         }
     }
     
-    func pauseOrPlayMusic() {
-        // Check if the player is currently playing
-        if musicPlayer?.isPlaying == true {
-            // If it is, pause the music
-            musicPlayer?.pause()
-        } else {
-            // If it's not, play the music
-            musicPlayer?.play()
+    func playBackgroundMusic() {
+        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: ".wav") else { return }
+
+            
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try AVAudioSession.sharedInstance().setActive(true)
+                
+                /* The following line is required for the player to play on the background */
+                UIApplication.shared.beginReceivingRemoteControlEvents()
+                
+                musicPlayer = try AVAudioPlayer(contentsOf: url)
+                musicPlayer!.numberOfLoops = -1 // Infinite loop
+                musicPlayer!.prepareToPlay()
+                musicPlayer!.play()
+            } catch {
+                print("Could not create audio player")
+                return
+            }
         }
-    }
+    
+    func stopBackgroundMusic() {
+        musicPlayer?.stop()
+        musicPlayer = nil
+        }
     
     func playMoveSound() {
         

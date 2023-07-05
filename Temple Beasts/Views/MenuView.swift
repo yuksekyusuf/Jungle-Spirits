@@ -17,7 +17,8 @@ struct MenuView: View {
     @State var gameType: GameType? = nil
     @State var hapticState: Bool = true
     @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
-    @State var musicState: Bool = true
+    @AppStorage("music") private var musicState: Bool = false
+
     //    @AppStorage("haptic") var hapticState: Bool?
     //    @AppStorage("sound") var soundState: Bool?
     var views: [String] = ["Menu", "Game", "PauseMenu"]
@@ -103,9 +104,12 @@ struct MenuView: View {
                                 .padding(.trailing, 16)
                                 .padding(.leading, 16)
                                 .onTapGesture {
-                                    SoundManager.shared.pauseOrPlayMusic()
                                     musicState.toggle()
-                                    UserDefaults.standard.set(soundState, forKey: "music")
+                                    if musicState {
+                                        SoundManager.shared.playBackgroundMusic()
+                                    } else {
+                                        SoundManager.shared.stopBackgroundMusic()
+                                    }
                                 }
                             Image(hapticState ? "vibrationOn" : "vibrationOff")
                                 .resizable()
@@ -124,8 +128,7 @@ struct MenuView: View {
         }
         .onAppear{
             UserDefaults.standard.set(soundState, forKey: "sound")
-            
-            SoundManager.shared.playMusic()
+            SoundManager.shared.startPlayingIfNeeded()
         }
         .environmentObject(menuViewModel)
     }
