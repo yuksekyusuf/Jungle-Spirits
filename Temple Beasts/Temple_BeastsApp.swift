@@ -10,8 +10,11 @@ import SwiftUI
 @main
 struct Temple_BeastsApp: App {    
     var body: some Scene {
+//        var gameCenterController = GameCenterController()
+
         WindowGroup {
             MenuView()
+//                .environmentObject(gameCenterController)
         }
     }
 }

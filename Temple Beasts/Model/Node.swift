@@ -61,3 +61,25 @@ class Node {
         self.wins += result
     }
 }
+
+//class Node {
+//    var move: Move? // The move that led to this node
+//    var parent: Node? // Nodes are aware of their parent
+//    var children: [Node] = [] // A node has multiple children
+//    var board: Board // The state of the game board in this node
+//    var playerJustMoved: CellState // The player who just made a move
+//    var wins: Double = 0 // Number of wins after the move
+//    var visits: Double = 0 // Number of simulations after the move
+//
+//    init(move: Move? = nil, parent: Node? = nil, board: Board, playerJustMoved: CellState) {
+//        self.move = move
+//        self.parent = parent
+//        self.board = board
+//        self.playerJustMoved = playerJustMoved
+//    }
+//
+//    func update(result: Double) {
+//        visits += 1
+//        wins += result
+//    }
+//}

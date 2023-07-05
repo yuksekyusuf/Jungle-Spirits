@@ -271,20 +271,7 @@ class Board: ObservableObject {
         return moves
     }
     
-    
-//    private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
-//        for drow in [-2, -1, 0, 1, 2] {
-//            for dcol in [-2, -1, 0, 1, 2] {
-//                let newRow = source.row + drow
-//                let newCol = source.col + dcol
-//                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == .empty {
-//                    return true
-//                }
-//
-//            }
-//        }
-//        return false
-//    }
+
     
     func hasAnyLegalMoves(from source: (row: Int, col: Int), player: CellState) -> Bool {
         // Check for a neighboring cell, two-cell jumps, or an L-shaped jump
@@ -332,6 +319,35 @@ class Board: ObservableObject {
         return (player1: player1Count, player2: player2Count, empty: emptyCount)
     }
     
+    func gameOutcome(for player: CellState) -> Double {
+        // Count the pieces on the board for each player
+        let (player1Count, player2Count, _) = countPieces()
+
+        // If the board is full or if a player cannot make a legal move,
+        // the player with the most pieces is the winner.
+        if isGameOver() {
+            switch player {
+            case .player1:
+                return player1Count > player2Count ? 1.0 : 0.0
+            case .player2:
+                return player2Count > player1Count ? 1.0 : 0.0
+            default:
+                return 0.0
+            }
+        }
+
+        // If the game is not over, return a score proportional to the player's piece count.
+        // This is a heuristic to prioritize states where the player has more pieces.
+        let totalPieces = player1Count + player2Count
+        switch player {
+        case .player1:
+            return Double(player1Count) / Double(totalPieces)
+        case .player2:
+            return Double(player2Count) / Double(totalPieces)
+        default:
+            return 0.5
+        }
+    }
 }
 
 
@@ -424,9 +440,29 @@ extension Board {
         
         return cells
     }
-    
-    
 }
+
+//extension Board {
+//    func performMTSCMove() {
+//        let mtcs = MonteCarloTreeSearch(rootBoard: self)
+////        let aiPlayer: CellState = .player2
+//        let bestMove = mtcs.search(iterations: 50)
+//        // Ensure the best move exists before trying to perform it.
+//        guard let move = bestMove else {
+//            print("Couldn't find a best move.")  // Replace with appropriate error handling.
+//            return
+//        }
+//
+//        assert(turn % 2 == 1, "It's not player2's turn.")
+//        DispatchQueue.main.async { [weak self] in
+//            guard let self = self else { return }
+//            self.performMove(from: move.source, to: move.destination, player: .player2)
+//
+//        }
+//    }
+//}
+
+
 
 //MARK: MCTS algorithm
 
@@ -493,10 +529,10 @@ extension Board {
     
     
     // Function to perform AI move using MCTS
-    func performAIMoveForMCTS() {
+    func performMTSCMove() {
         let currentPlayerCells = getPlayerCells(player: .player2, board: self)
         let rootNode = Node(move: Move(source: (-1, -1), destination: (-1, -1)), parent: nil, untriedMoves: getLegalMoves(for: currentPlayerCells.first!), player: .player2)
-        let MCTSIterations = 550
+        let MCTSIterations = 100
         
         for _ in 0..<MCTSIterations {
             let promisingNode = selectPromisingNode(rootNode: rootNode)
@@ -626,3 +662,99 @@ extension Board {
 //
 //        return conversionCount
 //    }
+
+
+
+//    private func hasAnyLegalMove(from source: (row: Int, col: Int)) -> Bool {
+//        for drow in [-2, -1, 0, 1, 2] {
+//            for dcol in [-2, -1, 0, 1, 2] {
+//                let newRow = source.row + drow
+//                let newCol = source.col + dcol
+//                if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == .empty {
+//                    return true
+//                }
+//
+//            }
+//        }
+//        return false
+//    }
+
+//class MonteCarloTreeSearch {
+//    let explorationParam: Double
+//    let rootNode: Node
+//    init(rootBoard: Board, explorationParam: Double = sqrt(2)) {
+//           self.explorationParam = explorationParam
+//           self.rootNode = Node(board: rootBoard, playerJustMoved: rootBoard.currentPlayer.opposite())
+//       }
+//    func selection(node: Node) -> Node {
+//            var node = node
+//            while !node.children.isEmpty {
+//                node = node.children.max(by: { explorationValue(node: $0) < explorationValue(node: $1) })!
+//            }
+//            return node
+//        }
+//
+//
+//    func expansion(node: Node) {
+//            let possibleMoves = node.board.getMoves()
+//            for move in possibleMoves {
+//                let newBoard = node.board.copy()
+//                newBoard.performMove(from: move.source, to: move.destination, player: newBoard.currentPlayer)
+//                let newNode = Node(move: move, parent: node, board: newBoard, playerJustMoved: newBoard.currentPlayer)
+//                node.children.append(newNode)
+//            }
+//        }
+//
+//    func simulation(node: Node) -> Double {
+//        var currentBoard = node.board.copy()
+//        while !currentBoard.isGameOver() {
+//            if let randomMove = currentBoard.getMoves().randomElement() {
+//                currentBoard.performMove(from: randomMove.source, to: randomMove.destination, player: currentBoard.currentPlayer)
+//            }
+////            let randomMove = currentBoard.getMoves().randomElement()!
+//
+//        }
+//        return currentBoard.gameOutcome(for: rootNode.board.currentPlayer)
+//    }
+//
+//    func backpropagation(node: Node, result: Double) {
+//        var currentNode: Node? = node
+//        while let node = currentNode {
+//            node.update(result: node.playerJustMoved == rootNode.board.currentPlayer ? result : 1 - result)
+//            currentNode = node.parent
+//        }
+//    }
+//
+//    func explorationValue(node: Node) -> Double {
+//        if node.visits == 0 {
+//            return Double.infinity
+//        }
+//        let exploitationValue = node.wins / node.visits
+//        let explorationValue = explorationParam * sqrt(log(node.parent!.visits) / node.visits)
+//        return exploitationValue + explorationValue
+//    }
+//
+//    func bestChild(node: Node) -> Node {
+//        return node.children.max(by: { explorationValue(node: $0) < explorationValue(node: $1) })!
+//    }
+//
+//    func search(iterations: Int) -> Move? {
+//            if rootNode.board.isGameOver() {
+//                return nil
+//            }
+//            for _ in 0..<iterations {
+//                let nodeToExplore = selection(node: rootNode)
+//                if nodeToExplore.board.isGameOver() {
+//                    let simulationResult = simulation(node: nodeToExplore)
+//                    backpropagation(node: nodeToExplore, result: simulationResult)
+//                } else {
+//                    expansion(node: nodeToExplore)
+//                    let exploredNode = nodeToExplore.children.last!
+//                    let simulationResult = simulation(node: exploredNode)
+//                    backpropagation(node: exploredNode, result: simulationResult)
+//                }
+//            }
+//            return bestChild(node: rootNode).move
+//        }
+//
+//}

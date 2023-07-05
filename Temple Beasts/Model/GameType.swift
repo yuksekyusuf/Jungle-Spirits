@@ -10,6 +10,7 @@ import Foundation
 enum GameType: Identifiable {
     case ai
     case oneVone
+    case multiplayer
     
     var id: Int {
         switch self {
@@ -17,6 +18,8 @@ enum GameType: Identifiable {
             return 1
         case .oneVone:
             return 2
+        case .multiplayer:
+            return 3
         }
     }
 }

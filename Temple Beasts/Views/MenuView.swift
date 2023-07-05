@@ -14,11 +14,20 @@ class MenuViewModel: ObservableObject {
 
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
+    @StateObject var gameCenterController = GameCenterController()
+    
+    
+    @State private var isMatchmakingPresented = false
+    
+    
+    //    @State private var showingGameCenterView = false
+    //       @State private var navigateToGameView = false
+    
     @State var gameType: GameType? = nil
     @State var hapticState: Bool = true
     @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @AppStorage("music") private var musicState: Bool = false
-
+    
     //    @AppStorage("haptic") var hapticState: Bool?
     //    @AppStorage("sound") var soundState: Bool?
     var views: [String] = ["Menu", "Game", "PauseMenu"]
@@ -73,6 +82,28 @@ struct MenuView: View {
                         .simultaneousGesture(TapGesture().onEnded({
                             menuViewModel.path.append(1)
                         }))
+                        
+                        
+                        VStack {
+                            NavigationLink(destination: GameView(gameType: .oneVone), isActive: $gameCenterController.isMatched) {
+                                EmptyView()
+                            }
+                            Button {
+                                self.isMatchmakingPresented = true
+                                
+                            } label: {
+                                Image("OnlineButton")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: buttonWidth)
+                            }
+                            .sheet(isPresented: $isMatchmakingPresented) {
+                                GameCenterView().environmentObject(gameCenterController)
+                            }
+                            .simultaneousGesture(TapGesture().onEnded({
+                                menuViewModel.path.append(3)
+                            }))
+                        }
                         
                         //1 vs 1
                         NavigationLink {
@@ -131,7 +162,11 @@ struct MenuView: View {
             SoundManager.shared.startPlayingIfNeeded()
         }
         .environmentObject(menuViewModel)
+        .environmentObject(gameCenterController)
+        
+        
     }
+    
 }
 
 struct MenuView_Previews: PreviewProvider {
@@ -140,4 +175,6 @@ struct MenuView_Previews: PreviewProvider {
         MenuView()
     }
 }
+
+
 

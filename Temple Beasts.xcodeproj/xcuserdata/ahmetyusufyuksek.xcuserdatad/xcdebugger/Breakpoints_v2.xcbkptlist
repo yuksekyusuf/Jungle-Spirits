@@ -14,10 +14,10 @@
             filePath = "Temple Beasts/Model/Board.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "496"
-            endingLineNumber = "496"
-            landmarkName = "Board"
-            landmarkType = "21">
+            startingLineNumber = "532"
+            endingLineNumber = "532"
+            landmarkName = "performMTSCMove()"
+            landmarkType = "7">
             <Locations>
                <Location
                   uuid = "9B5986FE-5540-40EF-9358-2251BE3B73C2 - 73eab98cc4c7d78"
@@ -144,8 +144,24 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "214"
             endingLineNumber = "214"
-            landmarkName = "Board"
-            landmarkType = "3">
+            landmarkName = "hasLegalMoves(player:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "82AF9B0B-7687-4B8C-A14D-EBC413229BCE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Temple Beasts/Services/GameCenterController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

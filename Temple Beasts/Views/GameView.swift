@@ -149,7 +149,7 @@ struct GameView: View {
                 remainingTime = 15
                 switchPlayer()
                 DispatchQueue.global().async {
-                    self.board.performAIMoveForMCTS()
+                    self.board.performMTSCMove()
                     print("after ai performs, current player: ", currentPlayer)
                     DispatchQueue.main.async {
                         self.currentPlayer = .player1
@@ -191,7 +191,7 @@ struct GameView: View {
             self.isPaused.toggle()
         } else if gameType == .ai && currentPlayer == .player2 {
             DispatchQueue.global().async {
-                self.board.performAIMoveForMCTS()
+                self.board.performMTSCMove()
                 print("after ai performs, current player: ", currentPlayer)
                 DispatchQueue.main.async {
                     self.currentPlayer = .player1
