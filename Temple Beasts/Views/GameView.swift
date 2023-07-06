@@ -20,7 +20,9 @@ struct GameView: View {
         _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
+        
     }
+    
     
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool

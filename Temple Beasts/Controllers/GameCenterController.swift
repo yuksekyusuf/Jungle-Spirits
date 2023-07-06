@@ -20,9 +20,9 @@ class GameCenterController: ObservableObject {
 
 
     
-    init() {
-        authenticateUser()
-    }
+//    init() {
+//        authenticateUser()
+//    }
 
 
     func authenticateUser() {
@@ -45,16 +45,19 @@ class GameCenterController: ObservableObject {
 
 struct GameCenterView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
-        @EnvironmentObject var gameCenterController: GameCenterController
+    @EnvironmentObject var menuViewModel: MenuViewModel // Inject the MenuViewModel
+    @EnvironmentObject var gameCenterController: GameCenterController
 
         class Coordinator: NSObject, GKMatchmakerViewControllerDelegate {
             var parent: GameCenterView
-            var gameCenterController: GameCenterController
+                var gameCenterController: GameCenterController
+                var menuViewModel: MenuViewModel  // Add this property
 
-            init(_ parent: GameCenterView, gameCenterController: GameCenterController) {
-                self.parent = parent
-                self.gameCenterController = gameCenterController
-            }
+                init(_ parent: GameCenterView, gameCenterController: GameCenterController, menuViewModel: MenuViewModel) {
+                    self.parent = parent
+                    self.gameCenterController = gameCenterController
+                    self.menuViewModel = menuViewModel  // Initialize the property
+                }
 
             func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
                 parent.presentationMode.wrappedValue.dismiss()
@@ -69,13 +72,14 @@ struct GameCenterView: UIViewControllerRepresentable {
                 // Here you get the match object, which you can use to send and receive data between players
                 DispatchQueue.main.async {
                     self.gameCenterController.match = match
+                    self.menuViewModel.path.append(3)
                 }
             }
         }
 
-        func makeCoordinator() -> Coordinator {
-            Coordinator(self, gameCenterController: gameCenterController)
-        }
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self, gameCenterController: gameCenterController, menuViewModel: menuViewModel)
+    }
 
         func makeUIViewController(context: Context) -> GKMatchmakerViewController {
             let matchRequest = GKMatchRequest()

@@ -34,6 +34,7 @@ struct MenuView: View {
     @StateObject var menuViewModel = MenuViewModel()
     
     let buttonWidth = UIScreen.main.bounds.width * 0.71
+    let singleButtonWidth = UIScreen.main.bounds.width * 0.35
     let smallButtonWidth = UIScreen.main.bounds.width * 0.198
     
     var body: some View {
@@ -71,22 +72,37 @@ struct MenuView: View {
                     
                     Spacer()
                     VStack {
-                        NavigationLink {
-                            GameView(gameType: .ai)
-                        } label: {
-                            Image("SinglePlayer")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: buttonWidth)
+                        HStack {
+                            NavigationLink {
+                                GameView(gameType: .ai)
+                            } label: {
+                                Image("SinglePlayer")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: singleButtonWidth)
+                            }
+                            .simultaneousGesture(TapGesture().onEnded({
+                                menuViewModel.path.append(1)
+                            }))
+                            
+                            //1 vs 1
+                            NavigationLink {
+                                GameView(gameType: .oneVone)
+                            } label: {
+                                Image("1 vs 1")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: singleButtonWidth)
+                                
+                            }
+                            .simultaneousGesture(TapGesture().onEnded({
+                                menuViewModel.path.append(2)
+                            }))
                         }
-                        .simultaneousGesture(TapGesture().onEnded({
-                            menuViewModel.path.append(1)
-                        }))
                         
-                        
-                        VStack {
+                        ZStack {
                             NavigationLink(destination: GameView(gameType: .oneVone), isActive: $gameCenterController.isMatched) {
-                                EmptyView()
+                                ProgressView()
                             }
                             Button {
                                 self.isMatchmakingPresented = true
@@ -100,24 +116,10 @@ struct MenuView: View {
                             .sheet(isPresented: $isMatchmakingPresented) {
                                 GameCenterView().environmentObject(gameCenterController)
                             }
-                            .simultaneousGesture(TapGesture().onEnded({
-                                menuViewModel.path.append(3)
-                            }))
+
                         }
                         
-                        //1 vs 1
-                        NavigationLink {
-                            GameView(gameType: .oneVone)
-                        } label: {
-                            Image("1 vs 1")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: buttonWidth)
-                            
-                        }
-                        .simultaneousGesture(TapGesture().onEnded({
-                            menuViewModel.path.append(2)
-                        }))
+                        
                         HStack(spacing: 0) {
                             Spacer()
                             Image(soundState ? "soundOn" : "soundOff")
@@ -160,12 +162,16 @@ struct MenuView: View {
         .onAppear{
             UserDefaults.standard.set(soundState, forKey: "sound")
             SoundManager.shared.startPlayingIfNeeded()
+            if !gameCenterController.isUserAuthenticated {
+                gameCenterController.authenticateUser()
+            }
         }
         .environmentObject(menuViewModel)
         .environmentObject(gameCenterController)
         
         
     }
+    
     
 }
 
