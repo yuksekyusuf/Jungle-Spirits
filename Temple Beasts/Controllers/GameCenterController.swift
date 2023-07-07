@@ -9,21 +9,33 @@ import SwiftUI
 import UIKit
 import GameKit
 
-class GameCenterController: ObservableObject {
+class GameCenterController: NSObject, GKMatchDelegate, ObservableObject {
+
     @Published var isUserAuthenticated = false
     @Published var match: GKMatch? {
         didSet {
             self.isMatched = match != nil
+            if let match = match {
+                match.delegate = self
+            }
         }
     }
     @Published var isMatched = false
 
+//    var board: Board? // You need to have a reference to the board to perform a move
 
-    
-//    init() {
+    var board: Board? {
+        didSet {
+            if let board = board {
+                board.notifyChange()
+
+            }
+        }
+    }
+//    override init() {
+//        super.init()
 //        authenticateUser()
 //    }
-
 
     func authenticateUser() {
         let localPlayer = GKLocalPlayer.local
@@ -40,6 +52,39 @@ class GameCenterController: ObservableObject {
             }
         }
     }
+
+    func encodeMove(_ move: Move) -> Data? {
+        let codableMove = CodableMove.fromMove(move)
+        let encoder = JSONEncoder()
+        return try? encoder.encode(codableMove)
+    }
+
+    func decodeMove(from data: Data) -> Move? {
+        let decoder = JSONDecoder()
+        if let codableMove = try? decoder.decode(CodableMove.self, from: data) {
+            return Move.fromCodable(codableMove)
+        }
+        return nil
+    }
+
+    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
+            if let move = self.decodeMove(from: data) {
+                DispatchQueue.main.async {
+                    let currentPlayer: CellState = (player == match.players.first) ? .player1 : .player2
+                    self.board?.performMove(from: move.source, to: move.destination, player: currentPlayer)
+                }
+            }
+        }
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
+
+    }
+
+    func randomStartingPlayer() -> CellState {
+        let randomNumber = Int.random(in: 1...2)
+        return randomNumber == 1 ? .player1 : .player2
+    }
+
 
 }
 

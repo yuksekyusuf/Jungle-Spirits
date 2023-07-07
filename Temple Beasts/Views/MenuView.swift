@@ -15,8 +15,6 @@ class MenuViewModel: ObservableObject {
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @StateObject var gameCenterController = GameCenterController()
-    
-    
     @State private var isMatchmakingPresented = false
     
     
@@ -75,6 +73,7 @@ struct MenuView: View {
                         HStack {
                             NavigationLink {
                                 GameView(gameType: .ai)
+
                             } label: {
                                 Image("SinglePlayer")
                                     .resizable()
@@ -88,6 +87,8 @@ struct MenuView: View {
                             //1 vs 1
                             NavigationLink {
                                 GameView(gameType: .oneVone)
+                                    
+
                             } label: {
                                 Image("1 vs 1")
                                     .resizable()
@@ -101,8 +102,8 @@ struct MenuView: View {
                         }
                         
                         ZStack {
-                            NavigationLink(destination: GameView(gameType: .oneVone), isActive: $gameCenterController.isMatched) {
-                                ProgressView()
+                            NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
+                                    EmptyView()
                             }
                             Button {
                                 self.isMatchmakingPresented = true
@@ -168,16 +169,11 @@ struct MenuView: View {
         }
         .environmentObject(menuViewModel)
         .environmentObject(gameCenterController)
-        
-        
     }
-    
-    
 }
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-        //        @State var active: ActiveView = .menuView
         MenuView()
     }
 }

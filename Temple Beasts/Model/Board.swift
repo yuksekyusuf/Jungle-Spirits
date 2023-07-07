@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CellState: Int {
+enum CellState: Int, Codable {
     case empty
     case player1
     case player2
@@ -24,11 +24,30 @@ enum CellState: Int {
     }
 }
 
+struct Coordinate: Codable {
+    var row: Int
+    var col: Int
+}
+
+struct CodableMove: Codable {
+    let source: Coordinate
+    let destination: Coordinate
+    static func fromMove(_ move: Move) -> CodableMove {
+        return CodableMove(source: Coordinate(row: move.source.row, col: move.source.col),
+                           destination: Coordinate(row: move.destination.row, col: move.destination.col))
+    }
+}
+
 struct Move {
     let source: (row: Int, col: Int)
     let destination: (row: Int, col: Int)
     static func == (lhs: Move, rhs: Move) -> Bool {
         return lhs.source == rhs.source && lhs.destination == rhs.destination
+    }
+    
+    static func fromCodable(_ codableMove: CodableMove) -> Move {
+        return Move(source: (row: codableMove.source.row, col: codableMove.source.col),
+                    destination: (row: codableMove.destination.row, col: codableMove.destination.col))
     }
 }
 
@@ -84,9 +103,6 @@ class Board: ObservableObject {
     private func isValidCoordinate(_ coordinate: (row: Int, col: Int)) -> Bool {
         return coordinate.row >= 0 && coordinate.row < size.rows && coordinate.col >= 0 && coordinate.col < size.columns
     }
-    var eitherPlayerNoLegalMoves: Bool {
-        return !(hasLegalMoves(player: .player1) || hasLegalMoves(player: .player2))
-    }
     func isLegalMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Bool {
         let isCorner = (destination.row == 0 && destination.col == 0) ||
         (destination.row == 0 && destination.col == size.columns - 1) ||
@@ -121,24 +137,7 @@ class Board: ObservableObject {
     var currentPlayer: CellState {
         return turn % 2 == 0 ? .player1 : .player2
     }
-    func getMoves() -> [Move] {
-        var moves: [Move] = []
-        
-        // Iterate over the board.
-        for row in 0..<size.rows {
-            for col in 0..<size.columns {
-                let cell = (row: row, col: col)
-                // If the cell has a piece of the current player and it can make a legal move,
-                // add it to the array of moves.
-                if cellState(at: cell) == currentPlayer {
-                    let possibleMoves = getLegalMoves(for: cell)
-                    moves.append(contentsOf: possibleMoves)
-                }
-            }
-        }
-        
-        return moves
-    }
+    
     func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Int? {
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
@@ -225,51 +224,6 @@ class Board: ObservableObject {
         return false
     }
     
-    func getLegalMoves(for cell: (row: Int, col: Int)) -> [Move] {
-        var moves: [Move] = []
-        
-        // The directions a cell can move to for duplication (orthogonal and diagonal)
-        let directions = [(1,0), (-1,0), (0,1), (0,-1), (1,1), (-1,-1), (1,-1), (-1,1)]
-        
-        // The directions a cell can jump to (horizontal, vertical, and L-shaped)
-        let jumpDirections = [(2,0), (-2,0), (0,2), (0,-2), (2,1), (-2,-1), (1,2), (-1,-2),
-                              (-2,1), (2,-1), (-1,2), (1,-2)]
-        
-        // Check each direction for duplication.
-        for direction in directions {
-            let adjacentCell = (row: cell.row + direction.0, col: cell.col + direction.1)
-            if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == .empty {
-                moves.append(Move(source: cell, destination: adjacentCell))
-            }
-        }
-        
-        // Check each direction for jumping.
-        for direction in jumpDirections {
-            let jumpCell = (row: cell.row + direction.0, col: cell.col + direction.1)
-            if isValidCoordinate(jumpCell) && cellState(at: jumpCell) == .empty {
-                moves.append(Move(source: cell, destination: jumpCell))
-            }
-        }
-        
-        return moves
-    }
-    
-    private func getLegalMoves(for player: CellState) -> [Move] {
-        var moves: [Move] = []
-        
-        for row in 0..<size.rows {
-            for col in 0..<size.columns {
-                let cell = (row: row, col: col)
-                
-                if cellState(at: cell) == player {
-                    let cellMoves = getLegalMoves(for: cell)
-                    moves.append(contentsOf: cellMoves)
-                }
-            }
-        }
-        
-        return moves
-    }
     
 
     
@@ -319,35 +273,6 @@ class Board: ObservableObject {
         return (player1: player1Count, player2: player2Count, empty: emptyCount)
     }
     
-    func gameOutcome(for player: CellState) -> Double {
-        // Count the pieces on the board for each player
-        let (player1Count, player2Count, _) = countPieces()
-
-        // If the board is full or if a player cannot make a legal move,
-        // the player with the most pieces is the winner.
-        if isGameOver() {
-            switch player {
-            case .player1:
-                return player1Count > player2Count ? 1.0 : 0.0
-            case .player2:
-                return player2Count > player1Count ? 1.0 : 0.0
-            default:
-                return 0.0
-            }
-        }
-
-        // If the game is not over, return a score proportional to the player's piece count.
-        // This is a heuristic to prioritize states where the player has more pieces.
-        let totalPieces = player1Count + player2Count
-        switch player {
-        case .player1:
-            return Double(player1Count) / Double(totalPieces)
-        case .player2:
-            return Double(player2Count) / Double(totalPieces)
-        default:
-            return 0.5
-        }
-    }
 }
 
 
@@ -363,84 +288,85 @@ class Board: ObservableObject {
 
 
 //MARK: Simple AI algorithm
-extension Board {
-    
-    func performAIMove() -> Move? {
-        let aiPlayer: CellState = .player2
-        guard let move = getBestMove(for: aiPlayer) else {
-            print("No valid move found for AI player.")
-            // No move found, return nil
-            return nil
-        }
-                
-        // Perform the move and return the move
-        DispatchQueue.main.async {
-            self.performMove(from: move.source, to: move.destination, player: aiPlayer)
-        }
-        
-        
-        return move
-    }
-    
-    func getBestMove(for player: CellState) -> Move? {
-        var bestMove: Move?
-        var bestScore = -9999
-        
-        // Iterate through all the cells.
-        for row in 0..<size.rows {
-            for col in 0..<size.columns {
-                let sourceCell = (row: row, col: col)
-                if cellState(at: sourceCell) != player {
-                    continue
-                }
-                
-                for drow in -1...1 {
-                    for dcol in -1...1 {
-                        let destinationCell = (row: row + drow, col: col + dcol)
-                        if isValidCoordinate(destinationCell) && isLegalMove(from: sourceCell, to: destinationCell, player: player) {
-                            // Get cells to capture after this move
-                            let cellsToCapture = self.cellsToCapture(from: sourceCell, to: destinationCell, player: player)
-                            
-                            // Calculate score based on the cells to be captured.
-                            var score = cellsToCapture.count * 10
-                            
-                            // Add a penalty if the destination cell is adjacent to an opponent's cell.
-                            for ddrow in -1...1 {
-                                for ddcol in -1...1 {
-                                    let adjacentCell = (row: row + drow + ddrow, col: col + dcol + ddcol)
-                                    if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == player.opposite() {
-                                        score -= 5
-                                    }
-                                }
-                            }
-                            // Update the best move if the score is higher than the current best score.
-                            if score > bestScore {
-                                bestScore = score
-                                bestMove = Move(source: sourceCell, destination: destinationCell)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        return bestMove
-    }
-    private func cellsToCapture(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
-        var cells: [(row: Int, col: Int)] = []
-        
-        for dx in -1...1 {
-            for dy in -1...1 {
-                let cell = (row: destination.row + dx, col: destination.col + dy)
-                if isValidCoordinate(cell) && cellState(at: cell) == player.opposite() {
-                    cells.append(cell)
-                }
-            }
-        }
-        
-        return cells
-    }
-}
+//extension Board {
+//
+//    func performAIMove() -> Move? {
+//        let aiPlayer: CellState = .player2
+//        guard let move = getBestMove(for: aiPlayer) else {
+//            print("No valid move found for AI player.")
+//            // No move found, return nil
+//            return nil
+//        }
+//
+//        // Perform the move and return the move
+//        DispatchQueue.main.async {
+//            self.performMove(from: move.source, to: move.destination, player: aiPlayer)
+//        }
+//
+//
+//        return move
+//    }
+//
+//    func getBestMove(for player: CellState) -> Move? {
+//        var bestMove: Move?
+//        var bestScore = -9999
+//
+//        // Iterate through all the cells.
+//        for row in 0..<size.rows {
+//            for col in 0..<size.columns {
+//                let sourceCell = (row: row, col: col)
+//                if cellState(at: sourceCell) != player {
+//                    continue
+//                }
+//
+//                for drow in -1...1 {
+//                    for dcol in -1...1 {
+//                        let destinationCell = (row: row + drow, col: col + dcol)
+//                        if isValidCoordinate(destinationCell) && isLegalMove(from: sourceCell, to: destinationCell, player: player) {
+//                            // Get cells to capture after this move
+//                            let cellsToCapture = self.cellsToCapture(from: sourceCell, to: destinationCell, player: player)
+//
+//                            // Calculate score based on the cells to be captured.
+//                            var score = cellsToCapture.count * 10
+//
+//                            // Add a penalty if the destination cell is adjacent to an opponent's cell.
+//                            for ddrow in -1...1 {
+//                                for ddcol in -1...1 {
+//                                    let adjacentCell = (row: row + drow + ddrow, col: col + dcol + ddcol)
+//                                    if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == player.opposite() {
+//                                        score -= 5
+//                                    }
+//                                }
+//                            }
+//                            // Update the best move if the score is higher than the current best score.
+//                            if score > bestScore {
+//                                bestScore = score
+//                                bestMove = Move(source: sourceCell, destination: destinationCell)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return bestMove
+//    }
+//
+//    private func cellsToCapture(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
+//        var cells: [(row: Int, col: Int)] = []
+//
+//        for dx in -1...1 {
+//            for dy in -1...1 {
+//                let cell = (row: destination.row + dx, col: destination.col + dy)
+//                if isValidCoordinate(cell) && cellState(at: cell) == player.opposite() {
+//                    cells.append(cell)
+//                }
+//            }
+//        }
+//
+//        return cells
+//    }
+//}
 
 //extension Board {
 //    func performMTSCMove() {
@@ -642,6 +568,101 @@ extension Board {
         
         return moves
     }
+    
+    func gameOutcome(for player: CellState) -> Double {
+        // Count the pieces on the board for each player
+        let (player1Count, player2Count, _) = countPieces()
+
+        // If the board is full or if a player cannot make a legal move,
+        // the player with the most pieces is the winner.
+        if isGameOver() {
+            switch player {
+            case .player1:
+                return player1Count > player2Count ? 1.0 : 0.0
+            case .player2:
+                return player2Count > player1Count ? 1.0 : 0.0
+            default:
+                return 0.0
+            }
+        }
+
+        // If the game is not over, return a score proportional to the player's piece count.
+        // This is a heuristic to prioritize states where the player has more pieces.
+        let totalPieces = player1Count + player2Count
+        switch player {
+        case .player1:
+            return Double(player1Count) / Double(totalPieces)
+        case .player2:
+            return Double(player2Count) / Double(totalPieces)
+        default:
+            return 0.5
+        }
+    }
+    
+    func getLegalMoves(for cell: (row: Int, col: Int)) -> [Move] {
+        var moves: [Move] = []
+        
+        // The directions a cell can move to for duplication (orthogonal and diagonal)
+        let directions = [(1,0), (-1,0), (0,1), (0,-1), (1,1), (-1,-1), (1,-1), (-1,1)]
+        
+        // The directions a cell can jump to (horizontal, vertical, and L-shaped)
+        let jumpDirections = [(2,0), (-2,0), (0,2), (0,-2), (2,1), (-2,-1), (1,2), (-1,-2),
+                              (-2,1), (2,-1), (-1,2), (1,-2)]
+        
+        // Check each direction for duplication.
+        for direction in directions {
+            let adjacentCell = (row: cell.row + direction.0, col: cell.col + direction.1)
+            if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == .empty {
+                moves.append(Move(source: cell, destination: adjacentCell))
+            }
+        }
+        
+        // Check each direction for jumping.
+        for direction in jumpDirections {
+            let jumpCell = (row: cell.row + direction.0, col: cell.col + direction.1)
+            if isValidCoordinate(jumpCell) && cellState(at: jumpCell) == .empty {
+                moves.append(Move(source: cell, destination: jumpCell))
+            }
+        }
+        
+        return moves
+    }
+    
+    private func getLegalMoves(for player: CellState) -> [Move] {
+        var moves: [Move] = []
+        
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                let cell = (row: row, col: col)
+                
+                if cellState(at: cell) == player {
+                    let cellMoves = getLegalMoves(for: cell)
+                    moves.append(contentsOf: cellMoves)
+                }
+            }
+        }
+        
+        return moves
+    }
+    func getMoves() -> [Move] {
+        var moves: [Move] = []
+        
+        // Iterate over the board.
+        for row in 0..<size.rows {
+            for col in 0..<size.columns {
+                let cell = (row: row, col: col)
+                // If the cell has a piece of the current player and it can make a legal move,
+                // add it to the array of moves.
+                if cellState(at: cell) == currentPlayer {
+                    let possibleMoves = getLegalMoves(for: cell)
+                    moves.append(contentsOf: possibleMoves)
+                }
+            }
+        }
+        
+        return moves
+    }
+    
 }
 
 

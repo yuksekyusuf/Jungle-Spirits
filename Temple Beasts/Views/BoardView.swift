@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct BoardView: View {
-    @ObservedObject var board: Board
+    @EnvironmentObject var board: Board
     @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
-    let onMoveCompleted: () -> Void
+    let onMoveCompleted: (Move) -> Void
     let gameType: GameType
         var body: some View {
         VStack(spacing: 1) {
@@ -62,7 +62,8 @@ struct BoardView: View {
 
             }
                 selectedCell = nil
-                onMoveCompleted()
+                let move = Move(source: source, destination: destination)
+                onMoveCompleted(move)
             }
             else if board.cellState(at: destination) == currentPlayer {
                 selectedCell = destination

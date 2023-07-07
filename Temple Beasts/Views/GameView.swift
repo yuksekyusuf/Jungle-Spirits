@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameView: View {
     @StateObject private var board: Board
+    @EnvironmentObject var gameCenterController: GameCenterController
     init(gameType: GameType) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
@@ -20,7 +21,9 @@ struct GameView: View {
         _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
-        
+
+//        let startingPlayer = gameCenterController.randomStartingPlayer()
+//            _currentPlayer = State(initialValue: startingPlayer)
     }
     
     
@@ -87,7 +90,7 @@ struct GameView: View {
                             .padding([.horizontal, .trailing], 5)
                             .animation(.linear(duration: 1.0), value: remainingTime)
                     }
-                    BoardView(board: board, selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: onMoveCompleted, gameType: gameType)
+                    BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: {move in onMoveCompleted(move)}, gameType: gameType).environmentObject(board)
                         .allowsHitTesting(!showPauseMenu)
                         .overlay {
                             Image("Lights")
@@ -167,8 +170,14 @@ struct GameView: View {
                     remainingTime -= 1
                 }
             }
+
         }
-        .environmentObject(board)
+        .onAppear{
+            gameCenterController.board = self.board
+            
+            
+        }
+//        .environmentObject(board)
     }
     var winner: CellState {
         let (player1Count, player2Count, _) = board.countPieces()
@@ -181,34 +190,48 @@ struct GameView: View {
             return .draw
         }
     }
-    func onMoveCompleted() {
+    func onMoveCompleted(_ move: Move) {
         if self.board.isGameOver() {
-            self.isGameOver = true
-            return
-        }
-        currentPlayer = currentPlayer == .player1 ? .player2 : .player1
-        remainingTime = 15
-        if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
-            self.isGameOver = true
-            self.isPaused.toggle()
-        } else if gameType == .ai && currentPlayer == .player2 {
-            DispatchQueue.global().async {
-                self.board.performMTSCMove()
-                print("after ai performs, current player: ", currentPlayer)
-                DispatchQueue.main.async {
-                    self.currentPlayer = .player1
+                self.isGameOver = true
+                return
+            }
+            
+        if gameType == .multiplayer {
+            if let moveData = gameCenterController.encodeMove(move) {
+                do {
+                    try gameCenterController.match!.sendData(toAllPlayers: moveData, with: .reliable)
+                } catch {
+                    print("Error sending data: \(error.localizedDescription)")
+                }
+            }
+                currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
+            }
+        else {
+                currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+                remainingTime = 15
+                if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
+                    self.isGameOver = true
+                    self.isPaused.toggle()
+                } else if gameType == .ai && currentPlayer == .player2 {
+                    DispatchQueue.global().async {
+                        self.board.performMTSCMove()
+                        print("after ai performs, current player: ", currentPlayer)
+                        DispatchQueue.main.async {
+                            self.currentPlayer = .player1
+                            self.remainingTime = 15
+                            SoundManager.shared.playMoveSound()
+                        }
+                    }
                     self.remainingTime = 15
+                } else {
                     SoundManager.shared.playMoveSound()
                 }
             }
-            self.remainingTime = 15
-        } else {
-            SoundManager.shared.playMoveSound()
-        }
     }
     func switchPlayer() {
         currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
     }
+    
 }
 
 
