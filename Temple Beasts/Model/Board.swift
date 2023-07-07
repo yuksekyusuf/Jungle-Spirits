@@ -104,7 +104,7 @@ class Board: ObservableObject {
         return coordinate.row >= 0 && coordinate.row < size.rows && coordinate.col >= 0 && coordinate.col < size.columns
     }
     func isLegalMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Bool {
-        let isCorner = (destination.row == 0 && destination.col == 0) ||
+        let _ = (destination.row == 0 && destination.col == 0) ||
         (destination.row == 0 && destination.col == size.columns - 1) ||
         (destination.row == size.rows - 1 && destination.col == 0) ||
         (destination.row == size.rows - 1 && destination.col == size.columns - 1)
@@ -134,11 +134,15 @@ class Board: ObservableObject {
         return false
     }
     
-    var currentPlayer: CellState {
+    var currentPlayerForAi: CellState {
         return turn % 2 == 0 ? .player1 : .player2
     }
     
-    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Int? {
+    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState){
+//        guard currentPlayer == player else {
+//                print("It's not your turn!")
+//                return
+//            }
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
         
@@ -152,11 +156,11 @@ class Board: ObservableObject {
             cells[destination.row][destination.col] = player
         }
         
-        let convertedPieces = convertOpponentPieces(at: destination, player: player)
+        let _ = convertOpponentPieces(at: destination, player: player)
         
         turn += 1
         
-        return convertedPieces
+//        return convertedPieces
     }
     func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> Int? {
         let opponent: CellState = player == .player1 ? .player2 : .player1
@@ -413,7 +417,7 @@ extension Board {
         }
         let move = node.untriedMoves.removeLast()
         let newState = board.copy()
-        newState.performMove(from: move.source, to: move.destination, player: currentPlayer)
+        newState.performMove(from: move.source, to: move.destination, player: currentPlayerForAi)
         _ = node.addChild(move: move, state: newState)
     }
     
@@ -510,9 +514,9 @@ extension Board {
     }
     
     
-    private func updateTurn() {
-        turn += 1
-    }
+//    private func updateTurn() {
+//        turn += 1
+//    }
     
     func getPlayerCells(player: CellState) -> [(row: Int, col: Int)] {
         var cells: [(row: Int, col: Int)] = []
@@ -646,20 +650,20 @@ extension Board {
     }
     func getMoves() -> [Move] {
         var moves: [Move] = []
-        
+
         // Iterate over the board.
         for row in 0..<size.rows {
             for col in 0..<size.columns {
                 let cell = (row: row, col: col)
                 // If the cell has a piece of the current player and it can make a legal move,
                 // add it to the array of moves.
-                if cellState(at: cell) == currentPlayer {
+                if cellState(at: cell) == currentPlayerForAi {
                     let possibleMoves = getLegalMoves(for: cell)
                     moves.append(contentsOf: possibleMoves)
                 }
             }
         }
-        
+
         return moves
     }
     

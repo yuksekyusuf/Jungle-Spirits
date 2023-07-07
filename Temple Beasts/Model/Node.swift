@@ -49,7 +49,7 @@ class Node {
     
     // Use this function to add a new child node to this node
     func addChild(move: Move, state: Board) -> Node {
-        let node = Node(move: move, parent: self, untriedMoves: state.getMoves(), player: state.currentPlayer)
+        let node = Node(move: move, parent: self, untriedMoves: state.getMoves(), player: state.currentPlayerForAi)
         self.untriedMoves.removeAll(where: { $0 == move })
         self.children.append(node)
         return node

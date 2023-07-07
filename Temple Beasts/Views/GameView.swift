@@ -15,25 +15,16 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
-        _isPaused = State(initialValue: false)
         _remainingTime = State(initialValue: 15)
-        _currentPlayer = State(initialValue: .player1)
-        _isGameOver = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
-
-//        let startingPlayer = gameCenterController.randomStartingPlayer()
-//            _currentPlayer = State(initialValue: startingPlayer)
     }
     
     
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
-    @State private var isPaused: Bool
     @State private var remainingTime: Int
-    @State var currentPlayer: CellState
-    @State private var isGameOver: Bool
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @EnvironmentObject var menuViewModel: MenuViewModel
@@ -56,7 +47,7 @@ struct GameView: View {
                 VStack(spacing: 0) {
                     HStack {
                         HStack {
-                            Image(currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                            Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
                                 .frame(width: 55)
                                 .padding(.leading, 20)
                             
@@ -65,8 +56,7 @@ struct GameView: View {
                         }
                         Spacer()
                         Button(action:  {
-                            isPaused.toggle()
-                            showPauseMenu.toggle()
+                            configurePauseMenu()
                         })
                         {
                             HStack {
@@ -80,17 +70,17 @@ struct GameView: View {
                         Spacer()
                         HStack {
                             PieceCountView(pieceCount: player2PieceCount)
-                            Image(currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                            Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
                                 .frame(width: 55)
                                 .padding(.trailing, 20)
                         }
                     }
                     HStack {
-                        TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: currentPlayer)
+                        TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer)
                             .padding([.horizontal, .trailing], 5)
                             .animation(.linear(duration: 1.0), value: remainingTime)
                     }
-                    BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, onMoveCompleted: {move in onMoveCompleted(move)}, gameType: gameType).environmentObject(board)
+                    BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, onMoveCompleted: {move in onMoveCompleted(move)}, gameType: gameType)
                         .allowsHitTesting(!showPauseMenu)
                         .overlay {
                             Image("Lights")
@@ -107,12 +97,12 @@ struct GameView: View {
                     .scaledToFit()
                     .allowsHitTesting(false)
                 if showPauseMenu {
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $isPaused, remainingTime: $remainingTime, currentPlayer: $currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
                 
-                if isGameOver {
-                    WinView(showWinMenu: $isGameOver, isPaused: $isPaused, remainingTime: $remainingTime, winner: winner, currentPlayer: $currentPlayer)
+                if gameCenterController.isGameOver {
+                    WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $remainingTime, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
                 }
                 if isCountDownVisible {
                     CountDownView(isVisible: $isCountDownVisible)
@@ -141,8 +131,8 @@ struct GameView: View {
         .navigationBarHidden(true)
         .onChange(of: board.cells) { newValue in
             if board.isGameOver() {
-                isGameOver = true
-                self.isPaused.toggle()
+                gameCenterController.isGameOver = true
+                self.gameCenterController.isPaused.toggle()
             }
         }
         .onChange(of: remainingTime, perform: { newValue in
@@ -155,9 +145,9 @@ struct GameView: View {
                 switchPlayer()
                 DispatchQueue.global().async {
                     self.board.performMTSCMove()
-                    print("after ai performs, current player: ", currentPlayer)
+                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
                     DispatchQueue.main.async {
-                        self.currentPlayer = .player1
+                        self.gameCenterController.currentPlayer = .player1
                         self.remainingTime = 15
                     }
                 }
@@ -166,7 +156,7 @@ struct GameView: View {
         })
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                if !isPaused && remainingTime > 0 && !isCountDownVisible {
+                if !gameCenterController.isPaused && remainingTime > 0 && !isCountDownVisible {
                     remainingTime -= 1
                 }
             }
@@ -177,7 +167,12 @@ struct GameView: View {
             
             
         }
-//        .environmentObject(board)
+        .environmentObject(board)
+        .onDisappear{
+            self.gameCenterController.isPaused = false
+            self.gameCenterController.isGameOver = false
+            self.gameCenterController.currentPlayer = .player1
+        }
     }
     var winner: CellState {
         let (player1Count, player2Count, _) = board.countPieces()
@@ -191,33 +186,56 @@ struct GameView: View {
         }
     }
     func onMoveCompleted(_ move: Move) {
-        if self.board.isGameOver() {
-                self.isGameOver = true
+        if board.isGameOver() {
+                self.gameCenterController.isGameOver = true
                 return
             }
             
         if gameType == .multiplayer {
-            if let moveData = gameCenterController.encodeMove(move) {
+            let codableMove = CodableMove.fromMove(move)
+            let moveMessage = GameMessage(messageType: .move, move: codableMove, gameState: nil)
+            
+            if let moveData = gameCenterController.encodeMessage(moveMessage) {
                 do {
                     try gameCenterController.match!.sendData(toAllPlayers: moveData, with: .reliable)
                 } catch {
                     print("Error sending data: \(error.localizedDescription)")
                 }
             }
-                currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
+            let newPlayerState: CellState = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
+            if gameCenterController.currentPlayer == (gameCenterController.localPlayer == gameCenterController.otherPlayer ? .player1 : .player2) {
+                gameCenterController.currentlyPlaying = false
             }
+            let gameState = GameState(isPaused: gameCenterController.isPaused,
+                                      isGameOver: gameCenterController.isGameOver,
+                                      currentPlayer: newPlayerState)
+            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
+                do {
+                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
+                } catch {
+                    print("Error sending data: \(error.localizedDescription)")
+                }
+            }
+            
+            // Only switch player after game state message has been sent.
+            gameCenterController.currentPlayer = newPlayerState
+            if gameCenterController.currentPlayer == (gameCenterController.localPlayer == gameCenterController.otherPlayer ? .player1 : .player2) {
+                gameCenterController.currentlyPlaying = true
+            }
+        }
         else {
-                currentPlayer = currentPlayer == .player1 ? .player2 : .player1
+            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
                 remainingTime = 15
                 if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
-                    self.isGameOver = true
-                    self.isPaused.toggle()
-                } else if gameType == .ai && currentPlayer == .player2 {
+                    self.gameCenterController.isGameOver = true
+                    self.gameCenterController.isPaused.toggle()
+                } else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
                     DispatchQueue.global().async {
                         self.board.performMTSCMove()
-                        print("after ai performs, current player: ", currentPlayer)
+                        print("after ai performs, current player: ", gameCenterController.currentPlayer)
                         DispatchQueue.main.async {
-                            self.currentPlayer = .player1
+                            self.gameCenterController.currentPlayer = .player1
                             self.remainingTime = 15
                             SoundManager.shared.playMoveSound()
                         }
@@ -229,7 +247,27 @@ struct GameView: View {
             }
     }
     func switchPlayer() {
-        currentPlayer = (currentPlayer == .player1) ? .player2 : .player1
+        gameCenterController.currentPlayer = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
+    }
+    
+    func configurePauseMenu() {
+        gameCenterController.isPaused.toggle()
+        showPauseMenu.toggle()
+        if gameType == .multiplayer {
+            let gameState = GameState(isPaused: gameCenterController.isPaused,
+                                      isGameOver: gameCenterController.isGameOver,
+                                      currentPlayer: gameCenterController.currentPlayer)
+            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+            
+            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
+                do {
+                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
+                } catch {
+                    print("Error sending data: \(error.localizedDescription)")
+                }
+            }
+        }
+        
     }
     
 }

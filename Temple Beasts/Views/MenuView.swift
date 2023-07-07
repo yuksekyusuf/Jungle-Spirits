@@ -14,13 +14,8 @@ class MenuViewModel: ObservableObject {
 
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
-    @StateObject var gameCenterController = GameCenterController()
+    @StateObject var gameCenterController = GameCenterController(currentPlayer: .player1)
     @State private var isMatchmakingPresented = false
-    
-    
-    //    @State private var showingGameCenterView = false
-    //       @State private var navigateToGameView = false
-    
     @State var gameType: GameType? = nil
     @State var hapticState: Bool = true
     @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")

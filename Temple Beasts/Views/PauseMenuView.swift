@@ -12,11 +12,13 @@ struct PauseMenuView: View {
     @Binding var showPauseMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
+    @State var gameType: GameType
 //    @State private var isMusicOn: Bool = false
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @AppStorage("music") private var musicState: Bool = false
     @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
+    @EnvironmentObject var gameCenterController: GameCenterController
     @Binding var currentPlayer: CellState
     
     var body: some View {
@@ -115,8 +117,7 @@ struct PauseMenuView: View {
                                     }
                                     
                                     Button {
-                                        showPauseMenu.toggle()
-                                        isPaused.toggle()
+                                        handleResumeButton()
                                     } label: {
                                         PauseMenuIconView(imageName: "iconResume")
                                         
@@ -140,16 +141,33 @@ struct PauseMenuView: View {
 //        }
         
     }
+    
+    private func handleResumeButton() {
+        showPauseMenu.toggle()
+        gameCenterController.isPaused.toggle()
+        if gameType == .multiplayer {
+            let gameState = GameState(isPaused: gameCenterController.isPaused,
+                                      isGameOver: gameCenterController.isGameOver,
+                                      currentPlayer: gameCenterController.currentPlayer)
+            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+
+            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
+                do {
+                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
+                } catch {
+                    print("Error sending data: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
 }
-
-
 struct PauseMenuView_Previews: PreviewProvider {
     static var previews: some View {
         @State var check = true
         @State var show = true
         @State var player: CellState = .player1
         @State var remainingTime: Int = 15
-        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, currentPlayer: $player)
+        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .oneVone, currentPlayer: $player)
     }
 }
 

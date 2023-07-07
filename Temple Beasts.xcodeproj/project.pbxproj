@@ -39,6 +39,7 @@
 		4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05582A3145D400B2362A /* CustomToggleView.swift */; };
 		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
 		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
+		4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		4DED05562A31449100B2362A /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Watermelon-Regular.otf"; sourceTree = "<group>"; };
 		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
 		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
+		4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				4D42DC122A55DE6B00E8809C /* GameCenterController.swift */,
+				4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -194,13 +197,13 @@
 		4DED05542A31439100B2362A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */,
 				4DED05522A31413600B2362A /* PieceCountView.swift */,
 				4D70D2522A055910002E9C0A /* PlayerView.swift */,
 				4DC62BF02A19402500CD2007 /* BarView.swift */,
 				4DED054C2A31346E00B2362A /* MenuButtonView.swift */,
 				4DED05502A31402900B2362A /* TimeBarView.swift */,
 				4DED05582A3145D400B2362A /* CustomToggleView.swift */,
-				4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */,
 				4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */,
 			);
 			path = Subviews;
@@ -319,6 +322,7 @@
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
+				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4DC62BF12A19402500CD2007 /* BarView.swift in Sources */,
 				4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */,
 			);

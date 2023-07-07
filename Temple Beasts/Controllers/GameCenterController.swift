@@ -9,34 +9,59 @@ import SwiftUI
 import UIKit
 import GameKit
 
-class GameCenterController: NSObject, GKMatchDelegate, ObservableObject {
 
+enum MessageType: Int, Codable {
+    case move
+    case gameState
+}
+
+struct GameMessage: Codable {
+    let messageType: MessageType
+    let move: CodableMove?
+    let gameState: GameState?
+}
+
+struct GameState: Codable {
+    var isPaused: Bool
+    var isGameOver: Bool
+    var currentPlayer: CellState
+    
+}
+
+class GameCenterController: NSObject, GKMatchDelegate, ObservableObject {
+    
+    @Published var isPaused: Bool = false
+    @Published var isGameOver: Bool = false
+    @Published var currentPlayer: CellState
+    
+    @Published var currentlyPlaying = false
+    var localPlayer = GKLocalPlayer.local
+    var otherPlayer: GKPlayer?
+    
+    
+    init(currentPlayer: CellState) {
+        self.currentPlayer = currentPlayer
+    }
+    
     @Published var isUserAuthenticated = false
     @Published var match: GKMatch? {
         didSet {
             self.isMatched = match != nil
             if let match = match {
                 match.delegate = self
+                otherPlayer = match.players.first
             }
         }
     }
     @Published var isMatched = false
-
-//    var board: Board? // You need to have a reference to the board to perform a move
-
     var board: Board? {
         didSet {
             if let board = board {
                 board.notifyChange()
-
+                
             }
         }
     }
-//    override init() {
-//        super.init()
-//        authenticateUser()
-//    }
-
     func authenticateUser() {
         let localPlayer = GKLocalPlayer.local
         localPlayer.authenticateHandler = { [self] gcAuthVC, error in
@@ -52,93 +77,95 @@ class GameCenterController: NSObject, GKMatchDelegate, ObservableObject {
             }
         }
     }
-
-    func encodeMove(_ move: Move) -> Data? {
-        let codableMove = CodableMove.fromMove(move)
-        let encoder = JSONEncoder()
-        return try? encoder.encode(codableMove)
-    }
-
-    func decodeMove(from data: Data) -> Move? {
-        let decoder = JSONDecoder()
-        if let codableMove = try? decoder.decode(CodableMove.self, from: data) {
-            return Move.fromCodable(codableMove)
+    
+    func encodeMessage(_ message: GameMessage) -> Data? {
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(message)
+            return data
+        } catch {
+            print("Failed to encode message: ", error.localizedDescription)
+            return nil
         }
-        return nil
     }
-
+    
+    func decodeMessage(from data: Data) -> GameMessage? {
+        do {
+            let decoder = JSONDecoder()
+            let message = try decoder.decode(GameMessage.self, from: data)
+            return message
+        } catch {
+            print("Failed to decode message: ", error.localizedDescription)
+            return nil
+        }
+    }
+    
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-            if let move = self.decodeMove(from: data) {
-                DispatchQueue.main.async {
-                    let currentPlayer: CellState = (player == match.players.first) ? .player1 : .player2
-                    self.board?.performMove(from: move.source, to: move.destination, player: currentPlayer)
+        if let message = decodeMessage(from: data) {
+            DispatchQueue.main.async {
+                switch message.messageType {
+                case .move:
+                    guard let codableMove = message.move else { return }
+                    guard let gameState = message.gameState else { return }
+                    let move = Move.fromCodable(codableMove)
+                    self.board?.performMove(from: move.source, to: move.destination, player: gameState.currentPlayer)
+
+                case .gameState:
+                    guard let gameState = message.gameState else { return }
+                    self.isPaused = gameState.isPaused
+                    self.isGameOver = gameState.isGameOver
+                    self.currentPlayer = gameState.currentPlayer
+                    if self.currentPlayer == (self.localPlayer == self.otherPlayer ? .player1 : .player2) {
+                        self.currentlyPlaying = true
+                    } else {
+                        self.currentlyPlaying = false
+                    }
                 }
             }
+            
         }
+        
+    }
+    
+ 
+    func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
+        //LATER IMPLEMENT THIS. IT CONFIGURES WHEN A PLAYER DISCONNECTS
+    }
+    
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
-
+        
     }
-
+    
     func randomStartingPlayer() -> CellState {
         let randomNumber = Int.random(in: 1...2)
         return randomNumber == 1 ? .player1 : .player2
     }
+    
+    // In GameCenterController
+    func initializeGame() {
+        // Determine initial player and whether the local player is currently playing.
+        self.currentPlayer = self.randomStartingPlayer()
+        self.currentlyPlaying = self.currentPlayer == .player1
 
+        // Create initial game state.
+        let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer)
 
-}
+        // Encode the initial game state into a message.
+        let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
 
-struct GameCenterView: UIViewControllerRepresentable {
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var menuViewModel: MenuViewModel // Inject the MenuViewModel
-    @EnvironmentObject var gameCenterController: GameCenterController
-
-        class Coordinator: NSObject, GKMatchmakerViewControllerDelegate {
-            var parent: GameCenterView
-                var gameCenterController: GameCenterController
-                var menuViewModel: MenuViewModel  // Add this property
-
-                init(_ parent: GameCenterView, gameCenterController: GameCenterController, menuViewModel: MenuViewModel) {
-                    self.parent = parent
-                    self.gameCenterController = gameCenterController
-                    self.menuViewModel = menuViewModel  // Initialize the property
-                }
-
-            func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
-                parent.presentationMode.wrappedValue.dismiss()
-            }
-
-            func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
-                print("Matchmaker vc did fail with error: \(error.localizedDescription)")
-            }
-
-            func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
-                parent.presentationMode.wrappedValue.dismiss()
-                // Here you get the match object, which you can use to send and receive data between players
-                DispatchQueue.main.async {
-                    self.gameCenterController.match = match
-                    self.menuViewModel.path.append(3)
-                }
+        // Send the initial game state to the other player.
+        if let data = self.encodeMessage(message) {
+            do {
+                try self.match!.sendData(toAllPlayers: data, with: .reliable)
+            } catch {
+                print("Error sending data: \(error.localizedDescription)")
             }
         }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self, gameCenterController: gameCenterController, menuViewModel: menuViewModel)
     }
-
-        func makeUIViewController(context: Context) -> GKMatchmakerViewController {
-            let matchRequest = GKMatchRequest()
-            matchRequest.minPlayers = 2
-            matchRequest.maxPlayers = 2
-            let vc = GKMatchmakerViewController(matchRequest: matchRequest)
-            vc?.matchmakerDelegate = context.coordinator
-            return vc!
-        }
-
-        func updateUIViewController(_ uiViewController: GKMatchmakerViewController, context: Context) {
-            // Update the view controller
-        }
 }
+
+
 
 
 
@@ -153,7 +180,7 @@ struct GameCenterView: UIViewControllerRepresentable {
 //    case authenticating = "Logging in to Game Center..."
 //    case unauthenticated = "Please sign in to Game Center to play."
 //    case authenticated = "Successfully authenticated"
-//    
+//
 //    case error = "There was an error logging into Game Center"
 //    case restricted = "You're not allowed to player multiplayer games!"
 //}
@@ -177,6 +204,7 @@ struct GameCenterView: UIViewControllerRepresentable {
 //}
 //
 //
+
 //extension GameCenterController: GKMatchDelegate {
 //    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
 //        let content = String(decoding: data, as: UTF8.self)

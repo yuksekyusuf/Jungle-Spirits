@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BoardView: View {
     @EnvironmentObject var board: Board
+    @EnvironmentObject var gameCenterController: GameCenterController
     @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
     let onMoveCompleted: (Move) -> Void
@@ -40,13 +41,18 @@ struct BoardView: View {
             return
         }
         
+        // Ignore tap if it's not the local player's turn
+        if !gameCenterController.currentlyPlaying && gameType == .multiplayer {
+            return
+        }
+        
         // If the destination cell is the currently selected cell, unselect it.
-            if let source = source, source == destination {
-                withAnimation(.easeInOut) {
-                    selectedCell = nil
-                }
-                return
+        if let source = source, source == destination {
+            withAnimation(.easeInOut) {
+                selectedCell = nil
             }
+            return
+        }
         
         guard let source = source else {
             if board.cellState(at: destination) == currentPlayer {
@@ -56,18 +62,16 @@ struct BoardView: View {
         }
         
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-            if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
-                SoundManager.shared.playConvertSound()
-                HapticManager.shared.notification(type: .success)
-
-            }
-                selectedCell = nil
-                let move = Move(source: source, destination: destination)
-                onMoveCompleted(move)
-            }
-            else if board.cellState(at: destination) == currentPlayer {
-                selectedCell = destination
-            }
+            board.performMove(from: source, to: destination, player: currentPlayer)
+            SoundManager.shared.playConvertSound()
+            HapticManager.shared.notification(type: .success)
+            selectedCell = nil
+            let move = Move(source: source, destination: destination)
+            onMoveCompleted(move)
+        }
+        else if board.cellState(at: destination) == currentPlayer {
+            selectedCell = destination
+        }
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
