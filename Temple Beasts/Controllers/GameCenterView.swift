@@ -11,14 +11,14 @@ import SwiftUI
 struct GameCenterView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var menuViewModel: MenuViewModel // Inject the MenuViewModel
-    @EnvironmentObject var gameCenterController: GameCenterController
+    @EnvironmentObject var gameCenterController: GameCenterManager
 
         class Coordinator: NSObject, GKMatchmakerViewControllerDelegate {
             var parent: GameCenterView
-                var gameCenterController: GameCenterController
+                var gameCenterController: GameCenterManager
                 var menuViewModel: MenuViewModel  // Add this property
 
-                init(_ parent: GameCenterView, gameCenterController: GameCenterController, menuViewModel: MenuViewModel) {
+                init(_ parent: GameCenterView, gameCenterController: GameCenterManager, menuViewModel: MenuViewModel) {
                     self.parent = parent
                     self.gameCenterController = gameCenterController
                     self.menuViewModel = menuViewModel  // Initialize the property
@@ -37,10 +37,12 @@ struct GameCenterView: UIViewControllerRepresentable {
                     // Here you get the match object, which you can use to send and receive data between players
                     DispatchQueue.main.async {
                         self.gameCenterController.match = match
+//                        self.gameCenterController.startGame(newMatch: match)
+
                         self.menuViewModel.path.append(3)
                         
                         // Initialize the game in GameCenterController
-                        self.gameCenterController.initializeGame()
+//                        self.gameCenterController.initializeGame()
                     }
                 }
         }

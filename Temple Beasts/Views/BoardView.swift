@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BoardView: View {
     @EnvironmentObject var board: Board
-    @EnvironmentObject var gameCenterController: GameCenterController
+    @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
     let onMoveCompleted: (Move) -> Void
@@ -63,6 +63,8 @@ struct BoardView: View {
         
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
             board.performMove(from: source, to: destination, player: currentPlayer)
+            
+//MARK: ########YOU NEED TO RECONFIGURE HERE############
             SoundManager.shared.playConvertSound()
             HapticManager.shared.notification(type: .success)
             selectedCell = nil

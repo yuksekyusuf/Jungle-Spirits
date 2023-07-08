@@ -18,7 +18,7 @@ struct PauseMenuView: View {
     @AppStorage("music") private var musicState: Bool = false
     @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
-    @EnvironmentObject var gameCenterController: GameCenterController
+    @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var currentPlayer: CellState
     
     var body: some View {
@@ -147,8 +147,7 @@ struct PauseMenuView: View {
         gameCenterController.isPaused.toggle()
         if gameType == .multiplayer {
             let gameState = GameState(isPaused: gameCenterController.isPaused,
-                                      isGameOver: gameCenterController.isGameOver,
-                                      currentPlayer: gameCenterController.currentPlayer)
+                                      isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer)
             let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
 
             if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {

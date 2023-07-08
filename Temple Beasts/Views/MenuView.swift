@@ -14,7 +14,7 @@ class MenuViewModel: ObservableObject {
 
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
-    @StateObject var gameCenterController = GameCenterController(currentPlayer: .player1)
+    @StateObject var gameCenterController = GameCenterManager(currentPlayer: .player1)
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType? = nil
     @State var hapticState: Bool = true
