@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class Node {
     var move: Move // The move that got us to this node
     var parent: Node?
@@ -16,19 +15,19 @@ class Node {
     var simulations: Int = 0
     var untriedMoves: [Move]
     var player: CellState // The player who just played
-    
+
     init(move: Move, parent: Node? = nil, untriedMoves: [Move], player: CellState) {
         self.move = move
         self.parent = parent
         self.untriedMoves = untriedMoves
         self.player = player
     }
-    
+
     // Use this function to select a child node
     func UCTSelectChild() -> Node? {
         var bestScore = -1.0
         var bestChild: Node?
-        
+
         for child in children {
             var uctValue = 0.0
             if child.simulations > 0 {
@@ -36,7 +35,7 @@ class Node {
                 let exploration = sqrt(2.0 * log(Double(self.simulations)) / Double(child.simulations))
                 uctValue = winRate + exploration
             }
-            
+
             // Update best score and child if this node's uctValue is larger
             if uctValue > bestScore {
                 bestScore = uctValue
@@ -46,7 +45,6 @@ class Node {
         return bestChild
     }
 
-    
     // Use this function to add a new child node to this node
     func addChild(move: Move, state: Board) -> Node {
         let node = Node(move: move, parent: self, untriedMoves: state.getMoves(), player: state.currentPlayerForAi)
@@ -54,15 +52,15 @@ class Node {
         self.children.append(node)
         return node
     }
-    
-    //Use this func to update the node's stats after a simulation
+
+    // Use this func to update the node's stats after a simulation
     func update(result: Int) {
         self.simulations += 1
         self.wins += result
     }
 }
 
-//class Node {
+// class Node {
 //    var move: Move? // The move that led to this node
 //    var parent: Node? // Nodes are aware of their parent
 //    var children: [Node] = [] // A node has multiple children
@@ -82,4 +80,4 @@ class Node {
 //        visits += 1
 //        wins += result
 //    }
-//}
+// }

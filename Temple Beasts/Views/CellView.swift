@@ -15,11 +15,9 @@ struct CellView: View {
     let outerHighlighted: Bool
     let width = UIScreen.main.bounds.width * 0.175
     let offsetY = UIScreen.main.bounds.height * 0.0046
-    
+
     var body: some View {
-        
-        
-        ZStack{
+        ZStack {
             Image("Unselected cell")
                 .resizable()
                 .scaledToFit()
@@ -29,15 +27,14 @@ struct CellView: View {
                 .transition(.opacity)
                 .animation(.easeIn(duration: 0.5), value: state)
 //                .offset(y: -offsetY)
-            
-            
+
             if highlighted && state == .empty {
                 Image("Highlighted")
                     .resizable()
                     .scaledToFit()
                     .cornerRadius(6)
 //                    .offset(y: -offsetY)
-                
+
             }
             if outerHighlighted && state == .empty {
                 Image("OuterHighlighted")
@@ -45,7 +42,7 @@ struct CellView: View {
                     .scaledToFit()
                     .cornerRadius(6)
 //                    .offset(y: -offsetY)
-                
+
             }
             if isSelected && state == .player1 {
                 Image("EllipseRed")

@@ -9,7 +9,6 @@ import SwiftUI
 import UIKit
 import GameKit
 
-
 enum MessageType: Int, Codable {
     case move
     case gameState
@@ -25,31 +24,26 @@ struct GameState: Codable {
     var isPaused: Bool
     var isGameOver: Bool
     var currentPlayer: CellState
-    
 }
 
 class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
-    
     @Published var isPaused: Bool = false
     @Published var isGameOver: Bool = false
     @Published var currentPlayer: CellState
-    
+
     @Published var currentlyPlaying = false
     var localPlayer = GKLocalPlayer.local
     var otherPlayer: GKPlayer?
-    
-    
+
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
     }
-    
+
     @Published var isUserAuthenticated = false
-    @Published var match: GKMatch?
-    {
+    @Published var match: GKMatch? {
         didSet {
             self.isMatched = match != nil
             if let match = match {
-                
                 match.delegate = self
                 otherPlayer = match.players.first
                 self.currentPlayer = self.randomStartingPlayer()
@@ -62,7 +56,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                         currentlyPlaying = false
 //                        currentPlayer = .player2
                     }
-                    
                 }
             }
         }
@@ -72,7 +65,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         didSet {
             if let board = board {
                 board.notifyChange()
-                
             }
         }
     }
@@ -91,13 +83,13 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             }
         }
     }
-    
+
     func encodeMove(_ move: Move) -> Data? {
         let codableMove = CodableMove.fromMove(move)
         let encoder = JSONEncoder()
         return try? encoder.encode(codableMove)
     }
-    
+
     func encodeMessage(_ message: GameMessage) -> Data? {
         do {
             let encoder = JSONEncoder()
@@ -108,7 +100,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             return nil
         }
     }
-    
+
     func decodeMessage(from data: Data) -> GameMessage? {
         do {
             let decoder = JSONDecoder()
@@ -119,7 +111,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             return nil
         }
     }
-    
+
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
         if let message = decodeMessage(from: data) {
             DispatchQueue.main.async {
@@ -129,10 +121,10 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                             guard let gameState = message.gameState else { return }
                             let move = Move.fromCodable(codableMove)
                             self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
-                            
+
                             self.currentPlayer = gameState.currentPlayer
                             self.currentlyPlaying = self.currentPlayer == (self.localPlayer == self.otherPlayer ? .player1 : .player2)
-                            
+
                         case .gameState:
                             guard let gameState = message.gameState else { return }
                             self.isPaused = gameState.isPaused
@@ -140,31 +132,27 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                             self.currentPlayer = gameState.currentPlayer
                             self.currentlyPlaying = self.currentPlayer == (self.localPlayer == self.otherPlayer ? .player1 : .player2)
                         }
-                    }
+            }
         }
-        
     }
-    
- 
+
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        //IMPLEMENT THIS LATER. IT CONFIGURES WHEN A PLAYER DISCONNECTS
+        // IMPLEMENT THIS LATER. IT CONFIGURES WHEN A PLAYER DISCONNECTS
     }
-    
+
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
-        
     }
-    
+
     func randomStartingPlayer() -> CellState {
         let randomNumber = Int.random(in: 1...2)
         return randomNumber == 1 ? .player1 : .player2
     }
-    
+
     // In GameCenterController
     func initializeGame() {
         // Determine initial player and whether the local player is currently playing.
 //        self.currentPlayer = self.randomStartingPlayer()
-
 
         // Create initial game state.
         let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer)
@@ -185,7 +173,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         match = newMatch
         match?.delegate = self
         otherPlayer = match?.players.first
-        
+
         // Determine the starting player randomly
         self.currentPlayer = self.randomStartingPlayer()
 
@@ -216,29 +204,17 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-//enum PlayerAuthState: String {
+// enum PlayerAuthState: String {
 //    case authenticating = "Logging in to Game Center..."
 //    case unauthenticated = "Please sign in to Game Center to play."
 //    case authenticated = "Successfully authenticated"
 //
 //    case error = "There was an error logging into Game Center"
 //    case restricted = "You're not allowed to player multiplayer games!"
-//}
+// }
 //
 
-
-//extension GameCenterController: GKMatchmakerViewControllerDelegate {
+// extension GameCenterController: GKMatchmakerViewControllerDelegate {
 //    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
 //        viewController.dismiss(animated: true)
 //        startGame(newMatch: match)
@@ -252,11 +228,11 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
 //        viewController.dismiss(animated: true)
 //    }
 //
-//}
+// }
 //
 //
 
-//extension GameCenterController: GKMatchDelegate {
+// extension GameCenterController: GKMatchDelegate {
 //    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
 //        let content = String(decoding: data, as: UTF8.self)
 //
@@ -286,8 +262,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
 //    func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
 //
 //    }
-//}
-
+// }
 
 //    func startMatchMaking() {
 //        let request = GKMatchRequest()

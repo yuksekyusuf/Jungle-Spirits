@@ -12,7 +12,7 @@ struct PauseMenuIconView: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 14)
             .foregroundColor(Color("AnotherPause"))
-            .overlay{
+            .overlay {
                 Image(imageName)
             }
             .frame(width: 59, height: 44)

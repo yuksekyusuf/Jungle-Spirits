@@ -19,7 +19,7 @@ struct PlayerView: View {
                         .aspectRatio(contentMode: .fit)
                         .clipped()
                 } else if player == .player2 {
-                    Image(uiImage:  UIImage(named: "blueActive")!)
+                    Image(uiImage: UIImage(named: "blueActive")!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .clipped()
@@ -31,16 +31,15 @@ struct PlayerView: View {
                         .aspectRatio(contentMode: .fit)
                         .clipped()
                 } else if player == .player2 {
-                    Image(uiImage:  UIImage(named: "Blue")!)
+                    Image(uiImage: UIImage(named: "Blue")!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .clipped()
                 }
             }
-            
         }
     }
-    
+
     var playerImage: some View {
         Image(systemName: "star.fill")
             .font(.headline)

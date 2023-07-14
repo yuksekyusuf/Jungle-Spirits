@@ -31,20 +31,19 @@ struct CountDownView: View {
                             .onAppear(perform: runAnimation)
             }
         }
-            
     }
     private func runAnimation() {
             withAnimation(.easeInOut(duration: 0.5)) {
                 scale = 2
                 opacity = 1.0
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 withAnimation(.easeInOut(duration: 0.5)) {
                     scale = 2
                     opacity = 0.0
                 }
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     if counter > 1 {
                         counter -= 1
@@ -84,14 +83,13 @@ extension Color {
             .sRGB,
             red: Double(r) / 255,
             green: Double(g) / 255,
-            blue:  Double(b) / 255,
+            blue: Double(b) / 255,
             opacity: Double(a) / 255
         )
     }
 }
 
-
-//if counter > 0 {
+// if counter > 0 {
 //    ZStack {
 //        Text("\(counter)")
 //            .font(Font.custom("Watermelon-Regular", size: 72))
@@ -100,24 +98,22 @@ extension Color {
 //            .scaleEffect(scale)
 //            .opacity(opacity)
 //            .background(
-//LinearGradient(
+// LinearGradient(
 //                gradient: Gradient(colors: [Color(hex: "#B8DBFF"), Color(hex: "#FFD9CF")]),
 //                startPoint: .leading,
 //                endPoint: .trailing)
-//)
+// )
 //            .mask(Text("\(counter)")
 //                .font(Font.custom("Watermelon-Regular", size: 72)))
 //    }
-//}
+// }
 
 extension Text {
     public func foregroundLinearGradient(
         colors: [Color],
         startPoint: UnitPoint,
-        endPoint: UnitPoint) -> some View
-    {
+        endPoint: UnitPoint) -> some View {
         self.overlay {
-
             LinearGradient(
                 colors: colors,
                 startPoint: startPoint,
@@ -125,7 +121,6 @@ extension Text {
             )
             .mask(
                 self
-
             )
         }
     }

@@ -31,7 +31,7 @@ struct GameCenterView: UIViewControllerRepresentable {
             func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
                 print("Matchmaker vc did fail with error: \(error.localizedDescription)")
             }
-            
+
                 func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
                     parent.presentationMode.wrappedValue.dismiss()
                     // Here you get the match object, which you can use to send and receive data between players
@@ -40,7 +40,7 @@ struct GameCenterView: UIViewControllerRepresentable {
 //                        self.gameCenterController.startGame(newMatch: match)
 
                         self.menuViewModel.path.append(3)
-                        
+
                         // Initialize the game in GameCenterController
 //                        self.gameCenterController.initializeGame()
                     }
@@ -63,21 +63,19 @@ struct GameCenterView: UIViewControllerRepresentable {
         }
 }
 
-
-
-//enum MessageType: Int, Codable {
+// enum MessageType: Int, Codable {
 //    case move
 //    case gameState
 //    case firstPlayer
-//}
+// }
 //
-//struct GameMessage: Codable {
+// struct GameMessage: Codable {
 //    let messageType: MessageType
 //    let move: CodableMove?
 //    let gameState: GameState?
-//}
+// }
 //
-//struct GameState: Codable {
+// struct GameState: Codable {
 //    var isPaused: Bool
 //    var isGameOver: Bool
 //    var currentPlayer: CellState
@@ -105,7 +103,4 @@ struct GameCenterView: UIViewControllerRepresentable {
 //        try container.encode(firstPlayerID, forKey: .firstPlayerID)
 //        try container.encode(currentPlayer.rawValue, forKey: .currentPlayer)
 //    }
-//}
-
-
-
+// }

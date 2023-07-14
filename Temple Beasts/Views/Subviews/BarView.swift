@@ -25,13 +25,11 @@ struct BarView: View {
         }
         .compositingGroup()
         .frame(width: width, height: 20)
-        .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.23999999463558197)), radius:0, x:0, y:2.142857074737549)
+        .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.23999999463558197)), radius: 0, x: 0, y: 2.142857074737549)
     }
-    
-        
 }
 
-struct test_Previews: PreviewProvider {
+struct Test_Previews: PreviewProvider {
     static var previews: some View {
         BarView(width: 244)
     }

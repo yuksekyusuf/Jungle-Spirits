@@ -7,22 +7,18 @@
 
 import SwiftUI
 
-
 class HapticManager {
-    
-    
     static let shared = HapticManager()
-    
+
     func notification(type: UINotificationFeedbackGenerator.FeedbackType) {
         guard UserDefaults.standard.bool(forKey: "haptic") else { return }
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(type)
     }
-    
+
     func impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
         guard UserDefaults.standard.bool(forKey: "haptic") else { return }
         let generator = UIImpactFeedbackGenerator(style: style)
         generator.impactOccurred()
     }
-    
 }

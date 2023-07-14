@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Temple_BeastsApp: App {    
+struct Temple_BeastsApp: App {
     var body: some Scene {
 //        var gameCenterController = GameCenterController()
 

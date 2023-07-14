@@ -5,10 +5,10 @@
 ////  Created by Ahmet Yusuf Yuksek on 5.07.2023.
 ////
 //
-//import SwiftUI
-//import Combine
+// import SwiftUI
+// import Combine
 //
-//class NewBoard: ObservableObject {
+// class NewBoard: ObservableObject {
 //    @Published var cells: [[CellState]]
 //
 //    let size: (rows: Int, columns: Int)
@@ -99,11 +99,11 @@
 //           return convertedPieceCount
 //       }
 //
-//}
+// }
 //
 //
 //
-//class NewPlayer {
+// class NewPlayer {
 //    let cellState: CellState
 //    let isAI: Bool
 //
@@ -111,9 +111,9 @@
 //        self.cellState = cellState
 //        self.isAI = isAI
 //    }
-//}
+// }
 //
-////class GameEngine {
+//// class GameEngine {
 ////    private var players: [NewPlayer]
 ////    @Published private(set) var board: NewBoard
 ////    var currentPlayerIndex = 0
@@ -121,4 +121,4 @@
 ////    var isGameOver: Bool {
 ////        return NewBoard.isGameOver()
 ////    }
-////}
+//// }

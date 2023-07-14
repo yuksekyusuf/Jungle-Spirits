@@ -13,10 +13,9 @@ struct TimeBarView: View {
     let currentPlayer: CellState
 //    let width = UIScreen.main.bounds.width * CGFloat(remainingTime) / CGFloat
     var body: some View {
-        
         GeometryReader { geo in
 //            var width = UIScreen.main.bounds.width * CGFloat(remainingTime) / CGFloat(totalTime)
-                let width = geo.size.width * CGFloat(remainingTime) / CGFloat (totalTime)
+                let width = geo.size.width * CGFloat(remainingTime) / CGFloat(totalTime)
 
                 ZStack(alignment: .leading) {
                     Rectangle()
@@ -32,8 +31,7 @@ struct TimeBarView: View {
                                     .init(color: Color(#colorLiteral(red: 0.5583333373069763, green: 0, blue: 0.1675001084804535, alpha: 1)), location: 1)]),
                                 startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
                                 endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
-                            
-                        
+
                             .padding(.leading, 4)
                             .frame(width: width, height: 20)
                     } else if currentPlayer == .player2 {
@@ -41,7 +39,7 @@ struct TimeBarView: View {
                             .fill(LinearGradient(
                                 stops: [
                                     Gradient.Stop(color: Color(red: 0.21, green: 0.62, blue: 1), location: 0.00),
-                                    Gradient.Stop(color: Color(red: 0.1, green: 0.46, blue: 1), location: 1.00),
+                                    Gradient.Stop(color: Color(red: 0.1, green: 0.46, blue: 1), location: 1.00)
                                 ],
                                 startPoint: UnitPoint(x: 1, y: 0.5),
                                 endPoint: UnitPoint(x: 0, y: 0.5)
@@ -53,8 +51,6 @@ struct TimeBarView: View {
                 }
         }
         .frame(maxHeight: 40)
-
-        
     }
 }
 
