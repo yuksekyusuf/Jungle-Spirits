@@ -11,7 +11,7 @@ enum GameType: Identifiable {
     case ai
     case oneVone
     case multiplayer
-    
+
     var id: Int {
         switch self {
         case .ai:

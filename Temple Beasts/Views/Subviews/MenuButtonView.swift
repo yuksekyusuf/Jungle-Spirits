@@ -24,6 +24,3 @@ struct MenuButtonView_Previews: PreviewProvider {
         MenuButtonView(text: "SinglePlayer")
     }
 }
-
-
-

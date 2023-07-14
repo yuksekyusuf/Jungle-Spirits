@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SwiftUIView: View {
     var body: some View {
-        
         VStack {
             Capsule()
                 .frame(width: 360, height: 24)
@@ -27,10 +26,9 @@ struct SwiftUIView: View {
                 .overlay(
                     Capsule()
                         .frame(width: 50)
-                        .foregroundColor(.blue)
-                    ,alignment: .leading
+                        .foregroundColor(.blue), alignment: .leading
                 )
-            
+
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(.black)
@@ -41,7 +39,7 @@ struct SwiftUIView: View {
 //                        .stroke(Color(red: 236/255, green: 234/255, blue: 235/255),
 //                                lineWidth: 3)
                             .shadow(color: Color.white,
-                                radius:5, x: 2, y: 2)
+                                radius: 5, x: 2, y: 2)
                         .clipShape(
                             Capsule()
                         )
@@ -57,14 +55,9 @@ struct SwiftUIView: View {
                     .innerShadow(5, opacity: 0.5, x: 2, y: 2)
                     .padding(.leading, 4)
                     .frame(width: 250, height: 20)
-                    
-                
-                
-                
             }
         }
-        
-        
+
         //        ZStack {
         //            Color.black
         //            VStack {

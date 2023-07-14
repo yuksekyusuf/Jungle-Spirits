@@ -16,20 +16,20 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @StateObject var gameCenterController = GameCenterManager(currentPlayer: .player1)
     @State private var isMatchmakingPresented = false
-    @State var gameType: GameType? = nil
+    @State var gameType: GameType?
     @State var hapticState: Bool = true
     @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @AppStorage("music") private var musicState: Bool = false
-    
+
     //    @AppStorage("haptic") var hapticState: Bool?
     //    @AppStorage("sound") var soundState: Bool?
     var views: [String] = ["Menu", "Game", "PauseMenu"]
     @StateObject var menuViewModel = MenuViewModel()
-    
+
     let buttonWidth = UIScreen.main.bounds.width * 0.71
     let singleButtonWidth = UIScreen.main.bounds.width * 0.35
     let smallButtonWidth = UIScreen.main.bounds.width * 0.198
-    
+
     var body: some View {
         NavigationStack(path: $menuViewModel.path) {
             ZStack {
@@ -62,13 +62,12 @@ struct MenuView: View {
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width * 0.8)
                         .offset(y: -110)
-                    
+
                     Spacer()
                     VStack {
                         HStack {
                             NavigationLink {
                                 GameView(gameType: .ai)
-
                             } label: {
                                 Image("SinglePlayer")
                                     .resizable()
@@ -78,31 +77,27 @@ struct MenuView: View {
                             .simultaneousGesture(TapGesture().onEnded({
                                 menuViewModel.path.append(1)
                             }))
-                            
-                            //1 vs 1
+
+                            // 1 vs 1
                             NavigationLink {
                                 GameView(gameType: .oneVone)
-                                    
-
                             } label: {
                                 Image("1 vs 1")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: singleButtonWidth)
-                                
                             }
                             .simultaneousGesture(TapGesture().onEnded({
                                 menuViewModel.path.append(2)
                             }))
                         }
-                        
+
                         ZStack {
                             NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
                                     EmptyView()
                             }
                             Button {
                                 self.isMatchmakingPresented = true
-                                
                             } label: {
                                 Image("OnlineButton")
                                     .resizable()
@@ -112,10 +107,8 @@ struct MenuView: View {
                             .sheet(isPresented: $isMatchmakingPresented) {
                                 GameCenterView().environmentObject(gameCenterController)
                             }
-
                         }
-                        
-                        
+
                         HStack(spacing: 0) {
                             Spacer()
                             Image(soundState ? "soundOn" : "soundOff")
@@ -155,7 +148,7 @@ struct MenuView: View {
                 }
             }
         }
-        .onAppear{
+        .onAppear {
             UserDefaults.standard.set(soundState, forKey: "sound")
             SoundManager.shared.startPlayingIfNeeded()
             if !gameCenterController.isUserAuthenticated {
@@ -172,6 +165,3 @@ struct MenuView_Previews: PreviewProvider {
         MenuView()
     }
 }
-
-
-

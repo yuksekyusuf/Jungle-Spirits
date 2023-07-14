@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WinView: View {
-    
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
@@ -17,7 +16,7 @@ struct WinView: View {
     let winner: CellState
     @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
-    
+
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -25,7 +24,7 @@ struct WinView: View {
             VStack {
                 Image("pauseMenuBackground")
                     .padding(.top, -200)
-                    .overlay{
+                    .overlay {
                         ZStack {
                             RoundedRectangle(cornerRadius: 46)
                                 .fill(
@@ -37,8 +36,8 @@ struct WinView: View {
                                         endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
                                 )
                                 .frame(width: 271, height: 258)
-                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius:16, x:0, y:10)
-                            
+                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
+
                             Image("pausemenubackground1")
                                 .frame(width: 240, height: 240)
                             Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
@@ -48,8 +47,7 @@ struct WinView: View {
                                 .blendMode(.overlay)
                                 .frame(width: 240, height: 240)
                                 .cornerRadius(44)
-                            
-                            
+
                             if winner == .player1 {
                                 Image("redWinner")
                                     .resizable()
@@ -84,13 +82,11 @@ struct WinView: View {
                                             .allowsHitTesting(false)
                                     }
                             }
-                            
-                            
+
                             Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
                                 .offset(y: -135)
                                 .allowsHitTesting(false)
-                            
-                            
+
                             VStack {
                                 Spacer()
                                 Spacer()
@@ -104,37 +100,32 @@ struct WinView: View {
                                     } label: {
                                         RoundedRectangle(cornerRadius: 14)
                                             .foregroundColor(Color("AnotherPause"))
-                                            .overlay{
+                                            .overlay {
                                                 Image("iconReplay")
                                             }
                                             .frame(width: 94.5, height: 42)
-                                        
-                                        
                                     }
                                     Button {
                                         menuViewModel.path.removeAll()
                                     } label: {
                                         RoundedRectangle(cornerRadius: 14)
                                             .foregroundColor(Color("AnotherPause"))
-                                            .overlay{
+                                            .overlay {
                                                 Image("iconHome")
                                             }
                                             .frame(width: 94.5, height: 42)
-                                        
                                     }
-                                    
                                 }
                                 .offset(y: 20)
                                 Spacer()
                             }
-                            
+
                             Image("winLights")
                                 .resizable()
                                 .frame(width: 400, height: 400)
                                 .blendMode(.overlay)
                                 .allowsHitTesting(false)
                                 .rotationEffect(.degrees(degrees))
-                                
                         }
                         .onAppear {
                             let baseAnimation = Animation.linear(duration: 15).repeatForever()
@@ -145,7 +136,6 @@ struct WinView: View {
                     }
             }
         }
-
     }
 }
 

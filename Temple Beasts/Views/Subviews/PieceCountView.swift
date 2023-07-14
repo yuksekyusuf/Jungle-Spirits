@@ -15,7 +15,7 @@ struct PieceCountView: View {
             .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
             .tracking(0.9)
             .multilineTextAlignment(.center)
-            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:0, y:2)
+            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius: 0, x: 0, y: 2)
     }
 }
 

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PauseMenuView: View {
-    
     @Binding var showPauseMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
@@ -20,16 +19,15 @@ struct PauseMenuView: View {
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var currentPlayer: CellState
-    
+
     var body: some View {
-        
         ZStack {
             Color.black.ignoresSafeArea()
                 .opacity(0.65)
             VStack {
                 Image("pauseMenuBackground")
                     .padding(.top, -200)
-                    .overlay{
+                    .overlay {
                         ZStack {
                             RoundedRectangle(cornerRadius: 46)
                                 .fill(
@@ -41,8 +39,8 @@ struct PauseMenuView: View {
                                         endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
                                 )
                                 .frame(width: 271, height: 258)
-                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius:16, x:0, y:10)
-                            
+                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
+
                             Image("pausemenubackground1")
                                 .frame(width: 240, height: 240)
                             Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
@@ -52,7 +50,7 @@ struct PauseMenuView: View {
                                 .blendMode(.overlay)
                                 .frame(width: 240, height: 240)
                                 .cornerRadius(44)
-                            
+
                             Image("pauseMenuPieces")
                                 .offset(y: -122)
                             VStack {
@@ -61,13 +59,12 @@ struct PauseMenuView: View {
                                     .fill(Color("AnotherPause"))
                                     .frame(width: 201, height: 89)
                                     .padding(.top, 40)
-                                    .overlay{
+                                    .overlay {
                                         HStack {
                                             VStack(spacing: 5) {
                                                 Image("Note")
-                                                
+
                                                 Image("iconSound")
-                                                
                                             }
                                             VStack(spacing: 12) {
                                                 Text("MUSIC")
@@ -77,7 +74,7 @@ struct PauseMenuView: View {
                                                     .font(Font.custom("Watermelon-Regular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
                                             }
-                                            
+
                                             VStack(spacing: 5) {
                                                 Toggle(isOn: $musicState) {
                                                     Text("")
@@ -91,7 +88,7 @@ struct PauseMenuView: View {
                                                         SoundManager.shared.stopBackgroundMusic()
                                                     }
                                                 }
-                                                
+
                                                 Toggle(isOn: $soundState) {
                                                     Text("")
                                                 }
@@ -113,14 +110,12 @@ struct PauseMenuView: View {
                                         remainingTime = 15
                                     } label: {
                                         PauseMenuIconView(imageName: "iconReplay")
-                                        
                                     }
-                                    
+
                                     Button {
                                         handleResumeButton()
                                     } label: {
                                         PauseMenuIconView(imageName: "iconResume")
-                                        
                                     }
                                     Button {
                                         menuViewModel.path.removeAll()
@@ -130,7 +125,6 @@ struct PauseMenuView: View {
                                 }
                                 .padding(.bottom, 20)
                                 Spacer()
-                                
                             }
                         }
                     }
@@ -139,9 +133,9 @@ struct PauseMenuView: View {
 //        .onAppear {
 //            SoundManager.shared.startPlayingIfNeeded()
 //        }
-        
+
     }
-    
+
     private func handleResumeButton() {
         showPauseMenu.toggle()
         gameCenterController.isPaused.toggle()
@@ -169,5 +163,3 @@ struct PauseMenuView_Previews: PreviewProvider {
         PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .oneVone, currentPlayer: $player)
     }
 }
-
-
