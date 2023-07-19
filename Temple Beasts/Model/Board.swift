@@ -743,3 +743,57 @@ extension Board {
 //        }
 //
 // }
+
+
+extension Board {
+    func scoreMove(_ move: Move, for player: CellState) -> Int {
+        // Make a copy of the board
+        let boardCopy = self.copy()
+        
+        // Execute the move on the copy
+        boardCopy.performMove(from: move.source, to: move.destination, player: player)
+        
+        // Count the number of player's pieces on the copy
+        let playerPiecesCopy = (player == .player1) ? boardCopy.countPieces().player1 : boardCopy.countPieces().player2
+        
+        // Count the number of player's pieces on the original board
+        let playerPiecesOriginal = (player == .player1) ? self.countPieces().player1 : self.countPieces().player2
+        
+        // The score for the move is the difference in the number of pieces
+        let score = playerPiecesCopy - playerPiecesOriginal
+        
+        return score
+    }
+    func chooseMove(for player: CellState) -> Move? {
+        // Get all legal moves for the player
+        let legalMoves = getLegalMoves(for: player)
+        
+        // Score each move
+        let scores = legalMoves.map { scoreMove($0, for: player) }
+        
+        // Find the highest score
+        let maxScore = scores.max()
+        
+        // Find all moves that have this score
+        let bestMoves = legalMoves.filter { scoreMove($0, for: player) == maxScore }
+        
+        // Choose a move randomly from the best moves
+        let move = bestMoves.randomElement()
+        
+        return move
+    }
+    
+    func performAIMove(){
+        let aiPlayer: CellState = .player2
+        guard let move = chooseMove(for: aiPlayer)  else {
+            print("No valid move found for AI player.")
+            return
+        }
+        
+        // Perform the move and return the move
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.performMove(from: move.source, to: move.destination, player: aiPlayer)
+        }
+    }
+
+}

@@ -283,10 +283,11 @@ struct GameView: View {
                     self.gameCenterController.isGameOver = true
                     self.gameCenterController.isPaused.toggle()
                 } else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
-                    DispatchQueue.global().async {
-                        self.board.performMTSCMove()
+                    DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+//                        self.board.performMTSCMove()
+                        self.board.performAIMove()
                         print("after ai performs, current player: ", gameCenterController.currentPlayer)
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             self.gameCenterController.currentPlayer = .player1
                             self.remainingTime = 15
                             SoundManager.shared.playMoveSound()
