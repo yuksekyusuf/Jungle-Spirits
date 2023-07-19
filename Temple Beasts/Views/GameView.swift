@@ -153,10 +153,10 @@ struct GameView: View {
             } else if newValue == 0 && gameType == .ai {
                 remainingTime = 15
                 switchPlayer()
-                DispatchQueue.global().async {
-                    self.board.performMTSCMove()
+                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                    self.board.performAIMove()
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.gameCenterController.currentPlayer = .player1
                         self.remainingTime = 15
                     }
@@ -263,41 +263,44 @@ struct GameView: View {
 //            }
 //
 //            SoundManager.shared.playMoveSound()
-            let codableMove = CodableMove.fromMove(move)
-            let gameState = GameState(isPaused: self.gameCenterController.isPaused, isGameOver: self.gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer)
-            let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
-            if let data = gameCenterController.encodeMessage(message) {
-                do {
-                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
-                } catch {
-                    print("Error sending data: \(error.localizedDescription)")
-                }
-            }
-            gameCenterController.currentlyPlaying = !gameCenterController.currentlyPlaying
-            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
-            remainingTime = 15
+//            let codableMove = CodableMove.fromMove(move)
+//            let gameState = GameState(isPaused: self.gameCenterController.isPaused, isGameOver: self.gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer)
+//            let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
+//            if let data = gameCenterController.encodeMessage(message) {
+//                do {
+//                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+//                } catch {
+//                    print("Error sending data: \(error.localizedDescription)")
+//                }
+//            }
+//            gameCenterController.currentlyPlaying = !gameCenterController.currentlyPlaying
+//            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
+//            remainingTime = 15
         } else {
             gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
-                remainingTime = 15
-                if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
-                    self.gameCenterController.isGameOver = true
-                    self.gameCenterController.isPaused.toggle()
-                } else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
-                    DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-//                        self.board.performMTSCMove()
-                        self.board.performAIMove()
-                        print("after ai performs, current player: ", gameCenterController.currentPlayer)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            self.gameCenterController.currentPlayer = .player1
-                            self.remainingTime = 15
-                            SoundManager.shared.playMoveSound()
+            remainingTime = 15
+            SoundManager.shared.playMoveSound()
+            if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
+                self.gameCenterController.isGameOver = true
+                self.gameCenterController.isPaused.toggle()
+            } else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
+                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                    self.board.performAIMove()
+                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.gameCenterController.currentPlayer = .player1
+                        self.remainingTime = 15
+                        SoundManager.shared.playMoveSound()
+                        if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
+                            if convertedPieces > 0 {
+                                SoundManager.shared.playConvertSound()
+                            }
                         }
                     }
-                    self.remainingTime = 15
-                } else {
-                    SoundManager.shared.playMoveSound()
                 }
+                self.remainingTime = 15
             }
+        }
     }
     func switchPlayer() {
         gameCenterController.currentPlayer = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1

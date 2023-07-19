@@ -61,11 +61,10 @@ struct BoardView: View {
         }
 
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-            board.performMove(from: source, to: destination, player: currentPlayer)
-
-// MARK: ########YOU NEED TO RECONFIGURE HERE############
-            SoundManager.shared.playConvertSound()
-            HapticManager.shared.notification(type: .success)
+            if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+            }
             selectedCell = nil
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)
