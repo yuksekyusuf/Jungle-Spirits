@@ -24,43 +24,40 @@ struct GameState: Codable {
     var isPaused: Bool
     var isGameOver: Bool
     var currentPlayer: CellState
+    var currentlyPlaying: Bool
+    var priority: Int
 }
 
 class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var isPaused: Bool = false
     @Published var isGameOver: Bool = false
     @Published var currentPlayer: CellState
-
     @Published var currentlyPlaying = false
+    @Published var otherPlayerPlaying: Bool = false
+
+    
+    
     var localPlayer = GKLocalPlayer.local
     var otherPlayer: GKPlayer?
+    var priority: Int = 0
+    var otherPriority = 0
 
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
     }
 
     @Published var isUserAuthenticated = false
+    @Published var isMatched = false
     @Published var match: GKMatch? {
         didSet {
             self.isMatched = match != nil
             if let match = match {
                 match.delegate = self
-                otherPlayer = match.players.first
-                self.currentPlayer = self.randomStartingPlayer()
-
-                if let otherPlayer = otherPlayer?.teamPlayerID {
-                    if localPlayer.teamPlayerID > otherPlayer {
-                        currentlyPlaying = true
-//                        currentPlayer = .player1
-                    } else if localPlayer.teamPlayerID < otherPlayer {
-                        currentlyPlaying = false
-//                        currentPlayer = .player2
-                    }
-                }
+                currentPlayer = .initial
+                print("When players are matched, their current player state is ", currentPlayer.rawValue)
             }
         }
     }
-    @Published var isMatched = false
     var board: Board? {
         didSet {
             if let board = board {
@@ -83,13 +80,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             }
         }
     }
-
-    func encodeMove(_ move: Move) -> Data? {
-        let codableMove = CodableMove.fromMove(move)
-        let encoder = JSONEncoder()
-        return try? encoder.encode(codableMove)
-    }
-
+    
     func encodeMessage(_ message: GameMessage) -> Data? {
         do {
             let encoder = JSONEncoder()
@@ -115,27 +106,38 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
         if let message = decodeMessage(from: data) {
             DispatchQueue.main.async {
-                        switch message.messageType {
-                        case .move:
-                            guard let codableMove = message.move else { return }
-                            guard let gameState = message.gameState else { return }
-                            let move = Move.fromCodable(codableMove)
-                            self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
+                switch message.messageType {
+                case .move:
+                    guard let codableMove = message.move else { return }
+                    let move = Move.fromCodable(codableMove)
+                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+                    self.otherPlayerPlaying.toggle()
+                    self.currentlyPlaying.toggle()
+                    print("After the move, the local player is playing?: ", self.currentlyPlaying)
+                    print("After the move, the local player is : ", self.currentPlayer.rawValue)
+                    _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
 
-                            self.currentPlayer = gameState.currentPlayer
-                            self.currentlyPlaying = self.currentPlayer == (self.localPlayer == self.otherPlayer ? .player1 : .player2)
+                case .gameState:
+                    guard let gameState = message.gameState else { return }
+                    self.isPaused = gameState.isPaused
+                    self.isGameOver = gameState.isGameOver
+                    if self.currentPlayer == .initial {
+                        let isLocalPlayerStart = self.priority > gameState.priority
+                        self.currentPlayer = isLocalPlayerStart ? .player1 : .player2
+                        self.otherPlayerPlaying = !isLocalPlayerStart
+                        print("After receiving the first data, local player is \(self.currentPlayer.rawValue)")
+                        self.currentlyPlaying = isLocalPlayerStart
+                        print("After receiving the first data, Local player is playing?: \(self.currentlyPlaying)")
+                        print("After receiving the first data, remote player is playing?: ", self.otherPlayerPlaying)
+                    }
+                    self.otherPriority = gameState.priority
+                    print("This is other priority: \(self.otherPriority)")
 
-                        case .gameState:
-                            guard let gameState = message.gameState else { return }
-                            self.isPaused = gameState.isPaused
-                            self.isGameOver = gameState.isGameOver
-                            self.currentPlayer = gameState.currentPlayer
-                            self.currentlyPlaying = self.currentPlayer == (self.localPlayer == self.otherPlayer ? .player1 : .player2)
-                        }
+                }
             }
         }
     }
-
+    
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
         // IMPLEMENT THIS LATER. IT CONFIGURES WHEN A PLAYER DISCONNECTS
     }
@@ -144,41 +146,18 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
 
-    func randomStartingPlayer() -> CellState {
-        let randomNumber = Int.random(in: 1...2)
-        return randomNumber == 1 ? .player1 : .player2
-    }
 
-    // In GameCenterController
-    func initializeGame() {
-        // Determine initial player and whether the local player is currently playing.
-//        self.currentPlayer = self.randomStartingPlayer()
-
-        // Create initial game state.
-        let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer)
-
-        // Encode the initial game state into a message.
-        let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-
-        // Send the initial game state to the other player.
-        if let data = self.encodeMessage(message) {
-            do {
-                try self.match!.sendData(toAllPlayers: data, with: .reliable)
-            } catch {
-                print("Error sending data: \(error.localizedDescription)")
-            }
-        }
-    }
     func startGame(newMatch: GKMatch) {
         match = newMatch
         match?.delegate = self
         otherPlayer = match?.players.first
 
-        // Determine the starting player randomly
-        self.currentPlayer = self.randomStartingPlayer()
+        // Generate a random priority
+        priority = Int.random(in: 1...100)
+        print("This is my priority: \(self.priority)")
 
         // Create initial game state.
-        let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer)
+        let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, currentlyPlaying: false, priority: self.priority)
 
         // Encode the initial game state into a message.
         let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
@@ -191,16 +170,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                 print("Error sending data: \(error.localizedDescription)")
             }
         }
-//        if let otherPlayer = otherPlayer?.teamPlayerID {
-//            if localPlayer.teamPlayerID > otherPlayer {
-//                currentlyPlaying = true
-////                        currentPlayer = .player1
-//            } else if localPlayer.teamPlayerID < otherPlayer {
-//                currentlyPlaying = false
-////                        currentPlayer = .player2
-//            }
-//
-//        }
     }
 }
 

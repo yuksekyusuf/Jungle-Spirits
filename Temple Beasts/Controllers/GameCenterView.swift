@@ -36,13 +36,10 @@ struct GameCenterView: UIViewControllerRepresentable {
                     parent.presentationMode.wrappedValue.dismiss()
                     // Here you get the match object, which you can use to send and receive data between players
                     DispatchQueue.main.async {
-                        self.gameCenterController.match = match
-//                        self.gameCenterController.startGame(newMatch: match)
-
+//                        self.gameCenterController.match = match
                         self.menuViewModel.path.append(3)
+                        self.gameCenterController.startGame(newMatch: match)
 
-                        // Initialize the game in GameCenterController
-//                        self.gameCenterController.initializeGame()
                     }
                 }
         }

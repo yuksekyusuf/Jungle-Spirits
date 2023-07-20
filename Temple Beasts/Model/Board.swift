@@ -12,6 +12,7 @@ enum CellState: Int, Codable {
     case player1
     case player2
     case draw
+    case initial
     func opposite() -> CellState {
         switch self {
         case .player1:
@@ -152,7 +153,8 @@ class Board: ObservableObject {
             cells[source.row][source.col] = .empty
             cells[destination.row][destination.col] = player
         }
-
+        
+        
         let convertedPieces = convertOpponentPieces(at: destination, player: player)
         turn += 1
 

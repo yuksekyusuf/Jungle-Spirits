@@ -141,7 +141,7 @@ struct PauseMenuView: View {
         gameCenterController.isPaused.toggle()
         if gameType == .multiplayer {
             let gameState = GameState(isPaused: gameCenterController.isPaused,
-                                      isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer)
+                                      isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
             let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
 
             if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {

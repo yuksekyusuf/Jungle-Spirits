@@ -46,15 +46,26 @@ struct GameView: View {
                     HStack {
                         VStack {
                             HStack {
-                                Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
-                                    .frame(width: 55)
-                                    .padding(.leading, 20)
-
+                                if gameCenterController.otherPlayerPlaying {
+                                    Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
+                                        .frame(width: 55)
+                                        .padding(.leading, 20)
+                                } else {
+                                    Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                        .frame(width: 55)
+                                        .padding(.leading, 20)
+                                }
                                 PieceCountView(pieceCount: player1PieceCount)
                             }
-
-                            Text("\(gameCenterController.localPlayer.displayName)")
-                                .foregroundColor(.white)
+                            
+                            if gameCenterController.priority > gameCenterController.otherPriority ?? 0 {
+                                Text("\(gameCenterController.localPlayer.displayName)")
+                                    .foregroundColor(.white)
+                            } else {
+                                Text("\(gameCenterController.otherPlayer?.displayName ?? "")")
+                                    .foregroundColor(.white)
+                            }
+                            
                         }
 
                         Spacer()
@@ -70,21 +81,36 @@ struct GameView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
                             }
-                            Text("\(gameCenterController.currentPlayer.rawValue) is playin? \(gameCenterController.currentlyPlaying.description)")
-                                .foregroundColor(.white)
+                            if gameCenterController.priority > gameCenterController.otherPriority {
+                                Text("\(gameCenterController.localPlayer.displayName) is playing.")
+                                    .foregroundColor(.white)
+                            } else {
+                                Text("\(gameCenterController.otherPlayer?.displayName ?? "") is playing.")
+                                    .foregroundColor(.white)
+                            }
                         }
 
                         Spacer()
                         VStack {
                             HStack {
                                 PieceCountView(pieceCount: player2PieceCount)
-                                Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
-                                    .frame(width: 55)
-                                    .padding(.trailing, 20)
+                                if gameCenterController.otherPlayerPlaying {
+                                    Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
+                                        .frame(width: 55)
+                                        .padding(.trailing, 20)
+                                } else {
+                                    Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                        .frame(width: 55)
+                                        .padding(.trailing, 20)
+                                }
                             }
-
-                            Text(gameCenterController.otherPlayer?.displayName ?? "")
-                                .foregroundColor(.white)
+                            if gameCenterController.priority < gameCenterController.otherPriority ?? 0 {
+                                Text("\(gameCenterController.localPlayer.displayName)")
+                                    .foregroundColor(.white)
+                            } else {
+                                Text("\(gameCenterController.otherPlayer?.displayName ?? "")")
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                     HStack {
@@ -173,6 +199,8 @@ struct GameView: View {
         }
         .onAppear {
             gameCenterController.board = self.board
+            print("LOCAL PLAYER IS PLAYING?", gameCenterController.currentlyPlaying)
+            print("Local player is ", gameCenterController.currentPlayer.rawValue)
         }
         .environmentObject(board)
         .onDisappear {
@@ -196,87 +224,25 @@ struct GameView: View {
                 self.gameCenterController.isGameOver = true
                 return
             }
-
         if gameType == .multiplayer {
-//            let codableMove = CodableMove.fromMove(move)
-//            let moveMessage = GameMessage(messageType: .move, move: codableMove, gameState: nil)
-//
-//            if let moveData = gameCenterController.encodeMessage(moveMessage) {
-//                do {
-//                    try gameCenterController.match!.sendData(toAllPlayers: moveData, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-////            let newPlayerState: CellState = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
-//            if gameCenterController.currentPlayer == (gameCenterController.localPlayer == gameCenterController.otherPlayer ? .player1 : .player2) {
-//                gameCenterController.currentlyPlaying = false
-//            }
-//            let gameState = GameState(isPaused: gameCenterController.isPaused,
-//                                      isGameOver: gameCenterController.isGameOver,
-//                                      currentlyDrawing: gameCenterController.currentlyPlaying)
-//            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-//            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
-//                do {
-//                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-//            gameCenterController.currentPlayer = (  gameCenterController.currentPlayer == .player1) ? .player2 : .player1
-//
-////            // Only switch player after game state message has been sent.
-////            if gameCenterController.currentPlayer == (gameCenterController.localPlayer == gameCenterController.otherPlayer ? .player1 : .player2) {
-////                gameCenterController.currentlyPlaying = true
-////            }
-            ///
-//            let codableMove = CodableMove.fromMove(move)
-//            let moveMessage = GameMessage(messageType: .move, move: codableMove, gameState: nil)
-//
-//            if let moveData = gameCenterController.encodeMessage(moveMessage) {
-//                do {
-//                    try gameCenterController.match!.sendData(toAllPlayers: moveData, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-//
-//            let newPlayerState: CellState = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
-//            gameCenterController.currentPlayer = newPlayerState
-//
-//            let gameState = GameState(isPaused: gameCenterController.isPaused,
-//                                      isGameOver: gameCenterController.isGameOver,
-//                                      currentPlayer: newPlayerState)
-//            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-//            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
-//                do {
-//                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-//
-//            // Check if the game is over
-//            if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
-//                self.gameCenterController.isGameOver = true
-//                self.gameCenterController.isPaused.toggle()
-//            }
-//
-//            SoundManager.shared.playMoveSound()
-//            let codableMove = CodableMove.fromMove(move)
-//            let gameState = GameState(isPaused: self.gameCenterController.isPaused, isGameOver: self.gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer)
-//            let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
-//            if let data = gameCenterController.encodeMessage(message) {
-//                do {
-//                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-//            gameCenterController.currentlyPlaying = !gameCenterController.currentlyPlaying
-//            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
-//            remainingTime = 15
-        } else {
+            gameCenterController.otherPlayerPlaying.toggle()
+            gameCenterController.currentlyPlaying.toggle()
+            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
+            let codableMove = CodableMove.fromMove(move)
+            let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
+            let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
+            if let data = gameCenterController.encodeMessage(message) {
+                do {
+                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                } catch {
+                    print("Failed to send move: ", error)
+
+                }
+
+            }
+            remainingTime = 15
+        }
+        else {
             gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
             remainingTime = 15
             SoundManager.shared.playMoveSound()
@@ -312,7 +278,7 @@ struct GameView: View {
         if gameType == .multiplayer {
             let gameState = GameState(isPaused: gameCenterController.isPaused,
                                       isGameOver: gameCenterController.isGameOver,
-                                      currentPlayer: gameCenterController.currentPlayer)
+                                      currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
             let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
 
             if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {

@@ -68,6 +68,7 @@ struct BoardView: View {
             selectedCell = nil
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)
+            
         } else if board.cellState(at: destination) == currentPlayer {
             selectedCell = destination
         }
