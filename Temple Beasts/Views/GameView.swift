@@ -15,7 +15,7 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
-        _remainingTime = State(initialValue: 15)
+//        _remainingTime = State(initialValue: 15)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
     }
@@ -23,7 +23,7 @@ struct GameView: View {
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
-    @State private var remainingTime: Int
+//    @State private var remainingTime: Int
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @EnvironmentObject var menuViewModel: MenuViewModel
@@ -114,9 +114,9 @@ struct GameView: View {
                         }
                     }
                     HStack {
-                        TimeBarView(remainingTime: remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer)
+                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer)
                             .padding([.horizontal, .trailing], 5)
-                            .animation(.linear(duration: 1.0), value: remainingTime)
+                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
                     }
                     BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, onMoveCompleted: { move in onMoveCompleted(move) }, gameType: gameType)
                         .allowsHitTesting(!showPauseMenu)
@@ -135,12 +135,12 @@ struct GameView: View {
                     .scaledToFit()
                     .allowsHitTesting(false)
                 if showPauseMenu {
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
 
                 if gameCenterController.isGameOver {
-                    WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $remainingTime, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
+                    WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
                 }
                 if isCountDownVisible {
                     CountDownView(isVisible: $isCountDownVisible)
@@ -169,31 +169,31 @@ struct GameView: View {
         .onChange(of: board.cells) { _ in
             if board.isGameOver() {
                 gameCenterController.isGameOver = true
-                self.gameCenterController.isPaused.toggle()
+                self.gameCenterController.isPaused = true
             }
         }
-        .onChange(of: remainingTime, perform: { newValue in
+        .onChange(of: gameCenterController.remainingTime, perform: { newValue in
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
-                remainingTime = 15
+                gameCenterController.remainingTime = 15
             } else if newValue == 0 && gameType == .ai {
-                remainingTime = 15
+                gameCenterController.remainingTime = 15
                 switchPlayer()
                 DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                     self.board.performAIMove()
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.gameCenterController.currentPlayer = .player1
-                        self.remainingTime = 15
+                        self.gameCenterController.remainingTime = 15
                     }
                 }
-                self.remainingTime = 15
+                self.gameCenterController.remainingTime = 15
             }
         })
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                if !gameCenterController.isPaused && remainingTime > 0 && !isCountDownVisible {
-                    remainingTime -= 1
+                if !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible {
+                    gameCenterController.remainingTime -= 1
                 }
             }
         }
@@ -221,13 +221,28 @@ struct GameView: View {
     }
     func onMoveCompleted(_ move: Move) {
         if board.isGameOver() {
-                self.gameCenterController.isGameOver = true
+            self.gameCenterController.isGameOver = true
+            self.gameCenterController.isPaused = true
+            // Prepare the game over status
+            let gameState = GameState(isPaused: self.gameCenterController.isPaused, isGameOver: self.gameCenterController.isGameOver, currentPlayer: self.gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: self.gameCenterController.priority)
+//            let codableMove = CodableMove.fromMove(move)
+            
+            let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+            // Send the game over status to the other player
+                    if let data = gameCenterController.encodeMessage(message) {
+                        do {
+                            try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                        } catch {
+                            print("Failed to send game over status: ", error)
+                        }
+                    }
+            
                 return
             }
+       
         if gameType == .multiplayer {
             gameCenterController.otherPlayerPlaying.toggle()
             gameCenterController.currentlyPlaying.toggle()
-            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
             let codableMove = CodableMove.fromMove(move)
             let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
             let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
@@ -240,11 +255,11 @@ struct GameView: View {
                 }
 
             }
-            remainingTime = 15
+            gameCenterController.remainingTime = 15
         }
         else {
             gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
-            remainingTime = 15
+            gameCenterController.remainingTime = 15
             SoundManager.shared.playMoveSound()
             if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
                 self.gameCenterController.isGameOver = true
@@ -255,7 +270,7 @@ struct GameView: View {
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.gameCenterController.currentPlayer = .player1
-                        self.remainingTime = 15
+                        self.gameCenterController.remainingTime = 15
                         SoundManager.shared.playMoveSound()
                         if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
                             if convertedPieces > 0 {
@@ -264,7 +279,7 @@ struct GameView: View {
                         }
                     }
                 }
-                self.remainingTime = 15
+                self.gameCenterController.remainingTime = 15
             }
         }
     }

@@ -21,10 +21,10 @@ struct GameMessage: Codable {
 }
 
 struct GameState: Codable {
-    var isPaused: Bool
-    var isGameOver: Bool
-    var currentPlayer: CellState
-    var currentlyPlaying: Bool
+    var isPaused: Bool?
+    var isGameOver: Bool?
+    var currentPlayer: CellState?
+    var currentlyPlaying: Bool?
     var priority: Int
 }
 
@@ -34,6 +34,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var currentPlayer: CellState
     @Published var currentlyPlaying = false
     @Published var otherPlayerPlaying: Bool = false
+    @Published var remainingTime = 15
 
     
     
@@ -116,11 +117,27 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                     print("After the move, the local player is playing?: ", self.currentlyPlaying)
                     print("After the move, the local player is : ", self.currentPlayer.rawValue)
                     _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
+                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+                    // Check for game over after performing the move
+                    guard let gameState = message.gameState else { return }
+//                    if gameState.isGameOver == true {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                            self.isGameOver = true
+//                        }
+//                    }
+                    self.remainingTime = 15
+
 
                 case .gameState:
                     guard let gameState = message.gameState else { return }
-                    self.isPaused = gameState.isPaused
-                    self.isGameOver = gameState.isGameOver
+                    if let isPause = gameState.isPaused {
+                        self.isPaused = isPause
+                    }
+                    if let isOver = gameState.isGameOver, isOver {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                            self.isGameOver = true
+                                        }
+                                    }
                     if self.currentPlayer == .initial {
                         let isLocalPlayerStart = self.priority > gameState.priority
                         self.currentPlayer = isLocalPlayerStart ? .player1 : .player2
