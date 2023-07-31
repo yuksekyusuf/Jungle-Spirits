@@ -33,18 +33,18 @@ struct CountDownView: View {
         }
     }
     private func runAnimation() {
-            withAnimation(.easeInOut(duration: 0.5)) {
+            withAnimation(.easeInOut) {
                 scale = 2
                 opacity = 1.0
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.easeInOut(duration: 0.5)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation(.easeInOut) {
                     scale = 2
                     opacity = 0.0
                 }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     if counter > 1 {
                         counter -= 1
                         scale = 0.1

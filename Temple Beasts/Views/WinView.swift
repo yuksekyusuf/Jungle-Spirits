@@ -11,7 +11,8 @@ struct WinView: View {
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
-    @EnvironmentObject var menuViewModel: MenuViewModel
+//    @EnvironmentObject var menuViewModel: MenuViewModel
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var board: Board
     let winner: CellState
     @Binding var currentPlayer: CellState
@@ -106,7 +107,7 @@ struct WinView: View {
                                             .frame(width: 94.5, height: 42)
                                     }
                                     Button {
-                                        menuViewModel.path.removeAll()
+                                        gameCenterManager.path.removeAll()
                                     } label: {
                                         RoundedRectangle(cornerRadius: 14)
                                             .foregroundColor(Color("AnotherPause"))

@@ -35,6 +35,9 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var currentlyPlaying = false
     @Published var otherPlayerPlaying: Bool = false
     @Published var remainingTime = 15
+    @Published var isQuitGame = false
+    @Published var path: [Int] = []
+
 
     
     
@@ -42,9 +45,16 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     var otherPlayer: GKPlayer?
     var priority: Int = 0
     var otherPriority = 0
+//    var menuViewModel: MenuViewModel
 
+    var rootViewController: UIViewController? {
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        return windowScene?.windows.first?.rootViewController
+    }
+    
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
+//        self.menuViewModel = menuViewModel
     }
 
     @Published var isUserAuthenticated = false
@@ -74,7 +84,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                 self.isUserAuthenticated = true
             } else if let vc = gcAuthVC {
                 // Show game center login UI
-                UIApplication.shared.windows.first?.rootViewController?.present(vc, animated: true, completion: nil)
+                rootViewController?.present(vc, animated: true)
             } else {
                 // Game center authentication failed
                 print("Authentication failed: " + error!.localizedDescription)
@@ -127,7 +137,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
 //                    }
                     self.remainingTime = 15
 
-
                 case .gameState:
                     guard let gameState = message.gameState else { return }
                     if let isPause = gameState.isPaused {
@@ -156,7 +165,19 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        // IMPLEMENT THIS LATER. IT CONFIGURES WHEN A PLAYER DISCONNECTS
+        guard state == .disconnected && !isGameOver else { return }
+        let alert = UIAlertController(title: "Player disconnected",
+                                      message: "The other player disconnected from the match",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            self.match?.disconnect()
+            self.resetGame()
+
+        })
+     
+        DispatchQueue.main.async {
+            self.rootViewController?.present(alert, animated: true)
+        }
     }
 
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
@@ -186,6 +207,16 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             } catch {
                 print("Error sending data: \(error.localizedDescription)")
             }
+        }
+        
+    }
+    
+    func resetGame() {
+        match?.delegate = nil
+        match = nil
+        otherPlayer = nil
+        DispatchQueue.main.async {
+            self.path.removeAll()
         }
     }
 }

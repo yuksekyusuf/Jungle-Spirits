@@ -15,7 +15,7 @@ struct PauseMenuView: View {
 //    @State private var isMusicOn: Bool = false
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @AppStorage("music") private var musicState: Bool = false
-    @EnvironmentObject var menuViewModel: MenuViewModel
+//    @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var currentPlayer: CellState
@@ -118,7 +118,8 @@ struct PauseMenuView: View {
                                         PauseMenuIconView(imageName: "iconResume")
                                     }
                                     Button {
-                                        menuViewModel.path.removeAll()
+                                        gameCenterController.path.removeAll()
+                                        gameCenterController.match?.disconnect()
                                     } label: {
                                         PauseMenuIconView(imageName: "iconHome")
                                     }

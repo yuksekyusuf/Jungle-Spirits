@@ -24,14 +24,14 @@ struct MenuView: View {
     //    @AppStorage("haptic") var hapticState: Bool?
     //    @AppStorage("sound") var soundState: Bool?
     var views: [String] = ["Menu", "Game", "PauseMenu"]
-    @StateObject var menuViewModel = MenuViewModel()
+//    @StateObject var menuViewModel = MenuViewModel()
 
     let buttonWidth = UIScreen.main.bounds.width * 0.71
     let singleButtonWidth = UIScreen.main.bounds.width * 0.35
     let smallButtonWidth = UIScreen.main.bounds.width * 0.198
 
     var body: some View {
-        NavigationStack(path: $menuViewModel.path) {
+        NavigationStack(path: $gameCenterController.path) {
             ZStack {
                 Image("Menu Screen")
                     .resizable()
@@ -75,7 +75,7 @@ struct MenuView: View {
                                     .frame(width: singleButtonWidth)
                             }
                             .simultaneousGesture(TapGesture().onEnded({
-                                menuViewModel.path.append(1)
+                                gameCenterController.path.append(1)
                             }))
 
                             // 1 vs 1
@@ -88,7 +88,7 @@ struct MenuView: View {
                                     .frame(width: singleButtonWidth)
                             }
                             .simultaneousGesture(TapGesture().onEnded({
-                                menuViewModel.path.append(2)
+                                gameCenterController.path.append(2)
                             }))
                         }
 
@@ -155,7 +155,7 @@ struct MenuView: View {
                 gameCenterController.authenticateUser()
             }
         }
-        .environmentObject(menuViewModel)
+//        .environmentObject(menuViewModel)
         .environmentObject(gameCenterController)
     }
 }

@@ -15,18 +15,18 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
-//        _remainingTime = State(initialValue: 15)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
     }
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
-//    @State private var remainingTime: Int
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
-    @EnvironmentObject var menuViewModel: MenuViewModel
+//    @EnvironmentObject var menuViewModel: MenuViewModel
     let cellSize: CGFloat = 40
 
     private var player1PieceCount: Int {
@@ -177,8 +177,8 @@ struct GameView: View {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
             } else if newValue == 0 && gameType == .ai {
-                gameCenterController.remainingTime = 15
-                switchPlayer()
+//                gameCenterController.remainingTime = 15
+//                switchPlayer()
                 DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                     self.board.performAIMove()
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
@@ -190,23 +190,25 @@ struct GameView: View {
                 self.gameCenterController.remainingTime = 15
             }
         })
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                if !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible {
-                    gameCenterController.remainingTime -= 1
-                }
+        .onReceive(timer) { _ in
+            if !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible && !gameCenterController.isQuitGame {
+                gameCenterController.remainingTime -= 1
             }
         }
         .onAppear {
+            gameCenterController.remainingTime = 15
             gameCenterController.board = self.board
-            print("LOCAL PLAYER IS PLAYING?", gameCenterController.currentlyPlaying)
-            print("Local player is ", gameCenterController.currentPlayer.rawValue)
+            gameCenterController.isQuitGame = false
+            
         }
         .environmentObject(board)
         .onDisappear {
             self.gameCenterController.isPaused = false
             self.gameCenterController.isGameOver = false
             self.gameCenterController.currentPlayer = .player1
+            self.gameCenterController.remainingTime = 15
+            self.gameCenterController.isQuitGame = true
+            self.timer.upstream.connect().cancel()
         }
     }
     var winner: CellState {
@@ -236,6 +238,7 @@ struct GameView: View {
                             print("Failed to send game over status: ", error)
                         }
                     }
+            gameCenterController.match?.disconnect()
             
                 return
             }
@@ -269,6 +272,12 @@ struct GameView: View {
                     self.board.performAIMove()
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        if board.isGameOver() {
+                            self.gameCenterController.isGameOver = true
+                            self.gameCenterController.isPaused = true
+                            
+                            return
+                        }
                         self.gameCenterController.currentPlayer = .player1
                         self.gameCenterController.remainingTime = 15
                         SoundManager.shared.playMoveSound()
