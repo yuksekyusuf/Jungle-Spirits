@@ -26,9 +26,9 @@ struct MenuView: View {
     var views: [String] = ["Menu", "Game", "PauseMenu"]
 //    @StateObject var menuViewModel = MenuViewModel()
 
-    let buttonWidth = UIScreen.main.bounds.width * 0.71
-    let singleButtonWidth = UIScreen.main.bounds.width * 0.35
-    let smallButtonWidth = UIScreen.main.bounds.width * 0.198
+    let buttonWidth = UIScreen.main.bounds.width * 0.8
+    let singleButtonWidth = UIScreen.main.bounds.width * 0.40
+    let smallButtonWidth = UIScreen.main.bounds.width * 0.24
 
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
@@ -108,6 +108,7 @@ struct MenuView: View {
                                 GameCenterView().environmentObject(gameCenterController)
                             }
                         }
+                        .padding(.top, 3)
 
                         HStack(spacing: 0) {
                             Spacer()
@@ -143,6 +144,7 @@ struct MenuView: View {
                                 }
                             Spacer()
                         }
+                        .padding(.top, 8)
                     }
                     .padding(.bottom, 40)
                 }
@@ -155,7 +157,6 @@ struct MenuView: View {
                 gameCenterController.authenticateUser()
             }
         }
-//        .environmentObject(menuViewModel)
         .environmentObject(gameCenterController)
     }
 }
