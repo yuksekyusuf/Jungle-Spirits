@@ -8,9 +8,9 @@
 import SwiftUI
 import StoreKit
 
-class MenuViewModel: ObservableObject {
-    @Published var path: [Int] = []
-}
+//class MenuViewModel: ObservableObject {
+//    @Published var path: [Int] = []
+//}
 
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview

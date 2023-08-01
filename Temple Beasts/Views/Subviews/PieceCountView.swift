@@ -9,9 +9,10 @@ import SwiftUI
 
 struct PieceCountView: View {
     var pieceCount: Int
+    let size: Int
     var body: some View {
         Text("\(pieceCount)")
-            .font(.system(size: 30, weight: .heavy, design: .rounded))
+            .font(.system(size: CGFloat(size), weight: .heavy, design: .rounded))
             .foregroundColor(Color(#colorLiteral(red: 0.93, green: 0.93, blue: 1, alpha: 1)))
             .tracking(0.9)
             .multilineTextAlignment(.center)
@@ -21,6 +22,6 @@ struct PieceCountView: View {
 
 struct PieceCountView_Previews: PreviewProvider {
     static var previews: some View {
-        PieceCountView(pieceCount: 2)
+        PieceCountView(pieceCount: 2, size: 30)
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0BB0362A79B3B600AA03E4 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0BB0352A79B3B600AA03E4 /* test.swift */; };
 		4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F06992A48D60C00B53823 /* SoundManager.swift */; };
 		4D0F06A52A48EBB800B53823 /* victory.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F06A42A48EBB800B53823 /* victory.wav */; };
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D0BB0352A79B3B600AA03E4 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		4D0F06992A48D60C00B53823 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		4D0F06A42A48EBB800B53823 /* victory.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = victory.wav; sourceTree = "<group>"; };
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
 				4D9518782A50A58100ED284D /* WinView.swift */,
+				4D0BB0352A79B3B600AA03E4 /* test.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
+				4D0BB0362A79B3B600AA03E4 /* test.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
@@ -455,7 +459,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -492,7 +496,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;

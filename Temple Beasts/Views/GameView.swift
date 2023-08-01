@@ -36,6 +36,13 @@ struct GameView: View {
     private var player2PieceCount: Int {
         board.countPieces().player2
     }
+    
+    var localPlayerName: String {
+        String(gameCenterController.localPlayer.displayName.prefix(8))
+    }
+    var otherPlayerName: String {
+        String(gameCenterController.otherPlayer?.displayName.prefix(8) ?? "")
+    }
 
     var body: some View {
         ZStack {
@@ -55,17 +62,29 @@ struct GameView: View {
                                         .frame(width: 55)
                                         .padding(.leading, 20)
                                 }
-                                PieceCountView(pieceCount: player1PieceCount)
+                                if gameType == .multiplayer {
+                                    VStack(alignment: .leading) {
+                                        PieceCountView(pieceCount: player1PieceCount, size: 25)
+                                            if gameCenterController.priority > gameCenterController.otherPriority {
+                                                Text(localPlayerName)
+                                                    .foregroundColor(.white)
+                                                    .truncationMode(.tail)
+                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                            } else {
+                                                Text(otherPlayerName)
+                                                    .foregroundColor(.white)
+                                                    .truncationMode(.tail)
+                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .fixedSize(horizontal: true, vertical: false)
+
+                                            }
+                                        
+                                    }
+                                } else {
+                                    PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                }
                             }
-                            
-                            if gameCenterController.priority > gameCenterController.otherPriority ?? 0 {
-                                Text("\(gameCenterController.localPlayer.displayName)")
-                                    .foregroundColor(.white)
-                            } else {
-                                Text("\(gameCenterController.otherPlayer?.displayName ?? "")")
-                                    .foregroundColor(.white)
-                            }
-                            
                         }
 
                         Spacer()
@@ -81,42 +100,58 @@ struct GameView: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
                             }
-                            if gameCenterController.priority > gameCenterController.otherPriority {
-                                Text("\(gameCenterController.localPlayer.displayName) is playing.")
-                                    .foregroundColor(.white)
-                            } else {
-                                Text("\(gameCenterController.otherPlayer?.displayName ?? "") is playing.")
-                                    .foregroundColor(.white)
-                            }
                         }
 
                         Spacer()
                         VStack {
                             HStack {
-                                PieceCountView(pieceCount: player2PieceCount)
+                                if gameType == .multiplayer {
+                                    VStack(alignment: .trailing){
+                                        PieceCountView(pieceCount: player2PieceCount, size: 25)
+                                            if gameCenterController.priority < gameCenterController.otherPriority{
+                                                Text(localPlayerName)
+                                                    .foregroundColor(.white)
+                                                    .truncationMode(.tail)
+                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                            } else {
+                                                Text(otherPlayerName)
+                                                    .foregroundColor(.white)
+                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .truncationMode(.tail)
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                            }
+                                        
+                                        
+                                    }
+                                } else {
+                                    PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                }
+
                                 if gameCenterController.otherPlayerPlaying {
                                     Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
                                         .frame(width: 55)
-                                        .padding(.trailing, 20)
+//                                        .padding(.trailing, 20)
                                 } else {
                                     Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
                                         .frame(width: 55)
-                                        .padding(.trailing, 20)
+//                                        .padding(.trailing, 20)
                                 }
                             }
-                            if gameCenterController.priority < gameCenterController.otherPriority ?? 0 {
-                                Text("\(gameCenterController.localPlayer.displayName)")
-                                    .foregroundColor(.white)
-                            } else {
-                                Text("\(gameCenterController.otherPlayer?.displayName ?? "")")
-                                    .foregroundColor(.white)
-                            }
+                           
                         }
                     }
                     HStack {
-                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer)
-                            .padding([.horizontal, .trailing], 5)
-                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                        if gameType == .multiplayer {
+                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
+                                .padding([.horizontal, .trailing], 5)
+                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                        } else {
+                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
+                                .padding([.horizontal, .trailing], 5)
+                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                        }
+                        
                     }
                     BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, onMoveCompleted: { move in onMoveCompleted(move) }, gameType: gameType)
                         .allowsHitTesting(!showPauseMenu)
