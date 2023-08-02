@@ -19,7 +19,7 @@ struct MenuView: View {
     @State var gameType: GameType?
     @State var hapticState: Bool = true
     @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
-    @AppStorage("music") private var musicState: Bool = false
+    @AppStorage("music") private var musicState: Bool = true
 
     //    @AppStorage("haptic") var hapticState: Bool?
     //    @AppStorage("sound") var soundState: Bool?
@@ -49,11 +49,18 @@ struct MenuView: View {
                                 .padding(.leading, 20)
                         }
                         Spacer()
-                        Image("info")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                            .padding(.trailing, 20)
+                        NavigationLink {
+                            HowToPlayView()
+                        } label: {
+                            Image("info")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 50)
+                                .padding(.trailing, 20)
+                        }
+                        .simultaneousGesture(TapGesture().onEnded({
+                            gameCenterController.path.append(1)
+                        }))
                     }
                     .padding(.top, 10)
                     Spacer()
@@ -75,7 +82,7 @@ struct MenuView: View {
                                     .frame(width: singleButtonWidth)
                             }
                             .simultaneousGesture(TapGesture().onEnded({
-                                gameCenterController.path.append(1)
+                                gameCenterController.path.append(2)
                             }))
 
                             // 1 vs 1
@@ -88,7 +95,7 @@ struct MenuView: View {
                                     .frame(width: singleButtonWidth)
                             }
                             .simultaneousGesture(TapGesture().onEnded({
-                                gameCenterController.path.append(2)
+                                gameCenterController.path.append(3)
                             }))
                         }
 
