@@ -212,8 +212,8 @@ struct GameView: View {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
             } else if newValue == 0 && gameType == .ai {
-//                gameCenterController.remainingTime = 15
-//                switchPlayer()
+                gameCenterController.remainingTime = 15
+                switchPlayer()
                 DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                     self.board.performAIMove()
                     print("after ai performs, current player: ", gameCenterController.currentPlayer)
