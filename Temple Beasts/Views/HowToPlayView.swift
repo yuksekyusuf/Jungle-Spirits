@@ -30,18 +30,18 @@ struct HowToPlayView: View {
                 .padding(.top, 20)
                 Spacer()
                 TabView(selection: $selectedTab) {
-                    InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image: "SelectAGem")
+                    InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image1: "SelectAGem 1", image2: "SelectAGem 2")
                         .tag(0)
 
-                    InfoTabView(title: "Cloning", description: "Move to a green area, and your gem clones itself. Double the fun!", image: "Cloning")
+                    InfoTabView(title: "Cloning", description: "Move to a green area, and your gem clones itself. Double the fun!", image1: "Cloning 1", image2: "Cloning 2")
                         .tag(1)
                     
-                    InfoTabView(title: "Teleportation", description: "Leap to a yellow area, and your gem teleports. It's a two-tile jump!", image: "Teleport")
+                    InfoTabView(title: "Teleportation", description: "Leap to a yellow area, and your gem teleports. It's a two-tile jump!", image1: "Teleport 1", image2: "Teleport 2")
                         .tag(2)
                     
-                    InfoTabView(title: "Converting Enemies", description: "Whenever your gem touches an enemy - whether horizontally, vertically, or diagonally - they join your ranks! Strategize to maximize conversions.", image: "Converting")
+                    InfoTabView(title: "Converting Enemies", description: "Whenever your gem touches an enemy - whether horizontally, vertically, or diagonally - they join your ranks! Strategize to maximize conversions.", image1: "Converting 1", image2: "Converting 2")
                         .tag(3)
-                    InfoTabView(title: "Objective", description: "Rule the board, convert more enemies, and outsmart your opponent. Ready to conquer?", image: "Objective")
+                    InfoTabView(title: "Objective", description: "Rule the board, convert more enemies, and outsmart your opponent. Ready to conquer?", image1: "Objective 1", image2: "Objective 2")
                         .tag(4)
                 }
                 .frame(height: UIScreen.main.bounds.height * 0.6)

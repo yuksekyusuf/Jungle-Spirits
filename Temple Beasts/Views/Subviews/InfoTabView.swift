@@ -10,7 +10,8 @@ import SwiftUI
 struct InfoTabView: View {
     let title: String
     let description: String
-    let image: String
+    let image1: String
+    let image2: String
     var body: some View {
         VStack(alignment: .center) {
             Text(title)
@@ -19,9 +20,7 @@ struct InfoTabView: View {
                 .tracking(0.72)
                 .multilineTextAlignment(.center).shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
                 .padding(.bottom, 30)
-            Image(image)
-                .resizable()
-                .scaledToFit()
+            SlideView(image1: image1, image2: image2)
                 .frame(width: 266)
                 .padding(.bottom, 30)
             Text(description)
@@ -40,6 +39,6 @@ struct InfoTabView: View {
 
 struct InfoTabView_Previews: PreviewProvider {
     static var previews: some View {
-        InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image: "SelectAGem")
+        InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image1: "Teleport 1", image2: "Teleport 2")
     }
 }
