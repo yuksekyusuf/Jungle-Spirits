@@ -18,7 +18,8 @@ struct InfoTabView: View {
                 .font(.custom("Watermelon-Regular", size: 24))
                 .foregroundColor(Color(#colorLiteral(red: 0.63, green: 0.64, blue: 1, alpha: 1)))
                 .tracking(0.72)
-                .multilineTextAlignment(.center).shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
+                .multilineTextAlignment(.center)
+                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
                 .padding(.bottom, 30)
             SlideView(image1: image1, image2: image2)
                 .frame(width: 266)
@@ -29,9 +30,9 @@ struct InfoTabView: View {
                 .tracking(0.48)
                 .multilineTextAlignment(.center)
                 .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
-                .lineSpacing(7.0)
+                .lineSpacing(7.0)                
         }
-        .frame(width: 278)
+        .frame(width: 280)
         .padding(.bottom, 50)
 
     }
@@ -39,6 +40,6 @@ struct InfoTabView: View {
 
 struct InfoTabView_Previews: PreviewProvider {
     static var previews: some View {
-        InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image1: "Teleport 1", image2: "Teleport 2")
+        InfoTabView(title: "Selecting a Gem", description: "Move to a green area, and your gem clones itself. Double the fun!", image1: "Teleport 1", image2: "Teleport 2")
     }
 }
