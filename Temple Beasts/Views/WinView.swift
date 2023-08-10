@@ -14,6 +14,7 @@ struct WinView: View {
 //    @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var board: Board
+    let gameType: GameType
     let winner: CellState
     @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
@@ -87,39 +88,55 @@ struct WinView: View {
                             Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
                                 .offset(y: -135)
                                 .allowsHitTesting(false)
-
-                            VStack {
-                                Spacer()
-                                Spacer()
-                                HStack {
-                                    Button {
-                                        board.reset()
-                                        showWinMenu.toggle()
-                                        isPaused.toggle()
-                                        currentPlayer = .player1
-                                        remainingTime = 15
-                                    } label: {
-                                        RoundedRectangle(cornerRadius: 14)
-                                            .foregroundColor(Color("AnotherPause"))
-                                            .overlay {
-                                                Image("iconReplay")
-                                            }
-                                            .frame(width: 94.5, height: 42)
-                                    }
-                                    Button {
-                                        gameCenterManager.path.removeAll()
-                                    } label: {
-                                        RoundedRectangle(cornerRadius: 14)
-                                            .foregroundColor(Color("AnotherPause"))
-                                            .overlay {
-                                                Image("iconHome")
-                                            }
-                                            .frame(width: 94.5, height: 42)
-                                    }
+                            
+                            if gameType == .multiplayer {
+                                Button {
+                                    gameCenterManager.path.removeAll()
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .foregroundColor(Color("AnotherPause"))
+                                        .overlay {
+                                            Image("iconHome")
+                                        }
+                                        .frame(width: 94.5, height: 42)
                                 }
-                                .offset(y: 20)
-                                Spacer()
+                                .offset(y: 80)
+
+                            } else {
+                                VStack {
+                                    Spacer()
+                                    Spacer()
+                                    HStack {
+                                        Button {
+                                            board.reset()
+                                            showWinMenu.toggle()
+                                            isPaused.toggle()
+                                            currentPlayer = .player1
+                                            remainingTime = 15
+                                        } label: {
+                                            RoundedRectangle(cornerRadius: 14)
+                                                .foregroundColor(Color("AnotherPause"))
+                                                .overlay {
+                                                    Image("iconReplay")
+                                                }
+                                                .frame(width: 94.5, height: 42)
+                                        }
+                                        Button {
+                                            gameCenterManager.path.removeAll()
+                                        } label: {
+                                            RoundedRectangle(cornerRadius: 14)
+                                                .foregroundColor(Color("AnotherPause"))
+                                                .overlay {
+                                                    Image("iconHome")
+                                                }
+                                                .frame(width: 94.5, height: 42)
+                                        }
+                                    }
+                                    .offset(y: 20)
+                                    Spacer()
+                                }
                             }
+                            
 
                             Image("winLights")
                                 .resizable()
@@ -146,6 +163,6 @@ struct WinView_Previews: PreviewProvider {
         @State var player: CellState = .player1
         @State var paused: Bool = true
         @State var remainingTime = 15
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, winner: .draw, currentPlayer: $player)
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .multiplayer, winner: .draw, currentPlayer: $player)
     }
 }

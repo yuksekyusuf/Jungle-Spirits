@@ -90,7 +90,14 @@ struct GameView: View {
                         Spacer()
                         VStack {
                             Button(action: {
-                                configurePauseMenu()
+                                if gameType == .multiplayer {
+                                    showPauseMenu.toggle()
+                                } else {
+//                                    configurePauseMenu()
+                                    gameCenterController.isPaused.toggle()
+                                    showPauseMenu.toggle()
+
+                                }
                             }) {
                                 HStack {
                                     Image("Pause button")
@@ -173,9 +180,9 @@ struct GameView: View {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
                 }
-
+                
                 if gameCenterController.isGameOver {
-                    WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
+                    WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
                 }
                 if isCountDownVisible {
                     CountDownView(isVisible: $isCountDownVisible)
@@ -200,13 +207,30 @@ struct GameView: View {
             }
             .frame(height: UIScreen.main.bounds.height * 1)
         }
+        .alert(isPresented: $gameCenterController.connectionLost, content: {
+            Alert(
+                        title: Text("Player disconnected"),
+                        message: Text("The other player disconnected from the match!"),
+                        dismissButton: .default(Text("OK"), action: {
+                            // Handle what should happen when the user dismisses the alert
+                            // For example, navigate back to the main menu
+                            gameCenterController.resetGame()
+                        })
+                    )
+        })
         .navigationBarHidden(true)
         .onChange(of: board.cells) { _ in
-            if board.isGameOver() {
+            if board.isGameOver() == true {
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
             }
         }
+        .onChange(of: board.gameOver, perform: { newValue in
+            if newValue == true {
+                gameCenterController.isGameOver = true
+                self.gameCenterController.isPaused = true
+            }
+        })
         .onChange(of: gameCenterController.remainingTime, perform: { newValue in
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
@@ -223,6 +247,22 @@ struct GameView: View {
                     }
                 }
                 self.gameCenterController.remainingTime = 15
+            } else if newValue == 0 && gameType == .multiplayer {
+                gameCenterController.remainingTime = 15
+                
+                gameCenterController.otherPlayerPlaying.toggle()
+                gameCenterController.currentlyPlaying.toggle()
+                let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
+                let message = GameMessage(messageType: .move, move: nil, gameState: gameState)
+                if let data = gameCenterController.encodeMessage(message) {
+                    do {
+                        try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                    } catch {
+                        print("Failed to send move: ", error)
+
+                    }
+
+                }
             }
         })
         .onReceive(timer) { _ in
@@ -234,6 +274,7 @@ struct GameView: View {
             gameCenterController.remainingTime = 15
             gameCenterController.board = self.board
             gameCenterController.isQuitGame = false
+            SoundManager.shared.turnDownMusic()
             
         }
         .environmentObject(board)
@@ -244,6 +285,7 @@ struct GameView: View {
             self.gameCenterController.remainingTime = 15
             self.gameCenterController.isQuitGame = true
             self.timer.upstream.connect().cancel()
+            SoundManager.shared.turnUpMusic()
         }
     }
     var winner: CellState {
@@ -258,25 +300,22 @@ struct GameView: View {
     }
     func onMoveCompleted(_ move: Move) {
         if board.isGameOver() {
+            // Prepare the game over status
+            let gameState = GameState(isPaused: true, isGameOver: true, currentPlayer: self.gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: self.gameCenterController.priority)
+            let codableMove = CodableMove.fromMove(move)
+            let message = GameMessage(messageType: .gameState, move: codableMove, gameState: gameState)
+            // Send the game over status to the other player
+            if let data = gameCenterController.encodeMessage(message) {
+                do {
+                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                } catch {
+                    print("Failed to send game over status: ", error)
+                }
+            }
             self.gameCenterController.isGameOver = true
             self.gameCenterController.isPaused = true
-            // Prepare the game over status
-            let gameState = GameState(isPaused: self.gameCenterController.isPaused, isGameOver: self.gameCenterController.isGameOver, currentPlayer: self.gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: self.gameCenterController.priority)
-//            let codableMove = CodableMove.fromMove(move)
-            
-            let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-            // Send the game over status to the other player
-                    if let data = gameCenterController.encodeMessage(message) {
-                        do {
-                            try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
-                        } catch {
-                            print("Failed to send game over status: ", error)
-                        }
-                    }
-            gameCenterController.match?.disconnect()
-            
-                return
-            }
+            return
+        }
        
         if gameType == .multiplayer {
             gameCenterController.otherPlayerPlaying.toggle()
@@ -334,20 +373,20 @@ struct GameView: View {
     func configurePauseMenu() {
         gameCenterController.isPaused.toggle()
         showPauseMenu.toggle()
-        if gameType == .multiplayer {
-            let gameState = GameState(isPaused: gameCenterController.isPaused,
-                                      isGameOver: gameCenterController.isGameOver,
-                                      currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
-            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-
-            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
-                do {
-                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
-                } catch {
-                    print("Error sending data: \(error.localizedDescription)")
-                }
-            }
-        }
+//        if gameType == .multiplayer {
+//            let gameState = GameState(isPaused: gameCenterController.isPaused,
+//                                      isGameOver: gameCenterController.isGameOver,
+//                                      currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
+//            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+//
+//            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
+//                do {
+//                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
+//                } catch {
+//                    print("Error sending data: \(error.localizedDescription)")
+//                }
+//            }
+//        }
     }
 }
 

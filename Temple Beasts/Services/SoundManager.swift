@@ -90,4 +90,12 @@ class SoundManager {
             print("Audio player error: \(error.localizedDescription)")
         }
     }
+    
+    func turnDownMusic() {
+        musicPlayer?.volume = 0.25
+    }
+    
+    func turnUpMusic() {
+        musicPlayer?.volume = 1.0
+    }
 }

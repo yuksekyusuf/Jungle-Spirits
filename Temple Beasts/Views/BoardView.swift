@@ -39,7 +39,6 @@ struct BoardView: View {
         if currentPlayer == .player2 && gameType == .ai {
             return
         }
-
         // Ignore tap if it's not the local player's turn
         if !gameCenterController.currentlyPlaying && gameType == .multiplayer {
             return

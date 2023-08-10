@@ -54,6 +54,7 @@ struct Move {
 
 class Board: ObservableObject {
     @Published private(set) var cells: [[CellState]]
+    @Published var gameOver: Bool = false
     let size: (rows: Int, columns: Int)
     var gameType: GameType
     var turn = 0
@@ -154,7 +155,7 @@ class Board: ObservableObject {
             cells[destination.row][destination.col] = player
         }
         
-        
+        gameOver = isGameOver()
         let convertedPieces = convertOpponentPieces(at: destination, player: player)
         turn += 1
 
@@ -211,24 +212,24 @@ class Board: ObservableObject {
     /// The game is considered to be over if either player has no pieces remaining or if neither player has any legal moves left.
     func isGameOver() -> Bool {
         // Get the number of pieces for each player
-           let (player1Count, player2Count, _) = countPieces()
-
-           // The game is over if a player has no more pieces
-           if player1Count == 0 || player2Count == 0 {
-               SoundManager.shared.playOverSound()
-               HapticManager.shared.impact(style: .heavy)
-               return true
-           }
-
-           // The game is over if there are no more legal moves for either player
-           if !hasLegalMoves(player: .player1) && !hasLegalMoves(player: .player2) {
-               SoundManager.shared.playOverSound()
-               HapticManager.shared.impact(style: .heavy)
-               return true
-           }
-
-           // If none of the above conditions are met, the game is not over
-           return false
+        let (player1Count, player2Count, _) = countPieces()
+        
+        // The game is over if a player has no more pieces
+        if player1Count == 0 || player2Count == 0 {
+            SoundManager.shared.playOverSound()
+            HapticManager.shared.impact(style: .heavy)
+            return true
+        }
+        
+        // The game is over if there are no more legal moves for either player
+        if !hasLegalMoves(player: .player1) && !hasLegalMoves(player: .player2) {
+            SoundManager.shared.playOverSound()
+            HapticManager.shared.impact(style: .heavy)
+            return true
+        }
+        
+        // If none of the above conditions are met, the game is not over
+        return false
     }
 
     func hasLegalMoves(player: CellState) -> Bool {
@@ -389,9 +390,6 @@ extension Board {
     
             return moves
         }
-    
-
-    
 }
 
 

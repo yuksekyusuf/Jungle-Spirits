@@ -12,14 +12,12 @@ struct PauseMenuView: View {
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
     @State var gameType: GameType
-//    @State private var isMusicOn: Bool = false
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @AppStorage("music") private var musicState: Bool = false
-//    @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var currentPlayer: CellState
-
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -40,7 +38,7 @@ struct PauseMenuView: View {
                                 )
                                 .frame(width: 271, height: 258)
                                 .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
-
+                            
                             Image("pausemenubackground1")
                                 .frame(width: 240, height: 240)
                             Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
@@ -50,7 +48,7 @@ struct PauseMenuView: View {
                                 .blendMode(.overlay)
                                 .frame(width: 240, height: 240)
                                 .cornerRadius(44)
-
+                            
                             Image("pauseMenuPieces")
                                 .offset(y: -122)
                             VStack {
@@ -63,7 +61,7 @@ struct PauseMenuView: View {
                                         HStack {
                                             VStack(spacing: 5) {
                                                 Image("Note")
-
+                                                
                                                 Image("iconSound")
                                             }
                                             VStack(spacing: 12) {
@@ -74,7 +72,7 @@ struct PauseMenuView: View {
                                                     .font(Font.custom("Watermelon-Regular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
                                             }
-
+                                            
                                             VStack(spacing: 5) {
                                                 Toggle(isOn: $musicState) {
                                                     Text("")
@@ -84,11 +82,12 @@ struct PauseMenuView: View {
                                                     UserDefaults.standard.set(newValue, forKey: "music")
                                                     if newValue {
                                                         SoundManager.shared.playBackgroundMusic()
+                                                        SoundManager.shared.turnDownMusic()
                                                     } else {
                                                         SoundManager.shared.stopBackgroundMusic()
                                                     }
                                                 }
-
+                                                
                                                 Toggle(isOn: $soundState) {
                                                     Text("")
                                                 }
@@ -102,26 +101,43 @@ struct PauseMenuView: View {
                                     }
                                 Spacer()
                                 HStack {
-                                    Button {
-                                        board.reset()
-                                        showPauseMenu.toggle()
-                                        isPaused.toggle()
-                                        currentPlayer = .player1
-                                        remainingTime = 15
-                                    } label: {
-                                        PauseMenuIconView(imageName: "iconReplay")
-                                    }
-
-                                    Button {
-                                        handleResumeButton()
-                                    } label: {
-                                        PauseMenuIconView(imageName: "iconResume")
-                                    }
-                                    Button {
-                                        gameCenterController.path.removeAll()
-                                        gameCenterController.match?.disconnect()
-                                    } label: {
-                                        PauseMenuIconView(imageName: "iconHome")
+                                    if gameType == .multiplayer {
+                                        Button {
+                                            showPauseMenu.toggle()
+                                            
+                                        } label: {
+                                            PauseMenuIconView(imageName: "iconResume")
+                                        }
+                                        .padding(.trailing, 10)
+                                        
+                                        Button {
+                                            gameCenterController.resetGame()
+                                        } label: {
+                                            PauseMenuIconView(imageName: "iconHome")
+                                        }
+                                        .padding(.leading, 10)
+                                    } else {
+                                        Button {
+                                            board.reset()
+                                            showPauseMenu.toggle()
+                                            isPaused.toggle()
+                                            currentPlayer = .player1
+                                            remainingTime = 15
+                                        } label: {
+                                            PauseMenuIconView(imageName: "iconReplay")
+                                        }
+                                        
+                                        Button {
+                                            showPauseMenu.toggle()
+                                            gameCenterController.isPaused.toggle()
+                                        } label: {
+                                            PauseMenuIconView(imageName: "iconResume")
+                                        }
+                                        Button {
+                                            gameCenterController.path.removeAll()
+                                        } label: {
+                                            PauseMenuIconView(imageName: "iconHome")
+                                        }
                                     }
                                 }
                                 .padding(.bottom, 20)
@@ -131,29 +147,10 @@ struct PauseMenuView: View {
                     }
             }
         }
-//        .onAppear {
-//            SoundManager.shared.startPlayingIfNeeded()
-//        }
-
+        
     }
-
-    private func handleResumeButton() {
-        showPauseMenu.toggle()
-        gameCenterController.isPaused.toggle()
-        if gameType == .multiplayer {
-            let gameState = GameState(isPaused: gameCenterController.isPaused,
-                                      isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
-            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-
-            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
-                do {
-                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
-                } catch {
-                    print("Error sending data: \(error.localizedDescription)")
-                }
-            }
-        }
-    }
+    
+    
 }
 struct PauseMenuView_Previews: PreviewProvider {
     static var previews: some View {
@@ -161,6 +158,6 @@ struct PauseMenuView_Previews: PreviewProvider {
         @State var show = true
         @State var player: CellState = .player1
         @State var remainingTime: Int = 15
-        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .oneVone, currentPlayer: $player)
+        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .multiplayer, currentPlayer: $player)
     }
 }

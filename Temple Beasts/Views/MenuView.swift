@@ -8,23 +8,23 @@
 import SwiftUI
 import StoreKit
 
-//class MenuViewModel: ObservableObject {
-//    @Published var path: [Int] = []
-//}
 
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @StateObject var gameCenterController = GameCenterManager(currentPlayer: .player1)
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
-    @State var hapticState: Bool = true
-    @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
-    @AppStorage("music") private var musicState: Bool = true
 
-    //    @AppStorage("haptic") var hapticState: Bool?
-    //    @AppStorage("sound") var soundState: Bool?
-    var views: [String] = ["Menu", "Game", "PauseMenu"]
-//    @StateObject var menuViewModel = MenuViewModel()
+    
+//    @State var hapticState: Bool = true
+//    @State var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
+   
+    
+    
+    @AppStorage("music") var musicState: Bool = true
+    @AppStorage("haptic") var hapticState: Bool = true
+    @AppStorage("sound") var soundState: Bool = true
+
 
     let buttonWidth = UIScreen.main.bounds.width * 0.8
     let singleButtonWidth = UIScreen.main.bounds.width * 0.40
@@ -135,6 +135,7 @@ struct MenuView: View {
                                 .padding(.leading, 16)
                                 .onTapGesture {
                                     musicState.toggle()
+                                    UserDefaults.standard.set(musicState, forKey: "music")
                                     if musicState {
                                         SoundManager.shared.playBackgroundMusic()
                                     } else {
@@ -159,6 +160,9 @@ struct MenuView: View {
         }
         .onAppear {
             UserDefaults.standard.set(soundState, forKey: "sound")
+            UserDefaults.standard.set(musicState, forKey: "music")
+            UserDefaults.standard.set(hapticState, forKey: "haptic")
+
             SoundManager.shared.startPlayingIfNeeded()
             if !gameCenterController.isUserAuthenticated {
                 gameCenterController.authenticateUser()

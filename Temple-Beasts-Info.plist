@@ -7,5 +7,7 @@
 		<string>Tricky Jimmy.ttf</string>
 		<string>Watermelon-Regular.otf</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict/>
 </dict>
 </plist>

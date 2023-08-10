@@ -26,6 +26,7 @@ struct GameState: Codable {
     var currentPlayer: CellState?
     var currentlyPlaying: Bool?
     var priority: Int
+    var goneToBackground: Bool = false
 }
 
 class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
@@ -37,6 +38,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var remainingTime = 15
     @Published var isQuitGame = false
     @Published var path: [Int] = []
+    @Published var connectionLost: Bool = false
+//    @Published var goneToBackground: Bool = false
 
 
     
@@ -55,6 +58,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
 //        self.menuViewModel = menuViewModel
+        super.init()
+            startObservingAppLifecycle()
     }
 
     @Published var isUserAuthenticated = false
@@ -130,11 +135,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                     self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
                     // Check for game over after performing the move
                     guard let gameState = message.gameState else { return }
-//                    if gameState.isGameOver == true {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                            self.isGameOver = true
-//                        }
-//                    }
                     self.remainingTime = 15
 
                 case .gameState:
@@ -143,10 +143,20 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                         self.isPaused = isPause
                     }
                     if let isOver = gameState.isGameOver, isOver {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                            self.isGameOver = true
-                                        }
-                                    }
+                        guard let codableMove = message.move else { return }
+                        let move = Move.fromCodable(codableMove)
+                        self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+                        self.otherPlayerPlaying.toggle()
+                        self.currentlyPlaying.toggle()
+                        print("After the move, the local player is playing?: ", self.currentlyPlaying)
+                        print("After the move, the local player is : ", self.currentPlayer.rawValue)
+                        _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
+                        self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.isGameOver = true
+                        }
+                    }
                     if self.currentPlayer == .initial {
                         let isLocalPlayerStart = self.priority > gameState.priority
                         self.currentPlayer = isLocalPlayerStart ? .player1 : .player2
@@ -155,6 +165,11 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                         self.currentlyPlaying = isLocalPlayerStart
                         print("After receiving the first data, Local player is playing?: \(self.currentlyPlaying)")
                         print("After receiving the first data, remote player is playing?: ", self.otherPlayerPlaying)
+                    }
+                    if gameState.goneToBackground {
+                        DispatchQueue.main.async {
+                            self.connectionLost = true
+                        }
                     }
                     self.otherPriority = gameState.priority
                     print("This is other priority: \(self.otherPriority)")
@@ -165,19 +180,33 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-        guard state == .disconnected && !isGameOver else { return }
-        let alert = UIAlertController(title: "Player disconnected",
-                                      message: "The other player disconnected from the match",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            self.match?.disconnect()
-            self.resetGame()
-
-        })
-     
+//        guard state == .disconnected && !isGameOver else { return }
+//        let alert = UIAlertController(title: "Player disconnected",
+//                                      message: "The other player disconnected from the match",
+//                                      preferredStyle: .alert)
+//        self.isPaused = true
+//        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+//            self.match?.disconnect()
+//            self.resetGame()
+//
+//        })
+//
+//        DispatchQueue.main.async {
+//            self.rootViewController?.present(alert, animated: true)
+//        }
         DispatchQueue.main.async {
-            self.rootViewController?.present(alert, animated: true)
-        }
+                switch state {
+                case .connected:
+                    print("\(player.displayName) connected")
+                case .disconnected:
+                    print("\(player.displayName) disconnected")
+                    self.connectionLost = true
+                case .unknown:
+                    print("Unknown state for player \(player.displayName)")
+                @unknown default:
+                    print("A new, unknown state was added")
+                }
+            }
     }
 
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
@@ -191,7 +220,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         otherPlayer = match?.players.first
 
         // Generate a random priority
-        priority = Int.random(in: 1...100)
+        priority = Int.random(in: 1...10000)
         print("This is my priority: \(self.priority)")
 
         // Create initial game state.
@@ -211,6 +240,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         
     }
     
+  
+    
     func resetGame() {
         match?.delegate = nil
         match = nil
@@ -219,6 +250,23 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             self.path.removeAll()
         }
     }
+    
+    func startObservingAppLifecycle() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+    }
+    
+    @objc func appWillResignActive() {
+        let gameState = GameState(isPaused: true, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, priority: self.priority, goneToBackground: true)
+            let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+            if let data = encodeMessage(message) {
+                do {
+                    try match?.sendData(toAllPlayers: data, with: .reliable)
+                } catch {
+                    print("Failed to send background message: ", error)
+                }
+            }
+    }
+    
 }
 
 // enum PlayerAuthState: String {
