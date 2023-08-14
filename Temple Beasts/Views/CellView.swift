@@ -17,6 +17,7 @@ struct CellView: View {
     var isPressed: Bool
     var onConversion: (() -> Void)? = nil
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
+    @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     let cellPosition: (row: Int, col: Int)
 
 
@@ -29,10 +30,13 @@ struct CellView: View {
                                    .frame(width: width)
 
             
-            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells)
+            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
                 .frame(width: width)
-                .transition(.scale)
-                .scaleEffect(isPressed ? 0.9 : 1.0)
+                .transition(.opacity)
+                .animation(.easeIn(duration: 0.5), value: state)
+//                .scaleEffect(isPressed ? 0.9 : 1.0)
+
+
 
 //                .transition(.opacity)
 //                .animation(.easeIn(duration: 0.5), value: state)

@@ -16,6 +16,7 @@ struct BoardView: View {
     
     @State private var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
 
+    @State private var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
 
     
     let onMoveCompleted: (Move) -> Void
@@ -40,7 +41,9 @@ struct BoardView: View {
                             highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
                             outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col),
                             isPressed: isCellPressed(row: row, col: col),
-                            convertedCells: $convertedCells, cellPosition: (row: row, col: col)
+                            convertedCells: $convertedCells,
+                            previouslyConvertedCells: $previouslyConvertedCells,
+                            cellPosition: (row: row, col: col)
                         )
 //                        .onTapGesture {
 //                            self.handleTap(from: selectedCell, to: (row: row, col: col))
@@ -95,6 +98,8 @@ struct BoardView: View {
                 HapticManager.shared.notification(type: .success)
                 for piece in convertedPieces {
                        convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                       previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+
                    } 
             }
             

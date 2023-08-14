@@ -13,11 +13,13 @@ struct PlayerView: View {
     var selected: Bool
     
     @State private var isPressed: Bool = false
-    @State private var showAnimation: Bool = false
+    @State private var conversionCompleted: Bool = false
     var onConversion: (() -> Void)? = nil
     let cellPosition: (row: Int, col: Int)
+    let animationDuration: TimeInterval = 2.0
     
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
+    @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
 
 
     var body: some View {
@@ -28,21 +30,38 @@ struct PlayerView: View {
                 if conversion?.byPlayer == .player1 {
                     LottieView(animationName: "blueToRed", ifActive: false)
                                 .onAppear {
-                                    // Start the Lottie animation or any other setup you need
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+//                                        if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
+//                                            convertedCells.remove(at: index)
+//                                        }
+//                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                                        if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
+                                                                        conversionCompleted = true
+                                                                        convertedCells.remove(at: index)
+                                                                        conversionCompleted = false
+                                                                    }
+                                    }
                                 }
                         } else {
                             LottieView(animationName: "redToBlue", ifActive: false)
                                 .onAppear {
-                                    
+                                    //                                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                                    //                                        if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
+                                    //                                            convertedCells.remove(at: index)
+                                    //                                        }
+                                    //                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                                        if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
+                                                                        conversionCompleted = true
+                                                                        convertedCells.remove(at: index)
+                                                                        conversionCompleted = false
+                                                                    }
+                                    }
                                 }
-//                            LottieView(name: player1ToPlayer2AnimationName)
-//                                .onAppear {
-//                                    // Start the Lottie animation or any other setup you need
-//                                }
                         }
-            
-                
-            } else {
+            }
+            else {
                 if selected == true {
                     if player == .player1 {
                         LottieView(animationName: "redActiveAnimation", ifActive: true)
@@ -75,15 +94,10 @@ struct PlayerView: View {
                     }
                 }
             }
-        
-
         }
+        .animation(.default, value: conversionCompleted)
+        
     }
-    func convertPiece() {
-           // Logic to trigger the Lottie animation
-           showAnimation = true
-        onConversion?()
-       }
 }
 
 //struct PlayerView_Previews: PreviewProvider {
