@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum CellState: Int, Codable {
+enum CellState: Int, Codable, Equatable {
     case empty
     case player1
     case player2
@@ -139,7 +139,7 @@ class Board: ObservableObject {
         return turn % 2 == 0 ? .player1 : .player2
     }
 
-    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> Int? {
+    func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
 //        guard currentPlayer == player else {
 //                print("It's not your turn!")
 //                return
@@ -156,15 +156,17 @@ class Board: ObservableObject {
         }
         
         gameOver = isGameOver()
-        let convertedPieces = convertOpponentPieces(at: destination, player: player)
+        let convertedCells = convertOpponentPieces(at: destination, player: player)
         turn += 1
 
-        return convertedPieces
+        return convertedCells
     }
-    func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> Int? {
+    func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
         let opponent: CellState = player == .player1 ? .player2 : .player1
+        
+        var convertedCells: [(row: Int, col: Int)] = []
 
-        var convertedPieceCount = 0
+
 
         for drow in -1...1 {
             for dcol in -1...1 {
@@ -177,12 +179,12 @@ class Board: ObservableObject {
 
                 if isValidCoordinate((row: newRow, col: newCol)) && cells[newRow][newCol] == opponent {
                     cells[newRow][newCol] = player
-                    convertedPieceCount += 1
+                    convertedCells.append((newRow, newCol))
                 }
             }
         }
 
-        return convertedPieceCount
+        return convertedCells
     }
     
     func countConvertiblePieces(at destination: (row: Int, col: Int), player: CellState) -> Int? {

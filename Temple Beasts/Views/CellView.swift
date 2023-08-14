@@ -14,6 +14,12 @@ struct CellView: View {
     let outerHighlighted: Bool
     let width = UIScreen.main.bounds.width * 0.175
     let offsetY = UIScreen.main.bounds.height * 0.0046
+    var isPressed: Bool
+    var onConversion: (() -> Void)? = nil
+    @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
+    let cellPosition: (row: Int, col: Int)
+
+
 
     var body: some View {
         ZStack {
@@ -23,10 +29,14 @@ struct CellView: View {
                                    .frame(width: width)
 
             
-            PlayerView(player: state, selected: isSelected)
+            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells)
                 .frame(width: width)
-                .transition(.opacity)
-                .animation(.easeIn(duration: 0.5), value: state)
+                .transition(.scale)
+                .scaleEffect(isPressed ? 0.9 : 1.0)
+
+//                .transition(.opacity)
+//                .animation(.easeIn(duration: 0.5), value: state)
+            
 //                .offset(y: -offsetY)
 
             if highlighted && state == .empty {
@@ -59,8 +69,8 @@ struct CellView: View {
         .frame(width: width, height: width)
     }
 }
-struct CellView_Previews: PreviewProvider {
-    static var previews: some View {
-        CellView(state: .player1, isSelected: false, highlighted: false, outerHighlighted: true)
-    }
-}
+//struct CellView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CellView(state: .player1, isSelected: false, highlighted: false, outerHighlighted: true, isPressed: false)
+//    }
+//}

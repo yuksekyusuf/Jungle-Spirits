@@ -24,6 +24,8 @@
 		4D6401262A89D95E00917EC8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4D6401252A89D95E00917EC8 /* Lottie */; };
 		4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */; };
 		4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401292A89DB7000917EC8 /* gemBlue-select.json */; };
+		4D6401302A89F24500917EC8 /* blueToRed.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D64012F2A89F24500917EC8 /* blueToRed.json */; };
+		4D6401322A89F52900917EC8 /* redToBlue.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401312A89F52900917EC8 /* redToBlue.json */; };
 		4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D69639F2A7A57E70096D805 /* HowToPlayView.swift */; };
 		4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6963A12A7A5C940096D805 /* InfoTabView.swift */; };
 		4D6C26672A47243B00C166F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C26662A47243B00C166F9 /* Node.swift */; };
@@ -69,6 +71,8 @@
 		4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-deselect.json"; sourceTree = "<group>"; };
 		4D6401292A89DB7000917EC8 /* gemBlue-select.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-select.json"; sourceTree = "<group>"; };
+		4D64012F2A89F24500917EC8 /* blueToRed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueToRed.json; sourceTree = "<group>"; };
+		4D6401312A89F52900917EC8 /* redToBlue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redToBlue.json; sourceTree = "<group>"; };
 		4D69639F2A7A57E70096D805 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		4D6963A12A7A5C940096D805 /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
 		4D6C26662A47243B00C166F9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
@@ -152,6 +156,19 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		4D6401332A89F61600917EC8 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				4D64012F2A89F24500917EC8 /* blueToRed.json */,
+				4D6401312A89F52900917EC8 /* redToBlue.json */,
+				4D4419332A896E80007293F0 /* redActiveAnimation.json */,
+				4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */,
+				4D6401292A89DB7000917EC8 /* gemBlue-select.json */,
+				4D930D472A897467006D139B /* redNonActiveAnimation.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		4D70D2322A05518F002E9C0A = {
 			isa = PBXGroup;
 			children = (
@@ -171,10 +188,7 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
-				4D4419332A896E80007293F0 /* redActiveAnimation.json */,
-				4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */,
-				4D6401292A89DB7000917EC8 /* gemBlue-select.json */,
-				4D930D472A897467006D139B /* redNonActiveAnimation.json */,
+				4D6401332A89F61600917EC8 /* Animations */,
 				4D42DC142A56046100E8809C /* Controllers */,
 				4D0F069B2A48D89600B53823 /* Sounds */,
 				4D0F06982A48D5CE00B53823 /* Services */,
@@ -316,6 +330,7 @@
 				4D457DAF2A85594A00E0FB34 /* LaunchScreen.storyboard in Resources */,
 				4D2B38962A54D81400DA7D8F /* move.wav in Resources */,
 				4D2B38922A54D22D00DA7D8F /* Tricky Jimmy.ttf in Resources */,
+				4D6401302A89F24500917EC8 /* blueToRed.json in Resources */,
 				4D0F06A52A48EBB800B53823 /* victory.wav in Resources */,
 				4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */,
 				4D2B38982A54D84A00DA7D8F /* convert.wav in Resources */,
@@ -325,6 +340,7 @@
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
+				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
 				4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */,
 			);

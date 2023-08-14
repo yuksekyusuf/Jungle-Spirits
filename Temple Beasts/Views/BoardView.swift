@@ -12,8 +12,23 @@ struct BoardView: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
+    @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
+    
+    @State private var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
+
+
+    
     let onMoveCompleted: (Move) -> Void
     let gameType: GameType
+    
+    
+    func isCellPressed(row: Int, col: Int) -> Bool {
+        if let pressedCell = currentlyPressedCell, pressedCell == (row, col) {
+            return true
+        }
+        return false
+    }
+    
         var body: some View {
         VStack(spacing: 1) {
             ForEach(0..<board.size.rows, id: \.self) { row in
@@ -23,12 +38,24 @@ struct BoardView: View {
                             state: board.cellState(at: (row: row, col: col)),
                             isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
                             highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                            outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col)
+                            outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col),
+                            isPressed: isCellPressed(row: row, col: col),
+                            convertedCells: $convertedCells, cellPosition: (row: row, col: col)
                         )
-                        .onTapGesture {
-                            self.handleTap(from: selectedCell, to: (row: row, col: col))
-                            HapticManager.shared.impact(style: .soft)
-                        }
+//                        .onTapGesture {
+//                            self.handleTap(from: selectedCell, to: (row: row, col: col))
+//                            HapticManager.shared.impact(style: .soft)
+//                        }
+                        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                            if pressing {
+                                self.currentlyPressedCell = (row, col)
+                            } else {
+                                self.handleTap(from: selectedCell, to: (row: row, col: col))
+                                HapticManager.shared.impact(style: .soft)
+                                self.currentlyPressedCell = nil
+                            }
+                        }, perform: { })
+
                     }
                 }
             }
@@ -46,9 +73,10 @@ struct BoardView: View {
 
         // If the destination cell is the currently selected cell, unselect it.
         if let source = source, source == destination {
-            withAnimation(.easeInOut) {
-                selectedCell = nil
-            }
+            selectedCell = nil
+//            withAnimation(.easeInOut) {
+//                selectedCell = nil
+//            }
             return
         }
 
@@ -60,10 +88,20 @@ struct BoardView: View {
         }
 
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
-            if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
+            
+            let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
+            if !convertedPieces.isEmpty {
                 SoundManager.shared.playConvertSound()
                 HapticManager.shared.notification(type: .success)
+                for piece in convertedPieces {
+                       convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                   } 
             }
+            
+//            if board.performMove(from: source, to: destination, player: currentPlayer) != 0 {
+//                SoundManager.shared.playConvertSound()
+//                HapticManager.shared.notification(type: .success)
+//            }
             selectedCell = nil
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)
