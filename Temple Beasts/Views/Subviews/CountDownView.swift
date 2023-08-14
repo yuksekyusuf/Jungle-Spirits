@@ -18,44 +18,48 @@ struct CountDownView: View {
                 .ignoresSafeArea()
             if counter > 0 {
                 Text("\(counter)")
-                            .font(Font.custom("Tricky Jimmy", size: 90))
-                            .shadow(color: .black, radius: 24, y: 8)
-                            .scaleEffect(scale)
-                            .opacity(opacity)
-                            .foregroundStyle(
-                                LinearGradient(
-                                                gradient: Gradient(colors: [Color(hex: "#B8DBFF"), Color(hex: "#FFD9CF")]),
-                                                startPoint: .leading,
-                                                endPoint: .trailing)
-                            )
-                            .onAppear(perform: runAnimation)
+                    .font(Font.custom("Tricky Jimmy", size: 90))
+                    .shadow(color: .black, radius: 24, y: 8)
+                    .scaleEffect(scale)
+                    .opacity(opacity)
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color(hex: "#B8DBFF"), Color(hex: "#FFD9CF")]),
+                            startPoint: .leading,
+                            endPoint: .trailing)
+                    )
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            runAnimation()
+                        }
+                    }
             }
         }
     }
     private func runAnimation() {
+        withAnimation(.easeInOut) {
+            scale = 2
+            opacity = 1.0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             withAnimation(.easeInOut) {
                 scale = 2
-                opacity = 1.0
+                opacity = 0.0
             }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.easeInOut) {
-                    scale = 2
-                    opacity = 0.0
-                }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    if counter > 1 {
-                        counter -= 1
-                        scale = 0.1
-                        opacity = 1.0
-                        runAnimation()
-                    } else {
-                        isVisible = false
-                    }
+                if counter > 1 {
+                    counter -= 1
+                    scale = 0.1
+                    opacity = 1.0
+                    runAnimation()
+                } else {
+                    isVisible = false
                 }
             }
         }
+    }
 }
 
 struct CountDownView_Previews: PreviewProvider {
@@ -89,39 +93,20 @@ extension Color {
     }
 }
 
-// if counter > 0 {
-//    ZStack {
-//        Text("\(counter)")
-//            .font(Font.custom("Watermelon-Regular", size: 72))
-//            .foregroundColor(.clear)
-//            .shadow(color: .black, radius: 3)
-//            .scaleEffect(scale)
-//            .opacity(opacity)
-//            .background(
-// LinearGradient(
-//                gradient: Gradient(colors: [Color(hex: "#B8DBFF"), Color(hex: "#FFD9CF")]),
-//                startPoint: .leading,
-//                endPoint: .trailing)
-// )
-//            .mask(Text("\(counter)")
-//                .font(Font.custom("Watermelon-Regular", size: 72)))
-//    }
-// }
-
 extension Text {
     public func foregroundLinearGradient(
         colors: [Color],
         startPoint: UnitPoint,
         endPoint: UnitPoint) -> some View {
-        self.overlay {
-            LinearGradient(
-                colors: colors,
-                startPoint: startPoint,
-                endPoint: endPoint
-            )
-            .mask(
-                self
-            )
+            self.overlay {
+                LinearGradient(
+                    colors: colors,
+                    startPoint: startPoint,
+                    endPoint: endPoint
+                )
+                .mask(
+                    self
+                )
+            }
         }
-    }
 }

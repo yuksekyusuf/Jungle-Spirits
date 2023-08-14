@@ -14,6 +14,7 @@ class SoundManager {
 
     var player1: AVAudioPlayer?
     var player2: AVAudioPlayer?
+    var countDownPlayer: AVAudioPlayer?
     var musicPlayer: AVAudioPlayer?
 
     private init() {}
@@ -25,6 +26,17 @@ class SoundManager {
     func startPlayingIfNeeded() {
         if UserDefaults.standard.bool(forKey: "music") {
             playBackgroundMusic()
+        }
+    }
+    
+    func playCountDown() {
+        guard UserDefaults.standard.bool(forKey: "sound") else { return }
+        guard let url = Bundle.main.url(forResource: "countdown", withExtension: ".mp3") else { return }
+        do {
+            countDownPlayer = try AVAudioPlayer(contentsOf: url)
+            countDownPlayer?.play()
+        } catch let error {
+            print("Countdown player has an error: \(error.localizedDescription)")
         }
     }
 

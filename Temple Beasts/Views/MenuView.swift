@@ -149,6 +149,9 @@ struct MenuView: View {
                                 .onTapGesture {
                                     hapticState.toggle()
                                     UserDefaults.standard.set(hapticState, forKey: "haptic")
+                                    if hapticState {
+                                        HapticManager.shared.notification(type: .error)
+                                    }
                                 }
                             Spacer()
                         }

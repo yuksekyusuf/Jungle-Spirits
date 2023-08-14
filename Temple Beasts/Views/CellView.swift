@@ -9,19 +9,23 @@ import SwiftUI
 
 struct CellView: View {
     let state: CellState
-//    let size: CGFloat
     let isSelected: Bool
     let highlighted: Bool
     let outerHighlighted: Bool
     let width = UIScreen.main.bounds.width * 0.175
     let offsetY = UIScreen.main.bounds.height * 0.0046
+    let tileNumbers = [1, 2, 3, 4]
 
     var body: some View {
         ZStack {
-            Image("Unselected cell")
-                .resizable()
-                .scaledToFit()
-                .frame(width: width)
+            if let random = tileNumbers.randomElement() {
+                Image("Unselected cell \(random)")
+                                   .resizable()
+                                   .scaledToFit()
+                                   .frame(width: width)
+            }
+
+            
             PlayerView(player: state, selected: isSelected)
                 .frame(width: width)
                 .transition(.opacity)
@@ -60,6 +64,6 @@ struct CellView: View {
 }
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        CellView(state: .empty, isSelected: false, highlighted: false, outerHighlighted: true)
+        CellView(state: .player1, isSelected: false, highlighted: false, outerHighlighted: true)
     }
 }

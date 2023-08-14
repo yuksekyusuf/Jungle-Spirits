@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+//import Lottie
 
 struct PlayerView: View {
     var player: CellState
     var selected: Bool
     var body: some View {
         HStack {
+        
             if selected == true {
                 if player == .player1 {
+//                    LottieView(animationName: "redActiveAnimation")
                     Image(uiImage: UIImage(named: "redActive")!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -26,6 +29,7 @@ struct PlayerView: View {
                 }
             } else if selected == false {
                 if player == .player1 {
+//                    LottieView(animationName: "gemRed-deselect 2")
                     Image(uiImage: UIImage(named: "Red")!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -48,6 +52,6 @@ struct PlayerView: View {
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView(player: .player2, selected: true)
+        PlayerView(player: .player1, selected: false)
     }
 }

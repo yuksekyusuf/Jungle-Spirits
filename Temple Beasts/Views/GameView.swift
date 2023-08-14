@@ -52,7 +52,7 @@ struct GameView: View {
                 VStack(spacing: 0) {
                     HStack {
                         VStack {
-                            HStack {
+                            HStack(alignment: .top) {
                                 if gameCenterController.otherPlayerPlaying {
                                     Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
                                         .frame(width: 55)
@@ -111,7 +111,7 @@ struct GameView: View {
 
                         Spacer()
                         VStack {
-                            HStack {
+                            HStack(alignment: .top) {
                                 if gameType == .multiplayer {
                                     VStack(alignment: .trailing){
                                         PieceCountView(pieceCount: player2PieceCount, size: 25)
@@ -138,11 +138,11 @@ struct GameView: View {
                                 if gameCenterController.otherPlayerPlaying {
                                     Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
                                         .frame(width: 55)
-//                                        .padding(.trailing, 20)
+                                        .padding(.trailing, 20)
                                 } else {
                                     Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
                                         .frame(width: 55)
-//                                        .padding(.trailing, 20)
+                                        .padding(.trailing, 20)
                                 }
                             }
                            
@@ -275,6 +275,10 @@ struct GameView: View {
             gameCenterController.board = self.board
             gameCenterController.isQuitGame = false
             SoundManager.shared.turnDownMusic()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                SoundManager.shared.playCountDown()
+
+            }
             
         }
         .environmentObject(board)

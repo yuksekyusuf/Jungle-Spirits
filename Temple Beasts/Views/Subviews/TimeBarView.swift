@@ -110,6 +110,7 @@ struct TimeBarView: View {
                 }
         }
         .frame(maxHeight: 40)
+        .padding([.leading, .trailing], 20)
     }
 }
 

@@ -11,7 +11,7 @@ struct SlideView: View {
     @State private var isShowingFirstImage = true
     let image1: String
     let image2: String
-    let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
        var body: some View {
            ZStack {
                Image(image1)
