@@ -16,29 +16,33 @@ struct PlayerView: View {
         
             if selected == true {
                 if player == .player1 {
-//                    LottieView(animationName: "redActiveAnimation")
-                    Image(uiImage: UIImage(named: "redActive")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipped()
+                    LottieView(animationName: "redActiveAnimation", ifActive: true)
+//                    Image(uiImage: UIImage(named: "redActive")!)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .clipped()
                 } else if player == .player2 {
-                    Image(uiImage: UIImage(named: "blueActive")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipped()
+                    LottieView(animationName: "gemBlue-select", ifActive: true)
+
+//                    Image(uiImage: UIImage(named: "blueActive")!)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .clipped()
                 }
             } else if selected == false {
                 if player == .player1 {
-//                    LottieView(animationName: "gemRed-deselect 2")
-                    Image(uiImage: UIImage(named: "Red")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipped()
+                    LottieView(animationName: "redNonActiveAnimation", ifActive: false)
+//                    Image(uiImage: UIImage(named: "Red")!)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .clipped()
                 } else if player == .player2 {
-                    Image(uiImage: UIImage(named: "Blue")!)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipped()
+                    LottieView(animationName: "gemBlue-deselect", ifActive: false)
+
+//                    Image(uiImage: UIImage(named: "Blue")!)
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fit)
+//                        .clipped()
                 }
             }
         }

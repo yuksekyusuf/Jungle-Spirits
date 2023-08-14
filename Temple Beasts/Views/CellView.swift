@@ -14,16 +14,13 @@ struct CellView: View {
     let outerHighlighted: Bool
     let width = UIScreen.main.bounds.width * 0.175
     let offsetY = UIScreen.main.bounds.height * 0.0046
-    let tileNumbers = [1, 2, 3, 4]
 
     var body: some View {
         ZStack {
-            if let random = tileNumbers.randomElement() {
-                Image("Unselected cell \(random)")
+                Image("Unselected cell 1")
                                    .resizable()
                                    .scaledToFit()
                                    .frame(width: width)
-            }
 
             
             PlayerView(player: state, selected: isSelected)

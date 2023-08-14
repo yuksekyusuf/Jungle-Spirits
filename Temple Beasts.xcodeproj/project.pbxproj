@@ -21,6 +21,9 @@
 		4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D4419332A896E80007293F0 /* redActiveAnimation.json */; };
 		4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4506EB2A7D14B400585259 /* SlideView.swift */; };
 		4D457DAF2A85594A00E0FB34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */; };
+		4D6401262A89D95E00917EC8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4D6401252A89D95E00917EC8 /* Lottie */; };
+		4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */; };
+		4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401292A89DB7000917EC8 /* gemBlue-select.json */; };
 		4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D69639F2A7A57E70096D805 /* HowToPlayView.swift */; };
 		4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6963A12A7A5C940096D805 /* InfoTabView.swift */; };
 		4D6C26672A47243B00C166F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C26662A47243B00C166F9 /* Node.swift */; };
@@ -32,7 +35,6 @@
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
 		4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D472A897467006D139B /* redNonActiveAnimation.json */; };
-		4D930D4A2A897533006D139B /* gemRed-deselect 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D492A897533006D139B /* gemRed-deselect 2.json */; };
 		4D9518792A50A58100ED284D /* WinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9518782A50A58100ED284D /* WinView.swift */; };
 		4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D95187C2A50C5B100ED284D /* HapticManager.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
@@ -65,10 +67,12 @@
 		4D4419332A896E80007293F0 /* redActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redActiveAnimation.json; sourceTree = "<group>"; };
 		4D4506EB2A7D14B400585259 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
 		4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-deselect.json"; sourceTree = "<group>"; };
+		4D6401292A89DB7000917EC8 /* gemBlue-select.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-select.json"; sourceTree = "<group>"; };
 		4D69639F2A7A57E70096D805 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		4D6963A12A7A5C940096D805 /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
 		4D6C26662A47243B00C166F9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
-		4D70D23B2A05518F002E9C0A /* Temple Beasts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Beasts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D70D23B2A05518F002E9C0A /* Temple Gems.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Gems.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
 		4D70D2422A055190002E9C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D70D2452A055190002E9C0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -78,7 +82,6 @@
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		4D930D452A897107006D139B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		4D930D472A897467006D139B /* redNonActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redNonActiveAnimation.json; sourceTree = "<group>"; };
-		4D930D492A897533006D139B /* gemRed-deselect 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemRed-deselect 2.json"; sourceTree = "<group>"; };
 		4D9518782A50A58100ED284D /* WinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinView.swift; sourceTree = "<group>"; };
 		4D95187C2A50C5B100ED284D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
@@ -101,19 +104,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D6401262A89D95E00917EC8 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		214D399073850926EE7966A1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		4D0F06982A48D5CE00B53823 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,14 +157,13 @@
 			children = (
 				4D70D23D2A05518F002E9C0A /* Temple Beasts */,
 				4D70D23C2A05518F002E9C0A /* Products */,
-				214D399073850926EE7966A1 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		4D70D23C2A05518F002E9C0A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4D70D23B2A05518F002E9C0A /* Temple Beasts.app */,
+				4D70D23B2A05518F002E9C0A /* Temple Gems.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,8 +172,9 @@
 			isa = PBXGroup;
 			children = (
 				4D4419332A896E80007293F0 /* redActiveAnimation.json */,
+				4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */,
+				4D6401292A89DB7000917EC8 /* gemBlue-select.json */,
 				4D930D472A897467006D139B /* redNonActiveAnimation.json */,
-				4D930D492A897533006D139B /* gemRed-deselect 2.json */,
 				4D42DC142A56046100E8809C /* Controllers */,
 				4D0F069B2A48D89600B53823 /* Sounds */,
 				4D0F06982A48D5CE00B53823 /* Services */,
@@ -268,8 +265,11 @@
 			dependencies = (
 			);
 			name = "Temple Beasts";
+			packageProductDependencies = (
+				4D6401252A89D95E00917EC8 /* Lottie */,
+			);
 			productName = "Temple Beasts";
-			productReference = 4D70D23B2A05518F002E9C0A /* Temple Beasts.app */;
+			productReference = 4D70D23B2A05518F002E9C0A /* Temple Gems.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -296,6 +296,9 @@
 				Base,
 			);
 			mainGroup = 4D70D2322A05518F002E9C0A;
+			packageReferences = (
+				4D6401242A89D95E00917EC8 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 4D70D23C2A05518F002E9C0A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -318,9 +321,10 @@
 				4D2B38982A54D84A00DA7D8F /* convert.wav in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
 				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
+				4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */,
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
-				4D930D4A2A897533006D139B /* gemRed-deselect 2.json in Resources */,
+				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
 				4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */,
 			);
@@ -511,7 +515,7 @@
 				MARKETING_VERSION = 0.1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Temple Gems";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -550,7 +554,7 @@
 				MARKETING_VERSION = 0.1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Temple Gems";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -582,6 +586,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4D6401242A89D95E00917EC8 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4D6401252A89D95E00917EC8 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D6401242A89D95E00917EC8 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4D70D2332A05518F002E9C0A /* Project object */;
 }
