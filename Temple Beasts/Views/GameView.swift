@@ -172,10 +172,14 @@ struct GameView: View {
                                 .allowsHitTesting(false)
                         }
                 }
-                Image("randomLights")
-                    .resizable()
-                    .scaledToFit()
+                LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
+                    .frame(width: UIScreen.main.bounds.width)
                     .allowsHitTesting(false)
+//                Image("randomLights")
+//                    .resizable()
+//                    .scaledToFit()
+//                    .allowsHitTesting(false)
+                
                 if showPauseMenu {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .animation(Animation.easeInOut, value: showPauseMenu)
@@ -238,15 +242,7 @@ struct GameView: View {
             } else if newValue == 0 && gameType == .ai {
                 gameCenterController.remainingTime = 15
                 switchPlayer()
-                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                    self.board.performAIMove()
-                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.gameCenterController.currentPlayer = .player1
-                        self.gameCenterController.remainingTime = 15
-                    }
-                }
-                self.gameCenterController.remainingTime = 15
+                performAIMoveAfterDelay()
             } else if newValue == 0 && gameType == .multiplayer {
                 gameCenterController.remainingTime = 15
                 
@@ -261,7 +257,6 @@ struct GameView: View {
                         print("Failed to send move: ", error)
 
                     }
-
                 }
             }
         })
@@ -345,33 +340,119 @@ struct GameView: View {
             if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
                 self.gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused.toggle()
-            } else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
-                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-                    self.board.performAIMove()
-                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        if board.isGameOver() {
-                            self.gameCenterController.isGameOver = true
-                            self.gameCenterController.isPaused = true
-                            
-                            return
-                        }
-                        self.gameCenterController.currentPlayer = .player1
-                        self.gameCenterController.remainingTime = 15
-                        SoundManager.shared.playMoveSound()
-                        if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
-                            if convertedPieces > 0 {
-                                SoundManager.shared.playConvertSound()
-                            }
-                        }
-                    }
-                }
+            }
+            else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
+                // Use a single main thread delay, instead of nested or global ones.
+
+                performAIMoveAfterDelay()
+                // This is outside the async block. If you want this reset to always occur immediately after the AI makes a move, then it's correctly placed.
                 self.gameCenterController.remainingTime = 15
             }
+
+//            else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
+//                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+//                    print("while ai performs, current player: ", gameCenterController.currentPlayer)
+//
+//                    if let convertedPieces = self.board.performAIMove() {
+//
+//                        if !convertedPieces.isEmpty {
+//                            for piece in convertedPieces {
+//                                DispatchQueue.main.async {
+//                                    gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
+//                                    gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
+//                                }
+//                            }
+//                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                            if board.isGameOver() {
+//                                self.gameCenterController.isGameOver = true
+//                                self.gameCenterController.isPaused = true
+//                                return
+//                            }
+//                            self.gameCenterController.currentPlayer = .player1
+//                            print("1after ai performs, current player: ", gameCenterController.currentPlayer)
+//                            self.gameCenterController.remainingTime = 15
+//                            SoundManager.shared.playMoveSound()
+//                            if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
+//                                if convertedPieces > 0 {
+//                                    SoundManager.shared.playConvertSound()
+//                                }
+//                            }
+//
+//                        }
+//
+//
+//
+//
+//                    }
+//                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
+//
+//
+//
+//
+//
+////                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+////                        if board.isGameOver() {
+////                            self.gameCenterController.isGameOver = true
+////                            self.gameCenterController.isPaused = true
+////
+////                            return
+////                        }
+////                        self.gameCenterController.currentPlayer = .player1
+////                        self.gameCenterController.remainingTime = 15
+////                        SoundManager.shared.playMoveSound()
+////                        if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
+////                            if convertedPieces > 0 {
+////                                SoundManager.shared.playConvertSound()
+////                            }
+////                        }
+////                    }
+//                }
+//                self.gameCenterController.remainingTime = 15
+//            }
         }
     }
     func switchPlayer() {
         gameCenterController.currentPlayer = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
+    }
+    
+    func performAIMoveAfterDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            
+            // Let the AI perform its move and get the converted pieces.
+            if let convertedPieces = self.board.performAIMove() {
+                
+                // Update convertedCells and previouslyConvertedCells on the main thread.
+                for piece in convertedPieces {
+                    gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
+                    gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
+                }
+                
+                // Play the conversion sound if any pieces were converted.
+                if !convertedPieces.isEmpty {
+                    SoundManager.shared.playConvertSound()
+                }
+
+                // Check if the game is over.
+                if board.isGameOver() {
+                    self.gameCenterController.isGameOver = true
+                    self.gameCenterController.isPaused = true
+                    return
+                }
+                
+                // Switch the current player and reset the timer.
+                self.gameCenterController.currentPlayer = .player1
+                self.gameCenterController.remainingTime = 15
+
+                // Play move sound.
+                SoundManager.shared.playMoveSound()
+
+                // (Optional) If you still want to count convertible pieces after the move, you can include this:
+//                if let convertiblePieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer), convertiblePieces > 0 {
+//                    // Do something with convertiblePieces if needed.
+//                }
+            }
+        }
     }
 
     func configurePauseMenu() {

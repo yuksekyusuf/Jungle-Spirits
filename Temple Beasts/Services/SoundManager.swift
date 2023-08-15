@@ -41,7 +41,9 @@ class SoundManager {
     }
 
     func playBackgroundMusic() {
+        guard UserDefaults.standard.bool(forKey: "music") else { return }
         guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: ".wav") else { return }
+        
 
             do {
                 try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])

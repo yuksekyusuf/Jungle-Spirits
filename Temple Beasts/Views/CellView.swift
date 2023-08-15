@@ -19,36 +19,34 @@ struct CellView: View {
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     let cellPosition: (row: Int, col: Int)
+    
+    @Binding var moveMade: Bool
 
 
+    @State private var selectedUnselectedImage: String = Self.randomUnselectedImage()
+    private static func randomUnselectedImage() -> String {
+            let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]
+            return images.randomElement() ?? "Unselected cell 1"
+        }
 
     var body: some View {
         ZStack {
-                Image("Unselected cell 1")
+                Image(selectedUnselectedImage)
                                    .resizable()
                                    .scaledToFit()
                                    .frame(width: width)
 
+                PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
+                    .frame(width: width)
+                    .transition(.opacity)
+                    .scaleEffect(isPressed ? 0.9 : 1.0)
+
             
-            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
-                .frame(width: width)
-                .transition(.opacity)
-                .animation(.easeIn(duration: 0.5), value: state)
-//                .scaleEffect(isPressed ? 0.9 : 1.0)
-
-
-
-//                .transition(.opacity)
-//                .animation(.easeIn(duration: 0.5), value: state)
-            
-//                .offset(y: -offsetY)
-
             if highlighted && state == .empty {
                 Image("Highlighted")
                     .resizable()
                     .scaledToFit()
                     .cornerRadius(6)
-//                    .offset(y: -offsetY)
 
             }
             if outerHighlighted && state == .empty {
@@ -56,18 +54,23 @@ struct CellView: View {
                     .resizable()
                     .scaledToFit()
                     .cornerRadius(6)
-//                    .offset(y: -offsetY)
-
             }
             if isSelected && state == .player1 {
                 Image("EllipseRed")
-                    .blendMode(.overlay)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: width + 30, height: width + 30)
                     .allowsHitTesting(false)
+                    .blendMode(.overlay)
+                
             }
             if isSelected && state == .player2 {
                 Image("EllipseBlue")
-                    .blendMode(.overlay)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: width + 30, height: width + 30)
                     .allowsHitTesting(false)
+                    .blendMode(.overlay)
             }
         }
         .frame(width: width, height: width)
@@ -75,6 +78,7 @@ struct CellView: View {
 }
 //struct CellView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        CellView(state: .player1, isSelected: false, highlighted: false, outerHighlighted: true, isPressed: false)
+//        @State var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = [(1, 1, byPlayer: .player1)]
+//        CellView(state: .player1, isSelected: true, highlighted: false, outerHighlighted: false, isPressed: false, convertedCells: $convertedCells, previouslyConvertedCells: $convertedCells, cellPosition: (row: 1, col: 1))
 //    }
 //}

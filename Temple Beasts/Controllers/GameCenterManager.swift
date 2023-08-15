@@ -9,6 +9,8 @@ import SwiftUI
 import UIKit
 import GameKit
 
+
+
 enum MessageType: Int, Codable {
     case move
     case gameState
@@ -39,6 +41,10 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var isQuitGame = false
     @Published var path: [Int] = []
     @Published var connectionLost: Bool = false
+    @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
+    @Published  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
+
+    
 //    @Published var goneToBackground: Bool = false
 
 
@@ -126,16 +132,24 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                 case .move:
                     guard let codableMove = message.move else { return }
                     let move = Move.fromCodable(codableMove)
-                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
-                    self.otherPlayerPlaying.toggle()
-                    self.currentlyPlaying.toggle()
-                    print("After the move, the local player is playing?: ", self.currentlyPlaying)
-                    print("After the move, the local player is : ", self.currentPlayer.rawValue)
-                    _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
-                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
-                    // Check for game over after performing the move
+                    self.processMove(move)
                     guard let gameState = message.gameState else { return }
-                    self.remainingTime = 15
+                    if let isOver = gameState.isGameOver, isOver {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.isGameOver = true
+                        }
+                    }
+                    
+//                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+//                    self.otherPlayerPlaying.toggle()
+//                    self.currentlyPlaying.toggle()
+//                    print("After the move, the local player is playing?: ", self.currentlyPlaying)
+//                    print("After the move, the local player is : ", self.currentPlayer.rawValue)
+//                    _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
+//                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+//                    // Check for game over after performing the move
+////                    guard let gameState = message.gameState else { return }
+//                    self.remainingTime = 15
 
                 case .gameState:
                     guard let gameState = message.gameState else { return }
@@ -265,6 +279,40 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                     print("Failed to send background message: ", error)
                 }
             }
+    }
+    
+    func processMove(_ move: Move) {
+        // Update the board with the move
+        self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+        self.otherPlayerPlaying.toggle()
+        self.currentlyPlaying.toggle()
+        
+//        let convertedPieces = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
+        
+        // Check for game over after performing the move
+//                    guard let gameState = message.gameState else { return }
+        
+        // Convert the cell at the move's destination
+//        let convertedCell = (row: move.destination.row, col: move.destination.col, byPlayer: currentPlayer)
+        
+        // Check if cell is already converted
+        if let convertedPieces = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer) {
+            if !convertedPieces.isEmpty {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+                for piece in convertedPieces {
+                    convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                    previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+
+                   }
+            }
+        }
+
+        
+
+        self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
+        self.remainingTime = 15
+
     }
     
 }

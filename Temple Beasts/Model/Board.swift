@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum CellState: Int, Codable, Equatable {
     case empty
@@ -148,12 +149,15 @@ class Board: ObservableObject {
         let colDifference = abs(destination.col - source.col)
 
         // Copying the piece if moving to an adjacent cell
-        if rowDifference <= 1 && colDifference <= 1 {
-            cells[destination.row][destination.col] = player
-        } else {
-            cells[source.row][source.col] = .empty
-            cells[destination.row][destination.col] = player
+       
+            if rowDifference <= 1 && colDifference <= 1 {
+                cells[destination.row][destination.col] = player
+            } else {
+                cells[source.row][source.col] = .empty
+                cells[destination.row][destination.col] = player
+
         }
+     
         
         gameOver = isGameOver()
         let convertedCells = convertOpponentPieces(at: destination, player: player)
@@ -298,17 +302,20 @@ class Board: ObservableObject {
 // MARK: Simple AI algorithm
 extension Board {
     
-    func performAIMove(){
+    func performAIMove() -> [(row: Int, col: Int)]? {
         let aiPlayer: CellState = .player2
         guard let move = chooseMove(for: aiPlayer)  else {
             print("No valid move found for AI player.")
-            return
+            return nil
         }
         
+        var convertedCells: [(row: Int, col: Int)] = []
         // Perform the move and return the move
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.performMove(from: move.source, to: move.destination, player: aiPlayer)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            convertedCells = self.performMove(from: move.source, to: move.destination, player: aiPlayer)
+//        }
+        return convertedCells
+        
     }
     
     func scoreMove(_ move: Move, for player: CellState) -> Int {
