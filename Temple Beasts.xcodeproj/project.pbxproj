@@ -28,7 +28,6 @@
 		4D6401322A89F52900917EC8 /* redToBlue.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401312A89F52900917EC8 /* redToBlue.json */; };
 		4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D69639F2A7A57E70096D805 /* HowToPlayView.swift */; };
 		4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6963A12A7A5C940096D805 /* InfoTabView.swift */; };
-		4D6C26672A47243B00C166F9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6C26662A47243B00C166F9 /* Node.swift */; };
 		4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */; };
 		4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2422A055190002E9C0A /* Assets.xcassets */; };
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
@@ -36,19 +35,15 @@
 		4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2522A055910002E9C0A /* PlayerView.swift */; };
 		4D83E84F2A8AA717003A57BB /* blueDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E84E2A8AA717003A57BB /* blueDefault.json */; };
 		4D83E8512A8AA71D003A57BB /* redDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8502A8AA71D003A57BB /* redDefault.json */; };
-		4D83E8532A8AC3EA003A57BB /* particles.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8522A8AC3E9003A57BB /* particles.json */; };
+		4D83E8552A8D3AFC003A57BB /* particles.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8542A8D3AFC003A57BB /* particles.json */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
 		4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D472A897467006D139B /* redNonActiveAnimation.json */; };
 		4D9518792A50A58100ED284D /* WinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9518782A50A58100ED284D /* WinView.swift */; };
 		4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D95187C2A50C5B100ED284D /* HapticManager.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
-		4DC62BF12A19402500CD2007 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF02A19402500CD2007 /* BarView.swift */; };
-		4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
-		4DD7AACC2A55B6C80028D3BF /* NewBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7AACB2A55B6C80028D3BF /* NewBoard.swift */; };
 		4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7C1622A896B7D005B34BE /* countdown.mp3 */; };
-		4DED054D2A31346E00B2362A /* MenuButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED054C2A31346E00B2362A /* MenuButtonView.swift */; };
 		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
 		4DED05532A31413600B2362A /* PieceCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05522A31413600B2362A /* PieceCountView.swift */; };
 		4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05582A3145D400B2362A /* CustomToggleView.swift */; };
@@ -78,7 +73,6 @@
 		4D6401312A89F52900917EC8 /* redToBlue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redToBlue.json; sourceTree = "<group>"; };
 		4D69639F2A7A57E70096D805 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		4D6963A12A7A5C940096D805 /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
-		4D6C26662A47243B00C166F9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		4D70D23B2A05518F002E9C0A /* Temple Gems.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Gems.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
 		4D70D2422A055190002E9C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -88,19 +82,15 @@
 		4D70D2522A055910002E9C0A /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		4D83E84E2A8AA717003A57BB /* blueDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueDefault.json; sourceTree = "<group>"; };
 		4D83E8502A8AA71D003A57BB /* redDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redDefault.json; sourceTree = "<group>"; };
-		4D83E8522A8AC3E9003A57BB /* particles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = particles.json; sourceTree = "<group>"; };
+		4D83E8542A8D3AFC003A57BB /* particles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = particles.json; sourceTree = "<group>"; };
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		4D930D452A897107006D139B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		4D930D472A897467006D139B /* redNonActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redNonActiveAnimation.json; sourceTree = "<group>"; };
 		4D9518782A50A58100ED284D /* WinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinView.swift; sourceTree = "<group>"; };
 		4D95187C2A50C5B100ED284D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
-		4DC62BF02A19402500CD2007 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
-		4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+InnerShadow.swift"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		4DD7AACB2A55B6C80028D3BF /* NewBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBoard.swift; sourceTree = "<group>"; };
 		4DD7C1622A896B7D005B34BE /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
-		4DED054C2A31346E00B2362A /* MenuButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonView.swift; sourceTree = "<group>"; };
 		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
 		4DED05522A31413600B2362A /* PieceCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceCountView.swift; sourceTree = "<group>"; };
 		4DED05562A31449100B2362A /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Watermelon-Regular.otf"; sourceTree = "<group>"; };
@@ -147,8 +137,6 @@
 			children = (
 				4D84F5D42A30BF5100B6E35C /* GameType.swift */,
 				4D70D2502A0555D5002E9C0A /* Board.swift */,
-				4D6C26662A47243B00C166F9 /* Node.swift */,
-				4DD7AACB2A55B6C80028D3BF /* NewBoard.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -169,8 +157,8 @@
 				4D83E8502A8AA71D003A57BB /* redDefault.json */,
 				4D64012F2A89F24500917EC8 /* blueToRed.json */,
 				4D6401312A89F52900917EC8 /* redToBlue.json */,
+				4D83E8542A8D3AFC003A57BB /* particles.json */,
 				4D4419332A896E80007293F0 /* redActiveAnimation.json */,
-				4D83E8522A8AC3E9003A57BB /* particles.json */,
 				4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */,
 				4D6401292A89DB7000917EC8 /* gemBlue-select.json */,
 				4D930D472A897467006D139B /* redNonActiveAnimation.json */,
@@ -202,13 +190,12 @@
 				4D0F069B2A48D89600B53823 /* Sounds */,
 				4D0F06982A48D5CE00B53823 /* Services */,
 				4DED05552A31448900B2362A /* Assets */,
-				4DC62BF62A1955F700CD2007 /* Utils */,
 				4D3A83CD2A0D33200059E2F0 /* Model */,
 				4D70D24D2A05545B002E9C0A /* Views */,
 				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
 				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
-				4D70D2442A055190002E9C0A /* Preview Content */,
 				4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */,
+				4D70D2442A055190002E9C0A /* Preview Content */,
 			);
 			path = "Temple Beasts";
 			sourceTree = "<group>";
@@ -225,23 +212,13 @@
 			isa = PBXGroup;
 			children = (
 				4DED05542A31439100B2362A /* Subviews */,
-				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4D15F0B52A0C31AB00539383 /* BoardView.swift */,
 				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
 				4D9518782A50A58100ED284D /* WinView.swift */,
-				4D69639F2A7A57E70096D805 /* HowToPlayView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		4DC62BF62A1955F700CD2007 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				4DC62BF72A19560500CD2007 /* Ext+InnerShadow.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		4DED05542A31439100B2362A /* Subviews */ = {
@@ -250,14 +227,14 @@
 				4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */,
 				4DED05522A31413600B2362A /* PieceCountView.swift */,
 				4D70D2522A055910002E9C0A /* PlayerView.swift */,
-				4DC62BF02A19402500CD2007 /* BarView.swift */,
-				4DED054C2A31346E00B2362A /* MenuButtonView.swift */,
 				4DED05502A31402900B2362A /* TimeBarView.swift */,
 				4DED05582A3145D400B2362A /* CustomToggleView.swift */,
 				4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */,
 				4D4506EB2A7D14B400585259 /* SlideView.swift */,
 				4D6963A12A7A5C940096D805 /* InfoTabView.swift */,
 				4D930D452A897107006D139B /* LottieView.swift */,
+				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
+				4D69639F2A7A57E70096D805 /* HowToPlayView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -344,6 +321,7 @@
 				4D0F06A52A48EBB800B53823 /* victory.wav in Resources */,
 				4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */,
 				4D2B38982A54D84A00DA7D8F /* convert.wav in Resources */,
+				4D83E8552A8D3AFC003A57BB /* particles.json in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
 				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
 				4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */,
@@ -353,7 +331,6 @@
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
 				4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */,
-				4D83E8532A8AC3EA003A57BB /* particles.json in Resources */,
 				4D83E8512A8AA71D003A57BB /* redDefault.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,18 +344,15 @@
 			files = (
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
-				4DED054D2A31346E00B2362A /* MenuButtonView.swift in Sources */,
 				4D42DC132A55DE6B00E8809C /* GameCenterManager.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
-				4DD7AACC2A55B6C80028D3BF /* NewBoard.swift in Sources */,
 				4D9518792A50A58100ED284D /* WinView.swift in Sources */,
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
 				4D2B388E2A54C5EB00DA7D8F /* CountDownView.swift in Sources */,
 				4D930D462A897107006D139B /* LottieView.swift in Sources */,
 				4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */,
-				4D6C26672A47243B00C166F9 /* Node.swift in Sources */,
 				4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */,
 				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
@@ -386,10 +360,8 @@
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
-				4DC62BF82A19560500CD2007 /* Ext+InnerShadow.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */,
-				4DC62BF12A19402500CD2007 /* BarView.swift in Sources */,
 				4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */,
 				4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */,
 				4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */,
@@ -523,7 +495,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -540,7 +512,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
 				PRODUCT_NAME = "Temple Gems";
@@ -562,7 +534,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -579,7 +551,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
 				PRODUCT_NAME = "Temple Gems";

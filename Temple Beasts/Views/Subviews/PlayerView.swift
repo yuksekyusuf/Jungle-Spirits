@@ -10,15 +10,10 @@ import SwiftUI
 struct PlayerView: View {
     var player: CellState
     var selected: Bool
-    
-    @State private var isPressed: Bool = false
     let cellPosition: (row: Int, col: Int)
-    let animationDuration: TimeInterval = 1.0
-    
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     
-//    let uniqueKey: UUID = UUID()
 
 
     var body: some View {
@@ -26,22 +21,13 @@ struct PlayerView: View {
                 // 1. Check for current conversion
                 if let conversion = convertedCells.first(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
                     if conversion.byPlayer == .player1 {
-                        LottieView(animationName: "blueToRed", ifActive: false, contentMode: false, isLoop: false)
-                        
-                        {
+                        LottieView(animationName: "blueToRed", ifActive: false, contentMode: false, isLoop: false) {
                             if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
                                 convertedCells.remove(at: index)
                             }
 
                         }
 
-//                            .onAppear {
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-//                                    if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
-//                                        convertedCells.remove(at: index)
-//                                    }
-//                                }
-//                            }
                     } else {
                         LottieView(animationName: "redToBlue", ifActive: false, contentMode: false, isLoop: false)
                         {
@@ -51,13 +37,6 @@ struct PlayerView: View {
                             
                         }
 
-//                            .onAppear {
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
-//                                    if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
-//                                        convertedCells.remove(at: index)
-//                                    }
-//                                }
-//                            }
                     }
                 }
                 // 2. Check for previously converted but now selected
@@ -77,10 +56,8 @@ struct PlayerView: View {
                     displayRegularOrSelectedAnimation()
                 }
             }
-//            .id(uniqueKey)
         }
         
-
         
     func displayRegularOrSelectedAnimation() -> some View {
         Group {
@@ -114,10 +91,3 @@ extension View {
         }
     }
 }
-
-
-
-//                    Image(uiImage: UIImage(named: "Blue")!)
-//                        .resizable()
-//                        .aspectRatio(contentMode: .fit)
-//                        .clipped()

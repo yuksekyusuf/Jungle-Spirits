@@ -21,29 +21,19 @@ struct LottieView: UIViewRepresentable {
             animationView.animationSpeed = 1.75
         }
         if contentMode && isLoop {
-            
-//            animationView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width * 0.3, height: UIScreen.main.bounds.height * 0.3)
-            animationView.contentMode = .redraw
-
-//            animationView.center = self.view.center
+            animationView.contentMode = .scaleAspectFit
             animationView.loopMode = .loop
-//            animationView.play(fromFrame: 500,
-//                            toFrame: 500,
-//                            loopMode: .loop)
         }
         animationView.play { (finished) in
                 if finished {
                     completion?()
                 }
             }
-        
-        
         return animationView
     }
     
     func updateUIView(_ uiView: Lottie.LottieAnimationView, context: Context) {
     }
-    
     
     typealias UIViewType = LottieAnimationView
     

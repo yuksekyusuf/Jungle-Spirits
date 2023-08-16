@@ -160,10 +160,8 @@ struct MenuView: View {
                     .padding(.bottom, 40)
                 }
                 LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
-//                    .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: .infinity)
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .edgesIgnoringSafeArea(.all)
-
                     .allowsHitTesting(false)
             }
         }

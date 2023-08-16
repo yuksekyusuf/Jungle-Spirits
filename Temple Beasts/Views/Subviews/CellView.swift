@@ -15,19 +15,12 @@ struct CellView: View {
     let width = UIScreen.main.bounds.width * 0.175
     let offsetY = UIScreen.main.bounds.height * 0.0046
     var isPressed: Bool
-    var onConversion: (() -> Void)? = nil
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     let cellPosition: (row: Int, col: Int)
-    
     @Binding var moveMade: Bool
-
-
     @State private var selectedUnselectedImage: String = Self.randomUnselectedImage()
-    private static func randomUnselectedImage() -> String {
-            let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]
-            return images.randomElement() ?? "Unselected cell 1"
-        }
+
 
     var body: some View {
         ZStack {
@@ -75,6 +68,10 @@ struct CellView: View {
         }
         .frame(width: width, height: width)
     }
+    private static func randomUnselectedImage() -> String {
+            let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]
+            return images.randomElement() ?? "Unselected cell 1"
+        }
 }
 //struct CellView_Previews: PreviewProvider {
 //    static var previews: some View {

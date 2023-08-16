@@ -14,16 +14,9 @@ struct BoardView: View {
     @Binding var currentPlayer: CellState
     @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
     @State private var moveMade: Bool = false
-
-    
-//    @State private var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
-//
-//    @State private var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
-
     
     let onMoveCompleted: (Move) -> Void
     let gameType: GameType
-    
     
     func isCellPressed(row: Int, col: Int) -> Bool {
         if let pressedCell = currentlyPressedCell, pressedCell == (row, col) {
@@ -47,10 +40,6 @@ struct BoardView: View {
                             previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
                             cellPosition: (row: row, col: col), moveMade: $moveMade
                         )
-//                        .onTapGesture {
-//                            self.handleTap(from: selectedCell, to: (row: row, col: col))
-//                            HapticManager.shared.impact(style: .soft)
-//                        }
                         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
                             if pressing {
                                 self.currentlyPressedCell = (row, col)
@@ -79,9 +68,6 @@ struct BoardView: View {
         // If the destination cell is the currently selected cell, unselect it.
         if let source = source, source == destination {
             selectedCell = nil
-//            withAnimation(.easeInOut) {
-//                selectedCell = nil
-//            }
             return
         }
 
@@ -94,16 +80,18 @@ struct BoardView: View {
 
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
             self.moveMade.toggle()
-            let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
-            if !convertedPieces.isEmpty {
-                SoundManager.shared.playConvertSound()
-                HapticManager.shared.notification(type: .success)
-                for piece in convertedPieces {
-                    self.gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
-                    self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                
+                let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
+                if !convertedPieces.isEmpty {
+                    SoundManager.shared.playConvertSound()
+                    HapticManager.shared.notification(type: .success)
+                    for piece in convertedPieces {
+                        self.gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                        self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
 
-                   } 
-            }
+                       }
+                }
+            
             selectedCell = nil
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)

@@ -14,7 +14,6 @@ struct PauseMenuView: View {
     @State var gameType: GameType
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @State private var musicState: Bool = UserDefaults.standard.bool(forKey: "music")
-//    @AppStorage("music") private var musicState: Bool = false
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var currentPlayer: CellState

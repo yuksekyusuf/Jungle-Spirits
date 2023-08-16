@@ -44,17 +44,11 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @Published  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
 
-    
-//    @Published var goneToBackground: Bool = false
-
-
-    
-    
+    var backgroundTimer: Timer?
     var localPlayer = GKLocalPlayer.local
     var otherPlayer: GKPlayer?
     var priority: Int = 0
     var otherPriority = 0
-//    var menuViewModel: MenuViewModel
 
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -63,7 +57,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
-//        self.menuViewModel = menuViewModel
         super.init()
             startObservingAppLifecycle()
     }
@@ -139,17 +132,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                             self.isGameOver = true
                         }
                     }
-                    
-//                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
-//                    self.otherPlayerPlaying.toggle()
-//                    self.currentlyPlaying.toggle()
-//                    print("After the move, the local player is playing?: ", self.currentlyPlaying)
-//                    print("After the move, the local player is : ", self.currentPlayer.rawValue)
-//                    _ = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
-//                    self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
-//                    // Check for game over after performing the move
-////                    guard let gameState = message.gameState else { return }
-//                    self.remainingTime = 15
 
                 case .gameState:
                     guard let gameState = message.gameState else { return }
@@ -194,20 +176,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     }
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-//        guard state == .disconnected && !isGameOver else { return }
-//        let alert = UIAlertController(title: "Player disconnected",
-//                                      message: "The other player disconnected from the match",
-//                                      preferredStyle: .alert)
-//        self.isPaused = true
-//        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-//            self.match?.disconnect()
-//            self.resetGame()
-//
-//        })
-//
-//        DispatchQueue.main.async {
-//            self.rootViewController?.present(alert, animated: true)
-//        }
         DispatchQueue.main.async {
                 switch state {
                 case .connected:
@@ -254,8 +222,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         
     }
     
-  
-    
     func resetGame() {
         match?.delegate = nil
         match = nil
@@ -267,33 +233,37 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     
     func startObservingAppLifecycle() {
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @objc func appWillResignActive() {
-        let gameState = GameState(isPaused: true, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, priority: self.priority, goneToBackground: true)
+        // Start the background timer
+        backgroundTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
+            self.connectionLost = true
+            let gameState = GameState(isPaused: true, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, priority: self.priority, goneToBackground: true)
             let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-            if let data = encodeMessage(message) {
+            if let data = self.encodeMessage(message) {
                 do {
-                    try match?.sendData(toAllPlayers: data, with: .reliable)
+                    try self.match?.sendData(toAllPlayers: data, with: .reliable)
                 } catch {
                     print("Failed to send background message: ", error)
                 }
             }
+        }
     }
+    @objc func appDidBecomeActive() {
+        // Invalidate the timer since the player returned to the app
+        backgroundTimer?.invalidate()
+        backgroundTimer = nil
+    }
+ 
+    
     
     func processMove(_ move: Move) {
         // Update the board with the move
         self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
         self.otherPlayerPlaying.toggle()
         self.currentlyPlaying.toggle()
-        
-//        let convertedPieces = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer)
-        
-        // Check for game over after performing the move
-//                    guard let gameState = message.gameState else { return }
-        
-        // Convert the cell at the move's destination
-//        let convertedCell = (row: move.destination.row, col: move.destination.col, byPlayer: currentPlayer)
         
         // Check if cell is already converted
         if let convertedPieces = self.board?.performMove(from: move.source, to: move.destination, player: self.currentPlayer) {
@@ -307,112 +277,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                    }
             }
         }
-
-        
-
         self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
         self.remainingTime = 15
-
     }
     
 }
-
-// enum PlayerAuthState: String {
-//    case authenticating = "Logging in to Game Center..."
-//    case unauthenticated = "Please sign in to Game Center to play."
-//    case authenticated = "Successfully authenticated"
-//
-//    case error = "There was an error logging into Game Center"
-//    case restricted = "You're not allowed to player multiplayer games!"
-// }
-//
-
-// extension GameCenterController: GKMatchmakerViewControllerDelegate {
-//    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
-//        viewController.dismiss(animated: true)
-//        startGame(newMatch: match)
-//
-//    }
-//    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
-//        viewController.dismiss(animated: true)
-//
-//    }
-//    func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
-//        viewController.dismiss(animated: true)
-//    }
-//
-// }
-//
-//
-
-// extension GameCenterController: GKMatchDelegate {
-//    func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
-//        let content = String(decoding: data, as: UTF8.self)
-//
-//
-//        if content.starts(with: "strData:") {
-//            let message = content.replacing("strData:", with: "")
-//            receivedData(message)
-//        } else {
-//
-//        }
-//    }
-//
-//    func sendString(_ message: String) {
-//        guard let encoded = "strData:\(message)".data(using: .utf8) else { return }
-//        sendData(encoded, mode: .reliable)
-//
-//    }
-//
-//    func sendData(_ data: Data, mode: GKMatch.SendDataMode) {
-//        do {
-//            try match?.sendData(toAllPlayers: data, with: mode)
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
-//
-//    func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
-//
-//    }
-// }
-
-//    func startMatchMaking() {
-//        let request = GKMatchRequest()
-//        request.minPlayers = 2
-//        request.maxPlayers = 2
-//
-//        let matchMakinVC = GKMatchmakerViewController(matchRequest: request)
-//        matchMakinVC?.matchmakerDelegate = self
-//        rootViewController?.present(matchMakinVC!, animated: true)
-//
-//
-//    }
-//
-//    func startGame(newMatch: GKMatch) {
-//        match = newMatch
-//        match?.delegate = self
-//        otherPlayer = match?.players.first
-//    }
-//
-//    func receivedData(_ message: String) {
-//        let messageSplit = message.split(separator: ":")
-//        guard let messagePrefix = messageSplit.first else { return }
-//        let parameter = String(messageSplit.last ?? "")
-//        switch messagePrefix {
-//        case "began":
-//            if playerUUIDKey == parameter {
-//                playerUUIDKey == UUID().uuidString
-//                sendString("began:\(playerUUIDKey)")
-//                break
-//            }
-//
-//            currentlyMakingAMove = playerUUIDKey < parameter
-//            inGame = true
-//
-//
-//
-//        default:
-//            break
-//        }
-//    }

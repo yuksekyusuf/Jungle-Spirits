@@ -26,7 +26,6 @@ struct GameView: View {
     @State private var showWinMenu: Bool
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
-//    @EnvironmentObject var menuViewModel: MenuViewModel
     let cellSize: CGFloat = 40
 
     private var player1PieceCount: Int {
@@ -47,7 +46,9 @@ struct GameView: View {
     var body: some View {
         ZStack {
             ZStack {
-                Image("backgroundImage").resizable()
+                Image("backgroundImage")
+                    .resizable()
+                    .scaledToFill()
                     .ignoresSafeArea()
                 VStack(spacing: 0) {
                     HStack {
@@ -93,7 +94,6 @@ struct GameView: View {
                                 if gameType == .multiplayer {
                                     showPauseMenu.toggle()
                                 } else {
-//                                    configurePauseMenu()
                                     gameCenterController.isPaused.toggle()
                                     showPauseMenu.toggle()
 
@@ -173,12 +173,9 @@ struct GameView: View {
                         }
                 }
                 LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
-                    .frame(width: UIScreen.main.bounds.width)
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .allowsHitTesting(false)
-//                Image("randomLights")
-//                    .resizable()
-//                    .scaledToFit()
-//                    .allowsHitTesting(false)
+                    .edgesIgnoringSafeArea(.all)
                 
                 if showPauseMenu {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
@@ -346,70 +343,7 @@ struct GameView: View {
 
                 performAIMoveAfterDelay()
                 // This is outside the async block. If you want this reset to always occur immediately after the AI makes a move, then it's correctly placed.
-                self.gameCenterController.remainingTime = 15
             }
-
-//            else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
-//                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-//                    print("while ai performs, current player: ", gameCenterController.currentPlayer)
-//
-//                    if let convertedPieces = self.board.performAIMove() {
-//
-//                        if !convertedPieces.isEmpty {
-//                            for piece in convertedPieces {
-//                                DispatchQueue.main.async {
-//                                    gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
-//                                    gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
-//                                }
-//                            }
-//                        }
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                            if board.isGameOver() {
-//                                self.gameCenterController.isGameOver = true
-//                                self.gameCenterController.isPaused = true
-//                                return
-//                            }
-//                            self.gameCenterController.currentPlayer = .player1
-//                            print("1after ai performs, current player: ", gameCenterController.currentPlayer)
-//                            self.gameCenterController.remainingTime = 15
-//                            SoundManager.shared.playMoveSound()
-//                            if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
-//                                if convertedPieces > 0 {
-//                                    SoundManager.shared.playConvertSound()
-//                                }
-//                            }
-//
-//                        }
-//
-//
-//
-//
-//                    }
-//                    print("after ai performs, current player: ", gameCenterController.currentPlayer)
-//
-//
-//
-//
-//
-////                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-////                        if board.isGameOver() {
-////                            self.gameCenterController.isGameOver = true
-////                            self.gameCenterController.isPaused = true
-////
-////                            return
-////                        }
-////                        self.gameCenterController.currentPlayer = .player1
-////                        self.gameCenterController.remainingTime = 15
-////                        SoundManager.shared.playMoveSound()
-////                        if let convertedPieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer) {
-////                            if convertedPieces > 0 {
-////                                SoundManager.shared.playConvertSound()
-////                            }
-////                        }
-////                    }
-//                }
-//                self.gameCenterController.remainingTime = 15
-//            }
         }
     }
     func switchPlayer() {
@@ -417,7 +351,7 @@ struct GameView: View {
     }
     
     func performAIMoveAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             
             // Let the AI perform its move and get the converted pieces.
             if let convertedPieces = self.board.performAIMove() {
@@ -446,11 +380,6 @@ struct GameView: View {
 
                 // Play move sound.
                 SoundManager.shared.playMoveSound()
-
-                // (Optional) If you still want to count convertible pieces after the move, you can include this:
-//                if let convertiblePieces = board.countConvertiblePieces(at: move.destination, player: gameCenterController.currentPlayer), convertiblePieces > 0 {
-//                    // Do something with convertiblePieces if needed.
-//                }
             }
         }
     }
@@ -458,20 +387,6 @@ struct GameView: View {
     func configurePauseMenu() {
         gameCenterController.isPaused.toggle()
         showPauseMenu.toggle()
-//        if gameType == .multiplayer {
-//            let gameState = GameState(isPaused: gameCenterController.isPaused,
-//                                      isGameOver: gameCenterController.isGameOver,
-//                                      currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
-//            let gameStateMessage = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-//
-//            if let gameStateData = gameCenterController.encodeMessage(gameStateMessage) {
-//                do {
-//                    try gameCenterController.match!.sendData(toAllPlayers: gameStateData, with: .reliable)
-//                } catch {
-//                    print("Error sending data: \(error.localizedDescription)")
-//                }
-//            }
-//        }
     }
 }
 

@@ -11,7 +11,6 @@ struct WinView: View {
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
-//    @EnvironmentObject var menuViewModel: MenuViewModel
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var board: Board
     let gameType: GameType
