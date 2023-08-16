@@ -39,6 +39,7 @@ struct MenuView: View {
                     .ignoresSafeArea()
                 VStack(spacing: 0) {
                     HStack {
+                        
                         Button {
                             requestReview()
                         } label: {
@@ -62,7 +63,7 @@ struct MenuView: View {
                             gameCenterController.path.append(1)
                         }))
                     }
-                    .padding(.top, 10)
+                    .padding(.top, 30)
                     Spacer()
                     Image("menuLogo")
                         .resizable()
@@ -157,7 +158,7 @@ struct MenuView: View {
                         }
                         .padding(.top, 8)
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 80)
                 }
                 LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
