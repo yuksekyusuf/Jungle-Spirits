@@ -10,24 +10,36 @@ import SwiftUI
 struct HowToPlayView: View {
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @State var selectedTab = 0
+    @AppStorage("shownHowToPlay") var howToPlayShown: Bool = false
     var body: some View {
             VStack {
-                HStack(alignment: .center) {
-                    Button {
-                        gameCenterManager.path.removeAll()
-                    } label: {
-                        Image("Left Arrow")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 55)
+                if UserDefaults.standard.howToPlayShown {
+                    HStack(alignment: .center) {
+                        
+                        Button {
+                            gameCenterManager.path.removeAll()
+                        } label: {
+                            Image("Left Arrow")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 55)
+                        }
+                        
+                        
+                        Text("How to Play")
+                            .foregroundColor(.white)
+                            .font(Font.custom("Watermelon-Regular", size: 28))
+                            .padding(.leading, 30)
                     }
+                    .padding(.trailing, 80)
+                    .padding(.top, 20)
+                    
+                } else {
                     Text("How to Play")
                         .foregroundColor(.white)
                         .font(Font.custom("Watermelon-Regular", size: 28))
-                        .padding(.leading, 30)
+                        .padding(.top, 20)
                 }
-                .padding(.trailing, 80)
-                .padding(.top, 20)
                 Spacer()
                 TabView(selection: $selectedTab) {
                     InfoTabView(title: "Selecting a Gem", description: "Select a gem. Notice the green and yellow areas? That's where the magic happens!", image1: "SelectAGem 1", image2: "SelectAGem 2")
@@ -62,7 +74,17 @@ struct HowToPlayView: View {
                 } else {
                     Button {
                         withAnimation(.easeInOut) {
+                            UserDefaults.standard.howToPlayShown = true
+
                             gameCenterManager.path.removeAll()
+//
+//                            print("Before button tapped", UserDefaults.standard.howToPlayShown)
+//                            if UserDefaults.standard.howToPlayShown {
+//                                gameCenterManager.path.removeAll()
+//                            } else {
+//                                UserDefaults.standard.howToPlayShown = true
+//                            }
+//                            print("After button tapped", UserDefaults.standard.howToPlayShown)
                         }
                     } label: {
                         Image("GotIt")
@@ -87,5 +109,16 @@ struct HowToPlayView: View {
 struct HowToPlayView_Previews: PreviewProvider {
     static var previews: some View {
         HowToPlayView()
+    }
+}
+
+extension UserDefaults {
+    var howToPlayShown: Bool {
+        get {
+            return (UserDefaults.standard.value(forKey: "shownHowToPlay") as? Bool) ?? false
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: "shownHowToPlay")
+        }
     }
 }

@@ -36,6 +36,7 @@
 		4D83E84F2A8AA717003A57BB /* blueDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E84E2A8AA717003A57BB /* blueDefault.json */; };
 		4D83E8512A8AA71D003A57BB /* redDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8502A8AA71D003A57BB /* redDefault.json */; };
 		4D83E8552A8D3AFC003A57BB /* particles.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8542A8D3AFC003A57BB /* particles.json */; };
+		4D83E85B2A8DE7C7003A57BB /* logo.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E85A2A8DE7C7003A57BB /* logo.json */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
 		4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D472A897467006D139B /* redNonActiveAnimation.json */; };
@@ -83,6 +84,7 @@
 		4D83E84E2A8AA717003A57BB /* blueDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueDefault.json; sourceTree = "<group>"; };
 		4D83E8502A8AA71D003A57BB /* redDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redDefault.json; sourceTree = "<group>"; };
 		4D83E8542A8D3AFC003A57BB /* particles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = particles.json; sourceTree = "<group>"; };
+		4D83E85A2A8DE7C7003A57BB /* logo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo.json; sourceTree = "<group>"; };
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		4D930D452A897107006D139B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		4D930D472A897467006D139B /* redNonActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redNonActiveAnimation.json; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				4D64012F2A89F24500917EC8 /* blueToRed.json */,
 				4D6401312A89F52900917EC8 /* redToBlue.json */,
 				4D83E8542A8D3AFC003A57BB /* particles.json */,
+				4D83E85A2A8DE7C7003A57BB /* logo.json */,
 				4D4419332A896E80007293F0 /* redActiveAnimation.json */,
 				4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */,
 				4D6401292A89DB7000917EC8 /* gemBlue-select.json */,
@@ -324,6 +327,7 @@
 				4D83E8552A8D3AFC003A57BB /* particles.json in Resources */,
 				4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */,
 				4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */,
+				4D83E85B2A8DE7C7003A57BB /* logo.json in Resources */,
 				4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */,
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,

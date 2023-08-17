@@ -23,12 +23,14 @@ struct LottieView: UIViewRepresentable {
         if contentMode && isLoop {
             animationView.contentMode = .scaleAspectFit
             animationView.loopMode = .loop
+
         }
         animationView.play { (finished) in
                 if finished {
                     completion?()
                 }
             }
+
         return animationView
     }
     

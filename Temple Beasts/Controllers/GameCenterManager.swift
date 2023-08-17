@@ -239,16 +239,15 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @objc func appWillResignActive() {
         // Start the background timer
         backgroundTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
-            self.connectionLost = true
             let gameState = GameState(isPaused: true, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, priority: self.priority, goneToBackground: true)
-            let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+                        let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
             if let data = self.encodeMessage(message) {
-                do {
-                    try self.match?.sendData(toAllPlayers: data, with: .reliable)
-                } catch {
-                    print("Failed to send background message: ", error)
-                }
-            }
+                            do {
+                                try self.match?.sendData(toAllPlayers: data, with: .reliable)
+                            } catch {
+                                print("Failed to send background message: ", error)
+                            }
+                        }
         }
     }
     @objc func appDidBecomeActive() {

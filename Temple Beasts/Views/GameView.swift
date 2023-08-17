@@ -17,6 +17,7 @@ struct GameView: View {
         _showWinMenu = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
+        _showAlert = State(initialValue: false)
     }
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -26,6 +27,7 @@ struct GameView: View {
     @State private var showWinMenu: Bool
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
+    @State private var showAlert: Bool = false
     let cellSize: CGFloat = 40
 
     private var player1PieceCount: Int {
@@ -208,17 +210,21 @@ struct GameView: View {
             }
             .frame(height: UIScreen.main.bounds.height * 1)
         }
-        .alert(isPresented: $gameCenterController.connectionLost, content: {
-            Alert(
-                        title: Text("Player disconnected"),
-                        message: Text("The other player disconnected from the match!"),
-                        dismissButton: .default(Text("OK"), action: {
-                            // Handle what should happen when the user dismisses the alert
-                            // For example, navigate back to the main menu
-                            gameCenterController.resetGame()
-                        })
-                    )
+        .onChange(of: gameCenterController.connectionLost, perform: { newValue in
+            if newValue && gameType == .multiplayer {
+                showAlert = true
+            }
         })
+        .alert(isPresented: $showAlert) {
+            Alert(
+                    title: Text("Player disconnected"),
+                    message: Text("The other player disconnected from the match!"),
+                    dismissButton: .default(Text("OK"), action: {
+                        // Handle what should happen when the user dismisses the alert
+                        gameCenterController.resetGame()
+                    })
+                )
+        }
         .navigationBarHidden(true)
         .onChange(of: board.cells) { _ in
             if board.isGameOver() == true {
