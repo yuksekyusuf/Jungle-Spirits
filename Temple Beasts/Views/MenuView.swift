@@ -61,16 +61,16 @@ struct MenuView: View {
                         }
                         .padding(.top, 70)
                         Spacer()
-                        Image("menuLogo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: UIScreen.main.bounds.width * 0.8)
-                            .offset(y: -110)
+//                        Image("menuLogo")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: UIScreen.main.bounds.width * 0.8)
+//                            .offset(y: -110)
                         
-                        //                    LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
-                        //                        .frame(width: UIScreen.main.bounds.width * 0.8)
-                        //                                            .offset(y: -90)
-                        //                                            .allowsHitTesting(false)
+                        LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
+                            .frame(width: UIScreen.main.bounds.width * 0.8)
+                            .offset(y: -90)
+                            .allowsHitTesting(false)
                         
                         
                         Spacer()
@@ -170,6 +170,9 @@ struct MenuView: View {
                 .ignoresSafeArea()
             } else {
                 HowToPlayView()
+//                    .onAppear{
+//                        gameCenterController.path.append(20)
+//                    }
             }
         }
         .onAppear {

@@ -73,7 +73,7 @@ struct HowToPlayView: View {
                     }
                 } else {
                     Button {
-                        withAnimation(.easeInOut) {
+                        withAnimation {
                             UserDefaults.standard.howToPlayShown = true
 
                             gameCenterManager.path.removeAll()
