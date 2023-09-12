@@ -15,7 +15,6 @@ struct GameView: View {
         _board = StateObject(wrappedValue: Board(size: (8, 5), gameType: gameType))
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
-        _selectedCell = State(initialValue: nil)
         _isCountDownVisible = State(initialValue: true)
         _showAlert = State(initialValue: false)
     }
@@ -25,7 +24,6 @@ struct GameView: View {
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
-    @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @State private var showAlert: Bool = false
     let cellSize: CGFloat = 40
@@ -162,7 +160,7 @@ struct GameView: View {
                         }
                         
                     }
-                    BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, onMoveCompleted: { move in onMoveCompleted(move) }, gameType: gameType)
+                    BoardView(currentPlayer: $gameCenterController.currentPlayer, onMoveCompleted: { move in onMoveCompleted(move) }, gameType: gameType)
                         .allowsHitTesting(!showPauseMenu)
                         .overlay {
                             Image("Lights")
@@ -242,6 +240,8 @@ struct GameView: View {
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
+                gameCenterController.isSelected = false
+                gameCenterController.selectedCell = nil
             } else if newValue == 0 && gameType == .ai {
                 gameCenterController.remainingTime = 15
                 switchPlayer()

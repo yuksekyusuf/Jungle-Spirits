@@ -123,6 +123,8 @@ struct PauseMenuView: View {
                                             isPaused.toggle()
                                             currentPlayer = .player1
                                             remainingTime = 15
+                                            gameCenterController.isSelected = false
+                                            gameCenterController.selectedCell = nil
                                         } label: {
                                             PauseMenuIconView(imageName: "iconReplay")
                                         }

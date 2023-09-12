@@ -14,6 +14,8 @@ struct CountDownView: View {
     @Binding var isVisible: Bool
     var body: some View {
         ZStack {
+            
+            
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
             if counter > 0 {

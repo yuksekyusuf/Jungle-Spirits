@@ -43,6 +43,9 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var connectionLost: Bool = false
     @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @Published  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
+    
+    @Published var isSelected = false
+    @Published var selectedCell: (row: Int, col: Int)? = nil
 
     var backgroundTimer: Timer?
     var localPlayer = GKLocalPlayer.local

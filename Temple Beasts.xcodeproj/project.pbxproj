@@ -229,13 +229,13 @@
 			children = (
 				4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */,
 				4DED05522A31413600B2362A /* PieceCountView.swift */,
-				4D70D2522A055910002E9C0A /* PlayerView.swift */,
 				4DED05502A31402900B2362A /* TimeBarView.swift */,
 				4DED05582A3145D400B2362A /* CustomToggleView.swift */,
 				4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */,
 				4D4506EB2A7D14B400585259 /* SlideView.swift */,
 				4D6963A12A7A5C940096D805 /* InfoTabView.swift */,
 				4D930D452A897107006D139B /* LottieView.swift */,
+				4D70D2522A055910002E9C0A /* PlayerView.swift */,
 				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4D69639F2A7A57E70096D805 /* HowToPlayView.swift */,
 			);

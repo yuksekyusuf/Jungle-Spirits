@@ -54,10 +54,11 @@ struct MenuView: View {
                                     .frame(height: 50)
                                     .padding(.trailing, 20)
                             }
-                            .simultaneousGesture(TapGesture().onEnded({
-                                gameCenterController.path.append(1)
-                            }))
-                            
+                            .simultaneousGesture(
+                                TapGesture()
+                                    .onEnded({gameCenterController.path.append(1)})
+                            )
+
                         }
                         .padding(.top, 70)
                         Spacer()

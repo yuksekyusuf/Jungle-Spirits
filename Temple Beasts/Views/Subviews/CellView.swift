@@ -20,27 +20,32 @@ struct CellView: View {
     let cellPosition: (row: Int, col: Int)
     @Binding var moveMade: Bool
     @State private var selectedUnselectedImage: String = Self.randomUnselectedImage()
-
-
+    
+    
     var body: some View {
         ZStack {
-                Image(selectedUnselectedImage)
-                                   .resizable()
-                                   .scaledToFit()
-                                   .frame(width: width)
-
-                PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
-                    .frame(width: width)
-                    .transition(.opacity)
-                    .scaleEffect(isPressed ? 0.9 : 1.0)
-
+            Image(selectedUnselectedImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: width)
+            
+            //                Image("Tile_test")
+            //                               .resizable()
+            //                               .scaledToFit()
+            //                               .frame(width: width)
+            
+            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
+                .frame(width: width)
+                .transition(.opacity)
+                .scaleEffect(isPressed ? 0.9 : 1.0)
+            
             
             if highlighted && state == .empty {
                 Image("Highlighted")
                     .resizable()
                     .scaledToFit()
                     .cornerRadius(6)
-
+                
             }
             if outerHighlighted && state == .empty {
                 Image("OuterHighlighted")
@@ -69,9 +74,9 @@ struct CellView: View {
         .frame(width: width, height: width)
     }
     private static func randomUnselectedImage() -> String {
-            let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]
-            return images.randomElement() ?? "Unselected cell 1"
-        }
+        let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]
+        return images.randomElement() ?? "Unselected cell 1"
+    }
 }
 //struct CellView_Previews: PreviewProvider {
 //    static var previews: some View {
