@@ -224,12 +224,12 @@ struct GameView: View {
                 )
         }
         .navigationBarHidden(true)
-        .onChange(of: board.cells) { _ in
-            if board.isGameOver() == true {
-                gameCenterController.isGameOver = true
-                self.gameCenterController.isPaused = true
-            }
-        }
+//        .onChange(of: board.cells) { _ in
+//            if board.isGameOver() == true {
+//                gameCenterController.isGameOver = true
+//                self.gameCenterController.isPaused = true
+//            }
+//        }
         .onChange(of: board.gameOver, perform: { newValue in
             if newValue == true {
                 gameCenterController.isGameOver = true
@@ -244,11 +244,12 @@ struct GameView: View {
                 gameCenterController.selectedCell = nil
             } else if newValue == 0 && gameType == .ai {
                 gameCenterController.remainingTime = 15
+                gameCenterController.isSelected = false
+                gameCenterController.selectedCell = nil
                 switchPlayer()
                 performAIMoveAfterDelay()
             } else if newValue == 0 && gameType == .multiplayer {
                 gameCenterController.remainingTime = 15
-                
                 gameCenterController.otherPlayerPlaying.toggle()
                 gameCenterController.currentlyPlaying.toggle()
                 let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)

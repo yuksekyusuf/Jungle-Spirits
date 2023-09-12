@@ -8,52 +8,9 @@
 import Foundation
 import SwiftUI
 
-enum CellState: Int, Codable, Equatable {
-    case empty
-    case player1
-    case player2
-    case draw
-    case initial
-    func opposite() -> CellState {
-        switch self {
-        case .player1:
-            return .player2
-        case .player2:
-            return .player1
-        default:
-            return .empty
-        }
-    }
-}
-
-struct Coordinate: Codable {
-    var row: Int
-    var col: Int
-}
-
-struct CodableMove: Codable {
-    let source: Coordinate
-    let destination: Coordinate
-    static func fromMove(_ move: Move) -> CodableMove {
-        return CodableMove(source: Coordinate(row: move.source.row, col: move.source.col),
-                           destination: Coordinate(row: move.destination.row, col: move.destination.col))
-    }
-}
-
-struct Move {
-    let source: (row: Int, col: Int)
-    let destination: (row: Int, col: Int)
-    static func == (lhs: Move, rhs: Move) -> Bool {
-        return lhs.source == rhs.source && lhs.destination == rhs.destination
-    }
-    
-    static func fromCodable(_ codableMove: CodableMove) -> Move {
-        return Move(source: (row: codableMove.source.row, col: codableMove.source.col),
-                    destination: (row: codableMove.destination.row, col: codableMove.destination.col))
-    }
-}
 
 class Board: ObservableObject {
+    
     @Published private(set) var cells: [[CellState]]
     @Published var gameOver: Bool = false
     
@@ -64,7 +21,6 @@ class Board: ObservableObject {
         self.gameType = gameType
         self.size = size
         cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
-        
         let topLeft = (row: 0, col: 0)
         let bottomRight = (row: size.rows - 1, col: size.columns - 1)
         let topRight = (row: 0, col: size.columns - 1)
@@ -96,7 +52,6 @@ class Board: ObservableObject {
         cells[0][size.columns - 1] = .player2
         cells[size.rows - 1][0] = .player2
         cells[size.rows - 1][size.columns - 1] = .player1
-
         turn = 0
         notifyChange()
     }
@@ -142,10 +97,6 @@ class Board: ObservableObject {
     }
     
     func performMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
-        //        guard currentPlayer == player else {
-        //                print("It's not your turn!")
-        //                return
-        //            }
         let rowDifference = abs(destination.row - source.row)
         let colDifference = abs(destination.col - source.col)
         
@@ -159,10 +110,10 @@ class Board: ObservableObject {
                 
             }
         }
-        gameOver = isGameOver()
         let convertedCells = convertOpponentPieces(at: destination, player: player)
         turn += 1
         
+        gameOver = isGameOver()
         return convertedCells
     }
     func convertOpponentPieces(at destination: (row: Int, col: Int), player: CellState) -> [(row: Int, col: Int)] {
@@ -224,7 +175,7 @@ class Board: ObservableObject {
         }
         
         // The game is over if there are no more legal moves for either player
-        if !hasLegalMoves(player: .player1) && !hasLegalMoves(player: .player2) {
+        if !hasLegalMoves(player: .player1) || !hasLegalMoves(player: .player2) {
             SoundManager.shared.playOverSound()
             HapticManager.shared.impact(style: .heavy)
             return true
@@ -307,6 +258,7 @@ extension Board {
         var convertedCells: [(row: Int, col: Int)] = []
         // Perform the move and return the move
         convertedCells = self.performMove(from: move.source, to: move.destination, player: aiPlayer)
+        gameOver = isGameOver()
         return convertedCells
         
     }
@@ -389,7 +341,6 @@ extension Board {
                 moves.append(Move(source: cell, destination: jumpCell))
             }
         }
-        
         return moves
     }
 }

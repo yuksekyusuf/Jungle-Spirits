@@ -64,14 +64,14 @@ struct BoardView: View {
         if !gameCenterController.currentlyPlaying && gameType == .multiplayer {
             return
         }
-
+        
         // If the destination cell is the currently selected cell, unselect it.
         if let source = gameCenterController.selectedCell, source == destination {
             gameCenterController.isSelected = false
             gameCenterController.selectedCell = nil
             return
         }
-
+        
         guard let source = gameCenterController.selectedCell else {
             if board.cellState(at: destination) == currentPlayer {
                 gameCenterController.isSelected = true
@@ -79,26 +79,23 @@ struct BoardView: View {
             }
             return
         }
-
+        
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
             self.moveMade.toggle()
-                
-                let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
-                if !convertedPieces.isEmpty {
-                    SoundManager.shared.playConvertSound()
-                    HapticManager.shared.notification(type: .success)
-                    for piece in convertedPieces {
-                        self.gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
-                        self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
-
-                       }
-                }
             
+            let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
+            if !convertedPieces.isEmpty {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+                for piece in convertedPieces {
+                    self.gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                    self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
+                }
+            }
             gameCenterController.isSelected = false
             gameCenterController.selectedCell = nil
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)
-            
         } else if board.cellState(at: destination) == currentPlayer {
             gameCenterController.selectedCell = destination
         }

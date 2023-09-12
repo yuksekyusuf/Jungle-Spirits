@@ -12,6 +12,8 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
+		4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDA2AB08F7700F2D12A /* CellState.swift */; };
+		4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDC2AB08FA300F2D12A /* Move.swift */; };
 		4D2B388E2A54C5EB00DA7D8F /* CountDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */; };
 		4D2B38922A54D22D00DA7D8F /* Tricky Jimmy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */; };
 		4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38932A54D7EB00DA7D8F /* soundtrack.wav */; };
@@ -59,6 +61,8 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		4D231DDA2AB08F7700F2D12A /* CellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellState.swift; sourceTree = "<group>"; };
+		4D231DDC2AB08FA300F2D12A /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownView.swift; sourceTree = "<group>"; };
 		4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tricky Jimmy.ttf"; sourceTree = "<group>"; };
 		4D2B38932A54D7EB00DA7D8F /* soundtrack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = soundtrack.wav; sourceTree = "<group>"; };
@@ -138,7 +142,9 @@
 			isa = PBXGroup;
 			children = (
 				4D84F5D42A30BF5100B6E35C /* GameType.swift */,
+				4D231DDA2AB08F7700F2D12A /* CellState.swift */,
 				4D70D2502A0555D5002E9C0A /* Board.swift */,
+				4D231DDC2AB08FA300F2D12A /* Move.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -361,10 +367,12 @@
 				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
+				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
+				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,
 				4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */,
 				4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */,
 				4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */,
@@ -499,7 +507,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -538,7 +546,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
