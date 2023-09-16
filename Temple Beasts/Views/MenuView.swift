@@ -26,6 +26,9 @@ struct MenuView: View {
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     
     @State private var currentLanguageIndex: Int = 0
+    
+    @State private var showMatchmakingPopup = false
+
 
     let availableLanguages = ["en", "tr", "de", "fr", "es"]
     let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
@@ -133,21 +136,26 @@ struct MenuView: View {
                                 }))
                             }
                             ZStack {
-                                NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
-                                    EmptyView()
-                                }
-                                Button {
-                                    self.isMatchmakingPresented = true
-                                } label: {
-                                    //                                    Image("OnlineButton")
-                                    //                                        .resizable()
-                                    //                                        .scaledToFit()
-                                    //                                        .frame(maxWidth: buttonWidth)
+//                                NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
+//                                    EmptyView()
+//                                }
+//                                Button {
+//                                    self.isMatchmakingPresented = true
+//                                } label: {
+//
+//                                    ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+//                                }
+//                                .sheet(isPresented: $isMatchmakingPresented) {
+//                                    GameCenterView().environmentObject(gameCenterController)
+//                                }
+                                
+                                Button(action: {
+                                    self.showMatchmakingPopup = true
+                                    gameCenterController.startQuickMatch()
+                                }) {
                                     ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
                                 }
-                                .sheet(isPresented: $isMatchmakingPresented) {
-                                    GameCenterView().environmentObject(gameCenterController)
-                                }
+//
                             }
                             .padding(.top, 3)
                             
@@ -225,6 +233,21 @@ struct MenuView: View {
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     //                    .edgesIgnoringSafeArea(.all)
                         .allowsHitTesting(false)
+                    
+                    if showMatchmakingPopup {
+                        MatchmakingPopupView(isSearching: $gameCenterController.isSearchingForMatch)
+                                .background(Color.black.opacity(0.4)) // Optional: for darkening background
+                                .onTapGesture {
+                                    self.showMatchmakingPopup = false
+                                }
+                                .edgesIgnoringSafeArea(.all)
+                    }
+                    NavigationLink(
+                        destination: GameView(gameType: .multiplayer),
+                        isActive: $gameCenterController.isMatched
+                    ) {
+                        EmptyView()
+                    }
                 }
                 .ignoresSafeArea()
             } else {
@@ -241,9 +264,25 @@ struct MenuView: View {
             currentLanguageIndex = availableLanguages.firstIndex(of: selectedLanguage) ?? 0
             SoundManager.shared.startPlayingIfNeeded()
             if !gameCenterController.isUserAuthenticated {
-                gameCenterController.authenticateUser()
-            }
+                    gameCenterController.onAuthenticated = {
+                        self.gameCenterController.fetchLocalPlayerImage()
+                    }
+                    gameCenterController.authenticateUser()
+                } else {
+                    gameCenterController.fetchLocalPlayerImage()
+                }
         }
+//        .onChange(of: gameCenterController.isMatchFound) { matchFound in
+//            if matchFound {
+//                // Here, you could update the MatchmakingPopupView to show the remote player's details
+//                // But for simplicity, we'll dismiss the popup and navigate to the game after a delay:
+//
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // 1 second delay
+//                    self.showMatchmakingPopup = false
+//                    gameCenterController.isMatched = true
+//                }
+//            }
+//        }
         .environmentObject(gameCenterController)
     }
     

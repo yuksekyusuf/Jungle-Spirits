@@ -46,13 +46,24 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     
     @Published var isSelected = false
     @Published var selectedCell: (row: Int, col: Int)? = nil
+    
+    @Published var localPlayerImage: UIImage? = nil
+    @Published var localPlayerName: String = GKLocalPlayer.local.displayName ?? "Unknown Player"
+    @Published var remotePlayerName: String? = nil
+    @Published var remotePlayerImage: UIImage? = nil    
+    @Published var isSearchingForMatch = false
+    @Published var isMatchFound = false
+
+    
+
+    var onAuthenticated: (() -> Void)?
 
     var backgroundTimer: Timer?
     var localPlayer = GKLocalPlayer.local
     var otherPlayer: GKPlayer?
     var priority: Int = 0
     var otherPriority = 0
-
+    
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
         return windowScene?.windows.first?.rootViewController
@@ -61,9 +72,11 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
         super.init()
-            startObservingAppLifecycle()
+        startObservingAppLifecycle()
     }
-
+    
+    
+    
     @Published var isUserAuthenticated = false
     @Published var isMatched = false
     @Published var match: GKMatch? {
@@ -76,6 +89,21 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             }
         }
     }
+    
+    func fetchLocalPlayerImage() {
+        GKLocalPlayer.local.loadPhoto(for: .normal) { [weak self] image, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("Failed to load player photo: \(error.localizedDescription)")
+                    return
+                }
+                self?.localPlayerImage = image
+                print("local player image", image)
+            }
+        }
+    }
+    
+    
     var board: Board? {
         didSet {
             if let board = board {
@@ -89,6 +117,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             if GKLocalPlayer.local.isAuthenticated {
                 // Player is already authenticated
                 self.isUserAuthenticated = true
+                self.onAuthenticated?()
+                
             } else if let vc = gcAuthVC {
                 // Show game center login UI
                 rootViewController?.present(vc, animated: true)
@@ -109,7 +139,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             return nil
         }
     }
-
+    
     func decodeMessage(from data: Data) -> GameMessage? {
         do {
             let decoder = JSONDecoder()
@@ -120,7 +150,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             return nil
         }
     }
-
+    
     func match(_ match: GKMatch, didReceive data: Data, fromRemotePlayer player: GKPlayer) {
         if let message = decodeMessage(from: data) {
             DispatchQueue.main.async {
@@ -135,7 +165,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                             self.isGameOver = true
                         }
                     }
-
+                    
                 case .gameState:
                     guard let gameState = message.gameState else { return }
                     if let isPause = gameState.isPaused {
@@ -172,7 +202,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                     }
                     self.otherPriority = gameState.priority
                     print("This is other priority: \(self.otherPriority)")
-
+                    
                 }
             }
         }
@@ -180,40 +210,40 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     
     func match(_ match: GKMatch, player: GKPlayer, didChange state: GKPlayerConnectionState) {
         DispatchQueue.main.async {
-                switch state {
-                case .connected:
-                    print("\(player.displayName) connected")
-                case .disconnected:
-                    print("\(player.displayName) disconnected")
-                    self.connectionLost = true
-                case .unknown:
-                    print("Unknown state for player \(player.displayName)")
-                @unknown default:
-                    print("A new, unknown state was added")
-                }
+            switch state {
+            case .connected:
+                print("\(player.displayName) connected")
+            case .disconnected:
+                print("\(player.displayName) disconnected")
+                self.connectionLost = true
+            case .unknown:
+                print("Unknown state for player \(player.displayName)")
+            @unknown default:
+                print("A new, unknown state was added")
             }
+        }
     }
-
+    
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
-
-
+    
+    
     func startGame(newMatch: GKMatch) {
         match = newMatch
         match?.delegate = self
         otherPlayer = match?.players.first
-
+        
         // Generate a random priority
         priority = Int.random(in: 1...10000)
         print("This is my priority: \(self.priority)")
-
+        
         // Create initial game state.
         let gameState = GameState(isPaused: self.isPaused, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, currentlyPlaying: false, priority: self.priority)
-
+        
         // Encode the initial game state into a message.
         let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
-
+        
         // Send the initial game state to the other player.
         if let data = self.encodeMessage(message) {
             do {
@@ -243,14 +273,14 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         // Start the background timer
         backgroundTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { timer in
             let gameState = GameState(isPaused: true, isGameOver: self.isGameOver, currentPlayer: self.currentPlayer, priority: self.priority, goneToBackground: true)
-                        let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
+            let message = GameMessage(messageType: .gameState, move: nil, gameState: gameState)
             if let data = self.encodeMessage(message) {
-                            do {
-                                try self.match?.sendData(toAllPlayers: data, with: .reliable)
-                            } catch {
-                                print("Failed to send background message: ", error)
-                            }
-                        }
+                do {
+                    try self.match?.sendData(toAllPlayers: data, with: .reliable)
+                } catch {
+                    print("Failed to send background message: ", error)
+                }
+            }
         }
     }
     @objc func appDidBecomeActive() {
@@ -258,7 +288,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         backgroundTimer?.invalidate()
         backgroundTimer = nil
     }
- 
+    
     
     
     func processMove(_ move: Move) {
@@ -275,12 +305,54 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
                 for piece in convertedPieces {
                     convertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
                     previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
-
-                   }
+                    
+                }
             }
         }
         self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
         self.remainingTime = 15
     }
     
+}
+
+extension GameCenterManager {
+    
+    func startQuickMatch() {
+            isSearchingForMatch = true
+
+            let matchRequest = GKMatchRequest()
+            matchRequest.minPlayers = 2
+            matchRequest.maxPlayers = 2
+
+            GKMatchmaker.shared().findMatch(for: matchRequest, withCompletionHandler: { [weak self] (match, error) in
+                guard let self = self else { return }
+                self.isSearchingForMatch = false
+
+            
+                    
+                    if let error = error {
+                        print("Matchmaking failed with error: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    if let match = match {
+                        if let remotePlayer = match.players.first {
+                            remotePlayer.loadPhoto(for: .normal) { (image, error) in
+                                if let image = image {
+                                    self.remotePlayerImage = image
+                                    self.remotePlayerName = remotePlayer.displayName
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        self.isMatchFound = true
+                                        self.startGame(newMatch: match)
+                                    }
+                                }
+                            }
+                        }
+                       
+                    } else {
+                        print("No match found or an unknown error occurred.")
+                    }
+                
+            })
+        }
 }

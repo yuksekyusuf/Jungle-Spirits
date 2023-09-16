@@ -18,6 +18,7 @@
 		4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DE02AB4E48C00F2D12A /* ButtonView.swift */; };
 		4D231DE42AB4FB9C00F2D12A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4D231DE62AB4FB9C00F2D12A /* Localizable.strings */; };
 		4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DEB2AB4FE1C00F2D12A /* AppLanguageManager.swift */; };
+		4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DEF2AB56E5900F2D12A /* MatchmakingPopupView.swift */; };
 		4D2B388E2A54C5EB00DA7D8F /* CountDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */; };
 		4D2B38922A54D22D00DA7D8F /* Tricky Jimmy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */; };
 		4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38932A54D7EB00DA7D8F /* soundtrack.wav */; };
@@ -75,6 +76,7 @@
 		4D231DE92AB4FBA800F2D12A /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4D231DEA2AB4FC1E00F2D12A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4D231DEB2AB4FE1C00F2D12A /* AppLanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguageManager.swift; sourceTree = "<group>"; };
+		4D231DEF2AB56E5900F2D12A /* MatchmakingPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchmakingPopupView.swift; sourceTree = "<group>"; };
 		4D2B388D2A54C5EB00DA7D8F /* CountDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownView.swift; sourceTree = "<group>"; };
 		4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tricky Jimmy.ttf"; sourceTree = "<group>"; };
 		4D2B38932A54D7EB00DA7D8F /* soundtrack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = soundtrack.wav; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				4D15F0BA2A0C37BE00539383 /* CellView.swift */,
 				4D231DDE2AB4E05A00F2D12A /* TextView.swift */,
 				4D231DE02AB4E48C00F2D12A /* ButtonView.swift */,
+				4D231DEF2AB56E5900F2D12A /* MatchmakingPopupView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				4D231DDF2AB4E05A00F2D12A /* TextView.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
+				4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */,
 				4D9518792A50A58100ED284D /* WinView.swift in Sources */,
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */,
