@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "soundOff.png",
+      "filename" : "Volume.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "soundOff@2x.png",
+      "filename" : "Volume@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "soundOff@3x.png",
+      "filename" : "Volume@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

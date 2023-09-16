@@ -1,0 +1,27 @@
+/* 
+  Localizable.strings
+  Temple Beasts
+
+  Created by Ahmet Yusuf Yuksek on 15.09.2023.
+  
+*/
+
+"VERSUS_AI" = "VERSUS AI";
+"LOCAL_DUEL" = "LOCAL DUEL";
+"ONLINE_BATTLE" = "ONLINE BATTLE";
+"HOW_TO_PLAY_TITLE" = "How to Play";
+"SELECTING_A_GEM_TITLE" = "Selecting a Gem";
+"SELECTING_A_GEM_DESC" = "Select a gem. Notice the green and yellow areas? That's where the magic happens!";
+"CLONING_TITLE" = "Cloning";
+"CLONING_DESC" = "Move to a green area, and your gem clones itself. Double the fun!";
+"TELEPORTATION_TITLE" = "Teleportation";
+"TELEPORTATION_DESC" = "Leap to a yellow area, and your gem teleports. It's a two-tile jump!";
+"CONVERTING_ENEMIES_TITLE" = "Converting Enemies";
+"CONVERTING_ENEMIES_DESC" = "Whenever your gem touches an enemy - whether horizontally, vertically, or diagonally - they join your ranks! Strategize to maximize conversions.";
+"OBJECTIVE_TITLE" = "Objective";
+"OBJECTIVE_DESC" = "Rule the board, convert more enemies, and outsmart your opponent. Ready to conquer?";
+"NEXT" = "NEXT";
+"GOT_IT" = "GOT IT!";
+"MUSIC" = "MUSIC";
+"SOUND" = "SOUND";
+

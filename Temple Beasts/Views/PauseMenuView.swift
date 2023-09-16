@@ -16,7 +16,24 @@ struct PauseMenuView: View {
     @State private var musicState: Bool = UserDefaults.standard.bool(forKey: "music")
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
     @Binding var currentPlayer: CellState
+    
+    
+    func localizedStringForKey(_ key: String, language: String) -> String {
+        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
+    
+    
+    var music: String {
+        localizedStringForKey("MUSIC", language: appLanguageManager.currentLanguage)
+    }
+    
+    var sound: String {
+        localizedStringForKey("SOUND", language: appLanguageManager.currentLanguage)
+    }
     
     var body: some View {
         ZStack {
@@ -65,10 +82,10 @@ struct PauseMenuView: View {
                                                 Image("iconSound")
                                             }
                                             VStack(spacing: 12) {
-                                                Text("MUSIC")
+                                                Text(music)
                                                     .font(Font.custom("Watermelon-Regular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
-                                                Text("SOUND")
+                                                Text(sound)
                                                     .font(Font.custom("Watermelon-Regular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
                                             }

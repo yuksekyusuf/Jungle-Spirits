@@ -7,14 +7,29 @@
 
 import SwiftUI
 
+
+
 @main
 struct Temple_BeastsApp: App {
-    var body: some Scene {
-//        var gameCenterController = GameCenterController()
+    @StateObject var appLanguageManager = AppLanguageManager()
 
-        WindowGroup {
-            MenuView()
-//                .environmentObject(gameCenterController)
+        var body: some Scene {
+            WindowGroup {
+                MenuView()
+                    .environmentObject(appLanguageManager)
+                    .environment(\.appLanguage, appLanguageManager.currentLanguage)
+            }
         }
+}
+
+
+struct LanguageKey: EnvironmentKey {
+    static let defaultValue: String = "en"  // default to English
+}
+
+extension EnvironmentValues {
+    var appLanguage: String {
+        get { self[LanguageKey.self] }
+        set { self[LanguageKey.self] = newValue }
     }
 }

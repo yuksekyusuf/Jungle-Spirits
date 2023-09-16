@@ -1,0 +1,26 @@
+/* 
+  Localizable.strings
+  Temple Beasts
+
+  Created by Ahmet Yusuf Yuksek on 15.09.2023.
+  
+*/
+
+"VERSUS_AI" = "CONTRE IA";
+"LOCAL_DUEL" = "DUEL LOCAL";
+"ONLINE_BATTLE" = "BATAILLE EN LIGNE";
+"HOW_TO_PLAY_TITLE" = "Comment jouer";
+"SELECTING_A_GEM_TITLE" = "Sélection d'une gemme";
+"SELECTING_A_GEM_DESC" = "Sélectionnez une gemme. Vous voyez les zones vertes et jaunes? C'est là que la magie opère!";
+"CLONING_TITLE" = "Clonage";
+"CLONING_DESC" = "Déplacez-vous vers une zone verte, et votre gemme se clone. Double plaisir!";
+"TELEPORTATION_TITLE" = "Téléportation";
+"TELEPORTATION_DESC" = "Sautez dans une zone jaune, et votre gemme se téléporte. C'est un saut de deux cases!";
+"CONVERTING_ENEMIES_TITLE" = "Conversion des ennemis";
+"CONVERTING_ENEMIES_DESC" = "Chaque fois que votre gemme touche un ennemi - que ce soit horizontalement, verticalement ou en diagonale - ils rejoignent vos rangs! Élaborez une stratégie pour maximiser les conversions.";
+"OBJECTIVE_TITLE" = "Objectif";
+"OBJECTIVE_DESC" = "Dominez le plateau, convertissez plus d'ennemis et déjouez votre adversaire. Prêt à conquérir?";
+"NEXT" = "SUIVANT";
+"GOT_IT" = "COMPRIS!";
+"MUSIC" = "MUSIQUE";
+"SOUND" = "SON";

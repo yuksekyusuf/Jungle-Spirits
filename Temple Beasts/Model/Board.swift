@@ -13,6 +13,7 @@ class Board: ObservableObject {
     
     @Published private(set) var cells: [[CellState]]
     @Published var gameOver: Bool = false
+
     
     let size: (rows: Int, columns: Int)
     var gameType: GameType
@@ -247,7 +248,6 @@ class Board: ObservableObject {
 
 // MARK: Simple AI algorithm
 extension Board {
-    
     func performAIMove() -> [(row: Int, col: Int)]? {
         let aiPlayer: CellState = .player2
         guard let move = chooseMove(for: aiPlayer)  else {

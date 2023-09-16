@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "VibrationOff.png",
+      "filename" : "mobile-devices-vibration.1 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "VibrationOff@2x.png",
+      "filename" : "mobile-devices-vibration.1 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "VibrationOff@3x.png",
+      "filename" : "mobile-devices-vibration.1 1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
