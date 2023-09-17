@@ -49,6 +49,7 @@
 		4D9518792A50A58100ED284D /* WinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9518782A50A58100ED284D /* WinView.swift */; };
 		4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D95187C2A50C5B100ED284D /* HapticManager.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
+		4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
 		4DD4B5FF2A8F29EB004085B0 /* logo.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD4B5FE2A8F29EB004085B0 /* logo.json */; };
 		4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7C1622A896B7D005B34BE /* countdown.mp3 */; };
@@ -108,6 +109,7 @@
 		4D9518782A50A58100ED284D /* WinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinView.swift; sourceTree = "<group>"; };
 		4D95187C2A50C5B100ED284D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
+		4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TempleGems-Regular.otf"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		4DD4B5FE2A8F29EB004085B0 /* logo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo.json; sourceTree = "<group>"; };
 		4DD7C1622A896B7D005B34BE /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 		4DED05552A31448900B2362A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */,
 				4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */,
 				4DED05562A31449100B2362A /* Watermelon-Regular.otf */,
 				4D70D2422A055190002E9C0A /* Assets.xcassets */,
@@ -362,6 +365,7 @@
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
+				4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */,
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
 				4D2B38942A54D7EB00DA7D8F /* soundtrack.wav in Resources */,
@@ -550,7 +554,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -589,7 +593,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;

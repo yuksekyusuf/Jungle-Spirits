@@ -31,7 +31,7 @@ struct GameState: Codable {
     var goneToBackground: Bool = false
 }
 
-class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
+class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPlayerListener {
     @Published var isPaused: Bool = false
     @Published var isGameOver: Bool = false
     @Published var currentPlayer: CellState
@@ -53,6 +53,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
     @Published var remotePlayerImage: UIImage? = nil    
     @Published var isSearchingForMatch = false
     @Published var isMatchFound = false
+    @Published var invite: GKInvite?
 
     
 
@@ -84,10 +85,15 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
             self.isMatched = match != nil
             if let match = match {
                 match.delegate = self
+   
                 currentPlayer = .initial
                 print("When players are matched, their current player state is ", currentPlayer.rawValue)
             }
         }
+    }
+    
+    func player(_ player: GKPlayer, didAccept invite: GKInvite) {
+        self.invite = invite
     }
     
     func fetchLocalPlayerImage() {
@@ -233,7 +239,10 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         match = newMatch
         match?.delegate = self
         otherPlayer = match?.players.first
-        
+        print("Other player", otherPlayer)
+        if match?.expectedPlayerCount != 0 {
+            print("Still waiting for \(match?.expectedPlayerCount) players to connect.")
+        }
         // Generate a random priority
         priority = Int.random(in: 1...10000)
         print("This is my priority: \(self.priority)")
@@ -254,7 +263,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject {
         }
         
     }
-    
+        
     func resetGame() {
         match?.delegate = nil
         match = nil
@@ -326,7 +335,8 @@ extension GameCenterManager {
 
             GKMatchmaker.shared().findMatch(for: matchRequest, withCompletionHandler: { [weak self] (match, error) in
                 guard let self = self else { return }
-                self.isSearchingForMatch = false
+                print("Is matched?2 ", match)
+            
 
             
                     
@@ -334,24 +344,78 @@ extension GameCenterManager {
                         print("Matchmaking failed with error: \(error.localizedDescription)")
                         return
                     }
-                    
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [self] in
                     if let match = match {
-                        if let remotePlayer = match.players.first {
-                            remotePlayer.loadPhoto(for: .normal) { (image, error) in
-                                if let image = image {
-                                    self.remotePlayerImage = image
-                                    self.remotePlayerName = remotePlayer.displayName
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        self.isMatchFound = true
-                                        self.startGame(newMatch: match)
-                                    }
+                        
+                        match.delegate = self
+                        print("is match delegate", match.delegate)
+                        print("Remote player, ", match.players.first)
+                        self.isSearchingForMatch = false
+
+                        self.otherPlayer = match.players.first
+                        self.remotePlayerName = self.otherPlayer?.displayName
+                        self.otherPlayer?.loadPhoto(for: .normal) {(image, error) in
+                            if let image = image {
+                                self.remotePlayerImage = image
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    print("Remote player, ", match.players.first)
+
+                                    self.isMatchFound = true
+                                    self.startGame(newMatch: match)
+                                    self.path.append(3)
+                                    print("is match delegate", match.delegate)
+
                                 }
                             }
                         }
-                       
+//                        self.isMatchFound = true
+//                        self.startGame(newMatch: match)
+//                        self.path.append(3)
+//                        self.currentPlayer = .initial
+//                        if let remotePlayer = match.players.first {
+//                            remotePlayer.loadPhoto(for: .normal) {
+//                                if let image = image {
+//                                    self.remotePlayerImage = image
+//                                    self.remotePlayerName = remotePlayer.displayName
+//
+//                                }
+//                            }
+//                        }
+                        print("When players are matched, their current player state is ", self.currentPlayer.rawValue)
                     } else {
                         print("No match found or an unknown error occurred.")
                     }
+                }
+                    
+//                    if let match = match {
+//                        match.delegate = self
+//                        print("is match delegate", match.delegate)
+//                        print("Remote player, ", match.players.first)
+//                        currentPlayer = .initial
+//                        print("When players are matched, their current player state is ", currentPlayer.rawValue)
+//
+//                        if let remotePlayer = match?.players.first {
+//                            remotePlayer.loadPhoto(for: .normal) { (image, error) in
+//                                if let image = image {
+//                                    self.remotePlayerImage = image
+//                                    self.remotePlayerName = remotePlayer.displayName
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                        print("Remote player, ", match.players.first)
+//
+//                                        self.isMatchFound = true
+//                                        self.startGame(newMatch: match)
+//                                        self.path.append(3)
+//                                        print("is match delegate", match.delegate)
+//
+//                                    }
+//                                }
+//                            }
+//                        }
+////
+//                    } else {
+//                        print("No match found or an unknown error occurred.")
+//                    }
                 
             })
         }

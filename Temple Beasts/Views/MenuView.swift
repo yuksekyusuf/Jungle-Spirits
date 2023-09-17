@@ -150,10 +150,19 @@ struct MenuView: View {
 //                                }
                                 
                                 Button(action: {
+                                    print("Is matched? ", gameCenterController.match)
                                     self.showMatchmakingPopup = true
                                     gameCenterController.startQuickMatch()
+
                                 }) {
                                     ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+                                }
+                                
+                                NavigationLink(
+                                    destination: GameView(gameType: .multiplayer),
+                                    isActive: $gameCenterController.isMatched
+                                ) {
+                                    EmptyView()
                                 }
 //
                             }
@@ -242,12 +251,7 @@ struct MenuView: View {
                                 }
                                 .edgesIgnoringSafeArea(.all)
                     }
-                    NavigationLink(
-                        destination: GameView(gameType: .multiplayer),
-                        isActive: $gameCenterController.isMatched
-                    ) {
-                        EmptyView()
-                    }
+
                 }
                 .ignoresSafeArea()
             } else {

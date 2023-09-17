@@ -83,10 +83,10 @@ struct PauseMenuView: View {
                                             }
                                             VStack(spacing: 12) {
                                                 Text(music)
-                                                    .font(Font.custom("Watermelon-Regular", size: 24))
+                                                    .font(Font.custom("TempleGemsRegular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
                                                 Text(sound)
-                                                    .font(Font.custom("Watermelon-Regular", size: 24))
+                                                    .font(Font.custom("TempleGemsRegular", size: 24))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
                                             }
                                             

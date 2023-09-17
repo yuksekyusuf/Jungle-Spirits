@@ -88,7 +88,7 @@ struct HowToPlayView: View {
                         }
                         Text(howToPlay)
                             .foregroundColor(.white)
-                            .font(Font.custom("Watermelon-Regular", size: 28))
+                            .font(Font.custom("TempleGemsRegular", size: 28))
                             .padding(.leading, 30)
                     }
                     .padding(.trailing, 80)
@@ -96,7 +96,7 @@ struct HowToPlayView: View {
                 } else {
                     Text(howToPlay)
                         .foregroundColor(.white)
-                        .font(Font.custom("Watermelon-Regular", size: 28))
+                        .font(Font.custom("TempleGemsRegular", size: 28))
                         .padding(.top, 20)
                 }
                 Spacer()

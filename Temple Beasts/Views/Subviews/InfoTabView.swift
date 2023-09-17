@@ -15,7 +15,7 @@ struct InfoTabView: View {
     var body: some View {
         VStack(alignment: .center) {
             Text(title)
-                .font(.custom("Watermelon-Regular", size: 24))
+                .font(.custom("TempleGemsRegular", size: 24))
                 .foregroundColor(Color(#colorLiteral(red: 0.63, green: 0.64, blue: 1, alpha: 1)))
                 .tracking(0.72)
                 .multilineTextAlignment(.center)
@@ -25,7 +25,7 @@ struct InfoTabView: View {
                 .frame(width: 266)
                 .padding(.bottom, 30)
             Text(description)
-                .font(.custom("Watermelon-Regular", size: 16))
+                .font(.custom("TempleGemsRegular", size: 16))
                 .foregroundColor(Color(#colorLiteral(red: 0.62, green: 0.71, blue: 0.8, alpha: 1)))
                 .tracking(0.48)
                 .multilineTextAlignment(.center)

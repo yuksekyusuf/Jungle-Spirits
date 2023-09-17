@@ -11,7 +11,7 @@ struct TextView: View {
     let text: String
     var body: some View {
         StrokeText(text: text, width: 1.75, color: .black)
-            .font(.custom("Watermelon-Regular", size: 24))
+            .font(.custom("TempleGemsRegular", size: 24))
             .foregroundColor(.white)
             .shadow(color: .black, radius: 0, x: 0, y: 3)
             .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)

@@ -70,13 +70,13 @@ struct GameView: View {
                                                 Text(localPlayerName)
                                                     .foregroundColor(.white)
                                                     .truncationMode(.tail)
-                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .font(Font.custom("TempleGemsRegular", size: 14))
                                                     .fixedSize(horizontal: true, vertical: false)
                                             } else {
                                                 Text(otherPlayerName)
                                                     .foregroundColor(.white)
                                                     .truncationMode(.tail)
-                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .font(Font.custom("TempleGemsRegular", size: 14))
                                                     .fixedSize(horizontal: true, vertical: false)
 
                                             }
@@ -119,12 +119,12 @@ struct GameView: View {
                                                 Text(localPlayerName)
                                                     .foregroundColor(.white)
                                                     .truncationMode(.tail)
-                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .font(Font.custom("TempleGemsRegular", size: 14))
                                                     .fixedSize(horizontal: true, vertical: false)
                                             } else {
                                                 Text(otherPlayerName)
                                                     .foregroundColor(.white)
-                                                    .font(Font.custom("Watermelon-Regular", size: 14))
+                                                    .font(Font.custom("TempleGemsRegular", size: 14))
                                                     .truncationMode(.tail)
                                                     .fixedSize(horizontal: true, vertical: false)
                                             }
