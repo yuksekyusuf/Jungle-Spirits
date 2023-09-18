@@ -84,7 +84,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         didSet {
             self.isMatched = match != nil
             if let match = match {
-                match.delegate = self
+//                match.delegate = self
    
                 currentPlayer = .initial
                 print("When players are matched, their current player state is ", currentPlayer.rawValue)
@@ -127,7 +127,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
                 
             } else if let vc = gcAuthVC {
                 // Show game center login UI
-                rootViewController?.present(vc, animated: true)
+//                rootViewController?.present(vc, animated: true)
             } else {
                 // Game center authentication failed
                 print("Authentication failed: " + error!.localizedDescription)
@@ -218,6 +218,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         DispatchQueue.main.async {
             switch state {
             case .connected:
+                // MOVE THE QUICKMATCH METHODS HERE!!!
                 print("\(player.displayName) connected")
             case .disconnected:
                 print("\(player.displayName) disconnected")
@@ -324,8 +325,109 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
 }
 
+//extension GameCenterManager {
+//    func findMatch(for request: GKMatchRequest) async throws -> GKMatch {
+//        return try await withCheckedThrowingContinuation { continuation in
+//            GKMatchmaker.shared().findMatch(for: request) { match, error in
+//                if let error = error {
+//                    continuation.resume(throwing: error)
+//                } else if let match = match {
+//                    continuation.resume(returning: match)
+//                } else {
+//                    continuation.resume(throwing: NSError(domain: "com.yourappname.error", code: -1, userInfo: [NSLocalizedDescriptionKey: "No match found and no error provided."]))
+//                }
+//            }
+//        }
+//    }
+//
+//    func startQuickMatch() {
+//        isSearchingForMatch = true
+//
+//        let matchRequest = GKMatchRequest()
+//        matchRequest.minPlayers = 2
+//        matchRequest.maxPlayers = 2
+//
+//        Task {
+//            do {
+//                let match = try await self.findMatch(for: matchRequest)
+//                match.delegate = self
+//
+//                DispatchQueue.main.async {
+//                    if let remotePlayer = match.players.first {
+//                        remotePlayer.loadPhoto(for: .normal) { [weak self] (image, error) in
+//                            guard let self = self else { return }
+//
+//                            if let image = image {
+//                                self.remotePlayerImage = image
+//                                self.remotePlayerName = remotePlayer.displayName
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    self.isMatchFound = true
+//                                    self.startGame(newMatch: match)
+//                                    self.path.append(3)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            } catch {
+//                print("Matchmaking failed with error: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+//}
+
 extension GameCenterManager {
-    
+//    func findMatch(for request: GKMatchRequest) async throws -> GKMatch {
+//        return try await withCheckedThrowingContinuation { continuation in
+//            GKMatchmaker.shared().findMatch(for: request) { match, error in
+//                if let error = error {
+//                    continuation.resume(throwing: error)
+//                } else if let match = match {
+//                    continuation.resume(returning: match)
+//                } else {
+//                    continuation.resume(throwing: NSError(domain: "com.yourappname.error", code: -1, userInfo: [NSLocalizedDescriptionKey: "No match found and no error provided."]))
+//                }
+//            }
+//        }
+//    }
+//
+//    func startQuickMatch() {
+//        isSearchingForMatch = true
+//
+//        let matchRequest = GKMatchRequest()
+//        matchRequest.minPlayers = 2
+//        matchRequest.maxPlayers = 2
+//
+//        Task {
+//            do {
+//                let match = try await GKMatchmaker.shared().findMatch(for: matchRequest)
+//                match.delegate = self
+//                self.remotePlayerName = otherPlayer?.displayName
+//
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else { return }
+//
+//                    if let remotePlayer = match.players.first {
+//                        remotePlayer.loadPhoto(for: .normal) { (image, error) in
+//                            if let image = image {
+//                                self.remotePlayerImage = image
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    self.isMatchFound = true
+//                                    self.startGame(newMatch: match)
+//                                    self.path.append(3)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            } catch {
+//                print("Matchmaking failed with error: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+//
+
+
     func startQuickMatch() {
             isSearchingForMatch = true
 
@@ -336,33 +438,30 @@ extension GameCenterManager {
             GKMatchmaker.shared().findMatch(for: matchRequest, withCompletionHandler: { [weak self] (match, error) in
                 guard let self = self else { return }
                 print("Is matched?2 ", match)
-            
 
-            
-                    
+
+
+
                     if let error = error {
                         print("Matchmaking failed with error: \(error.localizedDescription)")
                         return
                     }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [self] in
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) { [self] in
                     if let match = match {
-                        
                         match.delegate = self
                         print("is match delegate", match.delegate)
                         print("Remote player, ", match.players.first)
                         self.isSearchingForMatch = false
-
                         self.otherPlayer = match.players.first
                         self.remotePlayerName = self.otherPlayer?.displayName
-                        self.otherPlayer?.loadPhoto(for: .normal) {(image, error) in
+                        self.startGame(newMatch: match)
+                        self.otherPlayer?.loadPhoto(for: .small) {(image, error) in
                             if let image = image {
                                 self.remotePlayerImage = image
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                     print("Remote player, ", match.players.first)
-
                                     self.isMatchFound = true
-                                    self.startGame(newMatch: match)
                                     self.path.append(3)
                                     print("is match delegate", match.delegate)
 
@@ -387,7 +486,7 @@ extension GameCenterManager {
                         print("No match found or an unknown error occurred.")
                     }
                 }
-                    
+
 //                    if let match = match {
 //                        match.delegate = self
 //                        print("is match delegate", match.delegate)
@@ -416,7 +515,52 @@ extension GameCenterManager {
 //                    } else {
 //                        print("No match found or an unknown error occurred.")
 //                    }
-                
+
             })
         }
 }
+
+
+//extension GameCenterManager: GKMatchmakerViewControllerDelegate {
+//    func matchmakerViewControllerWasCancelled(_ viewController: GKMatchmakerViewController) {
+//
+//    }
+//
+//    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFailWithError error: Error) {
+//
+//    }
+//
+//    func presentMatchmaker() {
+//            isSearchingForMatch = true
+//
+//            let matchRequest = GKMatchRequest()
+//            matchRequest.minPlayers = 2
+//            matchRequest.maxPlayers = 2
+//
+//            if let viewController = GKMatchmakerViewController(matchRequest: matchRequest) {
+//                viewController.matchmakerDelegate = self
+//                // You can present this view controller, or just keep it in the background if you don't want the default UI.
+//            }
+//
+//        }
+//
+//    func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
+//           self.match = match
+//           self.otherPlayer = match.players.first
+//
+//            self.otherPlayer?.loadPhoto(for: .normal) {(image, error) in
+//            if let image = image {
+//                self.remotePlayerImage = image
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    print("Remote player, ", match.players.first)
+//                    self.isMatched = true
+//                    self.isMatchFound = true
+//                    self.startGame(newMatch: match)
+//                    self.path.append(3)
+//                    print("is match delegate", match.delegate)
+//
+//                }
+//            }
+//        }
+//       }
+//}

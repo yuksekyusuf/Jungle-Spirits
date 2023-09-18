@@ -16,7 +16,7 @@ struct MenuView: View {
     @EnvironmentObject var appLanguageManager: AppLanguageManager
 
     @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
-    @State private var isMatchmakingPresented = false
+//    @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
     @AppStorage("music") var musicState: Bool = true
     @AppStorage("haptic") var hapticState: Bool = true
@@ -24,9 +24,7 @@ struct MenuView: View {
     @State private var hasUserBeenPromptedForReview: Bool = UserDefaults.standard.bool(forKey: "HasUserBeenPromptedForReview")
     
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
-    
     @State private var currentLanguageIndex: Int = 0
-    
     @State private var showMatchmakingPopup = false
 
 
@@ -106,8 +104,9 @@ struct MenuView: View {
                             .allowsHitTesting(false)
                         
                         Spacer()
-                        VStack {
+                        VStack(alignment: .leading) {
                             HStack {
+                                Spacer()
                                 NavigationLink {
                                     GameView(gameType: .ai)
                                 } label: {
@@ -134,39 +133,45 @@ struct MenuView: View {
                                 .simultaneousGesture(TapGesture().onEnded({
                                     gameCenterController.path.append(3)
                                 }))
+                                Spacer()
                             }
-                            ZStack {
-//                                NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
-//                                    EmptyView()
-//                                }
-//                                Button {
-//                                    self.isMatchmakingPresented = true
-//                                } label: {
-//
-//                                    ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
-//                                }
-//                                .sheet(isPresented: $isMatchmakingPresented) {
-//                                    GameCenterView().environmentObject(gameCenterController)
-//                                }
-                                
-                                Button(action: {
-                                    print("Is matched? ", gameCenterController.match)
-                                    self.showMatchmakingPopup = true
-                                    gameCenterController.startQuickMatch()
+                            HStack {
+                                Spacer()
+                                ZStack {
+    //                                NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
+    //                                    EmptyView()
+    //                                }
+    //                                Button {
+    //                                    self.isMatchmakingPresented = true
+    //                                } label: {
+    //
+    //                                    ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+    //                                }
+    //                                .sheet(isPresented: $isMatchmakingPresented) {
+    //                                    GameCenterView().environmentObject(gameCenterController)
+    //                                }
+                                    
+                                    Button(action: {
+                                        print("Is matched? ", gameCenterController.isMatchFound)
+                                        self.showMatchmakingPopup = true
+                                        gameCenterController.startQuickMatch()
 
-                                }) {
-                                    ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+                                    }) {
+                                        ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+                                    }
+                                    
+                                    NavigationLink(
+                                        destination: GameView(gameType: .multiplayer),
+                                        isActive: $gameCenterController.isMatchFound
+                                    ) {
+                                        EmptyView()
+                                    }
+    //
                                 }
-                                
-                                NavigationLink(
-                                    destination: GameView(gameType: .multiplayer),
-                                    isActive: $gameCenterController.isMatched
-                                ) {
-                                    EmptyView()
-                                }
-//
+                                .padding(.top, 10)
+                                Spacer()
                             }
-                            .padding(.top, 3)
+                            
                             
                             HStack(spacing: 0) {
                                 Spacer()
@@ -233,7 +238,7 @@ struct MenuView: View {
                                 Spacer()
                                 
                             }
-                            .padding(.top, 8)
+                            .padding(.top, 16)
                         }
                         .id(appLanguageManager.id)
                         .padding(.bottom, 90)
@@ -276,17 +281,17 @@ struct MenuView: View {
                     gameCenterController.fetchLocalPlayerImage()
                 }
         }
-//        .onChange(of: gameCenterController.isMatchFound) { matchFound in
-//            if matchFound {
-//                // Here, you could update the MatchmakingPopupView to show the remote player's details
-//                // But for simplicity, we'll dismiss the popup and navigate to the game after a delay:
-//
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // 1 second delay
-//                    self.showMatchmakingPopup = false
+        .onChange(of: gameCenterController.isMatchFound) { matchFound in
+            if matchFound {
+                // Here, you could update the MatchmakingPopupView to show the remote player's details
+                // But for simplicity, we'll dismiss the popup and navigate to the game after a delay:
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { // 1 second delay
+                    self.showMatchmakingPopup = false
 //                    gameCenterController.isMatched = true
-//                }
-//            }
-//        }
+                }
+            }
+        }
         .environmentObject(gameCenterController)
     }
     

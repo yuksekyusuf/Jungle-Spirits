@@ -35,7 +35,6 @@ struct GameCenterView: UIViewControllerRepresentable {
             DispatchQueue.main.async {
                 self.gameCenterController.path.append(3)
                 self.gameCenterController.startGame(newMatch: match)
-                
             }
         }
     }

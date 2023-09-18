@@ -10,11 +10,20 @@ import SwiftUI
 struct TextView: View {
     let text: String
     var body: some View {
-        StrokeText(text: text, width: 1.75, color: .black)
-            .font(.custom("TempleGemsRegular", size: 24))
-            .foregroundColor(.white)
-            .shadow(color: .black, radius: 0, x: 0, y: 3)
-            .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
+        ZStack {
+            Text(text)
+                .font(.custom("TempleGemsRegular", size: 24))
+                .foregroundColor(.white)
+                .stroke(color: .black, width: 1.0)
+                .shadow(color: .black, radius: 0, x: 0, y: 3)
+                .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
+            
+//            StrokeText(text: text, width: 1.75, color: .black)
+//                .font(.custom("TempleGemsRegular", size: 24))
+//                .foregroundColor(.white)
+//                .shadow(color: .black, radius: 0, x: 0, y: 3)
+//                .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
+        }
     }
 }
 struct StrokeText: View {
@@ -38,6 +47,53 @@ struct StrokeText: View {
 
 struct test_Previews: PreviewProvider {
     static var previews: some View {
-        TextView(text: "Welcome")
+        TextView(text: "Üsküdar")
+    }
+}
+
+extension View {
+    func stroke(color: Color, width: CGFloat = 1) -> some View {
+        modifier(StrokeModifer(strokeSize: width, strokeColor: color))
+    }
+}
+
+struct StrokeModifer: ViewModifier {
+    private let id = UUID()
+    var strokeSize: CGFloat = 1
+    var strokeColor: Color = .blue
+    
+    func body(content: Content) -> some View {
+        if strokeSize > 0 {
+            appliedStrokeBackground(content: content)
+        } else {
+            content
+        }
+    }
+    
+    private func appliedStrokeBackground(content: Content) -> some View {
+        content
+            .padding(strokeSize*2)
+            .background(
+                Rectangle()
+                    .foregroundColor(strokeColor)
+                    .mask(alignment: .center) {
+                        mask(content: content)
+                    }
+            )
+    }
+    
+    func mask(content: Content) -> some View {
+        Canvas { context, size in
+            context.addFilter(.alphaThreshold(min: 0.01))
+            context.drawLayer { ctx in
+                if let resolvedView = context.resolveSymbol(id: id) {
+                    ctx.draw(resolvedView, at: .init(x: size.width/2, y: size.height/2))
+                }
+            }
+        } symbols: {
+            content
+                .tag(id)
+                .blur(radius: strokeSize)
+        }
     }
 }
