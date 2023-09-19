@@ -12,18 +12,9 @@ struct CreditView: View {
     @Binding var isPresent: Bool
     var body: some View {
         ZStack {
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.easeOut(duration: 0.5)) {
-                        self.isPresent.toggle()
-                    }
-                }
-
-            GeometryReader { geo in
-                
-                
-            }
+            //            Color.black.opacity(0.3)
+            //                .ignoresSafeArea()
+            
             ZStack{
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
@@ -39,9 +30,9 @@ struct CreditView: View {
                         
                         VStack(spacing: 0) {
                             Text("YASIR")
-                              .font(Font.custom("TempleGemsRegular", size: 28))
-                              .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                              .padding(.top, 32)
+                                .font(Font.custom("TempleGemsRegular", size: 28))
+                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+                                .padding(.top, 32)
                             Text("DESIGNER")
                                 .font(Font.custom("TempleGemsRegular", size: 23))
                                 .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
@@ -57,9 +48,9 @@ struct CreditView: View {
                             }
                             VStack(spacing: 0) {
                                 Text("YUSUF")
-                                  .font(Font.custom("TempleGemsRegular", size: 28))
-                                  .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                  .padding(.top, 32)
+                                    .font(Font.custom("TempleGemsRegular", size: 28))
+                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+                                    .padding(.top, 32)
                                 Text("DEVELOPER")
                                     .font(Font.custom("TempleGemsRegular", size: 23))
                                     .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
@@ -76,11 +67,11 @@ struct CreditView: View {
                             .offset(y: -32)
                             
                             Text("MADE IN NYC . 2023")
-                              .font(Font.custom("TempleGemsRegular", size: 18))
-                              .multilineTextAlignment(.center)
-                              .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
-                              .offset(y: -24)
-
+                                .font(Font.custom("TempleGemsRegular", size: 18))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
+                                .offset(y: -24)
+                            
                         }
                         .frame(width: 168)
                         
@@ -88,15 +79,12 @@ struct CreditView: View {
                     }
                     .frame(width: 270)
                 }
-                .background(Color.clear)
-                .contentShape(Rectangle())
                 .background {
                     Image("CreditBackground")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 284, height: 302)
                 }
-//                .allowsHitTesting(false)
             }
             .frame(width: 284, height: 302)
             .shadow(color: .black.opacity(0.45), radius: 8, x: 0, y: 10)
@@ -108,11 +96,11 @@ struct CreditView: View {
                 Image("CreditButton")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 44, height: 44)
-                    .padding(.leading, 275)
-                    .padding(.bottom, 275)
-//                    .offset(x: 130, y: -140)
+                
             }
+            .frame(width: 44, height: 44)
+            .offset(x: 130, y: -140)
+            
         }
         .transition(.scale)
         .background(
@@ -125,16 +113,16 @@ struct CreditView: View {
                     startPoint: UnitPoint(x: 1, y: 0),
                     endPoint: UnitPoint(x: 0, y: 1)
                 )        .cornerRadius(48)
-
                 
-               
-
+                
+                
+                
             }
-            .frame(width: 307, height: 326)
-
+                .frame(width: 307, height: 326)
+            
         )
-                        
-                
+        
+        
     }
 }
 

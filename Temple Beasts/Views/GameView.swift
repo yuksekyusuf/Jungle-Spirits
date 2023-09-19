@@ -179,7 +179,8 @@ struct GameView: View {
                 
                 if showPauseMenu {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
-                        .animation(Animation.easeInOut, value: showPauseMenu)
+                        .transition(.scale)
+//                        .animation(Animation.easeInOut, value: showPauseMenu)
                 }
                 
                 if gameCenterController.isGameOver {

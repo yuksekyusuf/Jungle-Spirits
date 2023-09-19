@@ -26,7 +26,9 @@ struct MenuView: View {
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     @State private var currentLanguageIndex: Int = 0
     @State private var showMatchmakingPopup = false
-    @State private var showCreditScreen = false
+    
+    @Namespace private var animationNamespace
+    @State private var showCreditScreen: Bool = false
 
     let availableLanguages = ["en", "tr", "de", "fr", "es"]
     let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
@@ -60,10 +62,17 @@ struct MenuView: View {
                         HStack {
                             Button {
                                 if hasUserBeenPromptedForReview {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        self.showCreditScreen = true
+                                   
+                                    withAnimation(.spring()) {
+                                        self.showCreditScreen.toggle()
 
                                     }
+//                                    withAnimation{
+//                                        self.showCreditScreen.toggle()
+//
+//                                    }
+
+                                    
                                 
                                 } else {
                                     requestReview()
@@ -264,11 +273,28 @@ struct MenuView: View {
                                 .edgesIgnoringSafeArea(.all)
                     }
                     
+//                    if showCreditScreen {
+//                        CreditView(isPresent: $showCreditScreen)
+//                            .scaleEffect(showCreditScreen ? 1 : 0.1)
+//                            .animation(.easeInOut(duration: 0.3), value: showCreditScreen)
+//
+//                    }
                     if showCreditScreen {
-                        CreditView(isPresent: $showCreditScreen)
-//                            .transition(.scale)
-                          
-                    }
+                                    Color.black.opacity(0.3)
+                                        .ignoresSafeArea()
+                                        .onTapGesture {
+                                            withAnimation(.easeInOut(duration: 0.1)) {
+                                                showCreditScreen = false
+                                            }
+                                        }
+                                }
+                                
+                                CreditView(isPresent: $showCreditScreen)
+                                    .scaleEffect(showCreditScreen ? 1 : 0)
+                                    .allowsHitTesting(showCreditScreen)
+                                    .animation(.spring(), value: showCreditScreen)
+                                
+                    
 
                 }
                 .ignoresSafeArea()
