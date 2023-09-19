@@ -18,6 +18,7 @@ struct Temple_BeastsApp: App {
                 MenuView()
                     .environmentObject(appLanguageManager)
                     .environment(\.appLanguage, appLanguageManager.currentLanguage)
+//                CreditView()
             }
         }
 }

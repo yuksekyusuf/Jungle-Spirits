@@ -37,8 +37,8 @@ struct PauseMenuView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-                .opacity(0.65)
+//            Color.black.ignoresSafeArea()
+//                .opacity(0.65)
             VStack {
                 Image("pauseMenuBackground")
                     .padding(.top, -200)
@@ -120,7 +120,9 @@ struct PauseMenuView: View {
                                 HStack {
                                     if gameType == .multiplayer {
                                         Button {
-                                            showPauseMenu.toggle()
+                                            withAnimation(.easeInOut(duration: 0.5)) {
+                                                showPauseMenu.toggle()
+                                            }
                                             
                                         } label: {
                                             PauseMenuIconView(imageName: "iconResume")
@@ -136,7 +138,10 @@ struct PauseMenuView: View {
                                     } else {
                                         Button {
                                             board.reset()
-                                            showPauseMenu.toggle()
+                                            withAnimation(.easeInOut(duration: 0.5)) {
+                                                showPauseMenu.toggle()
+                                            }
+//                                            showPauseMenu.toggle()
                                             isPaused.toggle()
                                             currentPlayer = .player1
                                             remainingTime = 15
@@ -147,7 +152,9 @@ struct PauseMenuView: View {
                                         }
                                         
                                         Button {
-                                            showPauseMenu.toggle()
+                                            withAnimation(.easeInOut(duration: 0.5)) {
+                                                showPauseMenu.toggle()
+                                            }
                                             gameCenterController.isPaused.toggle()
                                         } label: {
                                             PauseMenuIconView(imageName: "iconResume")

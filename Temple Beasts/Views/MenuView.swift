@@ -26,7 +26,9 @@ struct MenuView: View {
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     @State private var currentLanguageIndex: Int = 0
     @State private var showMatchmakingPopup = false
-
+    
+    @Namespace private var animationNamespace
+    @State private var showCreditScreen: Bool = false
 
     let availableLanguages = ["en", "tr", "de", "fr", "es"]
     let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
@@ -60,7 +62,18 @@ struct MenuView: View {
                         HStack {
                             Button {
                                 if hasUserBeenPromptedForReview {
+                                   
+                                    withAnimation(.spring()) {
+                                        self.showCreditScreen.toggle()
+
+                                    }
+//                                    withAnimation{
+//                                        self.showCreditScreen.toggle()
+//
+//                                    }
+
                                     
+                                
                                 } else {
                                     requestReview()
                                     UserDefaults.standard.set(true, forKey: "HasUserBeenPromptedForReview")
@@ -73,6 +86,9 @@ struct MenuView: View {
                                     .scaledToFit()
                                     .frame(height: 50)
                                     .padding(.leading, 20)
+                            }
+                            .onAppear {
+                                print("review is present", hasUserBeenPromptedForReview)
                             }
                             Spacer()
                             NavigationLink {
@@ -256,6 +272,29 @@ struct MenuView: View {
                                 }
                                 .edgesIgnoringSafeArea(.all)
                     }
+                    
+//                    if showCreditScreen {
+//                        CreditView(isPresent: $showCreditScreen)
+//                            .scaleEffect(showCreditScreen ? 1 : 0.1)
+//                            .animation(.easeInOut(duration: 0.3), value: showCreditScreen)
+//
+//                    }
+                    if showCreditScreen {
+                                    Color.black.opacity(0.3)
+                                        .ignoresSafeArea()
+                                        .onTapGesture {
+                                            withAnimation(.easeInOut(duration: 0.1)) {
+                                                showCreditScreen = false
+                                            }
+                                        }
+                                }
+                                
+                                CreditView(isPresent: $showCreditScreen)
+                                    .scaleEffect(showCreditScreen ? 1 : 0)
+                                    .allowsHitTesting(showCreditScreen)
+                                    .animation(.spring(), value: showCreditScreen)
+                                
+                    
 
                 }
                 .ignoresSafeArea()
