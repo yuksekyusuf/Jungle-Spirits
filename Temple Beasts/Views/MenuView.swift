@@ -26,7 +26,7 @@ struct MenuView: View {
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     @State private var currentLanguageIndex: Int = 0
     @State private var showMatchmakingPopup = false
-
+    @State private var showCreditScreen = false
 
     let availableLanguages = ["en", "tr", "de", "fr", "es"]
     let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
@@ -60,7 +60,11 @@ struct MenuView: View {
                         HStack {
                             Button {
                                 if hasUserBeenPromptedForReview {
-                                    
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        self.showCreditScreen = true
+
+                                    }
+                                
                                 } else {
                                     requestReview()
                                     UserDefaults.standard.set(true, forKey: "HasUserBeenPromptedForReview")
@@ -73,6 +77,9 @@ struct MenuView: View {
                                     .scaledToFit()
                                     .frame(height: 50)
                                     .padding(.leading, 20)
+                            }
+                            .onAppear {
+                                print("review is present", hasUserBeenPromptedForReview)
                             }
                             Spacer()
                             NavigationLink {
@@ -255,6 +262,12 @@ struct MenuView: View {
                                     self.showMatchmakingPopup = false
                                 }
                                 .edgesIgnoringSafeArea(.all)
+                    }
+                    
+                    if showCreditScreen {
+                        CreditView(isPresent: $showCreditScreen)
+//                            .transition(.scale)
+                          
                     }
 
                 }

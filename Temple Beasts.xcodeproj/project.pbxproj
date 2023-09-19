@@ -28,6 +28,7 @@
 		4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D4419332A896E80007293F0 /* redActiveAnimation.json */; };
 		4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4506EB2A7D14B400585259 /* SlideView.swift */; };
 		4D457DAF2A85594A00E0FB34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */; };
+		4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E69452AB9CD030089CAB6 /* CreditView.swift */; };
 		4D6401262A89D95E00917EC8 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4D6401252A89D95E00917EC8 /* Lottie */; };
 		4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */; };
 		4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401292A89DB7000917EC8 /* gemBlue-select.json */; };
@@ -87,6 +88,7 @@
 		4D4419332A896E80007293F0 /* redActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redActiveAnimation.json; sourceTree = "<group>"; };
 		4D4506EB2A7D14B400585259 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
 		4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4D5E69452AB9CD030089CAB6 /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
 		4D6401272A89DB5A00917EC8 /* gemBlue-deselect.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-deselect.json"; sourceTree = "<group>"; };
 		4D6401292A89DB7000917EC8 /* gemBlue-select.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gemBlue-select.json"; sourceTree = "<group>"; };
 		4D64012F2A89F24500917EC8 /* blueToRed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueToRed.json; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
 				4D9518782A50A58100ED284D /* WinView.swift */,
+				4D5E69452AB9CD030089CAB6 /* CreditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
 				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
+				4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
