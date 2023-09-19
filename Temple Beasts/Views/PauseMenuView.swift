@@ -37,8 +37,8 @@ struct PauseMenuView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-                .opacity(0.65)
+//            Color.black.ignoresSafeArea()
+//                .opacity(0.65)
             VStack {
                 Image("pauseMenuBackground")
                     .padding(.top, -200)
@@ -120,7 +120,7 @@ struct PauseMenuView: View {
                                 HStack {
                                     if gameType == .multiplayer {
                                         Button {
-                                            withAnimation(.easeInOut(duration: 1.5)) {
+                                            withAnimation(.easeInOut(duration: 0.5)) {
                                                 showPauseMenu.toggle()
                                             }
                                             
@@ -138,7 +138,7 @@ struct PauseMenuView: View {
                                     } else {
                                         Button {
                                             board.reset()
-                                            withAnimation(.easeInOut(duration: 1.5)) {
+                                            withAnimation(.easeInOut(duration: 0.5)) {
                                                 showPauseMenu.toggle()
                                             }
 //                                            showPauseMenu.toggle()
@@ -152,7 +152,7 @@ struct PauseMenuView: View {
                                         }
                                         
                                         Button {
-                                            withAnimation(.easeInOut(duration: 1.5)) {
+                                            withAnimation(.easeInOut(duration: 0.5)) {
                                                 showPauseMenu.toggle()
                                             }
                                             gameCenterController.isPaused.toggle()

@@ -177,11 +177,29 @@ struct GameView: View {
                     .allowsHitTesting(false)
                     .edgesIgnoringSafeArea(.all)
                 
+//                if showPauseMenu {
+//
+//                            }
+//
+//                            CreditView(isPresent: $showCreditScreen)
+//                                .scaleEffect(showCreditScreen ? 1 : 0)
+//                                .allowsHitTesting(showCreditScreen)
+//                                .animation(.spring(), value: showCreditScreen)
+                
                 if showPauseMenu {
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
-                        .transition(.scale)
-//                        .animation(Animation.easeInOut, value: showPauseMenu)
+                    Color.black.opacity(0.65)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                showPauseMenu = false
+                            }
+                        }
+                        
                 }
+                PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
+                    .scaleEffect(showPauseMenu ? 1 : 0)
+                    .allowsHitTesting(showPauseMenu)
+                    .animation(.spring(), value: showPauseMenu)
                 
                 if gameCenterController.isGameOver {
                     WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
