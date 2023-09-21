@@ -25,35 +25,42 @@ struct BoardView: View {
         return false
     }
     
-        var body: some View {
-        VStack(spacing: 1) {
-            ForEach(0..<board.size.rows, id: \.self) { row in
-                HStack(spacing: 1) {
-                    ForEach(0..<board.size.columns, id: \.self) { col in
-                        CellView(
-                            state: board.cellState(at: (row: row, col: col)),
-                            isSelected: gameCenterController.isSelected && gameCenterController.selectedCell != nil && gameCenterController.selectedCell! == (row: row, col: col),
-                            highlighted: gameCenterController.selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                            outerHighlighted: gameCenterController.selectedCell != nil && isOuterToSelectedCell(row: row, col: col),
-                            isPressed: isCellPressed(row: row, col: col),
-                            convertedCells: $gameCenterController.convertedCells,
-                            previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
-                            cellPosition: (row: row, col: col), moveMade: $moveMade
-                        )
-                        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
-                            if pressing {
-                                self.currentlyPressedCell = (row, col)
-                            } else {
-                                self.handleTap(from: gameCenterController.selectedCell, to: (row: row, col: col))
-                                HapticManager.shared.impact(style: .soft)
-                                self.currentlyPressedCell = nil
-                            }
-                        }, perform: { })
-
+    var body: some View {
+        GeometryReader { geometry in
+            let minDimension = min(geometry.size.width, geometry.size.height)
+            let cellSize = minDimension / CGFloat(max(gameCenterController.rows, gameCenterController.cols))
+            VStack(spacing: 1) {
+                ForEach(0..<board.size.rows, id: \.self) { row in
+                    HStack(spacing: 1) {
+                        ForEach(0..<board.size.columns, id: \.self) { col in
+                            CellView(
+                                state: board.cellState(at: (row: row, col: col)),
+                                isSelected: gameCenterController.isSelected && gameCenterController.selectedCell != nil && gameCenterController.selectedCell! == (row: row, col: col),
+                                highlighted: gameCenterController.selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
+                                outerHighlighted: gameCenterController.selectedCell != nil && isOuterToSelectedCell(row: row, col: col),
+                                isPressed: isCellPressed(row: row, col: col),
+                                convertedCells: $gameCenterController.convertedCells,
+                                previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
+                                cellPosition: (row: row, col: col), moveMade: $moveMade
+                            )
+                            .frame(width: cellSize, height: cellSize)
+                            .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                                if pressing {
+                                    self.currentlyPressedCell = (row, col)
+                                } else {
+                                    self.handleTap(from: gameCenterController.selectedCell, to: (row: row, col: col))
+                                    HapticManager.shared.impact(style: .soft)
+                                    self.currentlyPressedCell = nil
+                                }
+                            }, perform: { })
+                            
+                        }
                     }
                 }
             }
+            
         }
+        
     }
 
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
