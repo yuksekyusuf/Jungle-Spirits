@@ -72,6 +72,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
+
         super.init()
         startObservingAppLifecycle()
     }
@@ -84,7 +85,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         didSet {
             self.isMatched = match != nil
             if let match = match {
-//                match.delegate = self
+                match.delegate = self
    
                 currentPlayer = .initial
                 print("When players are matched, their current player state is ", currentPlayer.rawValue)

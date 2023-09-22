@@ -12,7 +12,7 @@ struct CellView: View {
     let isSelected: Bool
     let highlighted: Bool
     let outerHighlighted: Bool
-    let width = UIScreen.main.bounds.width * 0.175
+    let width: CGFloat
     let offsetY = UIScreen.main.bounds.height * 0.0046
     var isPressed: Bool
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
@@ -23,29 +23,34 @@ struct CellView: View {
     
     
     var body: some View {
+//        Rectangle()
+//            .fill(.blue)
+//            .border(Color.black)
+
+       
         ZStack {
             Image(selectedUnselectedImage)
                 .resizable()
                 .scaledToFit()
-                .frame(width: width)
-            
-            //                Image("Tile_test")
-            //                               .resizable()
-            //                               .scaledToFit()
-            //                               .frame(width: width)
-            
+                .frame(width: width, height: width)
+            //
+            //                            Image("Tile_test")
+            //                                           .resizable()
+            //                                           .scaledToFit()
+            //                                           .frame(width: width)
+
             PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
-                .frame(width: width)
+                .frame(width: width, height: width)
                 .transition(.opacity)
                 .scaleEffect(isPressed ? 0.9 : 1.0)
-            
-            
+
+
             if highlighted && state == .empty {
                 Image("Highlighted")
                     .resizable()
                     .scaledToFit()
                     .cornerRadius(6)
-                
+
             }
             if outerHighlighted && state == .empty {
                 Image("OuterHighlighted")
@@ -60,7 +65,7 @@ struct CellView: View {
                     .frame(width: width + 30, height: width + 30)
                     .allowsHitTesting(false)
                     .blendMode(.overlay)
-                
+
             }
             if isSelected && state == .player2 {
                 Image("EllipseBlue")

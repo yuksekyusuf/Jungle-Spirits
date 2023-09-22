@@ -114,6 +114,7 @@ struct MenuView: View {
                         //                            .frame(width: UIScreen.main.bounds.width * 0.8)
                         //                            .offset(y: -110)
                         
+                        
                         LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
                             .frame(width: UIScreen.main.bounds.width * 0.8)
                             .offset(y: -90)
@@ -124,7 +125,7 @@ struct MenuView: View {
                             HStack {
                                 Spacer()
                                 NavigationLink {
-                                    GameView(gameType: .ai)
+                                    GameView(gameType: .ai, gameSize: (8, 5))
                                 } label: {
                                     //                                    Image("SinglePlayer")
                                     //                                        .resizable()
@@ -138,7 +139,7 @@ struct MenuView: View {
                                 
                                 // 1 vs 1
                                 NavigationLink {
-                                    GameView(gameType: .oneVone)
+                                    GameView(gameType: .oneVone, gameSize: (8, 5))
                                 } label: {
                                     //                                    Image("1 vs 1")
                                     //                                        .resizable()
@@ -177,7 +178,7 @@ struct MenuView: View {
                                     }
                                     
                                     NavigationLink(
-                                        destination: GameView(gameType: .multiplayer),
+                                        destination: GameView(gameType: .multiplayer, gameSize: (8, 5)),
                                         isActive: $gameCenterController.isMatchFound
                                     ) {
                                         EmptyView()
@@ -261,7 +262,7 @@ struct MenuView: View {
                     }
                     LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                    //                    .edgesIgnoringSafeArea(.all)
+                        .edgesIgnoringSafeArea(.all)
                         .allowsHitTesting(false)
                     
                     if showMatchmakingPopup {
@@ -344,6 +345,6 @@ struct MenuView: View {
 
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
-        MenuView()
+        MenuView().environmentObject(AppLanguageManager())
     }
 }
