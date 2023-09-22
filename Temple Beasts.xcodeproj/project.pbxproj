@@ -245,11 +245,11 @@
 				4DED05542A31439100B2362A /* Subviews */,
 				4D15F0B52A0C31AB00539383 /* BoardView.swift */,
 				4D69639F2A7A57E70096D805 /* HowToPlayView.swift */,
-				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */,
 				4DC62BF92A1A73F700CD2007 /* MenuView.swift */,
 				4D9518782A50A58100ED284D /* WinView.swift */,
 				4D5E69452AB9CD030089CAB6 /* CreditView.swift */,
+				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4D0779662ABC72EC009DE89E /* ResizeTest.swift */,
 			);
 			path = Views;

@@ -39,8 +39,6 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var otherPlayerPlaying: Bool = false
     @Published var remainingTime = 15
     @Published var isQuitGame = false
-    @Published var rows = 8
-    @Published var cols = 5
     @Published var path: [Int] = []
     @Published var connectionLost: Bool = false
     @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
@@ -74,6 +72,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
+
         super.init()
         startObservingAppLifecycle()
     }
@@ -85,12 +84,12 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var match: GKMatch? {
         didSet {
             self.isMatched = match != nil
-//            if let match = match {
-////                match.delegate = self
-//   
-//                currentPlayer = .initial
-//                print("When players are matched, their current player state is ", currentPlayer.rawValue)
-//            }
+            if let match = match {
+                match.delegate = self
+   
+                currentPlayer = .initial
+                print("When players are matched, their current player state is ", currentPlayer.rawValue)
+            }
         }
     }
     
