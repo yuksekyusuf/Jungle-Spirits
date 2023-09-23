@@ -10,7 +10,7 @@ import SwiftUI
 struct BoardView: View {
     @EnvironmentObject var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
-//    @Binding var selectedCell: (row: Int, col: Int)?
+    @Binding var selectedCell: (row: Int, col: Int)?
     @Binding var currentPlayer: CellState
     @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
     @State private var moveMade: Bool = false
@@ -30,18 +30,15 @@ struct BoardView: View {
     }
     
     var body: some View {
-    
-//            let minDimension = min(geometry.size.width, geometry.size.height)
-//            let cellSize = minDimension / CGFloat(max(gameCenterController.rows, gameCenterController.cols))
             VStack(spacing: 1.5) {
                 ForEach(0..<rows, id: \.self) { row in
                     HStack(spacing: 1.5) {
                         ForEach(0..<cols, id: \.self) { col in
                             CellView(
                                 state: board.cellState(at: (row: row, col: col)),
-                                isSelected: gameCenterController.isSelected && gameCenterController.selectedCell != nil && gameCenterController.selectedCell! == (row: row, col: col),
-                                highlighted: gameCenterController.selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                                outerHighlighted: gameCenterController.selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize,
+                                isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
+                                highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
+                                outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize,
                                 isPressed: isCellPressed(row: row, col: col),
                                 convertedCells: $gameCenterController.convertedCells,
                                 previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
@@ -52,7 +49,7 @@ struct BoardView: View {
                                 if pressing {
                                     self.currentlyPressedCell = (row, col)
                                 } else {
-                                    self.handleTap(from: gameCenterController.selectedCell, to: (row: row, col: col))
+                                    self.handleTap(from: selectedCell, to: (row: row, col: col))
                                     HapticManager.shared.impact(style: .soft)
                                     self.currentlyPressedCell = nil
                                 }
@@ -62,9 +59,6 @@ struct BoardView: View {
                     }
                 }
             }
-            
-        
-        
     }
 
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
@@ -77,16 +71,18 @@ struct BoardView: View {
         }
         
         // If the destination cell is the currently selected cell, unselect it.
-        if let source = gameCenterController.selectedCell, source == destination {
-            gameCenterController.isSelected = false
-            gameCenterController.selectedCell = nil
+        if let source = source, source == destination {
+            selectedCell = nil
+//                        gameCenterController.isSelected = false
+
             return
         }
         
-        guard let source = gameCenterController.selectedCell else {
+        guard let source = source else {
             if board.cellState(at: destination) == currentPlayer {
-                gameCenterController.isSelected = true
-                gameCenterController.selectedCell = destination
+                selectedCell = destination
+//                                gameCenterController.isSelected = true
+
             }
             return
         }
@@ -103,22 +99,23 @@ struct BoardView: View {
                     self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
                 }
             }
-            gameCenterController.isSelected = false
-            gameCenterController.selectedCell = nil
+            selectedCell = nil
+//                        gameCenterController.isSelected = false
+
             let move = Move(source: source, destination: destination)
             onMoveCompleted(move)
         } else if board.cellState(at: destination) == currentPlayer {
-            gameCenterController.selectedCell = destination
+            selectedCell = destination
         }
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
-        guard let selected = gameCenterController.selectedCell else { return false }
+        guard let selected = selectedCell else { return false }
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
         return (deltaRow <= 1 && deltaCol <= 1) && !(deltaRow == 0 && deltaCol == 0)
     }
     private func isOuterToSelectedCell(row: Int, col: Int) -> Bool {
-        guard let selected = gameCenterController.selectedCell else { return false }
+        guard let selected = selectedCell else { return false }
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
 

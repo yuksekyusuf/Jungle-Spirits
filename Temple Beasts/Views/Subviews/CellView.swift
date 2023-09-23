@@ -23,9 +23,7 @@ struct CellView: View {
     
     
     var body: some View {
-//        Rectangle()
-//            .fill(.blue)
-//            .border(Color.black)
+
 
        
         ZStack {

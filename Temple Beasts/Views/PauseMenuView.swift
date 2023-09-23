@@ -11,6 +11,8 @@ struct PauseMenuView: View {
     @Binding var showPauseMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
+    @Binding var selectedCell: (row: Int, col: Int)?
+
     @State var gameType: GameType
     @State private var soundState: Bool = UserDefaults.standard.bool(forKey: "sound")
     @State private var musicState: Bool = UserDefaults.standard.bool(forKey: "music")
@@ -145,8 +147,9 @@ struct PauseMenuView: View {
                                             isPaused.toggle()
                                             currentPlayer = .player1
                                             remainingTime = 15
-                                            gameCenterController.isSelected = false
-                                            gameCenterController.selectedCell = nil
+                                            selectedCell = nil
+//                                            gameCenterController.isSelected = false
+//                                            gameCenterController.selectedCell = nil
                                         } label: {
                                             PauseMenuIconView(imageName: "iconReplay")
                                         }
@@ -178,12 +181,12 @@ struct PauseMenuView: View {
     
     
 }
-struct PauseMenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var check = true
-        @State var show = true
-        @State var player: CellState = .player1
-        @State var remainingTime: Int = 15
-        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .multiplayer, currentPlayer: $player)
-    }
-}
+//struct PauseMenuView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        @State var check = true
+//        @State var show = true
+//        @State var player: CellState = .player1
+//        @State var remainingTime: Int = 15
+//        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .multiplayer, currentPlayer: $player)
+//    }
+//}

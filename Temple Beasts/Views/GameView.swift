@@ -13,8 +13,11 @@ struct GameView: View {
     init(gameType: GameType, gameSize: (row: Int, col: Int)) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType))
+        
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
+        _selectedCell = State(initialValue: nil)
+
         _isCountDownVisible = State(initialValue: true)
         _showAlert = State(initialValue: false)
     }
@@ -24,6 +27,7 @@ struct GameView: View {
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
+    @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @State private var showAlert: Bool = false
 
@@ -289,7 +293,7 @@ struct GameView: View {
                         Spacer()
                         HStack{
                             Spacer()
-                            BoardView(currentPlayer: $gameCenterController.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
+                            BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
                                 .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
                                 .allowsHitTesting(!showPauseMenu)
                                 .overlay {
@@ -319,7 +323,7 @@ struct GameView: View {
                             }
                     }
 
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .scaleEffect(showPauseMenu ? 1 : 0)
                         .allowsHitTesting(showPauseMenu)
                         .animation(.easeInOut(duration: 0.5), value: showPauseMenu)
@@ -393,12 +397,13 @@ struct GameView: View {
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
-                gameCenterController.isSelected = false
-                gameCenterController.selectedCell = nil
+                selectedCell = nil
+//                gameCenterController.isSelected = false
+                selectedCell = nil
             } else if newValue == 0 && gameType == .ai {
                 gameCenterController.remainingTime = 15
-                gameCenterController.isSelected = false
-                gameCenterController.selectedCell = nil
+//                gameCenterController.isSelected = false
+                selectedCell = nil
                 switchPlayer()
                 performAIMoveAfterDelay()
             } else if newValue == 0 && gameType == .multiplayer {
