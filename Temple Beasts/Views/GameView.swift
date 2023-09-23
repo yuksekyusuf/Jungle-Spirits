@@ -389,6 +389,7 @@ struct GameView: View {
             }
         })
         .onChange(of: gameCenterController.remainingTime, perform: { newValue in
+            print("Remaining time: ", newValue)
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
@@ -417,8 +418,10 @@ struct GameView: View {
             }
         })
         .onReceive(timer) { _ in
+            print("Remaining time: ", gameCenterController.remainingTime)
             if !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible && !gameCenterController.isQuitGame {
                 gameCenterController.remainingTime -= 1
+                print("remaining time after receive: ", gameCenterController.remainingTime)
             }
         }
         .onAppear {

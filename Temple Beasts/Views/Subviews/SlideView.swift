@@ -11,7 +11,7 @@ struct SlideView: View {
     @State private var isShowingFirstImage = true
     let image1: String
     let image2: String
-    let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
+    let timer1 = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
        var body: some View {
            ZStack {
                Image(image1)
@@ -24,7 +24,7 @@ struct SlideView: View {
                    .mask(Image(image2).resizable())
                    .opacity(isShowingFirstImage ? 0 : 1)
            }
-           .onReceive(timer) { _ in
+           .onReceive(timer1) { _ in
                withAnimation(.easeInOut(duration: 0.4)) {
                    self.isShowingFirstImage.toggle()
                }

@@ -10,82 +10,90 @@ import SwiftUI
 struct CreditView: View {
     @Environment(\.openURL) var openURL
     @Binding var isPresent: Bool
-    var body: some View {
-        ZStack {
-            //            Color.black.opacity(0.3)
-            //                .ignoresSafeArea()
-            
-            ZStack{
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack {
-                        Image("CreditLogo")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 270, height: 168)
-                            .padding(.top, 48)
-                        Image("CreditLine")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 164, height: 48)
-                        
+    private var overlayView: some View {
+        ZStack{
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack {
+                    Image("CreditLogo")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 270, height: 168)
+                        .padding(.top, 48)
+                    Image("CreditLine")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 164, height: 48)
+                    
+                    VStack(spacing: 0) {
+                        Text("YASIR")
+                            .font(Font.custom("TempleGemsRegular", size: 28))
+                            .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+                            .padding(.top, 32)
+                        Text("DESIGNER")
+                            .font(Font.custom("TempleGemsRegular", size: 23))
+                            .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
+                            .offset(y: -10)
+                        Button {
+                            openURL(URL(string: "https://twitter.com/yasirbugra")!)
+                        } label: {
+                            Image("YasirButton")
+                                .resizable()
+                                .scaledToFit()
+                                .offset(y: -10)
+                            
+                        }
                         VStack(spacing: 0) {
-                            Text("YASIR")
+                            Text("YUSUF")
                                 .font(Font.custom("TempleGemsRegular", size: 28))
                                 .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
                                 .padding(.top, 32)
-                            Text("DESIGNER")
+                            Text("DEVELOPER")
                                 .font(Font.custom("TempleGemsRegular", size: 23))
                                 .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
                                 .offset(y: -10)
                             Button {
-                                openURL(URL(string: "https://twitter.com/yasirbugra")!)
+                                openURL(URL(string: "https://twitter.com/ay_yuksek")!)
                             } label: {
-                                Image("YasirButton")
+                                Image("YusufButton")
                                     .resizable()
                                     .scaledToFit()
                                     .offset(y: -10)
-                                
                             }
-                            VStack(spacing: 0) {
-                                Text("YUSUF")
-                                    .font(Font.custom("TempleGemsRegular", size: 28))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                    .padding(.top, 32)
-                                Text("DEVELOPER")
-                                    .font(Font.custom("TempleGemsRegular", size: 23))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
-                                    .offset(y: -10)
-                                Button {
-                                    openURL(URL(string: "https://twitter.com/ay_yuksek")!)
-                                } label: {
-                                    Image("YusufButton")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .offset(y: -10)
-                                }
-                            }
-                            .offset(y: -32)
-                            
-                            Text("MADE IN NYC . 2023")
-                                .font(Font.custom("TempleGemsRegular", size: 18))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
-                                .offset(y: -24)
-                            
                         }
-                        .frame(width: 168)
+                        .offset(y: -32)
                         
+                        Text("MADE IN NYC . 2023")
+                            .font(Font.custom("TempleGemsRegular", size: 18))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
+                            .offset(y: -24)
                         
                     }
-                    .frame(width: 270)
+                    .frame(width: 168)
+                    
                 }
-                .background {
-                    Image("CreditBackground")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 284, height: 302)
-                }
+                .frame(width: 270)
             }
+            .background {
+                Image("CreditBackground")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 284, height: 302)
+            }
+//                .overlay{
+//                    Image("Subtract")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .opacity(0.1)
+//                        .allowsHitTesting(false)
+//                        .frame(width: 284, height: 302)
+//                }
+        }
+    }
+    var body: some View {
+
+        ZStack {
+            overlayView
             .frame(width: 284, height: 302)
             .shadow(color: .black.opacity(0.45), radius: 8, x: 0, y: 10)
             Button {
@@ -99,7 +107,7 @@ struct CreditView: View {
                 
             }
             .frame(width: 44, height: 44)
-            .offset(x: 130, y: -140)
+            .offset(x: 138, y: -138)
             
         }
         .transition(.scale)
@@ -112,11 +120,10 @@ struct CreditView: View {
                     ],
                     startPoint: UnitPoint(x: 1, y: 0),
                     endPoint: UnitPoint(x: 0, y: 1)
-                )        .cornerRadius(48)
+                )
+                    .clipShape(RoundedRectangle(cornerRadius: 48, style: .continuous))
                 
-                
-                
-                
+                    
             }
                 .frame(width: 307, height: 326)
             

@@ -16,7 +16,7 @@ struct MenuView: View {
     @EnvironmentObject var appLanguageManager: AppLanguageManager
 
     @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
-//    @State private var isMatchmakingPresented = false
+    @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
     @AppStorage("music") var musicState: Bool = true
     @AppStorage("haptic") var hapticState: Bool = true
@@ -155,34 +155,34 @@ struct MenuView: View {
                             HStack {
                                 Spacer()
                                 ZStack {
-    //                                NavigationLink(destination: GameView(gameType: .multiplayer), isActive: $gameCenterController.isMatched) {
-    //                                    EmptyView()
-    //                                }
-    //                                Button {
-    //                                    self.isMatchmakingPresented = true
-    //                                } label: {
-    //
-    //                                    ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
-    //                                }
-    //                                .sheet(isPresented: $isMatchmakingPresented) {
-    //                                    GameCenterView().environmentObject(gameCenterController)
-    //                                }
-                                    
-                                    Button(action: {
-                                        print("Is matched? ", gameCenterController.isMatchFound)
-                                        self.showMatchmakingPopup = true
-                                        gameCenterController.startQuickMatch()
-
-                                    }) {
-                                        ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
-                                    }
-                                    
-                                    NavigationLink(
-                                        destination: GameView(gameType: .multiplayer, gameSize: (8, 5)),
-                                        isActive: $gameCenterController.isMatchFound
-                                    ) {
+                                    NavigationLink(destination: GameView(gameType: .multiplayer, gameSize: (8, 5)), isActive: $gameCenterController.isMatched) {
                                         EmptyView()
                                     }
+                                    Button {
+                                        self.isMatchmakingPresented = true
+                                    } label: {
+    
+                                        ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+                                    }
+                                    .sheet(isPresented: $isMatchmakingPresented) {
+                                        GameCenterView().environmentObject(gameCenterController)
+                                    }
+                                    
+//                                    Button(action: {
+//                                        print("Is matched? ", gameCenterController.isMatchFound)
+//                                        self.showMatchmakingPopup = true
+//                                        gameCenterController.startQuickMatch()
+//
+//                                    }) {
+//                                        ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+//                                    }
+//
+//                                    NavigationLink(
+//                                        destination: GameView(gameType: .multiplayer, gameSize: (8, 5)),
+//                                        isActive: $gameCenterController.isMatchFound
+//                                    ) {
+//                                        EmptyView()
+//                                    }
     //
                                 }
                                 .padding(.top, 10)
@@ -281,7 +281,7 @@ struct MenuView: View {
 //
 //                    }
                     if showCreditScreen {
-                                    Color.black.opacity(0.3)
+                                    Color.black.opacity(0.8)
                                         .ignoresSafeArea()
                                         .onTapGesture {
                                             withAnimation(.easeInOut(duration: 0.1)) {
