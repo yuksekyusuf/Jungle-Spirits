@@ -381,6 +381,7 @@ struct GameView: View {
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
             }
+            print("Random check out!")
         }
         .onChange(of: board.gameOver, perform: { newValue in
             if newValue == true {
