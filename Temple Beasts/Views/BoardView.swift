@@ -137,5 +137,3 @@ struct BoardView: View {
 //        }
 //    }
 // }
-
-
