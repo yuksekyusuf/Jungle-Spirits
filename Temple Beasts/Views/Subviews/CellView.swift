@@ -21,23 +21,26 @@ struct CellView: View {
     @Binding var moveMade: Bool
     @State private var selectedUnselectedImage: String = Self.randomUnselectedImage()
     
-    
+
+    @Binding var targetCell: (row: Int, col: Int)?
+    @Binding var selectedCell: (row: Int, col: Int)?
+
     var body: some View {
 
 
        
         ZStack {
-            Image(selectedUnselectedImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: width, height: width)
+//            Image(selectedUnselectedImage)
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: width, height: width)
             //
             //                            Image("Tile_test")
             //                                           .resizable()
             //                                           .scaledToFit()
             //                                           .frame(width: width)
 
-            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
+            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells, cellWidth: width, selectedCell: $selectedCell, targetCell: $targetCell)
                 .frame(width: width, height: width)
                 .transition(.opacity)
                 .scaleEffect(isPressed ? 0.9 : 1.0)

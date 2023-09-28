@@ -102,7 +102,7 @@ class Board: ObservableObject {
         let colDifference = abs(destination.col - source.col)
         
         // Copying the piece if moving to an adjacent cell
-        withAnimation(.easeInOut(duration: 0.5)) {
+//        withAnimation(.easeInOut(duration: 0.5)) {
             if rowDifference <= 1 && colDifference <= 1 {
                 cells[destination.row][destination.col] = player
             } else {
@@ -110,7 +110,7 @@ class Board: ObservableObject {
                 cells[destination.row][destination.col] = player
                 
             }
-        }
+//        }
         let convertedCells = convertOpponentPieces(at: destination, player: player)
         turn += 1
         

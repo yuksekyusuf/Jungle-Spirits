@@ -15,6 +15,9 @@ struct BoardView: View {
     @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
     @State private var moveMade: Bool = false
     
+    @State var targetCell: (row: Int, col: Int)?
+
+    
     let rows: Int
     let cols: Int
     let cellSize: CGFloat
@@ -42,7 +45,7 @@ struct BoardView: View {
                                 isPressed: isCellPressed(row: row, col: col),
                                 convertedCells: $gameCenterController.convertedCells,
                                 previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
-                                cellPosition: (row: row, col: col), moveMade: $moveMade
+                                cellPosition: (row: row, col: col), moveMade: $moveMade, targetCell: $targetCell, selectedCell: $selectedCell
                             )
                             .frame(width: cellSize, height: cellSize)
                             .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
@@ -62,6 +65,8 @@ struct BoardView: View {
     }
 
     private func handleTap(from source: (row: Int, col: Int)?, to destination: (row: Int, col: Int)) {
+        print("Source", source)
+        print("Destination,", destination)
         if currentPlayer == .player2 && gameType == .ai {
             return
         }
@@ -74,24 +79,38 @@ struct BoardView: View {
         if let source = source, source == destination {
             selectedCell = nil
 //                        gameCenterController.isSelected = false
-
             return
         }
         
         guard let source = source else {
             if board.cellState(at: destination) == currentPlayer {
                 selectedCell = destination
+                print("selected cell", selectedCell)
 //                                gameCenterController.isSelected = true
 
             }
             return
         }
         
+        if board.cellState(at: source) == currentPlayer {
+            targetCell = destination
+            print("target cell1",targetCell)
+
+        } else {
+            return
+        }
+        
         if board.isLegalMove(from: source, to: destination, player: currentPlayer) {
+            print("Source", source)
+            print("Destination,", destination)
             self.moveMade.toggle()
+//            targetCell = destination
+
+            
             
             let convertedPieces = board.performMove(from: source, to: destination, player: currentPlayer)
             if !convertedPieces.isEmpty {
+
                 SoundManager.shared.playConvertSound()
                 HapticManager.shared.notification(type: .success)
                 for piece in convertedPieces {
@@ -99,6 +118,7 @@ struct BoardView: View {
                     self.gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: currentPlayer))
                 }
             }
+            targetCell = nil // <-- Reset targetCell
             selectedCell = nil
 //                        gameCenterController.isSelected = false
 
@@ -107,6 +127,7 @@ struct BoardView: View {
         } else if board.cellState(at: destination) == currentPlayer {
             selectedCell = destination
         }
+//        targetCell = nil
     }
     private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
