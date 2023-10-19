@@ -12,15 +12,58 @@ import SwiftUI
 @main
 struct Temple_BeastsApp: App {
     @StateObject var appLanguageManager = AppLanguageManager()
+    @AppStorage("remainingHearts") var remainingHearts: Int?
+    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
+    @State var heartTimer: Timer?
 
         var body: some Scene {
             WindowGroup {
                 MenuView()
                     .environmentObject(appLanguageManager)
                     .environment(\.appLanguage, appLanguageManager.currentLanguage)
-//                CreditView()
+                    .onAppear {
+                        startHeartTimer()
+                    }
+                    .onDisappear(perform: {
+                        heartTimer?.invalidate()
+                    })
+                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                        
+                        updateHeartsBasedOnTimeElapsed()
+                    }
             }
         }
+    
+    func startHeartTimer() {
+        heartTimer?.invalidate()
+        
+        // Check if a heart should be given right away
+        updateHeartsBasedOnTimeElapsed()
+        
+        heartTimer = Timer.scheduledTimer(withTimeInterval: 1800, repeats: true) { _ in
+            print("hearts: ", UserDefaults.standard.integer(forKey: "hearts"))
+            let hearts = UserDefaults.standard.integer(forKey: "hearts")
+            if hearts < 5 {
+                let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
+                UserDefaults.standard.set(heart, forKey: "hearts")
+
+            }
+            
+        }
+    }
+    
+    func updateHeartsBasedOnTimeElapsed() {
+        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
+        let elapsedTime = Date().timeIntervalSince(lastTime)
+        
+        let heartIntervals = Int(elapsedTime / 1800)
+        
+        if heartIntervals > 0 {
+            let hearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
+            UserDefaults.standard.set(hearts, forKey: "hearts")
+            lastHeartTime = Date().timeIntervalSinceReferenceDate
+        }
+    }
 }
 
 

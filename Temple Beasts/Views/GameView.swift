@@ -30,6 +30,9 @@ struct GameView: View {
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @State private var showAlert: Bool = false
+    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
+    
+
 
     private var player1PieceCount: Int {
         board.countPieces().player1
@@ -109,8 +112,9 @@ struct GameView: View {
                                                         showPauseMenu.toggle()
                                                     }
                                                 }
-
-                                                showPauseMenu.toggle()
+//                                                withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+//                                                                }
+////
 
                                             }
                                         }) {
@@ -316,17 +320,20 @@ struct GameView: View {
                             .ignoresSafeArea()
                             .onTapGesture {
                                 if showPauseMenu {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
                                         showPauseMenu.toggle()
+                                        gameCenterController.isPaused.toggle()
                                     }
                                 }
                             }
                     }
-
+                    
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .scaleEffect(showPauseMenu ? 1 : 0)
                         .allowsHitTesting(showPauseMenu)
-                        .animation(.easeInOut(duration: 0.5), value: showPauseMenu)
+                        .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
+
+
 
                     
                     if gameCenterController.isGameOver {
@@ -363,6 +370,7 @@ struct GameView: View {
             }
 
         }
+        
         .edgesIgnoringSafeArea(.all)
         .onChange(of: gameCenterController.connectionLost, perform: { newValue in
             if newValue && gameType == .multiplayer {
@@ -388,6 +396,11 @@ struct GameView: View {
         }
         .onChange(of: board.gameOver, perform: { newValue in
             if newValue == true {
+                if gameType == .ai && winner == .player2 {
+                    remainingHearts -= 1
+                    UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
+                    print("hearts after losing a game: ", remainingHearts)
+                }
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
             }
@@ -436,7 +449,6 @@ struct GameView: View {
             SoundManager.shared.turnDownMusic()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 SoundManager.shared.playCountDown()
-
             }
         }
         .environmentObject(board)
@@ -461,11 +473,9 @@ struct GameView: View {
         }
     }
     
-    
-    
     func calculateCellSize(geometry: GeometryProxy) -> CGFloat {
         let maxCellWidth = geometry.size.width * 0.175
-        let availableWidth = geometry.size.width * 0.95
+        let availableWidth = geometry.size.width * 0.90
         let maxWidthBasedCellSize = min(maxCellWidth, availableWidth / CGFloat(board.size.columns))
 
         let maxBoardHeight = geometry.size.height * 0.75
@@ -514,7 +524,6 @@ struct GameView: View {
                     print("Failed to send move: ", error)
 
                 }
-
             }
             gameCenterController.remainingTime = 15
         }

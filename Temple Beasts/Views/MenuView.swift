@@ -15,6 +15,7 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
 
+    
     @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
@@ -23,12 +24,22 @@ struct MenuView: View {
     @AppStorage("sound") var soundState: Bool = true
     @State private var hasUserBeenPromptedForReview: Bool = UserDefaults.standard.bool(forKey: "HasUserBeenPromptedForReview")
     
+//    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
+    
+    @AppStorage("hearts") var remainingHearts: Int?
+    
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     @State private var currentLanguageIndex: Int = 0
     @State private var showMatchmakingPopup = false
     
     @Namespace private var animationNamespace
     @State private var showCreditScreen: Bool = false
+    
+    //Timer functionality
+    
+//    @AppStorage("lastBackgroundTime") var lastBackgroundTime: TimeInterval = 0
+//    // To periodically check for heart updates
+//    @State var heartTimer: Timer?
 
     let availableLanguages = ["en", "tr", "de", "fr", "es"]
     let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
@@ -91,6 +102,27 @@ struct MenuView: View {
                                 print("review is present", hasUserBeenPromptedForReview)
                             }
                             Spacer()
+                            if let remainingHearts = remainingHearts {
+                                if remainingHearts > 0 {
+                                    ZStack {
+                                        Image(systemName: "heart.fill")
+                                            .resizable()
+                                            .foregroundColor(.red)
+                                            .frame(width: 32, height: 32)
+                                        Text("\(remainingHearts)")
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                    }
+                                }
+                                else {
+                                    Image(systemName: "heart")
+                                        .resizable()
+                                        .foregroundColor(.red)
+                                        .frame(width: 32, height: 32)
+                                }
+                            }
+                            
+                            Spacer()
                             NavigationLink {
                                 HowToPlayView()
                             } label: {
@@ -124,18 +156,28 @@ struct MenuView: View {
                         VStack(alignment: .leading) {
                             HStack {
                                 Spacer()
-                                NavigationLink {
-                                    GameView(gameType: .ai, gameSize: (8, 5))
-                                } label: {
-                                    //                                    Image("SinglePlayer")
-                                    //                                        .resizable()
-                                    //                                        .scaledToFit()
-                                    //                                        .frame(width: singleButtonWidth)
-                                    ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
+//                                NavigationLink {
+//                                    GameView(gameType: .ai, gameSize: (8, 5))
+//                                } label: {
+//                                    ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
+//                                }
+//                                .simultaneousGesture(TapGesture().onEnded({
+//                                        gameCenterController.path.append(2)
+//
+//                                }))
+                                if let remainingHearts = remainingHearts {
+                                    NavigationLink(destination: GameView(gameType: .ai, gameSize: (8, 5)), isActive: remainingHearts > 0 ? .constant(true) : .constant(false)) {
+                                        ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
+                                    }
+                                    .opacity(remainingHearts > 0 ? 1.0 : 0.5) // Optionally make the button appear semi-transparent when disabled
+                                    .disabled(remainingHearts <= 0)
+                                    .simultaneousGesture(TapGesture().onEnded({
+                                        if remainingHearts > 0 {
+                                            gameCenterController.path.append(2)
+                                        }
+                                    }))
                                 }
-                                .simultaneousGesture(TapGesture().onEnded({
-                                    gameCenterController.path.append(2)
-                                }))
+                                
                                 
                                 // 1 vs 1
                                 NavigationLink {
@@ -293,7 +335,8 @@ struct MenuView: View {
                                 CreditView(isPresent: $showCreditScreen)
                                     .scaleEffect(showCreditScreen ? 1 : 0)
                                     .allowsHitTesting(showCreditScreen)
-                                    .animation(.spring(), value: showCreditScreen)
+                                    .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
+//                                    .animation(.spring(), value: showCreditScreen)
                                 
                     
 
@@ -307,6 +350,8 @@ struct MenuView: View {
             }
         }
         .onAppear {
+//            startHeartTimer()
+            print("Initial remaining hearts: ", remainingHearts)
             UserDefaults.standard.set(soundState, forKey: "sound")
             UserDefaults.standard.set(musicState, forKey: "music")
             UserDefaults.standard.set(hapticState, forKey: "haptic")
@@ -320,6 +365,12 @@ struct MenuView: View {
                 } else {
                     gameCenterController.fetchLocalPlayerImage()
                 }
+            if remainingHearts == nil {
+                remainingHearts = 5
+                UserDefaults.standard.set(remainingHearts, forKey: "hearts")
+                print("Hearts when menu appears: ", remainingHearts)
+
+            }
         }
         .onChange(of: gameCenterController.isMatchFound) { matchFound in
             if matchFound {
@@ -332,8 +383,45 @@ struct MenuView: View {
                 }
             }
         }
+//        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+//            // App going to background
+//            self.lastBackgroundTime = Date().timeIntervalSinceReferenceDate
+//        }
+//        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+//            // App coming to foreground
+//            self.updateHeartsBasedOnTimeElapsed()
+//        }
         .environmentObject(gameCenterController)
+//        .onDisappear() {
+//            heartTimer?.invalidate()
+//        }
+        
     }
+    
+//    func updateHeartsBasedOnTimeElapsed() {
+//        let lastTime = Date(timeIntervalSinceReferenceDate: lastBackgroundTime)
+//        let elapsedTime = Date().timeIntervalSince(lastTime)
+//
+//        let heartIntervals = Int(elapsedTime / 10)
+//
+//        if heartIntervals > 0 {
+//            if let hearts = remainingHearts {
+//                remainingHearts = min(hearts + heartIntervals, 5)
+//            }
+//            startHeartTimer()
+//        }
+//    }
+    
+//    func startHeartTimer() {
+//        heartTimer?.invalidate()
+//        updateHeartsBasedOnTimeElapsed()
+//        heartTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
+//            if remainingHearts ?? 0 < 5 {
+//                let newHeart = remainingHearts ?? 0 + 1
+//                UserDefaults.standard.set(newHeart, forKey: "hearts")
+//            }
+//        }
+//    }
     
     func localizedStringForKey(_ key: String, language: String) -> String {
         let path = Bundle.main.path(forResource: language, ofType: "lproj")
