@@ -37,26 +37,32 @@ struct BoardView: View {
                 ForEach(0..<rows, id: \.self) { row in
                     HStack(spacing: 1.5) {
                         ForEach(0..<cols, id: \.self) { col in
-                            CellView(
-                                state: board.cellState(at: (row: row, col: col)),
-                                isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
-                                highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                                outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize,
-                                isPressed: isCellPressed(row: row, col: col),
-                                convertedCells: $gameCenterController.convertedCells,
-                                previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
-                                cellPosition: (row: row, col: col), moveMade: $moveMade, targetCell: $targetCell, selectedCell: $selectedCell
-                            )
-                            .frame(width: cellSize, height: cellSize)
-                            .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
-                                if pressing {
-                                    self.currentlyPressedCell = (row, col)
-                                } else {
-                                    self.handleTap(from: selectedCell, to: (row: row, col: col))
-                                    HapticManager.shared.impact(style: .soft)
-                                    self.currentlyPressedCell = nil
-                                }
-                            }, perform: { })
+                            
+                            TestPlayerView(startingCell: $selectedCell, endingCell: $targetCell, cellWidth: cellSize, currentCell: (row: row, col: col))
+                                
+//                                CellView(
+//                                    state: board.cellState(at: (row: row, col: col)),
+//                                    isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
+//                                    highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
+//                                    outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize,
+//                                    isPressed: isCellPressed(row: row, col: col),
+//                                    convertedCells: $gameCenterController.convertedCells,
+//                                    previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
+//                                    cellPosition: (row: row, col: col), moveMade: $moveMade, targetCell: $targetCell, selectedCell: $selectedCell
+//                                )
+                                .frame(width: cellSize, height: cellSize)
+                                .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                                    if pressing {
+                                        self.currentlyPressedCell = (row, col)
+                                    } else {
+                                        self.handleTap(from: selectedCell, to: (row: row, col: col))
+                                        HapticManager.shared.impact(style: .soft)
+                                        self.currentlyPressedCell = nil
+                                    }
+                                }, perform: { }).frame(width: cellSize, height: cellSize)
+                            
+//
+                            
                             
                         }
                     }

@@ -30,52 +30,57 @@ struct CellView: View {
 
        
         ZStack {
-//            Image(selectedUnselectedImage)
-//                .resizable()
-//                .scaledToFit()
-//                .frame(width: width, height: width)
+            Image(selectedUnselectedImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: width, height: width)
+                .overlay{
+                    PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells, cellWidth: width, selectedCell: $selectedCell, targetCell: $targetCell)
+                        .frame(width: width, height: width)
+                        .transition(.opacity)
+                        .scaleEffect(isPressed ? 0.9 : 1.0)
+                    
+                    if highlighted && state == .empty {
+                        Image("Highlighted")
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(6)
+
+                    }
+                    if outerHighlighted && state == .empty {
+                        Image("OuterHighlighted")
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(6)
+                    }
+                    if isSelected && state == .player1 {
+                        Image("EllipseRed")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width + 30, height: width + 30)
+                            .allowsHitTesting(false)
+                            .blendMode(.overlay)
+
+                    }
+                    if isSelected && state == .player2 {
+                        Image("EllipseBlue")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width + 30, height: width + 30)
+                            .allowsHitTesting(false)
+                            .blendMode(.overlay)
+                    }
+                }
             //
             //                            Image("Tile_test")
             //                                           .resizable()
             //                                           .scaledToFit()
             //                                           .frame(width: width)
 
-            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells, cellWidth: width, selectedCell: $selectedCell, targetCell: $targetCell)
-                .frame(width: width, height: width)
-                .transition(.opacity)
-                .scaleEffect(isPressed ? 0.9 : 1.0)
+            
 
 
-            if highlighted && state == .empty {
-                Image("Highlighted")
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(6)
-
-            }
-            if outerHighlighted && state == .empty {
-                Image("OuterHighlighted")
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(6)
-            }
-            if isSelected && state == .player1 {
-                Image("EllipseRed")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: width + 30, height: width + 30)
-                    .allowsHitTesting(false)
-                    .blendMode(.overlay)
-
-            }
-            if isSelected && state == .player2 {
-                Image("EllipseBlue")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: width + 30, height: width + 30)
-                    .allowsHitTesting(false)
-                    .blendMode(.overlay)
-            }
+            
         }
         .frame(width: width, height: width)
     }
