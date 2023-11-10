@@ -166,7 +166,7 @@ struct MenuView: View {
 //
 //                                }))
                                 if let remainingHearts = remainingHearts {
-                                    NavigationLink(destination: GameView(gameType: .ai, gameSize: (8, 5)), isActive: remainingHearts > 0 ? .constant(true) : .constant(false)) {
+                                    NavigationLink(destination: GameView(gameType: .ai, gameSize: (4, 4)), isActive: remainingHearts > 0 ? .constant(true) : .constant(false)) {
                                         ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
                                     }
                                     .opacity(remainingHearts > 0 ? 1.0 : 0.5) // Optionally make the button appear semi-transparent when disabled
@@ -181,7 +181,7 @@ struct MenuView: View {
                                 
                                 // 1 vs 1
                                 NavigationLink {
-                                    GameView(gameType: .oneVone, gameSize: (8, 5))
+                                    GameView(gameType: .oneVone, gameSize: (4, 4))
                                 } label: {
                                     //                                    Image("1 vs 1")
                                     //                                        .resizable()
@@ -197,7 +197,7 @@ struct MenuView: View {
                             HStack {
                                 Spacer()
                                 ZStack {
-                                    NavigationLink(destination: GameView(gameType: .multiplayer, gameSize: (8, 5)), isActive: $gameCenterController.isMatched) {
+                                    NavigationLink(destination: GameView(gameType: .multiplayer, gameSize: (4, 4)), isActive: $gameCenterController.isMatched) {
                                         EmptyView()
                                     }
                                     Button {

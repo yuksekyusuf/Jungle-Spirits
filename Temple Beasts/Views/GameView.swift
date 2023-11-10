@@ -12,7 +12,9 @@ struct GameView: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     init(gameType: GameType, gameSize: (row: Int, col: Int)) {
         _gameType = State(initialValue: gameType)
-        _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType))
+//        _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType))
+        _board = StateObject(wrappedValue: Board(size: (4, 4), gameType: gameType, obstacles: [(2, 2)]))
+
         
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
@@ -591,7 +593,7 @@ struct GameView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(gameType: .oneVone, gameSize: (8, 5))
+        GameView(gameType: .oneVone, gameSize: (5, 5))
             .environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
     }

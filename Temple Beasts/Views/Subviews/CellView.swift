@@ -27,54 +27,66 @@ struct CellView: View {
 
        
         ZStack {
-            Image(selectedUnselectedImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: width, height: width)
-            //
-            //                            Image("Tile_test")
-            //                                           .resizable()
-            //                                           .scaledToFit()
-            //                                           .frame(width: width)
+            if state == .obstacle {
+                EmptyView()
+            } else {
+//                Image(selectedUnselectedImage)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: width, height: width)
+                
+                                            Image("Tile_test")
+                                                           .resizable()
+                                                           .scaledToFit()
+                                                           .frame(width: width, height: width + 6)
 
-            PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
-                .frame(width: width, height: width)
-                .transition(.opacity)
-                .scaleEffect(isPressed ? 0.9 : 1.0)
+                PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
+                    .frame(width: width, height: width)
+                    .transition(.opacity)
+                    .scaleEffect(isPressed ? 0.9 : 1.0)
+                    .offset(y: -1)
+                
+                if state == .obstacle {
+                               Image("") // Replace with your obstacle image name
+                                   .resizable()
+                                   .scaledToFit()
+                                   .frame(width: width, height: width)
+                           }
 
 
-            if highlighted && state == .empty {
-                Image("Highlighted")
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(6)
+                if highlighted && state == .empty {
+                    Image("Highlighted")
+                        .resizable()
+                        .scaledToFit()
+                        .cornerRadius(6)
 
-            }
-            if outerHighlighted && state == .empty {
-                Image("OuterHighlighted")
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(6)
-            }
-            if isSelected && state == .player1 {
-                Image("EllipseRed")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: width + 30, height: width + 30)
-                    .allowsHitTesting(false)
-                    .blendMode(.overlay)
+                }
+                if outerHighlighted && state == .empty {
+                    Image("OuterHighlighted")
+                        .resizable()
+                        .scaledToFit()
+                        .cornerRadius(6)
+                }
+                if isSelected && state == .player1 {
+                    Image("EllipseRed")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: width + 30, height: width + 30)
+                        .allowsHitTesting(false)
+                        .blendMode(.overlay)
 
-            }
-            if isSelected && state == .player2 {
-                Image("EllipseBlue")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: width + 30, height: width + 30)
-                    .allowsHitTesting(false)
-                    .blendMode(.overlay)
+                }
+                if isSelected && state == .player2 {
+                    Image("EllipseBlue")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: width + 30, height: width + 30)
+                        .allowsHitTesting(false)
+                        .blendMode(.overlay)
+                }
             }
         }
-        .frame(width: width, height: width)
+        .frame(width: width, height: width + 6)
     }
     private static func randomUnselectedImage() -> String {
         let images = ["Unselected cell 1", "Unselected cell 2", "Unselected cell 3", "Unselected cell 4"]

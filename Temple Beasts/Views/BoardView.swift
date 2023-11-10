@@ -30,9 +30,9 @@ struct BoardView: View {
     }
     
     var body: some View {
-            VStack(spacing: 1.5) {
+        VStack(spacing: 0) {
                 ForEach(0..<rows, id: \.self) { row in
-                    HStack(spacing: 1.5) {
+                    HStack(spacing: 0) {
                         ForEach(0..<cols, id: \.self) { col in
                             CellView(
                                 state: board.cellState(at: (row: row, col: col)),
@@ -132,6 +132,8 @@ struct BoardView: View {
 // struct BoardView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        @State var selectedCell: (row: Int, col: Int)? = (row: 5, col: 5)
+//        @State var currentPlayer: CellState = .player1
+//        BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, rows: 0, cols: 0, cellSize: <#T##CGFloat#>, onMoveCompleted: <#T##(Move) -> Void#>, gameType: <#T##GameType#>)
 //        BoardView(board: Board(size: (rows: 8, columns: 5)), selectedCell: $selectedCell, currentPlayer: .player1) {
 //
 //        }
