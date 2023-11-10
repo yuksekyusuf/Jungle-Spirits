@@ -313,6 +313,8 @@ struct GameView: View {
                             Spacer()
                         }
                         Spacer()
+                        Spacer()
+                        Spacer()
                     }
 
                     if showPauseMenu {
@@ -589,7 +591,7 @@ struct GameView: View {
 
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
-        GameView(gameType: .oneVone, gameSize: (8 ,5))
+        GameView(gameType: .oneVone, gameSize: (8, 5))
             .environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
     }
