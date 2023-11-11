@@ -165,7 +165,7 @@ struct MenuView: View {
                                 //
                                 //                                }))
                                 if let remainingHearts = remainingHearts {
-                                    NavigationLink(destination: GameView(gameType: .ai, gameSize: (4, 4), obstacles: [(2, 2)]), isActive: remainingHearts > 0 ? .constant(true) : .constant(false)) {
+                                    NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: GameLevel.level1.boardSize.rows, col: GameLevel.level1.boardSize.cols), obstacles: GameLevel.level1.obstacles), isActive: remainingHearts > 0 ? .constant(true) : .constant(false)) {
                                         ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
                                     }
                                     .opacity(remainingHearts > 0 ? 1.0 : 0.5) // Optionally make the button appear semi-transparent when disabled
