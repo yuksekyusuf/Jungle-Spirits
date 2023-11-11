@@ -16,6 +16,18 @@ enum GameLevel {
     case level5
     case level6
     case level7
+    
+    var id: Int {
+            switch self {
+            case .level1: return 1
+            case .level2: return 2
+            case .level3: return 3
+            case .level4: return 4
+            case .level5: return 5
+            case .level6: return 6
+            case .level7: return 7
+            }
+        }
 
     var boardSize: (rows: Int, cols: Int) {
         switch self {
