@@ -13,14 +13,15 @@ enum CellState: Int, Codable, Equatable {
     case player2
     case draw
     case initial
-    func opposite() -> CellState {
-        switch self {
-        case .player1:
-            return .player2
-        case .player2:
-            return .player1
-        default:
-            return .empty
-        }
-    }
+    case obstacle
+//    func opposite() -> CellState {
+//        switch self {
+//        case .player1:
+//            return .player2
+//        case .player2:
+//            return .player1
+//        default:
+//            return .empty
+//        }
+//    }
 }

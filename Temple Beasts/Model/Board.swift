@@ -13,12 +13,13 @@ class Board: ObservableObject {
     
     @Published private(set) var cells: [[CellState]]
     @Published var gameOver: Bool = false
-
+    
     
     let size: (rows: Int, columns: Int)
+    let obstacles: [(Int, Int)]
     var gameType: GameType
     var turn = 0
-    init(size: (rows: Int, columns: Int), gameType: GameType) {
+    init(size: (rows: Int, columns: Int), gameType: GameType ,obstacles: [(Int, Int)]) {
         self.gameType = gameType
         self.size = size
         cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
@@ -26,16 +27,29 @@ class Board: ObservableObject {
         let bottomRight = (row: size.rows - 1, col: size.columns - 1)
         let topRight = (row: 0, col: size.columns - 1)
         let bottomLeft = (row: size.rows - 1, col: 0)
+        self.obstacles = obstacles
         
         cells[topLeft.row][topLeft.col] = .player1
         cells[bottomRight.row][bottomRight.col] = .player1
         cells[topRight.row][topRight.col] = .player2
         cells[bottomLeft.row][bottomLeft.col] = .player2
+        for (row, col) in obstacles {
+            cells[row][col] = .obstacle
+        }
     }
     init(cells: [[CellState]], gameType: GameType) {
         self.gameType = gameType
         self.cells = cells
         self.size = (rows: cells.count, columns: cells.first?.count ?? 0)
+        var reconstructedObstacles = [(Int, Int)]()
+        for (rowIndex, row) in cells.enumerated() {
+            for (colIndex, cell) in row.enumerated() {
+                if cell == .obstacle {
+                    reconstructedObstacles.append((rowIndex, colIndex))
+                }
+            }
+        }
+        self.obstacles = reconstructedObstacles
     }
     func copy() -> Board {
         let newCells = self.cells.map { $0 }
@@ -45,14 +59,17 @@ class Board: ObservableObject {
     func reset() {
         for row in 0..<size.rows {
             for col in 0..<size.columns {
+                //MARK: ALSO DEFINE THE OBSTACLES
                 cells[row][col] = .empty
             }
         }
-        
         cells[0][0] = .player1
         cells[0][size.columns - 1] = .player2
         cells[size.rows - 1][0] = .player2
         cells[size.rows - 1][size.columns - 1] = .player1
+        for (row, col) in obstacles {
+            cells[row][col] = .obstacle
+        }
         turn = 0
         notifyChange()
     }
@@ -73,7 +90,7 @@ class Board: ObservableObject {
         guard cellState(at: source) == player else {
             return false
         }
-        guard cellState(at: destination) == .empty else {
+        guard cellState(at: destination) == .empty, cellState(at: destination) != .obstacle else {
             return false
         }
         let rowDifference = abs(destination.row - source.row)
@@ -212,7 +229,7 @@ class Board: ObservableObject {
             let newCol = source.col + delta.1
             let newDestination = (row: newRow, col: newCol)
             
-            if isValidCoordinate(newDestination) && cellState(at: newDestination) == .empty {
+            if isValidCoordinate(newDestination) && cellState(at: newDestination) == .empty && cellState(at: newDestination) != .obstacle {
                 if isLegalMove(from: source, to: newDestination, player: player) {
                     return true
                 }
@@ -329,7 +346,7 @@ extension Board {
         // Check each direction for duplication.
         for direction in directions {
             let adjacentCell = (row: cell.row + direction.0, col: cell.col + direction.1)
-            if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == .empty {
+            if isValidCoordinate(adjacentCell) && cellState(at: adjacentCell) == .empty && cellState(at: adjacentCell) != .obstacle {
                 moves.append(Move(source: cell, destination: adjacentCell))
             }
         }
@@ -337,7 +354,7 @@ extension Board {
         // Check each direction for jumping.
         for direction in jumpDirections {
             let jumpCell = (row: cell.row + direction.0, col: cell.col + direction.1)
-            if isValidCoordinate(jumpCell) && cellState(at: jumpCell) == .empty {
+            if isValidCoordinate(jumpCell) && cellState(at: jumpCell) == .empty && cellState(at: jumpCell) != .obstacle {
                 moves.append(Move(source: cell, destination: jumpCell))
             }
         }

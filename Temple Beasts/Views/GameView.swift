@@ -10,9 +10,10 @@ import SwiftUI
 struct GameView: View {
     @StateObject private var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
-    init(gameType: GameType, gameSize: (row: Int, col: Int)) {
+    init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
-        _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType))
+        _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
+
         
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
@@ -21,9 +22,7 @@ struct GameView: View {
         _isCountDownVisible = State(initialValue: true)
         _showAlert = State(initialValue: false)
     }
-    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
     @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
@@ -32,8 +31,6 @@ struct GameView: View {
     @State private var showAlert: Bool = false
     @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     
-
-
     private var player1PieceCount: Int {
         board.countPieces().player1
     }
@@ -589,10 +586,10 @@ struct GameView: View {
     }
 }
 
-struct GameView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameView(gameType: .oneVone, gameSize: (8, 5))
-            .environmentObject(AppLanguageManager())
-            .environmentObject(GameCenterManager(currentPlayer: .player1))
-    }
-}
+//struct GameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GameView(gameType: .oneVone, gameSize: (4, 4), obstacles: [(2, 2)])
+//            .environmentObject(AppLanguageManager())
+//            .environmentObject(GameCenterManager(currentPlayer: .player1))
+//    }
+//}
