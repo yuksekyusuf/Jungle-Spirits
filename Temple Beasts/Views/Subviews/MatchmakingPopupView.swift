@@ -110,6 +110,7 @@ struct MatchmakingPopupView: View {
     struct MatchmakingPopupView_Previews: PreviewProvider {
         static var previews: some View {
             @State var searching = true
+
             MatchmakingPopupView(isSearching: $searching)
         }
     }

@@ -378,6 +378,7 @@ struct MenuView: View {
             }
         }
         .onAppear {
+            loadCurrentLevel()
             //            startHeartTimer()
             print("Initial remaining hearts: ", remainingHearts)
             UserDefaults.standard.set(soundState, forKey: "sound")
@@ -456,6 +457,14 @@ struct MenuView: View {
         let bundle = Bundle(path: path!)
         return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
     }
+    
+    private func loadCurrentLevel() {
+         // Fetch the saved level ID from UserDefaults
+         let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
+         // Set the currentLevel in gameCenterController
+         // If there is no saved level, it will return 0, which should default to level 1
+         gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1
+     }
 }
 
 

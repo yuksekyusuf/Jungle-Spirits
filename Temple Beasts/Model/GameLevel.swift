@@ -8,14 +8,14 @@
 import Foundation
 
 
-enum GameLevel {
-    case level1
-    case level2
-    case level3
-    case level4
-    case level5
-    case level6
-    case level7
+enum GameLevel: Int {
+    case level1 = 1
+    case level2 = 2
+    case level3 = 3
+    case level4 = 4
+    case level5 = 5
+    case level6 = 6
+    case level7 = 7
     
     var id: Int {
             switch self {
@@ -47,9 +47,13 @@ enum GameLevel {
         case .level2: return []
         case .level3: return []
         case .level4: return []
-        case .level5: return [(2, 1), (2, 5)]
-        case .level6: return [(2, 1), (2, 6)]
-        case .level7: return [(2, 1), (2, 7)]
+        case .level5: return [(3, 1), (3, 3)]
+        case .level6: return [(2, 1), (2, 4), (5, 1), (5, 4)]
+        case .level7: return [(3, 2), (5, 3), (4, 1), (4, 4)]
         }
     }
+    
+    var next: GameLevel? {
+           return GameLevel(rawValue: self.rawValue + 1)
+       }
 }

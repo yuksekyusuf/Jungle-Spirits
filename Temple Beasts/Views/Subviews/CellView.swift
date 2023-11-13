@@ -23,49 +23,46 @@ struct CellView: View {
     
     
     var body: some View {
-
-
-       
         ZStack {
             if state == .obstacle {
                 EmptyView()
             } else {
-//                Image(selectedUnselectedImage)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: width, height: width)
+                Image(selectedUnselectedImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: width, height: width + 6)
                 
-                                            Image("Tile_test")
-                                                           .resizable()
-                                                           .scaledToFit()
-                                                           .frame(width: width, height: width + 6)
-
                 PlayerView(player: state, selected: isSelected, cellPosition: cellPosition, convertedCells: $convertedCells, previouslyConvertedCells: $previouslyConvertedCells)
                     .frame(width: width, height: width)
                     .transition(.opacity)
                     .scaleEffect(isPressed ? 0.9 : 1.0)
-                    .offset(y: -1)
+                    .offset(y: -4)
                 
                 if state == .obstacle {
-                               Image("") // Replace with your obstacle image name
-                                   .resizable()
-                                   .scaledToFit()
-                                   .frame(width: width, height: width)
-                           }
-
-
+                    Image("") // Replace with your obstacle image name
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: width, height: width)
+                }
+                
+                
                 if highlighted && state == .empty {
                     Image("Highlighted")
                         .resizable()
                         .scaledToFit()
                         .cornerRadius(6)
-
+                        .frame(width: width - 2.9)
+                        .offset(y: -5)
+                    
                 }
                 if outerHighlighted && state == .empty {
                     Image("OuterHighlighted")
                         .resizable()
                         .scaledToFit()
                         .cornerRadius(6)
+                        .frame(width: width - 2.9)
+                        .offset(y: -5)
+                    
                 }
                 if isSelected && state == .player1 {
                     Image("EllipseRed")
@@ -74,7 +71,7 @@ struct CellView: View {
                         .frame(width: width + 30, height: width + 30)
                         .allowsHitTesting(false)
                         .blendMode(.overlay)
-
+                    
                 }
                 if isSelected && state == .player2 {
                     Image("EllipseBlue")
@@ -93,9 +90,10 @@ struct CellView: View {
         return images.randomElement() ?? "Unselected cell 1"
     }
 }
-//struct CellView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        @State var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = [(1, 1, byPlayer: .player1)]
-//        CellView(state: .player1, isSelected: true, highlighted: false, outerHighlighted: false, isPressed: false, convertedCells: $convertedCells, previouslyConvertedCells: $convertedCells, cellPosition: (row: 1, col: 1))
-//    }
-//}
+struct CellView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = [(1, 1, byPlayer: .player1)]
+        @State var booli = false
+        CellView(state: .empty, isSelected: true, highlighted: true, outerHighlighted: false, width: 80, isPressed: false, convertedCells: $convertedCells, previouslyConvertedCells: $convertedCells, cellPosition: (row: 30, col: 1), moveMade: $booli)
+    }
+}

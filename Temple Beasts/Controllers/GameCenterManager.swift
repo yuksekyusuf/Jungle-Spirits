@@ -54,6 +54,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isSearchingForMatch = false
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
+    
+    @Published var currentLevel: GameLevel = GameLevel.level1
 
     
 

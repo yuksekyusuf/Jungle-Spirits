@@ -399,6 +399,13 @@ struct GameView: View {
                     remainingHearts -= 1
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
                     print("hearts after losing a game: ", remainingHearts)
+                } else if gameType == .ai && winner == .player1 {
+                    let nextLevelId = gameCenterController.currentLevel.id + 1
+                               if nextLevelId <= 7 {
+                                   gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.currentLevel
+                                   // Optionally, save the new current level to UserDefaults
+                                   UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                    }
                 }
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
