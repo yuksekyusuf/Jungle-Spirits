@@ -154,34 +154,60 @@ struct MenuView: View {
                                         }
                                     }
                                 VStack{
-                                    TabView(selection: $selectedMap) {
-                                        MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1)
+            
+                                    ZStack {
+                                        Image("ContinueImage")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .offset(y: 10)
+                                        
+                                        TabView(selection: $selectedMap) {
+                                            VStack {
+                                                ExtractedView(id: "1. ", title: "Into the valley")
+                                                MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1)
+                                            }
                                             .tag(1)
                                             .padding(.bottom, 30)
-                                        MapsTabView(mapNumber: 2, mapName: "Crossing the river", levelBundle: GameLevelBundle.bundle2)
+                                            VStack {
+                                                ExtractedView(id: "2. ", title: "Crossing the river")
+                                                MapsTabView(mapNumber: 2, mapName: "Crossing the river", levelBundle: GameLevelBundle.bundle2)
+                                                
+                                            }
                                             .tag(2)
                                             .padding(.bottom, 30)
-
-                                        MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3)
+                                            
+                                            VStack {
+                                                ExtractedView(id: "3. ", title: "Getting hot")
+                                                MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3)
+                                                
+                                            }
                                             .tag(3)
                                             .padding(.bottom, 30)
-
-//                                        MapsTabView(mapNumber: 4, mapName: "Into the valley 4", levelBundle: GameLevelBundle.bundle4)
-//                                            .tag(4)
-//                                            .padding(.bottom, 30)
-
-                                    }
-                                    .tabViewStyle(PageTabViewStyle())
-                                    .overlay{
-                                        GeometryReader { geo in
-                                            Color("coverColor")
-                                                .frame(width: 80, height: 20)
-                                                .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.94)
+                                            VStack {
+                                                ExtractedView(id: "", title: "to be continued...")
+                                                MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3)
+                                                    .padding(.bottom, 30).opacity(0)
+                                                
+                                            }
+                                            .tag(4)
+                                            .padding(.bottom, 30)
+                                            
+                                            
                                         }
+                                        .tabViewStyle(PageTabViewStyle())
+                                        .overlay{
+                                            GeometryReader { geo in
+                                                Color("coverColor")
+                                                    .frame(width: 80, height: 20)
+                                                    .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.94)
+                                            }
+                                        }
+                                        
                                     }
                                     
+                                    
                                     HStack {
-                                        ForEach(1...numberOfMaps, id: \.self) { index in
+                                        ForEach(1...(numberOfMaps+1), id: \.self) { index in
                                             if selectedMap == index {
                                                 Image("SelectedTabAsset")
                                                     .resizable()
@@ -521,5 +547,20 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView().environmentObject(AppLanguageManager())
+    }
+}
+
+struct ExtractedView: View {
+    let id: String
+    let title: String
+    var body: some View {
+        
+        Text(id + "\(title)")
+                .font(.custom("TempleGemsRegular", size: 24))
+                .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).tracking(0.84).multilineTextAlignment(.center).shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)                .tracking(0.72)
+                .multilineTextAlignment(.center)
+                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
+        
+        
     }
 }
