@@ -52,6 +52,8 @@
 		4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D95187C2A50C5B100ED284D /* HapticManager.swift */; };
 		4DA0C7CA2AFF291C00DDEE99 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA0C7C92AFF291C00DDEE99 /* GameLevel.swift */; };
 		4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA0C7CB2AFF293700DDEE99 /* LevelMapView.swift */; };
+		4DA0C7CE2B05C28600DDEE99 /* MapsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA0C7CD2B05C28600DDEE99 /* MapsTabView.swift */; };
+		4DA0C7D02B05CF4100DDEE99 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA0C7CF2B05CF4100DDEE99 /* TestView.swift */; };
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
 		4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
@@ -116,6 +118,8 @@
 		4D95187C2A50C5B100ED284D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		4DA0C7C92AFF291C00DDEE99 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
 		4DA0C7CB2AFF293700DDEE99 /* LevelMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelMapView.swift; sourceTree = "<group>"; };
+		4DA0C7CD2B05C28600DDEE99 /* MapsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsTabView.swift; sourceTree = "<group>"; };
+		4DA0C7CF2B05CF4100DDEE99 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
 		4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TempleGems-Regular.otf"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				4D15F0B72A0C355E00539383 /* GameView.swift */,
 				4D0779662ABC72EC009DE89E /* ResizeTest.swift */,
 				4DA0C7CB2AFF293700DDEE99 /* LevelMapView.swift */,
+				4DA0C7CD2B05C28600DDEE99 /* MapsTabView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				4D231DDE2AB4E05A00F2D12A /* TextView.swift */,
 				4D231DE02AB4E48C00F2D12A /* ButtonView.swift */,
 				4D231DEF2AB56E5900F2D12A /* MatchmakingPopupView.swift */,
+				4DA0C7CF2B05CF4100DDEE99 /* TestView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -413,6 +419,7 @@
 				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
 				4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
+				4DA0C7D02B05CF4100DDEE99 /* TestView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
@@ -425,6 +432,7 @@
 				4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */,
 				4DA0C7CA2AFF291C00DDEE99 /* GameLevel.swift in Sources */,
 				4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */,
+				4DA0C7CE2B05C28600DDEE99 /* MapsTabView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,7 +578,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -609,7 +617,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;

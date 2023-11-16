@@ -16,6 +16,10 @@ struct MenuView: View {
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
     
+    @State private var selectedMap = 1
+    let numberOfMaps = 3
+
+    
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
     @AppStorage("music") var musicState: Bool = true
@@ -66,7 +70,7 @@ struct MenuView: View {
         NavigationStack(path: $gameCenterController.path) {
             if UserDefaults.standard.howToPlayShown {
                 ZStack {
-                    Image(!showLevelMap ? "Menu Screen" : "purebackground")
+                    Image(!showLevelMap ? "Menu Screen" : "mapsTabBackground")
                         .resizable()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     VStack(spacing: 0) {
@@ -79,10 +83,7 @@ struct MenuView: View {
                                             self.showCreditScreen.toggle()
                                             
                                         }
-                                        //                                    withAnimation{
-                                        //                                        self.showCreditScreen.toggle()
-                                        //
-                                        //                                    }
+            
                                         
                                         
                                         
@@ -152,8 +153,57 @@ struct MenuView: View {
                                             showLevelMap.toggle()
                                         }
                                     }
-                                LevelMapView()
+                                VStack{
+                                    TabView(selection: $selectedMap) {
+                                        MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1)
+                                            .tag(1)
+                                            .padding(.bottom, 30)
+                                        MapsTabView(mapNumber: 2, mapName: "Crossing the river", levelBundle: GameLevelBundle.bundle2)
+                                            .tag(2)
+                                            .padding(.bottom, 30)
 
+                                        MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3)
+                                            .tag(3)
+                                            .padding(.bottom, 30)
+
+//                                        MapsTabView(mapNumber: 4, mapName: "Into the valley 4", levelBundle: GameLevelBundle.bundle4)
+//                                            .tag(4)
+//                                            .padding(.bottom, 30)
+
+                                    }
+                                    .tabViewStyle(PageTabViewStyle())
+                                    .overlay{
+                                        GeometryReader { geo in
+                                            Color("coverColor")
+                                                .frame(width: 80, height: 20)
+                                                .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.94)
+                                        }
+                                    }
+                                    
+                                    HStack {
+                                        ForEach(1...numberOfMaps, id: \.self) { index in
+                                            if selectedMap == index {
+                                                Image("SelectedTabAsset")
+                                                    .resizable()
+                                                    .frame(width: 32, height: 32)
+                                                    .onTapGesture {
+                                                        selectedMap = index
+                                                    }
+                                            } else {
+                                                Image("UnselectedTabAsset")
+                                                    .resizable()
+                                                    .frame(width: 8, height: 8)
+                                                    .onTapGesture {
+                                                        selectedMap = index
+                                                    }
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                                
+                                .padding(.bottom, UIScreen.main.bounds.height * 0.1)
+                               
                             }
                             Spacer()
                         } else {
@@ -463,7 +513,7 @@ struct MenuView: View {
          let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
          // Set the currentLevel in gameCenterController
          // If there is no saved level, it will return 0, which should default to level 1
-         gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1
+         gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
      }
 }
 
