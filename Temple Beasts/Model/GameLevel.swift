@@ -186,4 +186,9 @@ enum GameLevelBundle: Int, CaseIterable {
             return Array(GameLevel.level4_1.rawValue...GameLevel.level4_7.rawValue).compactMap(GameLevel.init)
         }
     }
+    
+    
+    var id: Int {
+        return self.rawValue
+    }
 }

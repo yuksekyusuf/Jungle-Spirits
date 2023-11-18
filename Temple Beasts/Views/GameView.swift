@@ -401,11 +401,22 @@ struct GameView: View {
                     print("hearts after losing a game: ", remainingHearts)
                 } else if gameType == .ai && winner == .player1 {
                     let nextLevelId = gameCenterController.currentLevel.id + 1
-                               if nextLevelId <= 7 {
-                                   gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.currentLevel
-                                   // Optionally, save the new current level to UserDefaults
-                                   UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                    if nextLevelId <= 7 {
+                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.currentLevel
+                        // Optionally, save the new current level to UserDefaults
+                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                    } else if (nextLevelId > 7) && (nextLevelId < 15) {
+                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.currentLevel
+                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                        gameCenterController.currentBundle = .bundle2
+                        UserDefaults.standard.setValue(2, forKey: "currentBundle")
+                    } else {
+                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.currentLevel
+                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                        gameCenterController.currentBundle = .bundle3
+                        UserDefaults.standard.setValue(3, forKey: "currentBundle")
                     }
+                    
                 }
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true

@@ -38,6 +38,7 @@ struct MenuView: View {
     @Namespace private var animationNamespace
     @State private var showCreditScreen: Bool = false
     @State private var showLevelMap: Bool = false
+    @State private var showHeartAlert: Bool = false
     
     //Timer functionality
     
@@ -133,7 +134,7 @@ struct MenuView: View {
                                         
                                     }
                                     Button {
-                                        
+                                        showHeartAlert.toggle()
                                     } label: {
                                         HeartView(hearts: remainingHearts)
                                             .padding(.trailing, 20)
@@ -227,6 +228,7 @@ struct MenuView: View {
                                                     .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.94)
                                             }
                                         }
+                                     
                                         
                                     }
                                     
@@ -505,6 +507,9 @@ struct MenuView: View {
         }
         .onAppear {
             loadCurrentLevel()
+            loadCurrentBundle()
+            selectedMap = gameCenterController.currentBundle.id
+
             //            startHeartTimer()
             print("Initial remaining hearts: ", remainingHearts)
             UserDefaults.standard.set(soundState, forKey: "sound")
@@ -537,6 +542,15 @@ struct MenuView: View {
                     //                    gameCenterController.isMatched = true
                 }
             }
+        }
+        .alert(isPresented: $showHeartAlert) {
+            Alert(
+                    title: Text("\(remainingHearts ?? 0) hearts"),
+                    message: Text("Next life in \(formatTimeForDisplay(seconds: timeUntilNextHeart()))."),
+                    dismissButton: .default(Text("OK"), action: {
+                        showHeartAlert.toggle()
+                    })
+                )
         }
         //        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
         //            // App going to background
@@ -578,6 +592,20 @@ struct MenuView: View {
     //        }
     //    }
     
+    func timeUntilNextHeart() -> TimeInterval {
+        let lastHeartTime = UserDefaults.standard.integer(forKey: "lastHeartTime")
+        let lastTime = Date(timeIntervalSinceReferenceDate: TimeInterval(lastHeartTime))
+        let elapsedTime = Date().timeIntervalSince(lastTime)
+        let remainingTime = 1800 - (elapsedTime.truncatingRemainder(dividingBy: 1800))
+        return max(0, remainingTime)
+    }
+
+    func formatTimeForDisplay(seconds: TimeInterval) -> String {
+        let minutes = Int(seconds) / 60
+        let remainingSeconds = Int(seconds) % 60
+        return "\(minutes):\(String(format: "%02d", remainingSeconds)) sec"
+    }
+    
     func localizedStringForKey(_ key: String, language: String) -> String {
         let path = Bundle.main.path(forResource: language, ofType: "lproj")
         let bundle = Bundle(path: path!)
@@ -589,7 +617,13 @@ struct MenuView: View {
         let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
         // Set the currentLevel in gameCenterController
         // If there is no saved level, it will return 0, which should default to level 1
-        gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
+        gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level2_1
+    }
+    
+    private func loadCurrentBundle(){
+        
+        let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle2
     }
 }
 
