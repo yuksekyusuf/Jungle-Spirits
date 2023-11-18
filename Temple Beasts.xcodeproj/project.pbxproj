@@ -65,6 +65,7 @@
 		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
 		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
 		4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */; };
+		4DFE9A022B087242003FA745 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFE9A012B087242003FA745 /* HeartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,7 @@
 		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
 		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
 		4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
+		4DFE9A012B087242003FA745 /* HeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -283,6 +285,7 @@
 				4D231DE02AB4E48C00F2D12A /* ButtonView.swift */,
 				4D231DEF2AB56E5900F2D12A /* MatchmakingPopupView.swift */,
 				4DA0C7CF2B05CF4100DDEE99 /* TestView.swift */,
+				4DFE9A012B087242003FA745 /* HeartView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
+				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,

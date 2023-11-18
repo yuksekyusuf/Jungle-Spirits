@@ -18,7 +18,7 @@ struct MenuView: View {
     
     @State private var selectedMap = 1
     let numberOfMaps = 3
-
+    
     
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
@@ -64,7 +64,7 @@ struct MenuView: View {
     
     let buttonWidth = UIScreen.main.bounds.width * 0.8
     let singleButtonWidth = UIScreen.main.bounds.width * 0.40
-    let smallButtonWidth = UIScreen.main.bounds.width * 0.16
+    let smallButtonWidth = UIScreen.main.bounds.width * 0.18
     
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
@@ -76,85 +76,110 @@ struct MenuView: View {
                     VStack(spacing: 0) {
                         VStack {
                             HStack {
-                                Button {
-                                    if hasUserBeenPromptedForReview {
-                                        
-                                        withAnimation(.spring()) {
-                                            self.showCreditScreen.toggle()
-                                            
+                                //                                Spacer()
+                                if showLevelMap {
+                                    Button {
+                                        withAnimation {
+                                            showLevelMap.toggle()
                                         }
-            
-                                        
-                                        
-                                        
-                                    } else {
-                                        requestReview()
-                                        UserDefaults.standard.set(true, forKey: "HasUserBeenPromptedForReview")
-                                        hasUserBeenPromptedForReview = true
-                                    }
-                                    
-                                } label: {
-                                    Image("like")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(height: 50)
-                                        .padding(.leading, 20)
-                                }
-                                .onAppear {
-                                    print("review is present", hasUserBeenPromptedForReview)
-                                }
-                                Spacer()
-                                if let remainingHearts = remainingHearts {
-                                    if remainingHearts > 0 {
-                                        ZStack {
-                                            Image(systemName: "heart.fill")
-                                                .resizable()
-                                                .foregroundColor(.red)
-                                                .frame(width: 32, height: 32)
-                                            Text("\(remainingHearts)")
-                                                .foregroundColor(.white)
-                                                .font(.headline)
-                                        }
-                                    }
-                                    else {
-                                        Image(systemName: "heart")
+//                                        gameCenterController.path.removeAll()
+                                    } label: {
+                                        Image("Left Arrow")
                                             .resizable()
-                                            .foregroundColor(.red)
-                                            .frame(width: 32, height: 32)
+                                            .scaledToFit()
+                                            .frame(width: 55)
                                     }
+                                } else {
+                                    Button {
+                                        showCreditScreen.toggle()
+                                    } label: {
+                                        Image("info")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(height: 50)
+                                            .padding(.trailing, 20)
+                                    }
+                                    .padding(.leading, 10)
+                                    
+                                    
+                                    
+                                    //
                                 }
                                 
+                                
                                 Spacer()
-                                NavigationLink {
-                                    HowToPlayView()
-                                } label: {
-                                    Image("info")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(height: 50)
-                                        .padding(.trailing, 20)
+                                //                                if let remainingHearts = remainingHearts {
+                                //                                    if remainingHearts > 0 {
+                                //                                        ZStack {
+                                //                                            Image(systemName: "heart.fill")
+                                //                                                .resizable()
+                                //                                                .foregroundColor(.red)
+                                //                                                .frame(width: 32, height: 32)
+                                //                                            Text("\(remainingHearts)")
+                                //                                                .foregroundColor(.white)
+                                //                                                .font(.headline)
+                                //                                        }
+                                //                                    }
+                                //                                    else {
+                                //                                        Image(systemName: "heart")
+                                //                                            .resizable()
+                                //                                            .foregroundColor(.red)
+                                //                                            .frame(width: 32, height: 32)
+                                //                                    }
+                                //                                }
+                                
+                                if let remainingHearts = remainingHearts {
+                                    if remainingHearts > 0 {
+                                        
+                                    }
+                                    Button {
+                                        
+                                    } label: {
+                                        HeartView(hearts: remainingHearts)
+                                            .padding(.trailing, 20)
+                                    }
+                                    
+                                    
                                 }
-                                .simultaneousGesture(
-                                    TapGesture()
-                                        .onEnded({gameCenterController.path.append(1)})
-                                )
+                                //                                Button {
+                                ////                                    if hasUserBeenPromptedForReview {
+                                ////                                        withAnimation(.spring()) {
+                                ////                                            self.showCreditScreen.toggle()
+                                ////
+                                ////                                        }
+                                ////                                    } else {
+                                ////                                        requestReview()
+                                ////                                        UserDefaults.standard.set(true, forKey: "HasUserBeenPromptedForReview")
+                                ////                                        hasUserBeenPromptedForReview = true
+                                ////                                    }
+                                //
+                                //                                } label: {
+                                //                                    Image("like")
+                                //                                        .resizable()
+                                //                                        .scaledToFit()
+                                //                                        .frame(height: 50)
+                                //                                        .padding(.leading, 20)
+                                //                                }
+                                //                                .onAppear {
+                                //                                    print("review is present", hasUserBeenPromptedForReview)
+                                //                                }
+                                //                                Spacer()
+                                
                                 
                             }
                             .padding(.top, 70)
-
+                            
                         }
                         if showLevelMap {
                             Spacer()
                             VStack {
-                                Text("RETURN")
-                                    .foregroundColor(.white)
-                                    .onTapGesture {
-                                        withAnimation {
-                                            showLevelMap.toggle()
-                                        }
-                                    }
+//                                Text("RETURN")
+//                                    .foregroundColor(.white)
+//                                    .onTapGesture {
+//
+//                                    }
                                 VStack{
-            
+                                    
                                     ZStack {
                                         Image("ContinueImage")
                                             .resizable()
@@ -223,69 +248,34 @@ struct MenuView: View {
                                                         selectedMap = index
                                                     }
                                             }
-                                            
                                         }
                                     }
                                 }
                                 
                                 .padding(.bottom, UIScreen.main.bounds.height * 0.1)
-                               
+                                
                             }
                             Spacer()
                         } else {
                             VStack {
                                 Spacer()
-                                LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
+                                //                                LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
+                                //                                    .frame(width: UIScreen.main.bounds.width * 0.8)
+                                //                                    .offset(y: -90)
+                                //                                    .allowsHitTesting(false)
+                                
+                                
+                                //
+                                Image("menuLogo")
+                                    .resizable()
+                                    .scaledToFit()
                                     .frame(width: UIScreen.main.bounds.width * 0.8)
-                                    .offset(y: -90)
-                                    .allowsHitTesting(false)
+                                    .offset(y: -110)
                                 
                                 Spacer()
-                                VStack(alignment: .leading) {
+                                VStack(alignment: .center) {
                                     
-                                    HStack {
-                                        Spacer()
-                                        ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
-                                            .onTapGesture {
-                                                withAnimation {
-                                                    showLevelMap.toggle()
-                                                }
-                                            }
-
-//                                            NavigationLink(destination:
-////                                                            LevelMapView()
-//        //                                                    GameView(gameType: .ai, gameSize: (row: GameLevel.level1.boardSize.rows, col: GameLevel.level1.boardSize.cols), obstacles: GameLevel.level1.obstacles)
-//        //                                                   ,
-//        //                                                   isActive: remainingHearts > 0 ? .constant(true) : .constant(false)
-//                                            ) {
-//                                                ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
-//        //                                    }
-//        //                                    .opacity(remainingHearts > 0 ? 1.0 : 0.5) // Optionally make the button appear semi-transparent when disabled
-//        //                                    .disabled(remainingHearts <= 0)
-//
-//                                        }
-//                                            .simultaneousGesture(TapGesture().onEnded({
-//        //                                        if remainingHearts > 0 {
-//                                                    gameCenterController.path.append(2)
-//        //                                        }
-//                                            }))
-                                        
-                                        
-                                        // 1 vs 1
-                                        NavigationLink {
-                                            GameView(gameType: .oneVone, gameSize: (4, 4), obstacles: [(2, 2)])
-                                        } label: {
-                                            //                                    Image("1 vs 1")
-                                            //                                        .resizable()
-                                            //                                        .scaledToFit()
-                                            //                                        .frame(width: singleButtonWidth)
-                                            ButtonView(text: localDuel, width: singleButtonWidth, height: 50)
-                                        }
-                                        .simultaneousGesture(TapGesture().onEnded({
-                                            gameCenterController.path.append(3)
-                                        }))
-                                        Spacer()
-                                    }
+                                    
                                     HStack {
                                         Spacer()
                                         ZStack {
@@ -296,7 +286,7 @@ struct MenuView: View {
                                                 self.isMatchmakingPresented = true
                                             } label: {
                                                 
-                                                ButtonView(text: onlineBattle, width: buttonWidth, height: 50)
+                                                ButtonView(text: onlineBattle, width: buttonWidth, height: 48)
                                             }
                                             .sheet(isPresented: $isMatchmakingPresented) {
                                                 GameCenterView().environmentObject(gameCenterController)
@@ -319,14 +309,55 @@ struct MenuView: View {
                                             //                                    }
                                             //
                                         }
-                                        .padding(.top, 10)
                                         Spacer()
                                     }
                                     
                                     
+                                    HStack {
+                                        //                                        Spacer()
+                                        JungleButtonView(text: versusAI, width: buttonWidth, height: 48)
+                                            .onTapGesture {
+                                                withAnimation {
+                                                    showLevelMap.toggle()
+                                                }
+                                            }
+                                        
+                                        //                                            NavigationLink(destination:
+                                        ////                                                            LevelMapView()
+                                        //        //                                                    GameView(gameType: .ai, gameSize: (row: GameLevel.level1.boardSize.rows, col: GameLevel.level1.boardSize.cols), obstacles: GameLevel.level1.obstacles)
+                                        //        //                                                   ,
+                                        //        //                                                   isActive: remainingHearts > 0 ? .constant(true) : .constant(false)
+                                        //                                            ) {
+                                        //                                                ButtonView(text: versusAI, width: singleButtonWidth, height: 50)
+                                        //        //                                    }
+                                        //        //                                    .opacity(remainingHearts > 0 ? 1.0 : 0.5) // Optionally make the button appear semi-transparent when disabled
+                                        //        //                                    .disabled(remainingHearts <= 0)
+                                        //
+                                        //                                        }
+                                        //                                            .simultaneousGesture(TapGesture().onEnded({
+                                        //        //                                        if remainingHearts > 0 {
+                                        //                                                    gameCenterController.path.append(2)
+                                        //        //                                        }
+                                        //                                            }))
+                                        
+                                        //MARK: - Local 1 vs 1 is here
+                                        // 1 vs 1
+                                        //                                        NavigationLink {
+                                        //                                            GameView(gameType: .oneVone, gameSize: (4, 4), obstacles: [(2, 2)])
+                                        //                                        } label: {
+                                        //                                            ButtonView(text: localDuel, width: singleButtonWidth, height: 50)
+                                        //                                        }
+                                        //                                        .simultaneousGesture(TapGesture().onEnded({
+                                        //                                            gameCenterController.path.append(3)
+                                        //                                        }))
+                                        //                                        Spacer()
+                                    }
+                                    .padding(.top, 15)
+                                    
+                                    
                                     HStack(spacing: 0) {
                                         Spacer()
-                                        ButtonView(text: nil, width: smallButtonWidth, height: 50)
+                                        ButtonView(text: nil, width: smallButtonWidth, height: 44)
                                             .overlay{
                                                 Image(soundState ? "soundOn" : "soundOff")
                                                     .resizable()
@@ -337,15 +368,15 @@ struct MenuView: View {
                                                 soundState.toggle()
                                                 UserDefaults.standard.set(soundState, forKey: "sound")
                                             }
-                                        ButtonView(text: nil, width: smallButtonWidth, height: 50)
+                                        ButtonView(text: nil, width: smallButtonWidth, height: 44)
                                             .overlay{
                                                 Image(musicState ? "musicOn" : "musicOff" )
                                                     .resizable()
                                                     .scaledToFit()
                                                     .frame(width: 32)
                                             }
-                                            .padding(.trailing, 16)
-                                            .padding(.leading, 16)
+                                            .padding(.trailing, 11)
+                                            .padding(.leading, 11)
                                             .onTapGesture {
                                                 musicState.toggle()
                                                 UserDefaults.standard.set(musicState, forKey: "music")
@@ -356,14 +387,14 @@ struct MenuView: View {
                                                 }
                                             }
                                         
-                                        ButtonView(text: nil, width: smallButtonWidth, height: 50)
+                                        ButtonView(text: nil, width: smallButtonWidth, height: 44)
                                             .overlay {
                                                 Image(hapticState ? "vibrationOn" : "vibrationOff")
                                                     .resizable()
                                                     .scaledToFit()
                                                     .frame(width: 32)
                                             }
-                                            .padding(.trailing, 16)
+                                            .padding(.trailing, 11)
                                             .onTapGesture {
                                                 hapticState.toggle()
                                                 UserDefaults.standard.set(hapticState, forKey: "haptic")
@@ -371,7 +402,7 @@ struct MenuView: View {
                                                     HapticManager.shared.notification(type: .error)
                                                 }
                                             }
-                                        ButtonView(text: nil, width: smallButtonWidth, height: 50)
+                                        ButtonView(text: nil, width: smallButtonWidth, height: 44)
                                             .overlay {
                                                 Image("Language")
                                                     .resizable()
@@ -389,22 +420,14 @@ struct MenuView: View {
                                         Spacer()
                                         
                                     }
-                                    .padding(.top, 16)
+                                    .padding(.top, 5)
                                 }
                                 .id(appLanguageManager.id)
                                 .padding(.bottom, 90)
-
+                                
                             }
-
+                            
                         }
-                        //                        Image("menuLogo")
-                        //                            .resizable()
-                        //                            .scaledToFit()
-                        //                            .frame(width: UIScreen.main.bounds.width * 0.8)
-                        //                            .offset(y: -110)
-                        
-                        
-                        
                     }
                     LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -436,10 +459,37 @@ struct MenuView: View {
                             }
                     }
                     
-                    CreditView(isPresent: $showCreditScreen)
-                        .scaleEffect(showCreditScreen ? 1 : 0)
-                        .allowsHitTesting(showCreditScreen)
-                        .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
+                    VStack {
+                        Spacer()
+                        CreditView(isPresent: $showCreditScreen)
+                        
+                        
+                        
+                        NavigationLink {
+                            HowToPlayView()
+                        } label: {
+                            ButtonView(text: "HOW TO PLAY", width: 200, height: 50)
+                            //                                .offset(y: 40)
+                        }
+                        .simultaneousGesture(
+                            TapGesture()
+                                .onEnded({gameCenterController.path.append(1)})
+                        )
+                        .padding(.top, 30)
+                        
+                        Button {
+                            requestReview()
+                            
+                        } label: {
+                            ButtonView(text: "RATE US", width: 200, height: 50)
+                                .padding(.top, 10)
+                        }
+                        Spacer()
+                    }
+                    .scaleEffect(showCreditScreen ? 1 : 0)
+                    .allowsHitTesting(showCreditScreen)
+                    .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
+                    
                     //                                    .animation(.spring(), value: showCreditScreen)
                     
                     
@@ -535,12 +585,12 @@ struct MenuView: View {
     }
     
     private func loadCurrentLevel() {
-         // Fetch the saved level ID from UserDefaults
-         let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
-         // Set the currentLevel in gameCenterController
-         // If there is no saved level, it will return 0, which should default to level 1
-         gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
-     }
+        // Fetch the saved level ID from UserDefaults
+        let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
+        // Set the currentLevel in gameCenterController
+        // If there is no saved level, it will return 0, which should default to level 1
+        gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
+    }
 }
 
 
@@ -556,10 +606,10 @@ struct ExtractedView: View {
     var body: some View {
         
         Text(id + "\(title)")
-                .font(.custom("TempleGemsRegular", size: 24))
-                .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).tracking(0.84).multilineTextAlignment(.center).shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)                .tracking(0.72)
-                .multilineTextAlignment(.center)
-                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
+            .font(.custom("TempleGemsRegular", size: 24))
+            .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).tracking(0.84).multilineTextAlignment(.center).shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)                .tracking(0.72)
+            .multilineTextAlignment(.center)
+            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
         
         
     }
