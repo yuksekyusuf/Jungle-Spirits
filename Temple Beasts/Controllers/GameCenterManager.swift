@@ -55,8 +55,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
     
-    @Published var currentLevel: GameLevel = GameLevel.level2_1
-    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle2
+    @Published var currentLevel: GameLevel = GameLevel.level3_1
+    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle3
     
 
     var onAuthenticated: (() -> Void)?

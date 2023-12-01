@@ -617,13 +617,13 @@ struct MenuView: View {
         let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
         // Set the currentLevel in gameCenterController
         // If there is no saved level, it will return 0, which should default to level 1
-        gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level2_1
+        gameCenterController.currentLevel = GameLevel(rawValue: savedLevelID) ?? .level3_1
     }
     
     private func loadCurrentBundle(){
         
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle2
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
     }
 }
 

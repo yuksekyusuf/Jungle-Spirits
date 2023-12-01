@@ -12,9 +12,8 @@ struct HeartView: View {
     var body: some View {
         ZStack {
             Image("heartFrame")
-//                .resizable()
-//                .scaledToFill()
-                .frame(width: 70, height: 44)
+                .resizable()
+                .scaledToFill()
                 .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
             HStack {
                 Image("heartPic")
@@ -29,7 +28,8 @@ struct HeartView: View {
                     .shadow(color: .black, radius: 0, x: 0, y: 3)
 
             }
-        }
+        }                .frame(width: 72, height: 46)
+
 
         
     }
