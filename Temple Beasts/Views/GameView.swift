@@ -336,7 +336,7 @@ struct GameView: View {
 
                     
                     if gameCenterController.isGameOver {
-                        WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer)
+                        WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts)
                     }
                     if isCountDownVisible {
                         CountDownView(isVisible: $isCountDownVisible)

@@ -159,7 +159,7 @@ enum GameLevel: Int, CaseIterable {
 
         }
     }
-    
+
     var next: GameLevel? {
         let allLevels = GameLevel.allCases
         guard let currentIndex = allLevels.firstIndex(of: self) else { return nil }

@@ -39,6 +39,8 @@ struct MenuView: View {
     @State private var showCreditScreen: Bool = false
     @State private var showLevelMap: Bool = false
     @State private var showHeartAlert: Bool = false
+    @State private var remainingTime: String = ""
+
     
     //Timer functionality
     
@@ -88,7 +90,11 @@ struct MenuView: View {
                                         Image("Left Arrow")
                                             .resizable()
                                             .scaledToFit()
-                                            .frame(width: 55)
+                                            .frame(height: 50)
+                                            .padding(.trailing, 20)
+                                            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+                                            .padding(.leading, 10)
+
                                     }
                                 } else {
                                     Button {
@@ -99,12 +105,9 @@ struct MenuView: View {
                                             .scaledToFit()
                                             .frame(height: 50)
                                             .padding(.trailing, 20)
+                                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                     }
                                     .padding(.leading, 10)
-                                    
-                                    
-                                    
-                                    //
                                 }
                                 
                                 
@@ -130,17 +133,12 @@ struct MenuView: View {
                                 //                                }
                                 
                                 if let remainingHearts = remainingHearts {
-                                    if remainingHearts > 0 {
-                                        
-                                    }
                                     Button {
                                         showHeartAlert.toggle()
                                     } label: {
                                         HeartView(hearts: remainingHearts)
                                             .padding(.trailing, 20)
                                     }
-                                    
-                                    
                                 }
                                 //                                Button {
                                 ////                                    if hasUserBeenPromptedForReview {
@@ -174,13 +172,7 @@ struct MenuView: View {
                         if showLevelMap {
                             Spacer()
                             VStack {
-//                                Text("RETURN")
-//                                    .foregroundColor(.white)
-//                                    .onTapGesture {
-//
-//                                    }
                                 VStack{
-                                    
                                     ZStack {
                                         Image("ContinueImage")
                                             .resizable()
@@ -261,19 +253,19 @@ struct MenuView: View {
                         } else {
                             VStack {
                                 Spacer()
-                                //                                LottieView(animationName: "logo", ifActive: false, contentMode: true, isLoop: true)
-                                //                                    .frame(width: UIScreen.main.bounds.width * 0.8)
-                                //                                    .offset(y: -90)
-                                //                                    .allowsHitTesting(false)
+                                                                LottieView(animationName: "logo2", ifActive: false, contentMode: true, isLoop: true)
+                                                                    .frame(width: UIScreen.main.bounds.width * 0.8)
+                                                                    .offset(y: -90)
+                                                                    .allowsHitTesting(false)
                                 
                                 
                                 //
-                                Image("menuLogo")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: UIScreen.main.bounds.width * 0.8)
-                                    .offset(y: -110)
-                                
+//                                Image("menuLogo")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: UIScreen.main.bounds.width * 0.8)
+//                                    .offset(y: -110)
+//
                                 Spacer()
                                 VStack(alignment: .center) {
                                     
@@ -289,6 +281,7 @@ struct MenuView: View {
                                             } label: {
                                                 
                                                 ButtonView(text: onlineBattle, width: buttonWidth, height: 48)
+                                                
                                             }
                                             .sheet(isPresented: $isMatchmakingPresented) {
                                                 GameCenterView().environmentObject(gameCenterController)
@@ -313,6 +306,7 @@ struct MenuView: View {
                                         }
                                         Spacer()
                                     }
+                                    
                                     
                                     
                                     HStack {
@@ -354,12 +348,12 @@ struct MenuView: View {
                                         //                                        }))
                                         //                                        Spacer()
                                     }
-                                    .padding(.top, 15)
-                                    
+                                    .padding(.top, 20)
                                     
                                     HStack(spacing: 0) {
                                         Spacer()
                                         ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                             .overlay{
                                                 Image(soundState ? "soundOn" : "soundOff")
                                                     .resizable()
@@ -371,6 +365,7 @@ struct MenuView: View {
                                                 UserDefaults.standard.set(soundState, forKey: "sound")
                                             }
                                         ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                             .overlay{
                                                 Image(musicState ? "musicOn" : "musicOff" )
                                                     .resizable()
@@ -390,6 +385,7 @@ struct MenuView: View {
                                             }
                                         
                                         ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                             .overlay {
                                                 Image(hapticState ? "vibrationOn" : "vibrationOff")
                                                     .resizable()
@@ -405,6 +401,7 @@ struct MenuView: View {
                                                 }
                                             }
                                         ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                             .overlay {
                                                 Image("Language")
                                                     .resizable()
@@ -422,8 +419,10 @@ struct MenuView: View {
                                         Spacer()
                                         
                                     }
-                                    .padding(.top, 5)
+                                    .padding(.top, 12)
+                                    
                                 }
+                              
                                 .id(appLanguageManager.id)
                                 .padding(.bottom, 90)
                                 
@@ -461,10 +460,24 @@ struct MenuView: View {
                             }
                     }
                     
+                    if showHeartAlert {
+                        Color.black.opacity(0.8)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.1)) {
+                                    showHeartAlert = false
+                                }
+                            }
+                    }
+                    HeartStatusView(heartCount: remainingHearts ?? 0, remainingTime: $remainingTime, isPresent: $showHeartAlert)
+                        .scaleEffect(showHeartAlert ? 1 : 0)
+                        .allowsHitTesting(showHeartAlert)
+                        .animation(showHeartAlert ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showHeartAlert)
+
+                    
                     VStack {
                         Spacer()
                         CreditView(isPresent: $showCreditScreen)
-                        
                         
                         
                         NavigationLink {
@@ -531,6 +544,10 @@ struct MenuView: View {
                 print("Hearts when menu appears: ", remainingHearts)
                 
             }
+            
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                           self.updateRemainingTime()
+                       }
         }
         .onChange(of: gameCenterController.isMatchFound) { matchFound in
             if matchFound {
@@ -543,15 +560,15 @@ struct MenuView: View {
                 }
             }
         }
-        .alert(isPresented: $showHeartAlert) {
-            Alert(
-                    title: Text("\(remainingHearts ?? 0) hearts"),
-                    message: Text("Next life in \(formatTimeForDisplay(seconds: timeUntilNextHeart()))."),
-                    dismissButton: .default(Text("OK"), action: {
-                        showHeartAlert.toggle()
-                    })
-                )
-        }
+//        .alert(isPresented: $showHeartAlert) {
+//            Alert(
+//                    title: Text("\(remainingHearts ?? 0) hearts"),
+//                    message: Text("Next life in \(formatTimeForDisplay(seconds: timeUntilNextHeart()))."),
+//                    dismissButton: .default(Text("OK"), action: {
+//                        showHeartAlert.toggle()
+//                    })
+//                )
+//        }
         //        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
         //            // App going to background
         //            self.lastBackgroundTime = Date().timeIntervalSinceReferenceDate
@@ -603,8 +620,13 @@ struct MenuView: View {
     func formatTimeForDisplay(seconds: TimeInterval) -> String {
         let minutes = Int(seconds) / 60
         let remainingSeconds = Int(seconds) % 60
-        return "\(minutes):\(String(format: "%02d", remainingSeconds)) sec"
+        return "\(minutes):\(String(format: "%02d", remainingSeconds))"
     }
+    
+    func updateRemainingTime() {
+            let time = timeUntilNextHeart()
+            remainingTime = formatTimeForDisplay(seconds: time)
+        }
     
     func localizedStringForKey(_ key: String, language: String) -> String {
         let path = Bundle.main.path(forResource: language, ofType: "lproj")

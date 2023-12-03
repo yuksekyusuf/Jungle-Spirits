@@ -6,70 +6,62 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct CustomTestTabView: View {
-    @State private var selectedTab = 1
-    let numberOfTabs = 4
+
 
     var body: some View {
-        ZStack{
-            Color.black
-            VStack {
-                ZStack {
-                    
-                    TabView(selection: $selectedTab) {
-                        ForEach(1...numberOfTabs, id: \.self) { index in
-                            MapsTabView(mapNumber: index, mapName: "Map \(index)", levelBundle: GameLevelBundle(rawValue: index) ?? .bundle1)
-                                .tag(index)
-                                .padding(.bottom, 30)
-                        }
-                    }
-                    .tabViewStyle(PageTabViewStyle())
-//                    .offset(y: 50) // Adjust this value to move the indicators off-screen
-
-                    .overlay{
-                        GeometryReader { geo in
-                            Color("coverColor")
-                                .frame(width: 80, height: 18)
-                                .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.95)
-                        }
-                    }
-                    
-                    
-                }
-                
-                
-               
-
-                HStack {
-                    ForEach(1...numberOfTabs, id: \.self) { index in
-                        if selectedTab == index {
-                            Image("SelectedTabAsset")
-                                .resizable()
-                                .frame(width: 32, height: 32)
-                                .onTapGesture {
-                                    selectedTab = index
-                                }
-                        } else {
-                            Image("UnselectedTabAsset")
-                                .resizable()
-                                .frame(width: 8, height: 8)
-                                .onTapGesture {
-                                    selectedTab = index
-                                }
-                        }
-                        
-                    }
-                }
-            }
-            .padding(.bottom, UIScreen.main.bounds.height * 0.1)
-
+        HStack(alignment: .center, spacing: 8) {
+            Text("Continue")
+              .font(Font.custom("TempleGemsRegular", size: 24))
+              .multilineTextAlignment(.center)
+              .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+              .frame(width: 122, height: 22, alignment: .center)
         }
-            }
+        .padding(10)
+        .frame(width: 100)
+//        .frame(maxWidth: .infinity, minHeight: 42, maxHeight: 42, alignment: .center)
+        .background(Color(red: 0.48, green: 0.4, blue: 0.98))
+        .cornerRadius(14)
+    }
+    
 }
 
 struct CustomTestTabView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTestTabView().environmentObject(GameCenterManager(currentPlayer: .player1))
+        CustomTestTabView()
+    }
+}
+
+
+struct LottieView2: UIViewRepresentable {
+    var lottieFile = "Red Guy Win" // lottiefile
+    var loopMode: LottieLoopMode = .loop
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        
+        let animationView = LottieAnimationView(name: lottieFile)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = loopMode
+        animationView.play{ (finished) in
+        }
+        
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        
+        return view
+    }
+    
+    
+    
+  
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
     }
 }

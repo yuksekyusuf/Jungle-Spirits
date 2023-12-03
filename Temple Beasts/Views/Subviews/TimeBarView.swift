@@ -36,7 +36,7 @@ struct TimeBarView: View {
                                 endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                         
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     } else if currentPlayer == .player2 {
                         Capsule()
                             .fill(LinearGradient(
@@ -49,7 +49,7 @@ struct TimeBarView: View {
                             )
                                 .shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     }
                 } else if gameType == .multiplayer && !curretlyPlaying {
                     if currentPlayer == .player2 {
@@ -63,7 +63,7 @@ struct TimeBarView: View {
                                 endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                         
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     } else if currentPlayer == .player1 {
                         Capsule()
                             .fill(LinearGradient(
@@ -76,7 +76,7 @@ struct TimeBarView: View {
                             )
                                 .shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     }
                 } else {
                     if currentPlayer == .player1 {
@@ -89,7 +89,7 @@ struct TimeBarView: View {
                                 startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
                                 endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     } else if currentPlayer == .player2 {
                         Capsule()
                             .fill(LinearGradient(
@@ -102,19 +102,19 @@ struct TimeBarView: View {
                             )
                                 .shadow(.inner(color: .white.opacity(0.3), radius: 0, x: 1, y: 3)))
                             .padding(.leading, 4)
-                            .frame(width: width, height: 20)
+                            .frame(width: width, height: 16)
                     }
                 }
                 
             }
         }
         .frame(height: 25)
-        .padding([.leading, .trailing], 20)
+        .padding([.leading, .trailing], 18)
     }
 }
 
 struct TimeBarView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeBarView(remainingTime: 100, totalTime: 150, currentPlayer: .player1, curretlyPlaying: true, gameType: .oneVone)
+        TimeBarView(remainingTime: 100, totalTime: 150, currentPlayer: .player1, curretlyPlaying: true, gameType: .multiplayer)
     }
 }

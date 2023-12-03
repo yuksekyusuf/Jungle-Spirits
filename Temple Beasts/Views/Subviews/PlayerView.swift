@@ -46,9 +46,12 @@ struct PlayerView: View {
                 // 3. Check for previously converted but not selected
                 else if previouslyConvertedCells.contains(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
                     if player == .player1 {
-                        LottieView(animationName: "redDefault", ifActive: false, contentMode: false, isLoop: false)
+//                        LottieView(animationName: "redDefault", ifActive: false, contentMode: false, isLoop: false)
+                        LottieView2(lottieFile: "redDefault")
                     } else if player == .player2 {
-                        LottieView(animationName: "blueDefault", ifActive: false, contentMode: false, isLoop: false)
+//                        LottieView(animationName: "blueDefault", ifActive: false, contentMode: false, isLoop: false)
+                        LottieView2(lottieFile: "blueDefault")
+
                     }
                 }
                 // 4. Display regular or selected animation

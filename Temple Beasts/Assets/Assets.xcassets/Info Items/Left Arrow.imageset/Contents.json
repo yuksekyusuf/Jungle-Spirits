@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Left Arrow.png",
+      "filename" : "Frame 10123019.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Left Arrow@2x.png",
+      "filename" : "Frame 10123019@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Left Arrow@3x.png",
+      "filename" : "Frame 10123019@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

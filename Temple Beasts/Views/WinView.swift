@@ -17,109 +17,230 @@ struct WinView: View {
     let winner: CellState
     @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
-
+    @Binding var remainingHearts: Int
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
                 .opacity(0.65)
             VStack {
-                Image("pauseMenuBackground")
-                    .padding(.top, -200)
-                    .overlay {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 46)
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(stops: [
-                                            .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
-                                            .init(color: Color(#colorLiteral(red: 0.5364739298820496, green: 0.4752604365348816, blue: 0.9125000238418579, alpha: 1)), location: 1)]),
-                                        startPoint: UnitPoint(x: 0.9999999999999999, y: 0),
-                                        endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
-                                )
-                                .frame(width: 271, height: 258)
-                                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
-
-                            Image("pausemenubackground1")
-                                .frame(width: 240, height: 240)
-                            Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
-                                .resizable()
-                                .frame(width: 240, height: 240)
-                                .clipped()
-                                .blendMode(.overlay)
-                                .frame(width: 240, height: 240)
-                                .cornerRadius(44)
-
-                            if winner == .player1 {
-                                Image("redWinner")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 138, height: 138)
-                                    .padding(.bottom, 20)
-                                    .background {
-                                        Image("winStar")
-                                            .offset(y: -20)
+                if UIScreen.main.bounds.height <= 667 {
+                    HeartView(hearts: remainingHearts)
+                        .padding(.top, 20)
+                } else {
+                    HeartView(hearts: remainingHearts)
+                        .padding(.top, 70)
+                }
+                
+                Spacer()
+                if gameType == .ai {
+                    VStack {
+                        Image("pauseMenuBackground")
+                            .padding(.top, -200)
+                            .overlay {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 46)
+                                        .fill(
+                                            LinearGradient(
+                                                gradient: Gradient(stops: [
+                                                    .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
+                                                    .init(color: Color(#colorLiteral(red: 0.5364739298820496, green: 0.4752604365348816, blue: 0.9125000238418579, alpha: 1)), location: 1)]),
+                                                startPoint: UnitPoint(x: 0.9999999999999999, y: 0),
+                                                endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
+                                        )
+                                        .frame(width: 271, height: 258)
+                                        .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
+                                    
+                                    Image("pausemenubackground1")
+                                        .frame(width: 240, height: 240)
+                                    Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
+                                        .resizable()
+                                        .frame(width: 240, height: 240)
+                                        .clipped()
+                                        .blendMode(.overlay)
+                                        .frame(width: 240, height: 240)
+                                        .cornerRadius(44)
+                                    
+                                    if winner == .player1 {
+                                        LottieView2()
+                                            .frame(width: 200, height: 200)
+                                            .padding(.bottom, 30)
+                                            .background {
+                                                Image("winStar")
+                                                    .offset(y: -20)
+                                                    .allowsHitTesting(false)
+                                            }
+                                    } else if winner == .player2 {
+                                        LottieView2(lottieFile: "Red guy fail")
+                                            .frame(width: 200, height: 200)
+                                            .padding(.bottom, 30)
+                                            .background {
+                                                Image("winStar")
+                                                    .offset(y: -20)
+                                                    .allowsHitTesting(false)
+                                            }
+                                    } else if winner == .draw {
+                                        Image("drawFaces")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 266.01456, height: 169.01501)
+                                            .padding(.bottom, 20)
+                                            .background {
+                                                Image("winStar")
+                                                    .offset(y: -20)
+                                                    .allowsHitTesting(false)
+                                            }
+                                    }
+                                    if winner == .player1 {
+                                        Image( "Winner")
+                                            .offset(y: -135)
+                                            .allowsHitTesting(false)
+                                    } else if winner == .player2 {
+                                        Image( "ohLost")
+                                            .offset(y: -135)
+                                            .allowsHitTesting(false)
+                                    } else {
+                                        Image("draw")
+                                            .offset(y: -135)
                                             .allowsHitTesting(false)
                                     }
-                            } else if winner == .player2 {
-                                Image("blueWinner")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 138, height: 138)
-                                    .padding(.bottom, 20)
-                                    .background {
-                                        Image("winStar")
-                                            .offset(y: -20)
-                                            .allowsHitTesting(false)
-                                    }
-                            } else if winner == .draw {
-                                Image("drawFaces")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 266.01456, height: 169.01501)
-                                    .padding(.bottom, 20)
-                                    .background {
-                                        Image("winStar")
-                                            .offset(y: -20)
-                                            .allowsHitTesting(false)
-                                    }
-                            }
-
-                            Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
-                                .offset(y: -135)
-                                .allowsHitTesting(false)
-                            
-                            if gameType == .multiplayer {
-                                Button {
-                                    gameCenterManager.path.removeAll()
-                                } label: {
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .foregroundColor(Color("AnotherPause"))
-                                        .overlay {
-                                            Image("iconHome")
+                                    
+                                    
+                                    VStack {
+                                        //                                            Spacer()
+                                        //                                            Spacer()
+                                        HStack {
+                                            Button {
+                                                gameCenterManager.path.removeAll()
+                                            } label: {
+                                                RoundedRectangle(cornerRadius: 14)
+                                                    .foregroundColor(Color("AnotherPause"))
+                                                    .overlay {
+                                                        Image("iconMap")
+                                                    }
+                                                    .frame(width: 94.5, height: 42)
+                                            }
+                                            Button {
+                                                board.reset()
+                                                showWinMenu.toggle()
+                                                isPaused.toggle()
+                                                currentPlayer = .player1
+                                                remainingTime = 15
+                                            } label: {
+                                                RoundedRectangle(cornerRadius: 14)
+                                                    .foregroundColor(Color("AnotherPause"))
+                                                    .overlay {
+                                                        Image("iconReplay")
+                                                    }
+                                                    .frame(width: 94.5, height: 42)
+                                            }
                                         }
-                                        .frame(width: 94.5, height: 42)
+                                        .offset(y: 80)
+                                        //                                            .offset(y: 20)
+//
+                                    }
+                                    
+                                    if winner == .player1 {
+                                        NextLevelNavigation(boardSize: gameCenterManager.currentLevel.boardSize, obstacles: gameCenterManager.currentLevel.obstacles)
+                                        .offset(y: 130)
+                                        
+                                    }        
+                                    Image("winLights")
+                                        .resizable()
+                                        .frame(width: 400, height: 400)
+                                        .blendMode(.overlay)
+                                        .allowsHitTesting(false)
+                                        .rotationEffect(.degrees(degrees))
                                 }
-                                .offset(y: 80)
-
-                            } else {
-                                VStack {
-                                    Spacer()
-                                    Spacer()
-                                    HStack {
-                                        Button {
-                                            board.reset()
-                                            showWinMenu.toggle()
-                                            isPaused.toggle()
-                                            currentPlayer = .player1
-                                            remainingTime = 15
-                                        } label: {
-                                            RoundedRectangle(cornerRadius: 14)
-                                                .foregroundColor(Color("AnotherPause"))
-                                                .overlay {
-                                                    Image("iconReplay")
-                                                }
-                                                .frame(width: 94.5, height: 42)
-                                        }
+                                .onAppear {
+                                    let baseAnimation = Animation.linear(duration: 15).repeatForever()
+                                    withAnimation(baseAnimation) {
+                                        self.degrees += 360
+                                    }
+                                }
+                            }
+                    }
+                    Spacer()
+                } else {
+                    VStack {
+                        Image("pauseMenuBackground")
+                            .padding(.top, -200)
+                            .overlay {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 46)
+                                        .fill(
+                                            LinearGradient(
+                                                gradient: Gradient(stops: [
+                                                    .init(color: Color(#colorLiteral(red: 0.7333333492279053, green: 0.7614035606384277, blue: 1, alpha: 1)), location: 0),
+                                                    .init(color: Color(#colorLiteral(red: 0.5364739298820496, green: 0.4752604365348816, blue: 0.9125000238418579, alpha: 1)), location: 1)]),
+                                                startPoint: UnitPoint(x: 0.9999999999999999, y: 0),
+                                                endPoint: UnitPoint(x: 2.980232305382913e-8, y: 1.0000000310465447))
+                                        )
+                                        .frame(width: 271, height: 258)
+                                        .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.44999998807907104)), radius: 16, x: 0, y: 10)
+                                    
+                                    Image("pausemenubackground1")
+                                        .frame(width: 240, height: 240)
+                                    Image(uiImage: #imageLiteral(resourceName: "pauseMenuPattern"))
+                                        .resizable()
+                                        .frame(width: 240, height: 240)
+                                        .clipped()
+                                        .blendMode(.overlay)
+                                        .frame(width: 240, height: 240)
+                                        .cornerRadius(44)
+                                    
+                                    if winner == .player1 {
+                                        LottieView2()
+                                        //                                    LottieView(animationName: "Red Guy Win", ifActive: false, contentMode: true, isLoop: true)
+                                            .frame(width: 250, height: 250)
+                                            .padding(.bottom, 30)
+                                        
+                                        
+                                        //                                        .background {
+                                        //                                            Image("winStar")
+                                        //                                                .offset(y: -20)
+                                        //                                                .allowsHitTesting(false)
+                                        //                                        }
+                                        //
+                                        //                                    Image("redWinner")
+                                        //                                        .resizable()
+                                        //                                        .scaledToFit()
+                                        //                                        .frame(width: 138, height: 138)
+                                        //                                        .padding(.bottom, 20)
+                                        //                                        .background {
+                                        //                                            Image("winStar")
+                                        //                                                .offset(y: -20)
+                                        //                                                .allowsHitTesting(false)
+                                        //                                        }
+                                    } else if winner == .player2 {
+                                        Image("blueWinner")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 138, height: 138)
+                                            .padding(.bottom, 20)
+                                            .background {
+                                                Image("winStar")
+                                                    .offset(y: -20)
+                                                    .allowsHitTesting(false)
+                                            }
+                                    } else if winner == .draw {
+                                        Image("drawFaces")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 266.01456, height: 169.01501)
+                                            .padding(.bottom, 20)
+                                            .background {
+                                                Image("winStar")
+                                                    .offset(y: -20)
+                                                    .allowsHitTesting(false)
+                                            }
+                                    }
+                                    
+                                    Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
+                                        .offset(y: -135)
+                                        .allowsHitTesting(false)
+                                    
+                                    if gameType == .multiplayer {
                                         Button {
                                             gameCenterManager.path.removeAll()
                                         } label: {
@@ -130,28 +251,64 @@ struct WinView: View {
                                                 }
                                                 .frame(width: 94.5, height: 42)
                                         }
+                                        .offset(y: 80)
+                                        
+                                    } else {
+                                        VStack {
+                                            Spacer()
+                                            Spacer()
+                                            HStack {
+                                                Button {
+                                                    board.reset()
+                                                    showWinMenu.toggle()
+                                                    isPaused.toggle()
+                                                    currentPlayer = .player1
+                                                    remainingTime = 15
+                                                } label: {
+                                                    RoundedRectangle(cornerRadius: 14)
+                                                        .foregroundColor(Color("AnotherPause"))
+                                                        .overlay {
+                                                            Image("iconReplay")
+                                                        }
+                                                        .frame(width: 94.5, height: 42)
+                                                }
+                                                Button {
+                                                    gameCenterManager.path.removeAll()
+                                                } label: {
+                                                    RoundedRectangle(cornerRadius: 14)
+                                                        .foregroundColor(Color("AnotherPause"))
+                                                        .overlay {
+                                                            Image("iconHome")
+                                                        }
+                                                        .frame(width: 94.5, height: 42)
+                                                }
+                                            }
+                                            .offset(y: 20)
+                                            Spacer()
+                                        }
                                     }
-                                    .offset(y: 20)
-                                    Spacer()
+                                    
+                                    
+                                    Image("winLights")
+                                        .resizable()
+                                        .frame(width: 400, height: 400)
+                                        .blendMode(.overlay)
+                                        .allowsHitTesting(false)
+                                        .rotationEffect(.degrees(degrees))
+                                }
+                                .onAppear {
+                                    let baseAnimation = Animation.linear(duration: 15).repeatForever()
+                                    withAnimation(baseAnimation) {
+                                        self.degrees += 360
+                                    }
                                 }
                             }
-                            
-
-                            Image("winLights")
-                                .resizable()
-                                .frame(width: 400, height: 400)
-                                .blendMode(.overlay)
-                                .allowsHitTesting(false)
-                                .rotationEffect(.degrees(degrees))
-                        }
-                        .onAppear {
-                            let baseAnimation = Animation.linear(duration: 15).repeatForever()
-                            withAnimation(baseAnimation) {
-                                self.degrees += 360
-                            }
-                        }
                     }
+                    Spacer()
+                }
+                
             }
+            
         }
     }
 }
@@ -162,6 +319,36 @@ struct WinView_Previews: PreviewProvider {
         @State var player: CellState = .player1
         @State var paused: Bool = true
         @State var remainingTime = 15
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .multiplayer, winner: .draw, currentPlayer: $player)
+        @State var remainingHearts = 5
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts)
+    }
+}
+
+
+
+struct NextLevelNavigation: View {
+    @EnvironmentObject var gameCenterController: GameCenterManager
+    let boardSize: (rows: Int, cols: Int)
+    let obstacles: [(Int, Int)]
+    var body: some View {
+        NavigationLink {
+            GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
+        } label: {
+            HStack{
+                Text("Continue")
+                    .font(Font.custom("TempleGemsRegular", size: 24))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+                    .frame(width: 122, height: 22, alignment: .center)
+            }
+            .frame(width: 199, height: 42)
+            .background(Color(red: 0.48, green: 0.4, blue: 0.98))
+            .cornerRadius(14)
+            
+        }
+        .simultaneousGesture(TapGesture().onEnded({
+            gameCenterController.path.append(10)
+        }))
+//        .disabled(!(gameLevel.id <= gameCenterController.currentLevel.id))
     }
 }
