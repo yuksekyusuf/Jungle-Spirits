@@ -109,25 +109,29 @@ struct CreditView: View {
         
     }
     var body: some View {
-
-        ZStack {
-            overlayView
-            .frame(width: 284, height: 302)
-            .shadow(color: .black.opacity(0.45), radius: 8, x: 0, y: 10)
-            Button {
-                withAnimation(.easeOut(duration: 0.5)) {
-                    self.isPresent.toggle()
+        VStack {
+            ZStack {
+                overlayView
+                .frame(width: 284, height: 302)
+                .shadow(color: .black.opacity(0.45), radius: 8, x: 0, y: 10)
+                Button {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        self.isPresent.toggle()
+                    }
+                } label: {
+                    Image("CreditButton")
+                        .resizable()
+                        .scaledToFill()
+                    
                 }
-            } label: {
-                Image("CreditButton")
-                    .resizable()
-                    .scaledToFill()
+                .frame(width: 44, height: 44)
+                .offset(x: 138, y: -138)
                 
             }
-            .frame(width: 44, height: 44)
-            .offset(x: 138, y: -138)
+//            .offset(y: 27)
             
         }
+        
         .transition(.scale)
         .background(
             ZStack {

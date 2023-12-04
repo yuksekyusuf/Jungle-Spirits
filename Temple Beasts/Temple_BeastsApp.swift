@@ -28,7 +28,6 @@ struct Temple_BeastsApp: App {
                         heartTimer?.invalidate()
                     })
                     .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                        
                         updateHeartsBasedOnTimeElapsed()
                     }
             }

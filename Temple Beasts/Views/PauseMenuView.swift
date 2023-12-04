@@ -163,7 +163,9 @@ struct PauseMenuView: View {
                                             PauseMenuIconView(imageName: "iconResume")
                                         }
                                         Button {
-                                            gameCenterController.path.removeAll()
+//                                            gameCenterController.path.removeAll()
+                                            gameCenterController.path = NavigationPath()
+
                                         } label: {
                                             PauseMenuIconView(imageName: "iconHome")
                                         }

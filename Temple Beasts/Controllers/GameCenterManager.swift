@@ -39,7 +39,9 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var otherPlayerPlaying: Bool = false
     @Published var remainingTime = 15
     @Published var isQuitGame = false
-    @Published var path: [Int] = []
+//    @Published var path: [Int] = []
+    @Published var path = NavigationPath()
+
     @Published var connectionLost: Bool = false
     @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @Published  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
@@ -54,7 +56,10 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isSearchingForMatch = false
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
-
+    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
+    @Published var achievedLevel: GameLevel = GameLevel.level3_1
+    @Published var currentLevel: GameLevel = GameLevel.level1_1
+    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle3
     
 
     var onAuthenticated: (() -> Void)?
@@ -271,7 +276,8 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         match = nil
         otherPlayer = nil
         DispatchQueue.main.async {
-            self.path.removeAll()
+//            self.path.removeAll()
+            self.path = NavigationPath()
         }
     }
     
@@ -463,7 +469,7 @@ extension GameCenterManager {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                     print("Remote player, ", match.players.first)
                                     self.isMatchFound = true
-                                    self.path.append(3)
+                                    self.path.append(Int.random(in: 100...10000))
                                     print("is match delegate", match.delegate)
 
                                 }

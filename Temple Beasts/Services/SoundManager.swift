@@ -105,6 +105,19 @@ class SoundManager {
         }
     }
     
+    func playLoseSound() {
+        guard UserDefaults.standard.bool(forKey: "sound") else { return }
+
+        guard let url = Bundle.main.url(forResource: "lose", withExtension: ".mp3") else { return }
+
+        do {
+            player1 = try AVAudioPlayer(contentsOf: url)
+            player1?.play()
+        } catch let error {
+            print("Audio player error: \(error.localizedDescription)")
+        }
+    }
+    
     func turnDownMusic() {
         musicPlayer?.volume = 0.25
     }

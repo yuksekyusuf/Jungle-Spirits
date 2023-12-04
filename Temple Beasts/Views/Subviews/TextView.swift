@@ -97,3 +97,23 @@ struct StrokeModifer: ViewModifier {
         }
     }
 }
+
+struct JungleTextView: View {
+    let text: String
+    var body: some View {
+        ZStack {
+            Text(text)
+                .font(.custom("TempleGemsRegular", size: 24))
+                .foregroundColor(.white)
+                .stroke(color: .black, width: 1.0)
+                .shadow(color: .black, radius: 0, x: 0, y: 3)
+                .shadow(color: Color("ShadowColor4"), radius: 0, x: 0, y: 4)
+            
+//            StrokeText(text: text, width: 1.75, color: .black)
+//                .font(.custom("TempleGemsRegular", size: 24))
+//                .foregroundColor(.white)
+//                .shadow(color: .black, radius: 0, x: 0, y: 3)
+//                .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
+        }
+    }
+}

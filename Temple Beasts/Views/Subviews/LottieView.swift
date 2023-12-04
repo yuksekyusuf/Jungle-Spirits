@@ -51,3 +51,34 @@ struct LottieView: UIViewRepresentable {
     
 }
 
+
+struct LottieView2: UIViewRepresentable {
+    var lottieFile = "Red Guy Win" // lottiefile
+    var loopMode: LottieLoopMode = .loop
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        
+        let animationView = LottieAnimationView(name: lottieFile)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = loopMode
+        animationView.play{ (finished) in
+        }
+        
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
+        
+        return view
+    }
+    
+    
+    
+  
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+    }
+}
