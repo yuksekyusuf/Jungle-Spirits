@@ -185,16 +185,29 @@ class Board: ObservableObject {
         // Get the number of pieces for each player
         let (player1Count, player2Count, _) = countPieces()
         
+        print("Current Player: ", currentPlayerForAi)
         // The game is over if a player has no more pieces
         if player1Count == 0 || player2Count == 0 {
-            SoundManager.shared.playOverSound()
+            if gameType == .ai && currentPlayerForAi == .player2 {
+                SoundManager.shared.playOverSound()
+            } else if gameType == .ai && currentPlayerForAi == .player1 {
+                SoundManager.shared.playLoseSound()
+            } else {
+                SoundManager.shared.playOverSound()
+            }
             HapticManager.shared.impact(style: .heavy)
             return true
         }
         
         // The game is over if there are no more legal moves for either player
         if !hasLegalMoves(player: .player1) || !hasLegalMoves(player: .player2) {
-            SoundManager.shared.playOverSound()
+            if gameType == .ai && currentPlayerForAi == .player2 {
+                SoundManager.shared.playOverSound()
+            } else if gameType == .ai && currentPlayerForAi == .player1 {
+                SoundManager.shared.playLoseSound()
+            } else {
+                SoundManager.shared.playOverSound()
+            }
             HapticManager.shared.impact(style: .heavy)
             return true
         }

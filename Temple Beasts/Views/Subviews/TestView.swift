@@ -6,25 +6,56 @@
 //
 
 import SwiftUI
-import Lottie
+import AVFoundation
+
+class VideoPlayerViewController: UIViewController {
+    var player: AVPlayer?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+
+        // Assuming the video is in the app bundle
+        if let filePath = Bundle.main.path(forResource: "story", ofType: ".mp4") {
+            let videoURL = URL(fileURLWithPath: filePath)
+            player = AVPlayer(url: videoURL)
+            
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.view.bounds
+            playerLayer.videoGravity = .resizeAspectFill
+            view.layer.addSublayer(playerLayer)
+            
+            // Add observer to know when the video ends
+            NotificationCenter.default.addObserver(self, selector: #selector(videoDidEnd), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+            
+            player?.play()
+        }
+    }
+
+    @objc func videoDidEnd(notification: NSNotification) {
+        // Dismiss the view when the video ends
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+struct VideoPlayerView: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> VideoPlayerViewController {
+        return VideoPlayerViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: VideoPlayerViewController, context: Context) {
+        // Update the view controller if needed
+    }
+}
 
 struct CustomTestTabView: View {
-
-
     var body: some View {
-        HStack(alignment: .center, spacing: 8) {
-            Text("Continue")
-              .font(Font.custom("TempleGemsRegular", size: 24))
-              .multilineTextAlignment(.center)
-              .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-              .frame(width: 122, height: 22, alignment: .center)
-        }
-        .padding(10)
-        .frame(width: 100)
-//        .frame(maxWidth: .infinity, minHeight: 42, maxHeight: 42, alignment: .center)
-        .background(Color(red: 0.48, green: 0.4, blue: 0.98))
-        .cornerRadius(14)
+        VideoPlayerView()
+            .ignoresSafeArea()
+            
+
     }
+        
     
 }
 
@@ -34,34 +65,3 @@ struct CustomTestTabView_Previews: PreviewProvider {
     }
 }
 
-
-struct LottieView2: UIViewRepresentable {
-    var lottieFile = "Red Guy Win" // lottiefile
-    var loopMode: LottieLoopMode = .loop
-    
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: .zero)
-        
-        let animationView = LottieAnimationView(name: lottieFile)
-        animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = loopMode
-        animationView.play{ (finished) in
-        }
-        
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ])
-        
-        return view
-    }
-    
-    
-    
-  
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-    }
-}

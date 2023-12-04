@@ -18,6 +18,7 @@ struct WinView: View {
     @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
     @Binding var remainingHearts: Int
+    @State private var nextLevel: Int = 0
     
     var body: some View {
         ZStack {
@@ -31,7 +32,6 @@ struct WinView: View {
                     HeartView(hearts: remainingHearts)
                         .padding(.top, 70)
                 }
-                
                 Spacer()
                 if gameType == .ai {
                     VStack {
@@ -111,7 +111,9 @@ struct WinView: View {
                                         //                                            Spacer()
                                         HStack {
                                             Button {
-                                                gameCenterManager.path.removeAll()
+//                                                gameCenterManager.path.removeAll()
+                                                gameCenterManager.path = NavigationPath()
+
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
                                                     .foregroundColor(Color("AnotherPause"))
@@ -141,9 +143,13 @@ struct WinView: View {
                                     }
                                     
                                     if winner == .player1 {
-                                        NextLevelNavigation(boardSize: gameCenterManager.currentLevel.boardSize, obstacles: gameCenterManager.currentLevel.obstacles)
-                                        .offset(y: 130)
-                                        
+                                        if let size = gameCenterManager.currentLevel.next?.boardSize {
+                                            if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
+                                                NextLevelNavigation(boardSize: size, obstacles: obstacles)
+                                                .offset(y: 130)
+                                            }
+                                        }
+
                                     }        
                                     Image("winLights")
                                         .resizable()
@@ -160,6 +166,7 @@ struct WinView: View {
                                 }
                             }
                     }
+                    .offset(y: -30)
                     Spacer()
                 } else {
                     VStack {
@@ -242,7 +249,9 @@ struct WinView: View {
                                     
                                     if gameType == .multiplayer {
                                         Button {
-                                            gameCenterManager.path.removeAll()
+//                                            gameCenterManager.path.removeAll()
+                                            gameCenterManager.path = NavigationPath()
+
                                         } label: {
                                             RoundedRectangle(cornerRadius: 14)
                                                 .foregroundColor(Color("AnotherPause"))
@@ -273,7 +282,9 @@ struct WinView: View {
                                                         .frame(width: 94.5, height: 42)
                                                 }
                                                 Button {
-                                                    gameCenterManager.path.removeAll()
+//                                                    gameCenterManager.path.removeAll()
+                                                    gameCenterManager.path = NavigationPath()
+
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
                                                         .foregroundColor(Color("AnotherPause"))
@@ -311,6 +322,7 @@ struct WinView: View {
             
         }
     }
+        
 }
 
 struct WinView_Previews: PreviewProvider {
@@ -320,7 +332,7 @@ struct WinView_Previews: PreviewProvider {
         @State var paused: Bool = true
         @State var remainingTime = 15
         @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts)
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts).environmentObject(GameCenterManager(currentPlayer: .player1  ))
     }
 }
 
@@ -332,7 +344,7 @@ struct NextLevelNavigation: View {
     let obstacles: [(Int, Int)]
     var body: some View {
         NavigationLink {
-            GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
+                GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
         } label: {
             HStack{
                 Text("Continue")
@@ -344,11 +356,18 @@ struct NextLevelNavigation: View {
             .frame(width: 199, height: 42)
             .background(Color(red: 0.48, green: 0.4, blue: 0.98))
             .cornerRadius(14)
-            
         }
         .simultaneousGesture(TapGesture().onEnded({
-            gameCenterController.path.append(10)
+                if let level = gameCenterController.currentLevel.next {
+                    gameCenterController.isPaused.toggle()
+                    gameCenterController.isQuitGame = false
+                    gameCenterController.currentLevel = level
+                    gameCenterController.path.append(Int.random(in: 100...100000))
+                } else {
+                    gameCenterController.path = NavigationPath()
+                }
+            
+           
         }))
-//        .disabled(!(gameLevel.id <= gameCenterController.currentLevel.id))
     }
 }

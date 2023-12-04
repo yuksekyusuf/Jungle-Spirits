@@ -12,6 +12,7 @@ struct MapsTabView: View {
     let mapNumber: Int
     let mapName: String
     let levelBundle: GameLevelBundle
+    @Binding var heartStatus: Bool
     var body: some View {
             VStack {
 //                Text("\(mapNumber). " + mapName)
@@ -20,7 +21,7 @@ struct MapsTabView: View {
 //                    .multilineTextAlignment(.center)
 //                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
 //                    .padding(.bottom, 30)
-                LevelMapView(gameLevelBundle: levelBundle)
+                LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus)
             }
     
         
@@ -29,6 +30,7 @@ struct MapsTabView: View {
 
 struct MapsTabView_Previews: PreviewProvider {
     static var previews: some View {
-        MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1).environmentObject(GameCenterManager(currentPlayer: .player1))
+        @State var status = false
+        MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1, heartStatus: $status).environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }

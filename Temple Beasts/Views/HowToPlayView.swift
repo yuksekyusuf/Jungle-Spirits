@@ -79,7 +79,8 @@ struct HowToPlayView: View {
                 if UserDefaults.standard.howToPlayShown {
                     HStack(alignment: .center) {
                         Button {
-                            gameCenterManager.path.removeAll()
+//                            gameCenterManager.path.removeAll()
+                            gameCenterManager.path = NavigationPath()
                         } label: {
                             Image("Left Arrow")
                                 .resizable()
@@ -151,7 +152,9 @@ struct HowToPlayView: View {
                         withAnimation {
                             UserDefaults.standard.howToPlayShown = true
 
-                            gameCenterManager.path.removeAll()
+//                            gameCenterManager.path.removeAll()
+                            gameCenterManager.path = NavigationPath()
+
                         }
                     } label: {
                         ButtonView(text: gotIt, width: 167, height: 50)

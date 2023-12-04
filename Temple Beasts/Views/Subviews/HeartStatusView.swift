@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HeartStatusView: View {
     let heartCount: Int
-    @Binding var remainingTime: String
+    @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
     var body: some View {
         ZStack {
@@ -62,7 +62,7 @@ struct HeartStatusView: View {
                 .foregroundColor(.white)
                 .padding(.top, 10)
                 .padding(.bottom, 5)
-                Text("Next life in \(remainingTime)")
+                Text("Next life in \(nextHeartTime)")
                   .font(Font.custom("Temple Gems", size: 20))
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
@@ -96,6 +96,6 @@ struct HeartStatusView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isPresentTrue = true
         @State var remainingTime = "9:27"
-        HeartStatusView(heartCount: 0, remainingTime: $remainingTime, isPresent: $isPresentTrue)
+        HeartStatusView(heartCount: 0, nextHeartTime: $remainingTime, isPresent: $isPresentTrue)
     }
 }
