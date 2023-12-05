@@ -54,6 +54,7 @@
 		4D83E8512A8AA71D003A57BB /* redDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8502A8AA71D003A57BB /* redDefault.json */; };
 		4D83E8552A8D3AFC003A57BB /* particles.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8542A8D3AFC003A57BB /* particles.json */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
+		4D8C8C2C2B1E663000FAC725 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = 4D8C8C2B2B1E663000FAC725 /* Pow */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
 		4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D472A897467006D139B /* redNonActiveAnimation.json */; };
 		4D9518792A50A58100ED284D /* WinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9518782A50A58100ED284D /* WinView.swift */; };
@@ -155,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D4F35C62B1D7AC6009CBC48 /* RevenueCat in Frameworks */,
+				4D8C8C2C2B1E663000FAC725 /* Pow in Frameworks */,
 				4D6401262A89D95E00917EC8 /* Lottie in Frameworks */,
 				4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */,
 			);
@@ -343,6 +345,7 @@
 				4D6401252A89D95E00917EC8 /* Lottie */,
 				4D4F35C52B1D7AC6009CBC48 /* RevenueCat */,
 				4D4F35C72B1D7AC6009CBC48 /* RevenueCatUI */,
+				4D8C8C2B2B1E663000FAC725 /* Pow */,
 			);
 			productName = "Temple Beasts";
 			productReference = 4D70D23B2A05518F002E9C0A /* Temple Gems.app */;
@@ -379,6 +382,7 @@
 			packageReferences = (
 				4D6401242A89D95E00917EC8 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				4D4F35C42B1D7AC6009CBC48 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */,
 			);
 			productRefGroup = 4D70D23C2A05518F002E9C0A /* Products */;
 			projectDirPath = "";
@@ -722,6 +726,14 @@
 				minimumVersion = 4.2.0;
 			};
 		};
+		4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/Pow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -739,6 +751,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4D6401242A89D95E00917EC8 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		4D8C8C2B2B1E663000FAC725 /* Pow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */;
+			productName = Pow;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
