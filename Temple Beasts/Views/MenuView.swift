@@ -28,8 +28,11 @@ struct MenuView: View {
     
     
     @State var showStory: Bool = false
-    @State var isFirstLaunch: Bool = true
     
+//    @State private var isFirstLaunch: Bool
+
+    @State private var videoPlayerOpacity = 1.0
+
     
     
     @State private var hasUserBeenPromptedForReview: Bool = UserDefaults.standard.bool(forKey: "HasUserBeenPromptedForReview")
@@ -47,6 +50,9 @@ struct MenuView: View {
     @State private var showLevelMap: Bool = false
     @State private var showHeartAlert: Bool = false
     @State private var remainingTime: String = ""
+    
+    @State private var showVideoPlayer = false
+
     
     //Timer functionality
     
@@ -77,6 +83,7 @@ struct MenuView: View {
     
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
+            
             //            if UserDefaults.standard.howToPlayShown {
             //                if isFirstLaunch && showStory {
             //MARK: - Correct here
@@ -313,25 +320,18 @@ struct MenuView: View {
                                     }
                                     Spacer()
                                 }
-                                
-                                
-                                
                                 HStack {
-                                    //                                        Spacer()
                                     JungleButtonView(text: versusAI, width: buttonWidth, height: 48)
                                         .onTapGesture {
-                                            //                                                    print("First Launch: ", isFirstLaunch)
-                                            //                                                    print("Show story: ", showStory)
-                                            //                                                    if isFirstLaunch {
-                                            //                                                        showStory = true
-                                            //                                                        print("Story after tapped: ", showStory)
-                                            //                                                    }
-                                            //                                                    else {
-                                            withAnimation{
-                                                showLevelMap.toggle()
-                                                
+                                            if UserDefaults.standard.bool(forKey: "hasLaunchedBefore") == false {
+                                                UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+                                                showVideoPlayer = true
+                                                SoundManager.shared.stopBackgroundMusic()
+                                            } else {
+                                                withAnimation{
+                                                    showLevelMap.toggle()
+                                                }
                                             }
-                                            //                                                    }
                                         }
                                     
                                     //                                            NavigationLink(destination:
@@ -474,6 +474,25 @@ struct MenuView: View {
                                 showCreditScreen = false
                             }
                         }
+                }
+                
+                if showVideoPlayer {
+                    VideoPlayerView {
+                        // Fade out and then hide the video player
+                        withAnimation {
+                            videoPlayerOpacity = 0.0
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            showVideoPlayer = false
+                        }
+                        withAnimation{
+                            showLevelMap.toggle()
+                            
+                        }
+                        SoundManager.shared.playBackgroundMusic()
+                    }
+                    .opacity(videoPlayerOpacity)
+                    .edgesIgnoringSafeArea(.all)
                 }
                 
                 if showHeartAlert {

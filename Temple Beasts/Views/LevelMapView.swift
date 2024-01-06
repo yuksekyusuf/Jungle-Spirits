@@ -89,7 +89,7 @@ struct LevelButtonNavigation: View {
                     showHeartStatus.toggle()
                 }
             }))
-//            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
+    
         } else {
 //            ZStack {
 //                NavigationLink {
