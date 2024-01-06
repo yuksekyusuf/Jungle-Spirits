@@ -104,16 +104,11 @@ struct WinView: View {
                                             .offset(y: -135)
                                             .allowsHitTesting(false)
                                     }
-                                    
-                                    
                                     VStack {
-                                        //                                            Spacer()
-                                        //                                            Spacer()
                                         HStack {
+                                            
                                             Button {
-//                                                gameCenterManager.path.removeAll()
                                                 gameCenterManager.path = NavigationPath()
-
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
                                                     .foregroundColor(Color("AnotherPause"))
@@ -122,35 +117,41 @@ struct WinView: View {
                                                     }
                                                     .frame(width: 94.5, height: 42)
                                             }
-                                            Button {
-                                                board.reset()
-                                                showWinMenu.toggle()
-                                                isPaused.toggle()
-                                                currentPlayer = .player1
-                                                remainingTime = 15
-                                            } label: {
-                                                RoundedRectangle(cornerRadius: 14)
-                                                    .foregroundColor(Color("AnotherPause"))
-                                                    .overlay {
-                                                        Image("iconReplay")
-                                                    }
-                                                    .frame(width: 94.5, height: 42)
+                                            if remainingHearts > 0 {
+                                                Button {
+                                                    board.reset()
+                                                    showWinMenu.toggle()
+                                                    isPaused.toggle()
+                                                    currentPlayer = .player1
+                                                    remainingTime = 15
+
+                                                } label: {
+                                                    RoundedRectangle(cornerRadius: 14)
+                                                        .foregroundColor(Color("AnotherPause"))
+                                                        .overlay {
+                                                            Image("iconReplay")
+                                                        }
+                                                        .frame(width: 94.5, height: 42)
+                                                }
                                             }
+                                            
                                         }
                                         .offset(y: 80)
-                                        //                                            .offset(y: 20)
-//
                                     }
                                     
                                     if winner == .player1 {
-                                        if let size = gameCenterManager.currentLevel.next?.boardSize {
-                                            if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
-                                                NextLevelNavigation(boardSize: size, obstacles: obstacles)
-                                                .offset(y: 130)
+                                        //MARK: - Definitely fix this!!!!
+                                        if gameCenterManager.currentLevel.next?.rawValue ?? 21 < 22 {
+                                            if let size = gameCenterManager.currentLevel.next?.boardSize {
+                                                if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
+                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles)
+                                                        .offset(y: 130)
+                                                }
                                             }
+                                            
                                         }
-
-                                    }        
+                                        
+                                    }
                                     Image("winLights")
                                         .resizable()
                                         .frame(width: 400, height: 400)
@@ -198,27 +199,8 @@ struct WinView: View {
                                     
                                     if winner == .player1 {
                                         LottieView2()
-                                        //                                    LottieView(animationName: "Red Guy Win", ifActive: false, contentMode: true, isLoop: true)
                                             .frame(width: 250, height: 250)
                                             .padding(.bottom, 30)
-                                        
-                                        
-                                        //                                        .background {
-                                        //                                            Image("winStar")
-                                        //                                                .offset(y: -20)
-                                        //                                                .allowsHitTesting(false)
-                                        //                                        }
-                                        //
-                                        //                                    Image("redWinner")
-                                        //                                        .resizable()
-                                        //                                        .scaledToFit()
-                                        //                                        .frame(width: 138, height: 138)
-                                        //                                        .padding(.bottom, 20)
-                                        //                                        .background {
-                                        //                                            Image("winStar")
-                                        //                                                .offset(y: -20)
-                                        //                                                .allowsHitTesting(false)
-                                        //                                        }
                                     } else if winner == .player2 {
                                         Image("blueWinner")
                                             .resizable()
@@ -242,16 +224,13 @@ struct WinView: View {
                                                     .allowsHitTesting(false)
                                             }
                                     }
-                                    
                                     Image((winner == .player1 || winner == .player2) ? "Winner" : "draw")
                                         .offset(y: -135)
                                         .allowsHitTesting(false)
                                     
                                     if gameType == .multiplayer {
                                         Button {
-//                                            gameCenterManager.path.removeAll()
                                             gameCenterManager.path = NavigationPath()
-
                                         } label: {
                                             RoundedRectangle(cornerRadius: 14)
                                                 .foregroundColor(Color("AnotherPause"))
@@ -267,6 +246,7 @@ struct WinView: View {
                                             Spacer()
                                             Spacer()
                                             HStack {
+                                                
                                                 Button {
                                                     board.reset()
                                                     showWinMenu.toggle()
@@ -281,10 +261,11 @@ struct WinView: View {
                                                         }
                                                         .frame(width: 94.5, height: 42)
                                                 }
+                                                
+                                                
                                                 Button {
-//                                                    gameCenterManager.path.removeAll()
                                                     gameCenterManager.path = NavigationPath()
-
+                                                    
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
                                                         .foregroundColor(Color("AnotherPause"))
@@ -298,8 +279,6 @@ struct WinView: View {
                                             Spacer()
                                         }
                                     }
-                                    
-                                    
                                     Image("winLights")
                                         .resizable()
                                         .frame(width: 400, height: 400)
@@ -322,19 +301,9 @@ struct WinView: View {
             
         }
     }
-        
+    
 }
 
-struct WinView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var check = true
-        @State var player: CellState = .player1
-        @State var paused: Bool = true
-        @State var remainingTime = 15
-        @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts).environmentObject(GameCenterManager(currentPlayer: .player1  ))
-    }
-}
 
 
 
@@ -344,7 +313,9 @@ struct NextLevelNavigation: View {
     let obstacles: [(Int, Int)]
     var body: some View {
         NavigationLink {
+            withAnimation(.easeInOut(duration: 0.5)) {
                 GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
+            }
         } label: {
             HStack{
                 Text("Continue")
@@ -358,16 +329,21 @@ struct NextLevelNavigation: View {
             .cornerRadius(14)
         }
         .simultaneousGesture(TapGesture().onEnded({
-                if let level = gameCenterController.currentLevel.next {
-                    gameCenterController.isPaused.toggle()
-                    gameCenterController.isQuitGame = false
-                    gameCenterController.currentLevel = level
-                    gameCenterController.path.append(Int.random(in: 100...100000))
-                } else {
-                    gameCenterController.path = NavigationPath()
-                }
+            gameCenterController.isPaused.toggle()
+            gameCenterController.isQuitGame = false
+            gameCenterController.isGameOver = false
             
-           
         }))
+    }
+}
+
+struct WinView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var check = true
+        @State var player: CellState = .player1
+        @State var paused: Bool = true
+        @State var remainingTime = 15
+        @State var remainingHearts = 5
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player2, currentPlayer: $player, remainingHearts: $remainingHearts).environmentObject(GameCenterManager(currentPlayer: .player1  ))
     }
 }

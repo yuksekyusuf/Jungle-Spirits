@@ -10,6 +10,7 @@ import AVFoundation
 
 class VideoPlayerViewController: UIViewController {
     var player: AVPlayer?
+    var onVideoEnd: () -> Void = {}
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,13 +35,18 @@ class VideoPlayerViewController: UIViewController {
 
     @objc func videoDidEnd(notification: NSNotification) {
         // Dismiss the view when the video ends
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        onVideoEnd()
     }
 }
 
 struct VideoPlayerView: UIViewControllerRepresentable {
+    
+    var onVideoEnd: () -> Void
     func makeUIViewController(context: Context) -> VideoPlayerViewController {
-        return VideoPlayerViewController()
+        let controller = VideoPlayerViewController()
+        controller.onVideoEnd = onVideoEnd
+        return controller
     }
 
     func updateUIViewController(_ uiViewController: VideoPlayerViewController, context: Context) {
@@ -48,20 +54,16 @@ struct VideoPlayerView: UIViewControllerRepresentable {
     }
 }
 
-struct CustomTestTabView: View {
-    var body: some View {
-        VideoPlayerView()
-            .ignoresSafeArea()
-            
+//struct CustomTestTabView: View {
+//    var body: some View {
+//        VideoPlayerView()
+//            .ignoresSafeArea()
+//    }
+//}
 
-    }
-        
-    
-}
-
-struct CustomTestTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomTestTabView()
-    }
-}
+//struct CustomTestTabView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CustomTestTabView()
+//    }
+//}
 

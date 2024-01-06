@@ -57,8 +57,8 @@ struct LevelMapView: View {
             return "LevelMapTwo"
         case .bundle3:
             return "LevelMapThree"
-        case .bundle4:
-            return "LevelMapFour"
+//        case .bundle4:
+//            return "LevelMapFour"
         }
     }
 }
@@ -79,16 +79,17 @@ struct LevelButtonNavigation: View {
             } label: {
                 LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
             }.simultaneousGesture(TapGesture().onEnded({
+                print("Button tapped!")
                 if gameCenterController.remainingHearts > 0 {
-                    gameCenterController.path.append(Int.random(in: 100...10000))
                     gameCenterController.currentLevel = gameLevel
+                    gameCenterController.path.append(gameLevel)
+                    print("Path updated: \(gameCenterController.path)")
                     isNavigationActive = true
                 } else {
                     showHeartStatus.toggle()
-                    
                 }
             }))
-            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
+    
         } else {
 //            ZStack {
 //                NavigationLink {
@@ -110,7 +111,7 @@ struct LevelButtonNavigation: View {
 //                        .allowsHitTesting(false)
 //                    
 //                }
-                LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
+             LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
                     .onTapGesture {
                         showHeartStatus.toggle()
                     }
