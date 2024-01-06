@@ -393,22 +393,25 @@ struct GameView: View {
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
                     print("hearts after losing a game: ", remainingHearts)
                 } else if gameType == .ai && winner == .player1 {
-                    let nextLevelId = gameCenterController.achievedLevel.id + 1
-                    if nextLevelId <= 7 {
-                        gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                        // Optionally, save the new current level to UserDefaults
-                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
-                    } else if (nextLevelId > 7) && (nextLevelId < 15) {
-                        gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
-                        gameCenterController.currentBundle = .bundle2
-                        UserDefaults.standard.setValue(2, forKey: "currentBundle")
-                    } else {
-                        gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                        UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
-                        gameCenterController.currentBundle = .bundle3
-                        UserDefaults.standard.setValue(3, forKey: "currentBundle")
+                    if gameCenterController.currentLevel == gameCenterController.achievedLevel {
+                        let nextLevelId = gameCenterController.achievedLevel.id + 1
+                        if nextLevelId <= 7 {
+                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                            // Optionally, save the new current level to UserDefaults
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                        } else if (nextLevelId > 7) && (nextLevelId < 15) {
+                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                            gameCenterController.currentBundle = .bundle2
+                            UserDefaults.standard.setValue(2, forKey: "currentBundle")
+                        } else {
+                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                            gameCenterController.currentBundle = .bundle3
+                            UserDefaults.standard.setValue(3, forKey: "currentBundle")
+                        }
                     }
+                    
                     
                 }
                 gameCenterController.isGameOver = true
@@ -446,14 +449,10 @@ struct GameView: View {
             }
         })
         .onReceive(timer) { _ in
-            print("Remaining time: ", gameCenterController.remainingTime)
-            print("Is game pause? ", gameCenterController.isPaused)
-            print("Is game quit ", gameCenterController.isQuitGame)
             if gameType == .ai && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible {
                 gameCenterController.remainingTime -= 1
             } else if gameType == .multiplayer && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible && !gameCenterController.isQuitGame {
                 gameCenterController.remainingTime -= 1
-                print("remaining time after receive: ", gameCenterController.remainingTime)
             }
         }
         .onAppear {
