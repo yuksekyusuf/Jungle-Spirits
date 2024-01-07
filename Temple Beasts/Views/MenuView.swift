@@ -7,6 +7,7 @@
 
 import SwiftUI
 import StoreKit
+import Pow
 
 
 
@@ -99,6 +100,7 @@ struct MenuView: View {
                 Image(!showLevelMap ? "Menu Screen" : "mapsTabBackground")
                     .resizable()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
                 VStack(spacing: 0) {
                     VStack {
                         HStack {
@@ -582,8 +584,8 @@ struct MenuView: View {
                 gameCenterController.fetchLocalPlayerImage()
             }
             if remainingHearts == nil {
-                remainingHearts = 5
-                UserDefaults.standard.set(remainingHearts, forKey: "hearts")
+                gameCenterController.remainingHearts = 5
+                UserDefaults.standard.set(5, forKey: "hearts")
             }
             
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Pow
 
 struct ButtonView: View {
     let text: String?
@@ -44,6 +45,7 @@ struct JungleButtonView: View {
     let text: String?
     let width: CGFloat
     let height: CGFloat
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 50)
@@ -63,5 +65,6 @@ struct JungleButtonView: View {
                 JungleTextView(text: text)
             }
         }
+        
     }
 }
