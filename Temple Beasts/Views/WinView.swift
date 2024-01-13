@@ -20,17 +20,21 @@ struct WinView: View {
     @Binding var remainingHearts: Int
     @State private var nextLevel: Int = 0
     
+    var onContinue: () -> Void
+    
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
-                .opacity(0.65)
+//            Color.black.ignoresSafeArea()
+//                .opacity(0.65)
             VStack {
                 if UIScreen.main.bounds.height <= 667 {
                     HeartView(hearts: remainingHearts)
                         .padding(.top, 20)
+//                        .opacity(0)
                 } else {
                     HeartView(hearts: remainingHearts)
                         .padding(.top, 70)
+//                        .opacity(0)
                 }
                 Spacer()
                 if gameType == .ai {
@@ -108,7 +112,10 @@ struct WinView: View {
                                         HStack {
                                             
                                             Button {
-                                                gameCenterManager.path = NavigationPath()
+                                                onContinue()
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                    gameCenterManager.path = NavigationPath()
+                                                }
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
                                                     .foregroundColor(Color("AnotherPause"))
@@ -119,12 +126,15 @@ struct WinView: View {
                                             }
                                             if remainingHearts > 0 {
                                                 Button {
-                                                    board.reset()
-                                                    showWinMenu.toggle()
-                                                    isPaused.toggle()
-                                                    currentPlayer = .player1
-                                                    remainingTime = 15
-
+                                                    onContinue()
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                        withAnimation {
+                                                            board.reset()
+                                                            isPaused.toggle()
+                                                            currentPlayer = .player1
+                                                            remainingTime = 15
+                                                        }
+                                                    }
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
                                                         .foregroundColor(Color("AnotherPause"))
@@ -144,13 +154,11 @@ struct WinView: View {
                                         if gameCenterManager.currentLevel.next?.rawValue ?? 21 < 22 {
                                             if let size = gameCenterManager.currentLevel.next?.boardSize {
                                                 if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
-                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles)
+                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
                                                         .offset(y: 130)
                                                 }
                                             }
-                                            
                                         }
-                                        
                                     }
                                     Image("winLights")
                                         .resizable()
@@ -230,7 +238,11 @@ struct WinView: View {
                                     
                                     if gameType == .multiplayer {
                                         Button {
-                                            gameCenterManager.path = NavigationPath()
+                                            onContinue()
+//                                            self.showWinMenu.toggle()
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                gameCenterManager.path = NavigationPath()
+                                            }
                                         } label: {
                                             RoundedRectangle(cornerRadius: 14)
                                                 .foregroundColor(Color("AnotherPause"))
@@ -248,11 +260,16 @@ struct WinView: View {
                                             HStack {
                                                 
                                                 Button {
-                                                    board.reset()
-                                                    showWinMenu.toggle()
-                                                    isPaused.toggle()
-                                                    currentPlayer = .player1
-                                                    remainingTime = 15
+                                                    onContinue()
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                        withAnimation {
+                                                            board.reset()
+                                                            isPaused.toggle()
+                                                            currentPlayer = .player1
+                                                            remainingTime = 15
+                                                        }
+                                                    }
+
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
                                                         .foregroundColor(Color("AnotherPause"))
@@ -264,7 +281,10 @@ struct WinView: View {
                                                 
                                                 
                                                 Button {
-                                                    gameCenterManager.path = NavigationPath()
+                                                    onContinue()
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                        gameCenterManager.path = NavigationPath()
+                                                    }
                                                     
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
@@ -309,12 +329,19 @@ struct WinView: View {
 
 struct NextLevelNavigation: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
+    @State private var navigateToGame = false
     let boardSize: (rows: Int, cols: Int)
     let obstacles: [(Int, Int)]
+    var onContinue: () -> Void
     var body: some View {
-        NavigationLink {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
+        NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles), isActive: $navigateToGame) {
+            EmptyView()
+        }
+        .hidden()
+        Button {
+            onContinue()
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                navigateToGame = true
             }
         } label: {
             HStack{
@@ -329,11 +356,33 @@ struct NextLevelNavigation: View {
             .cornerRadius(14)
         }
         .simultaneousGesture(TapGesture().onEnded({
-            gameCenterController.isPaused.toggle()
-            gameCenterController.isQuitGame = false
-            gameCenterController.isGameOver = false
-            
-        }))
+                    gameCenterController.isPaused.toggle()
+                    gameCenterController.isQuitGame = false
+                    gameCenterController.isGameOver = false
+                }))
+
+//        NavigationLink {
+//            withAnimation(.easeInOut(duration: 0.5)) {
+//                GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
+//            }
+//        } label: {
+//            HStack{
+//                Text("Continue")
+//                    .font(Font.custom("TempleGemsRegular", size: 24))
+//                    .multilineTextAlignment(.center)
+//                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+//                    .frame(width: 122, height: 22, alignment: .center)
+//            }
+//            .frame(width: 199, height: 42)
+//            .background(Color(red: 0.48, green: 0.4, blue: 0.98))
+//            .cornerRadius(14)
+//        }
+//        .simultaneousGesture(TapGesture().onEnded({
+//            gameCenterController.isPaused.toggle()
+//            gameCenterController.isQuitGame = false
+//            gameCenterController.isGameOver = false
+//
+//        }))
     }
 }
 
@@ -344,6 +393,6 @@ struct WinView_Previews: PreviewProvider {
         @State var paused: Bool = true
         @State var remainingTime = 15
         @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player2, currentPlayer: $player, remainingHearts: $remainingHearts).environmentObject(GameCenterManager(currentPlayer: .player1  ))
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {}).environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }

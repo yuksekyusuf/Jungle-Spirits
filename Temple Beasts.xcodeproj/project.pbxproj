@@ -13,6 +13,7 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
+		4D20A7642B519E02000F2D8B /* VanishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7632B519E02000F2D8B /* VanishView.swift */; };
 		4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDA2AB08F7700F2D12A /* CellState.swift */; };
 		4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDC2AB08FA300F2D12A /* Move.swift */; };
 		4D231DDF2AB4E05A00F2D12A /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDE2AB4E05A00F2D12A /* TextView.swift */; };
@@ -84,6 +85,7 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		4D20A7632B519E02000F2D8B /* VanishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VanishView.swift; sourceTree = "<group>"; };
 		4D231DDA2AB08F7700F2D12A /* CellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellState.swift; sourceTree = "<group>"; };
 		4D231DDC2AB08FA300F2D12A /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		4D231DDE2AB4E05A00F2D12A /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				4DA0C7CF2B05CF4100DDEE99 /* VideoPlayerView.swift */,
 				4DFE9A012B087242003FA745 /* HeartView.swift */,
 				4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */,
+				4D20A7632B519E02000F2D8B /* VanishView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				4DA0C7D02B05CF4100DDEE99 /* VideoPlayerView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */,
+				4D20A7642B519E02000F2D8B /* VanishView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,

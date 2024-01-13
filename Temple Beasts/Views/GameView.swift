@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Pow
 
 struct GameView: View {
     @StateObject private var board: Board
@@ -13,7 +14,6 @@ struct GameView: View {
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
-
         
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
@@ -55,7 +55,76 @@ struct GameView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(height: geometry.size.height)
+                    
+                    
+//                    if showWinMenu {
+//
+//                    }
+//                    if showWinMenu {
+//
+//                            ZStack{
+//                                if showWinMenu {
+//                                    //                    PlaceholderView()
+//                                    WinView(showWinMenu: $showWinMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
+//                                                                withAnimation {
+//                                                                    showWinMenu.toggle()
+//                                                                }
+//
+//                                                            })
+//                                    .transition(.movingParts.swoosh.combined(with: .opacity))
+//
+//                                    //                    .frame(width: 250, height: 250)
+//
+//                                }
+//                                    .autotoggle($showWinMenu, with: .spring())
+//
+//                            }
+//                            .zIndex(1)
+//
+//                    }
+                   
+
+                    if showWinMenu {
+                        VanishView(gameType: gameType, winner: winner, remainingHearts: $remainingHearts)
+                            .zIndex(1)
+                    }
+//                    if showWinMenu {
+//                        VanishView()
+//
+//
+////                        ZStack {
+////                            VStack {
+////                                if UIScreen.main.bounds.height <= 667 {
+////                                    HeartView(hearts: remainingHearts)
+////                                        .padding(.top, 20)
+////                                } else {
+////                                    HeartView(hearts: remainingHearts)
+////                                        .padding(.top, 70)
+////                                }
+////                            }
+//////                            .offset(y: -geometry.size.height * 0.44)
+////                        WinView(showWinMenu: $showWinMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
+////                            withAnimation {
+////                                showWinMenu.toggle()
+////                            }
+////
+////                        })
+////                        .transition(.movingParts.swoosh.combined(with: .opacity))
+////                        .zIndex(1)
+////                        .autotoggle($showWinMenu, with: .spring())
+//
+////                        }
+//
+//
+//
+////                        .frame(width: 250, height: 250)
+////                        .transition(
+////                            .movingParts.vanish(.blue)
+////                        )
+////                        .zIndex(1)
+//                    }
                     ZStack {
+                        
                         VStack {
                             if UIScreen.main.bounds.height <= 667 {
                                 VStack {
@@ -109,10 +178,13 @@ struct GameView: View {
                                                     }
                                                 }
                                             }) {
+                                                if !showWinMenu {
                                                     Image("Pause button")
                                                         .resizable()
                                                         .scaledToFit()
                                                         .frame(width: 74, height: 50)
+                                                }
+                                                    
                                             }
                                         }
 
@@ -224,10 +296,13 @@ struct GameView: View {
                                                     
                                                 }
                                             }) {
-                                                Image("Pause button")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 74, height: 50)
+                                                if !showWinMenu {
+                                                    Image("Pause button")
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 74, height: 50)
+                                                }
+                                                
                                             }
                                         }
                                         
@@ -307,6 +382,20 @@ struct GameView: View {
                             Spacer()
                             Spacer()
                         }
+                        
+                        if showWinMenu {
+                            Color.black.opacity(0.65)
+                                .ignoresSafeArea()
+                                .onTapGesture {
+                                    if showWinMenu {
+                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+                                            showWinMenu.toggle()
+//                                            gameCenterController.isPaused.toggle()
+                                        }
+                                    }
+                                }
+                        }
+                       
 
                         if showPauseMenu {
                             Color.black.opacity(0.65)
@@ -329,9 +418,8 @@ struct GameView: View {
 
 
                         
-                        if gameCenterController.isGameOver {
-                            WinView(showWinMenu: $gameCenterController.isGameOver, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts)
-                        }
+                        
+                        
                         if isCountDownVisible {
                             CountDownView(isVisible: $isCountDownVisible)
                         }
@@ -361,6 +449,7 @@ struct GameView: View {
     //                .frame(height: UIScreen.main.bounds.height * 1)
                     
                 }
+                
 
             }
         .edgesIgnoringSafeArea(.all)
@@ -388,6 +477,7 @@ struct GameView: View {
         }
         .onChange(of: board.gameOver, perform: { newValue in
             if newValue == true {
+                
                 if gameType == .ai && winner == .player2 {
                     remainingHearts -= 1
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
@@ -416,6 +506,7 @@ struct GameView: View {
                 }
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
+                self.showWinMenu = true
             }
         })
         .onChange(of: gameCenterController.remainingTime, perform: { newValue in
@@ -604,10 +695,10 @@ struct GameView: View {
     }
 }
 
-//struct GameView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GameView(gameType: .oneVone, gameSize: (4, 4), obstacles: [(2, 2)])
-//            .environmentObject(AppLanguageManager())
-//            .environmentObject(GameCenterManager(currentPlayer: .player1))
-//    }
-//}
+struct GameView_Previews: PreviewProvider {
+    static var previews: some View {
+        GameView(gameType: .ai, gameSize: (4, 4), obstacles: [])
+            .environmentObject(AppLanguageManager())
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+    }
+}

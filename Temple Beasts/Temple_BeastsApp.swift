@@ -18,6 +18,9 @@ struct Temple_BeastsApp: App {
 
         var body: some Scene {
             WindowGroup {
+//                VanishView()
+//                            .environmentObject(GameCenterManager(currentPlayer: .player1))
+
                 MenuView()
                     .environmentObject(appLanguageManager)
                     .environment(\.appLanguage, appLanguageManager.currentLanguage)

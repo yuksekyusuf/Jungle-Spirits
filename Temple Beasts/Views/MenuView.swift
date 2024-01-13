@@ -84,18 +84,6 @@ struct MenuView: View {
     
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
-            
-            //            if UserDefaults.standard.howToPlayShown {
-            //                if isFirstLaunch && showStory {
-            //MARK: - Correct here
-            //                    VideoPlayerView()
-            //                        .ignoresSafeArea()
-            //                        .onDisappear{
-            //                            isFirstLaunch = false
-            //                            showLevelMap = true
-            //                        }
-            
-            //                } else {
             ZStack {
                 Image(!showLevelMap ? "Menu Screen" : "mapsTabBackground")
                     .resizable()
@@ -110,7 +98,6 @@ struct MenuView: View {
                                     withAnimation {
                                         showLevelMap.toggle()
                                     }
-                                    //                                        gameCenterController.path.removeAll()
                                 } label: {
                                     Image("Left Arrow")
                                         .resizable()
