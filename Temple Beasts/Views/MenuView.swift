@@ -29,6 +29,7 @@ struct MenuView: View {
     
     
     @State var showStory: Bool = false
+    @State private var isBackgroundShown: Bool = false
     
 //    @State private var isFirstLaunch: Bool
 
@@ -85,9 +86,22 @@ struct MenuView: View {
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
             ZStack {
-                Image(!showLevelMap ? "Menu Screen" : "mapsTabBackground")
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                if isBackgroundShown {
+                    Image("Menu Screen")
+                        .resizable()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .transition(.movingParts.iris(blurRadius: 10))
+
+                    if showLevelMap {
+                        Image("mapsTabBackground")
+                            .resizable()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    
+                    
+
+                }
+                      
                     
                 VStack(spacing: 0) {
                     VStack {
@@ -186,10 +200,32 @@ struct MenuView: View {
                         VStack {
                             VStack{
                                 ZStack {
-                                    Image("ContinueImage")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .offset(y: 10)
+                                    
+                                    ZStack {
+                                        
+                                        
+                                        Image("ContinueImage")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .offset(y: 10)
+                                        
+                                        if selectedMap == 4 {
+                                            VStack {
+                                                TextView(text: "Only if you believe")
+                                                Text("You will find more \nmaps here soon...")
+                                                    .font(.custom("TempleGemsRegular", size: 24))
+                                                    .foregroundColor(Color(#colorLiteral(red: 0.63, green: 0.64, blue: 1, alpha: 1)))
+                                                    .tracking(0.72)
+                                                    .multilineTextAlignment(.center)
+                                                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
+                                                    .padding(.bottom, 30)
+                                            }
+                                        }
+                                        
+                                        
+                                    }
+                                    
+                                    
                                     
                                     TabView(selection: $selectedMap) {
                                         VStack {
@@ -257,9 +293,7 @@ struct MenuView: View {
                                     }
                                 }
                             }
-                            
                             .padding(.bottom, UIScreen.main.bounds.height * 0.1)
-                            
                         }
                         Spacer()
                     } else {
@@ -476,7 +510,7 @@ struct MenuView: View {
                         }
                         withAnimation{
                             showLevelMap.toggle()
-                            
+//                            showFirstMap = true
                         }
                         SoundManager.shared.playBackgroundMusic()
                     }
@@ -540,6 +574,7 @@ struct MenuView: View {
                 .allowsHitTesting(showCreditScreen)
                 .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
             }
+            .autotoggle($isBackgroundShown, with: .spring(dampingFraction: 1))
             .ignoresSafeArea()
             //                }
             //            } else {
@@ -554,6 +589,7 @@ struct MenuView: View {
             print("Currently selected level: ", newValue)
         }
         .onAppear {
+            
             loadCurrentLevel()
             loadCurrentBundle()
             selectedMap = gameCenterController.currentBundle.id

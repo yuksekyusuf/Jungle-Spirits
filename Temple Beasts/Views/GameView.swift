@@ -14,11 +14,9 @@ struct GameView: View {
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
-        
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
-
         _isCountDownVisible = State(initialValue: true)
         _showAlert = State(initialValue: false)
     }
@@ -85,7 +83,7 @@ struct GameView: View {
                    
 
                     if showWinMenu {
-                        VanishView(gameType: gameType, winner: winner, remainingHearts: $remainingHearts)
+                        PopUpWinView(gameType: gameType, winner: winner, remainingHearts: $remainingHearts, showWinView: $showWinMenu)
                             .zIndex(1)
                     }
 //                    if showWinMenu {
@@ -118,9 +116,9 @@ struct GameView: View {
 //
 //
 ////                        .frame(width: 250, height: 250)
-////                        .transition(
-////                            .movingParts.vanish(.blue)
-////                        )
+//                        .transition(
+//                            .movingParts.vanish(.blue)
+//                        )
 ////                        .zIndex(1)
 //                    }
                     ZStack {
@@ -395,6 +393,25 @@ struct GameView: View {
                                     }
                                 }
                         }
+                        
+                        if showWinMenu {
+                            Color.black.opacity(0.65)
+                                .ignoresSafeArea()
+                            ZStack {
+                                VStack {
+                                    if UIScreen.main.bounds.height <= 667 {
+                                        HeartView(hearts: remainingHearts)
+                                            .padding(.top, 15)
+                                    } else {
+                                        HeartView(hearts: remainingHearts)
+                                            .padding(.top, 70)
+                                    }
+                                    Spacer()
+                                }
+                            }
+                        }
+                        
+                        
                        
 
                         if showPauseMenu {

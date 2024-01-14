@@ -8,38 +8,26 @@
 import SwiftUI
 import Pow
 
-struct VanishView: View {
+struct PopUpWinView: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     @State var isAdded: Bool = false
     let gameType: GameType
     let winner: CellState
     @Binding var remainingHearts: Int
-//    @State var time = 15
-//    @State var player: CellState = .player1
-//    @State var hearts = 5
+    @Binding var showWinView: Bool
     
     var body: some View {
-        //        ZStack {
         ZStack{
             if isAdded {
-                //                    PlaceholderView()
-                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
-                    withAnimation {
-                        isAdded.toggle()
-                    }
-                    
-                })
-                .transition(.movingParts.swoosh.combined(with: .opacity))
-                
-                //                    .frame(width: 250, height: 250)
-                
-                
-//                WinView(showWinMenu: $showWinMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
-//                //                                                                withAnimation {
-//                //                                                                    showWinMenu.toggle()
-//                //                                                                }
-//                //
-//                //                                                            })
+                    WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
+                        withAnimation {
+                            isAdded.toggle()
+                            showWinView.toggle()
+                        }
+                    })
+                    .frame(width: 250, height: 250)
+                    .transition(AnyTransition.asymmetric(insertion: .movingParts.swoosh.combined(with: .opacity), removal: .movingParts.vanish(.blue)))
+
             }
         }
         .autotoggle($isAdded, with: .spring())
@@ -83,10 +71,12 @@ struct SwooshExample: View {
     }
 }
 
-struct SwooshExample_Previews: PreviewProvider {
+struct PopUpWinView_Previews: PreviewProvider {
     static var previews: some View {
-        SwooshExample()
-//            .environmentObject(GameCenterManager(currentPlayer: .player1))
+        @State var hearts = 5
+        @State var boolion = false
+        PopUpWinView(gameType: .ai, winner: .player1, remainingHearts: $hearts, showWinView: $boolion)
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }
 

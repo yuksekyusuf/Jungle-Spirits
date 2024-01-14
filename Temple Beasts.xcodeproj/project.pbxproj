@@ -13,7 +13,10 @@
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
-		4D20A7642B519E02000F2D8B /* VanishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7632B519E02000F2D8B /* VanishView.swift */; };
+		4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7632B519E02000F2D8B /* PopUpWinView.swift */; };
+		4D20A7662B530B84000F2D8B /* PopUpHeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */; };
+		4D20A7682B531C22000F2D8B /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7672B531C22000F2D8B /* SwiftUIView.swift */; };
+		4D20A76A2B5496A9000F2D8B /* SealedMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D20A7692B5496A9000F2D8B /* SealedMapView.swift */; };
 		4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDA2AB08F7700F2D12A /* CellState.swift */; };
 		4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDC2AB08FA300F2D12A /* Move.swift */; };
 		4D231DDF2AB4E05A00F2D12A /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D231DDE2AB4E05A00F2D12A /* TextView.swift */; };
@@ -85,7 +88,10 @@
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
-		4D20A7632B519E02000F2D8B /* VanishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VanishView.swift; sourceTree = "<group>"; };
+		4D20A7632B519E02000F2D8B /* PopUpWinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpWinView.swift; sourceTree = "<group>"; };
+		4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpHeartView.swift; sourceTree = "<group>"; };
+		4D20A7672B531C22000F2D8B /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		4D20A7692B5496A9000F2D8B /* SealedMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SealedMapView.swift; sourceTree = "<group>"; };
 		4D231DDA2AB08F7700F2D12A /* CellState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellState.swift; sourceTree = "<group>"; };
 		4D231DDC2AB08FA300F2D12A /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		4D231DDE2AB4E05A00F2D12A /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
@@ -312,7 +318,10 @@
 				4DA0C7CF2B05CF4100DDEE99 /* VideoPlayerView.swift */,
 				4DFE9A012B087242003FA745 /* HeartView.swift */,
 				4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */,
-				4D20A7632B519E02000F2D8B /* VanishView.swift */,
+				4D20A7632B519E02000F2D8B /* PopUpWinView.swift */,
+				4D20A7692B5496A9000F2D8B /* SealedMapView.swift */,
+				4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */,
+				4D20A7672B531C22000F2D8B /* SwiftUIView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -447,6 +456,7 @@
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
 				4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */,
 				4D9518792A50A58100ED284D /* WinView.swift in Sources */,
+				4D20A7662B530B84000F2D8B /* PopUpHeartView.swift in Sources */,
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
@@ -463,14 +473,16 @@
 				4DA0C7D02B05CF4100DDEE99 /* VideoPlayerView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */,
-				4D20A7642B519E02000F2D8B /* VanishView.swift in Sources */,
+				4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,
 				4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */,
+				4D20A76A2B5496A9000F2D8B /* SealedMapView.swift in Sources */,
 				4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */,
+				4D20A7682B531C22000F2D8B /* SwiftUIView.swift in Sources */,
 				4D0779672ABC72EC009DE89E /* ResizeTest.swift in Sources */,
 				4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */,
 				4DA0C7CA2AFF291C00DDEE99 /* GameLevel.swift in Sources */,

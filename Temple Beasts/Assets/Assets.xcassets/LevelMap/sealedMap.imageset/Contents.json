@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Lunch Screen.png",
+      "filename" : "MAp.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Lunch Screen2.png",
+      "filename" : "MAp@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Lunch Screen3.png",
+      "filename" : "MAp@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

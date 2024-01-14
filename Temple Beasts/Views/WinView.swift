@@ -30,11 +30,11 @@ struct WinView: View {
                 if UIScreen.main.bounds.height <= 667 {
                     HeartView(hearts: remainingHearts)
                         .padding(.top, 20)
-//                        .opacity(0)
+                        .opacity(0)
                 } else {
                     HeartView(hearts: remainingHearts)
                         .padding(.top, 70)
-//                        .opacity(0)
+                        .opacity(0)
                 }
                 Spacer()
                 if gameType == .ai {
