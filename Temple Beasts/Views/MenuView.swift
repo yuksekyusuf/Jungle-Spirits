@@ -36,7 +36,7 @@ struct MenuView: View {
     @State private var videoPlayerOpacity = 1.0
 
     
-    
+    @State private var isJungleButtonTapped = false
     @State private var hasUserBeenPromptedForReview: Bool = UserDefaults.standard.bool(forKey: "HasUserBeenPromptedForReview")
     
     //    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
@@ -202,23 +202,30 @@ struct MenuView: View {
                                 ZStack {
                                     
                                     ZStack {
-                                        
-                                        
                                         Image("ContinueImage")
                                             .resizable()
+                                            .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.5)
                                             .scaledToFit()
-                                            .offset(y: 10)
+                                            .offset(y: 25)
                                         
                                         if selectedMap == 4 {
-                                            VStack {
-                                                TextView(text: "Only if you believe")
-                                                Text("You will find more \nmaps here soon...")
+                                            VStack(spacing: 0) {
+                                                Spacer()
+                                                Spacer()
+                                                Spacer()
+                                                Text("Only if you believe")
                                                     .font(.custom("TempleGemsRegular", size: 24))
+                                                    .foregroundColor(.white)
+                                                    .stroke(color: .black, width: 1.0)
+                                                    .shadow(color: .black, radius: 0, x: 0, y: 3)
+                                                Text("You will find more \nmaps here soon...")
+                                                    .font(.custom("TempleGemsRegular", size: 22))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.63, green: 0.64, blue: 1, alpha: 1)))
                                                     .tracking(0.72)
                                                     .multilineTextAlignment(.center)
                                                     .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
                                                     .padding(.bottom, 30)
+                                                Spacer()
                                             }
                                         }
                                         
@@ -257,17 +264,8 @@ struct MenuView: View {
                                         }
                                         .tag(4)
                                         .padding(.bottom, 30)
-                                        
-                                        
                                     }
-                                    .tabViewStyle(PageTabViewStyle())
-                                    .overlay{
-                                        GeometryReader { geo in
-                                            Color("coverColor")
-                                                .frame(width: 80, height: 20)
-                                                .offset(x: geo.size.width * 0.4, y: geo.size.height * 0.94)
-                                        }
-                                    }
+                                    .tabViewStyle(.page(indexDisplayMode: .never))
                                     
                                     
                                 }
@@ -280,14 +278,19 @@ struct MenuView: View {
                                                 .resizable()
                                                 .frame(width: 32, height: 32)
                                                 .onTapGesture {
-                                                    selectedMap = index
+                                                    withAnimation {
+                                                        selectedMap = index
+
+                                                    }
                                                 }
                                         } else {
                                             Image("UnselectedTabAsset")
                                                 .resizable()
                                                 .frame(width: 8, height: 8)
                                                 .onTapGesture {
-                                                    selectedMap = index
+                                                    withAnimation {
+                                                        selectedMap = index
+                                                    }
                                                 }
                                         }
                                     }
@@ -345,16 +348,25 @@ struct MenuView: View {
                                 }
                                 HStack {
                                     JungleButtonView(text: versusAI, width: buttonWidth, height: 48)
+                                        .conditionalEffect(.repeat(.glow(color: .blue, radius: 70), every: 1.5  ),
+                                                            condition: isJungleButtonTapped)
+                                        .animation(.default, value: isJungleButtonTapped)
                                         .onTapGesture {
-                                            if UserDefaults.standard.bool(forKey: "hasLaunchedBefore") == false {
-                                                UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
-                                                showVideoPlayer = true
-                                                SoundManager.shared.stopBackgroundMusic()
-                                            } else {
-                                                withAnimation{
-                                                    showLevelMap.toggle()
+                                            withAnimation {
+                                                isJungleButtonTapped.toggle()
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                if UserDefaults.standard.bool(forKey: "hasLaunchedBefore") == false {
+                                                    UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+                                                    showVideoPlayer = true
+                                                    SoundManager.shared.stopBackgroundMusic()
+                                                } else {
+                                                    withAnimation{
+                                                        showLevelMap.toggle()
+                                                    }
                                                 }
                                             }
+                                            
                                         }
                                     
                                     //                                            NavigationLink(destination:

@@ -14,10 +14,14 @@ struct SealedMapView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width * 0.95)
-            VStack {
-                TextView(text: "Map is sealed")
+            VStack(spacing: 0) {
+                Text("Map is sealed")
+                    .font(.custom("TempleGemsRegular", size: 30))
+                    .foregroundColor(.white)
+                    .stroke(color: .black, width: 1.0)
+                    .shadow(color: .black, radius: 0, x: 0, y: 3)
                 Text("Finish the other maps first to unseal this map")
-                    .font(.custom("TempleGemsRegular", size: 24))
+                    .font(.custom("TempleGemsRegular", size: 16))
                     .kerning(0.48)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.8, green: 0.8, blue: 1))

@@ -18,7 +18,6 @@ struct Temple_BeastsApp: App {
 
         var body: some Scene {
             WindowGroup {
-//                IrisView()
                 MenuView()
                     .environmentObject(appLanguageManager)
                     .environment(\.appLanguage, appLanguageManager.currentLanguage)
