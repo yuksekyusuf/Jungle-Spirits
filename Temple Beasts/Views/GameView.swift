@@ -141,6 +141,7 @@ struct GameView: View {
                                                 if gameType == .multiplayer {
                                                     VStack(alignment: .leading) {
                                                         PieceCountView(pieceCount: player1PieceCount, size: 25)
+                                                            .padding(.top, 5)
                                                             if gameCenterController.priority > gameCenterController.otherPriority {
                                                                 Text(localPlayerName)
                                                                     .foregroundColor(.white)
@@ -159,6 +160,7 @@ struct GameView: View {
                                                     }
                                                 } else {
                                                     PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                        .padding(.top, 5)
                                                 }
                                             }
                                         }
@@ -179,7 +181,7 @@ struct GameView: View {
                                                 if !showWinMenu {
                                                     Image("Pause button")
                                                         .resizable()
-                                                        .scaledToFit()
+                                                        .scaledToFill()
                                                         .frame(width: 74, height: 50)
                                                 }
                                                     
@@ -192,6 +194,7 @@ struct GameView: View {
                                                 if gameType == .multiplayer {
                                                     VStack(alignment: .trailing){
                                                         PieceCountView(pieceCount: player2PieceCount, size: 25)
+                                                            .padding(.top, 5)
                                                             if gameCenterController.priority < gameCenterController.otherPriority{
                                                                 Text(localPlayerName)
                                                                     .foregroundColor(.white)
@@ -210,6 +213,7 @@ struct GameView: View {
                                                     }
                                                 } else {
                                                     PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                        .padding(.top, 5)
                                                 }
 
                                                 if gameCenterController.otherPlayerPlaying {
@@ -256,6 +260,8 @@ struct GameView: View {
                                                 if gameType == .multiplayer {
                                                     VStack(alignment: .leading) {
                                                         PieceCountView(pieceCount: player1PieceCount, size: 25)
+                                                            .padding(.top, 5)
+
                                                         if gameCenterController.priority > gameCenterController.otherPriority {
                                                             Text(localPlayerName)
                                                                 .foregroundColor(.white)
@@ -274,6 +280,7 @@ struct GameView: View {
                                                     }
                                                 } else {
                                                     PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                        .padding(.top, 5)
                                                 }
                                             }
                                         }
@@ -297,7 +304,7 @@ struct GameView: View {
                                                 if !showWinMenu {
                                                     Image("Pause button")
                                                         .resizable()
-                                                        .scaledToFit()
+                                                        .scaledToFill()
                                                         .frame(width: 74, height: 50)
                                                 }
                                                 
@@ -310,6 +317,7 @@ struct GameView: View {
                                                 if gameType == .multiplayer {
                                                     VStack(alignment: .trailing){
                                                         PieceCountView(pieceCount: player2PieceCount, size: 25)
+                                                            .padding(.top, 5)
                                                         if gameCenterController.priority < gameCenterController.otherPriority{
                                                             Text(localPlayerName)
                                                                 .foregroundColor(.white)
@@ -328,6 +336,7 @@ struct GameView: View {
                                                     }
                                                 } else {
                                                     PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                        .padding(.top, 5)
                                                 }
                                                 
                                                 if gameCenterController.otherPlayerPlaying {
@@ -494,7 +503,6 @@ struct GameView: View {
         }
         .onChange(of: board.gameOver, perform: { newValue in
             if newValue == true {
-                
                 if gameType == .ai && winner == .player2 {
                     remainingHearts -= 1
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
@@ -517,6 +525,9 @@ struct GameView: View {
                             gameCenterController.currentBundle = .bundle3
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
+                        gameCenterController.currentLevel = gameCenterController.achievedLevel
+                        print("Current level: ", gameCenterController.currentLevel.id)
+                        print("Achieved level: ", gameCenterController.achievedLevel.id)
                     }
                     
                     
@@ -564,6 +575,8 @@ struct GameView: View {
             }
         }
         .onAppear {
+            print("Current level: ", gameCenterController.currentLevel.id)
+            print("Achieved level: ", gameCenterController.achievedLevel.id)
             gameCenterController.remainingTime = 15
             gameCenterController.board = self.board
             gameCenterController.isQuitGame = false

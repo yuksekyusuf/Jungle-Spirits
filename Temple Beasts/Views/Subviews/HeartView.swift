@@ -29,8 +29,7 @@ struct HeartView: View {
                     .offset(x: -1, y: 1)
 
             }
-        }                .frame(width: 72, height: 50)
-
+        }                .frame(width: 74, height: 50)
 
         
     }

@@ -270,8 +270,10 @@ struct MenuView: View {
                                         .tag(4)
                                         .padding(.bottom, 30)
                                     }
+                                    .onChange(of: selectedMap) { _ in
+                                        HapticManager.shared.impact(style: .soft)
+                                    }
                                     .tabViewStyle(.page(indexDisplayMode: .never))
-                                    
                                     
                                 }
                                 
@@ -285,7 +287,7 @@ struct MenuView: View {
                                                 .onTapGesture {
                                                     withAnimation {
                                                         selectedMap = index
-
+                                                        
                                                     }
                                                 }
                                         } else {
@@ -603,6 +605,7 @@ struct MenuView: View {
             //            }
             
         }
+        
         .onChange(of: gameCenterController.currentLevel.id) { newValue in
             print("Currently selected level: ", newValue)
         }
