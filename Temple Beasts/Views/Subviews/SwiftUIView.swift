@@ -9,30 +9,59 @@ import SwiftUI
 import Pow
 
 struct IrisView: View {
-    @State var sealed = false
-    @State var showLevelMap = false
+    let mapNumber: Int
+    let mapName: String
+    let levelBundle: GameLevelBundle
+    @Binding var heartStatus: Bool
+    @State var firstShow: Bool = true
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     var body: some View {
-            ZStack {
-                if sealed {
-                    Image("Menu Screen")
-                        .resizable()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .transition(.movingParts.iris(blurRadius: 10))
+        ZStack {
+           
+           
+//                LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus)
 
-                    if showLevelMap {
-                        Image("mapsTabBackground")
-                            .resizable()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-
-
-
+            if firstShow {
+                SealedMapView()
+                    .transition(.movingParts.iris(blurRadius: 10))
+            }
+//            if  {
+////                if  {
+////
+////                }
+//
+//            } else if !firstShow {
+//
+//            }
+            
+//            else {
+//                if levelBundle == gameCenterManager.currentBundle {
+//                    LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus)
+//                } else {
+//                    SealedMapView()
+//                }
+//            }
+        }
+        .onTapGesture {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.spring(dampingFraction: 1)) {
+                    firstShow.toggle()
                 }
             }
-            .autotoggle($sealed, with: .spring(dampingFraction: 1))
-
+        }
+//        .onAppear {
+//            if firstShow == false {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                    withAnimation(.spring(dampingFraction: 1)) {
+//                        firstShow = true
+//                    }
+//                }
+//            }
+//
+//
+//        }
+        
     }
-
 }
 //
 struct GlowExample: View {
@@ -54,8 +83,9 @@ struct GlowExample: View {
 }
 
 
-struct GlowExample_Previews: PreviewProvider {
+struct IrisView_Previews: PreviewProvider {
     static var previews: some View {
-        GlowExample()
+        @State var status = false
+        IrisView(mapNumber: 1, mapName: "Random", levelBundle: GameLevelBundle.bundle1, heartStatus: $status).environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }

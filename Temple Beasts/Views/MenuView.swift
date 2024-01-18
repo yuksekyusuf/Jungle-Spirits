@@ -54,6 +54,11 @@ struct MenuView: View {
     @State private var remainingTime: String = ""
     
     @State private var showVideoPlayer = false
+//    @State private var showFirstMapOne = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+//    @State private var showFirstMapTwo = false
+//    @State private var showFirstMapThree = false
+//    @State private var showFirstMapFour = false
+
 
     
     //Timer functionality
@@ -258,8 +263,8 @@ struct MenuView: View {
                                         .padding(.bottom, 30)
                                         VStack {
                                             ExtractedView(id: "", title: "to be continued...")
-                                            MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert)
-                                                .padding(.bottom, 30).opacity(0)
+//                                            MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert, firstShow: $showFirstMapThree)
+//                                                .padding(.bottom, 30).opacity(0)
                                             
                                         }
                                         .tag(4)
@@ -363,6 +368,7 @@ struct MenuView: View {
                                                 } else {
                                                     withAnimation{
                                                         showLevelMap.toggle()
+//                                                        showFirstMapOne.toggle()
                                                     }
                                                 }
                                             }

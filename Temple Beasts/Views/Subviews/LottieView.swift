@@ -19,11 +19,7 @@ struct LottieView: UIViewRepresentable {
         let animationView = LottieAnimationView(name: animationName)
         let view = UIView(frame: .zero)
         animationView.contentMode = .scaleAspectFit
-        view.addSubview(animationView)
-        NSLayoutConstraint.activate([
-            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ])
+        
         if ifActive {
             animationView.animationSpeed = 1.75
         }
@@ -32,14 +28,19 @@ struct LottieView: UIViewRepresentable {
             
 
         }
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-
         animationView.play { (finished) in
                 if finished {
                     completion?()
                 }
             }
+        animationView.translatesAutoresizingMaskIntoConstraints = false
 
+        view.addSubview(animationView)
+
+        NSLayoutConstraint.activate([
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        ])
         return animationView
     }
     
