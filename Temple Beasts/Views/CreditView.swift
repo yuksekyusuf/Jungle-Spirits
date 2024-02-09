@@ -20,7 +20,7 @@ struct CreditView: View {
         ZStack{
             ScrollViewReader { proxy in
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack {
+                    LazyVStack {
 //                        Color.clear.frame(height: 1).id("start")
 
                         Image("CreditLogo")
@@ -112,16 +112,31 @@ struct CreditView: View {
                         .scaledToFill()
                         .frame(width: 284, height: 302)
                 }
-                .onReceive(timer) { _ in
-                            if autoScrolling {
-                                // Perform the scrolling action
-                                // Increment your offset to scroll down
-                                scrollAmount += 1  // Adjust this value as needed
-                                withAnimation(.linear(duration: 0.2)) {
-                                    proxy.scrollTo(scrollAmount, anchor: .bottom)
-                                }
-                            }
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        withAnimation(.easeInOut(duration: 1.0).speed(0.1)) {
+                            proxy.scrollTo("end", anchor: nil)
                         }
+                    }
+                    
+                }
+//                .onChange(of: autoScrolling) { new in
+//                    if new == true {
+//                        withAnimation(.linear(duration: 2.5)) {
+//                            proxy.scrollTo(15, anchor: .bottom)
+//                        }
+//                    }
+//                }
+//                .onReceive(timer) { _ in
+//                            if autoScrolling {
+//                                // Perform the scrolling action
+//                                // Increment your offset to scroll down
+//                                scrollAmount += 1  // Adjust this value as needed
+//                                withAnimation(.linear(duration: 0.2)) {
+//                                    proxy.scrollTo(scrollAmount, anchor: .bottom)
+//                                }
+//                            }
+//                        }
 //                .onChange(of: scrollPosition) { newPosition in
 //                    withAnimation(.linear(duration: 0.5)) { // Smooth and slow animation
 //                        proxy.scrollTo(Int(newPosition), anchor: .bottom)
@@ -194,7 +209,6 @@ struct CreditView: View {
                 .offset(x: 138, y: -138)
                 
             }
-//            .offset(y: 27)
             
         }
         
@@ -219,10 +233,11 @@ struct CreditView: View {
         
         .onAppear {
             // Start auto-scrolling after a 1-second delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 autoScrolling = true
             }
         }
+        
       
         .onDisappear {
             // Stop auto-scrolling and cleanup when the view disappears
