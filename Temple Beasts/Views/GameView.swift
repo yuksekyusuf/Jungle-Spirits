@@ -28,6 +28,7 @@ struct GameView: View {
     @State var gameType: GameType
     @State private var showAlert: Bool = false
     @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
+    @State private var showOverLay: Bool = false
     
     private var player1PieceCount: Int {
         board.countPieces().player1
@@ -390,22 +391,38 @@ struct GameView: View {
                             Spacer()
                         }
                         
-                        if showWinMenu {
-                            Color.black.opacity(0.65)
-                                .ignoresSafeArea()
-                                .onTapGesture {
-                                    if showWinMenu {
-                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
-                                            showWinMenu.toggle()
-//                                            gameCenterController.isPaused.toggle()
+                            if showWinMenu {
+                                ZStack {
+                                    if showOverLay {
+                                        Color.black.opacity(0.65)
+                                            .ignoresSafeArea()
+                                            .onTapGesture {
+                                                if showWinMenu {
+                                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+                                                        showWinMenu.toggle()
+            //                                            gameCenterController.isPaused.toggle()
+                                                    }
+                                                }
+                                            }
+
+                                    }
+                                                                    }
+                                .onAppear {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                        withAnimation {
+                                            showOverLay.toggle()
                                         }
                                     }
                                 }
-                        }
+                                
+                            }
+                        
+                        
+                        
                         
                         if showWinMenu {
-                            Color.black.opacity(0.65)
-                                .ignoresSafeArea()
+//                            Color.black.opacity(0.65)
+//                                .ignoresSafeArea()
                             ZStack {
                                 VStack {
                                     if UIScreen.main.bounds.height <= 667 {
@@ -495,18 +512,20 @@ struct GameView: View {
                 )
         }
         .navigationBarHidden(true)
-        .onChange(of: board.cells) { _ in
-            if board.isGameOver() == true {
-                gameCenterController.isGameOver = true
-                self.gameCenterController.isPaused = true
-            }
-        }
+//        .onChange(of: board.cells) { _ in
+//            if board.isGameOver() == true {
+//                gameCenterController.isGameOver = true
+//                self.gameCenterController.isPaused = true
+//            }
+//        }
         .onChange(of: board.gameOver, perform: { newValue in
+            
             if newValue == true {
+//                gameCenterController.isGameOver = true
+//                self.gameCenterController.isPaused = true
                 if gameType == .ai && winner == .player2 {
                     remainingHearts -= 1
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
-                    print("hearts after losing a game: ", remainingHearts)
                 } else if gameType == .ai && winner == .player1 {
                     if gameCenterController.currentLevel == gameCenterController.achievedLevel {
                         let nextLevelId = gameCenterController.achievedLevel.id + 1
@@ -526,8 +545,7 @@ struct GameView: View {
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
                         gameCenterController.currentLevel = gameCenterController.achievedLevel
-                        print("Current level: ", gameCenterController.currentLevel.id)
-                        print("Achieved level: ", gameCenterController.achievedLevel.id)
+                    
                     }
                     
                     
@@ -538,7 +556,6 @@ struct GameView: View {
             }
         })
         .onChange(of: gameCenterController.remainingTime, perform: { newValue in
-            print("Remaining time: ", newValue)
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
@@ -632,6 +649,9 @@ struct GameView: View {
     
     func onMoveCompleted(_ move: Move) {
         if board.isGameOver() {
+            if gameType == .ai {
+                gameOverSounds()
+            }
             // Prepare the game over status
             let gameState = GameState(isPaused: true, isGameOver: true, currentPlayer: self.gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: self.gameCenterController.priority)
             let codableMove = CodableMove.fromMove(move)
@@ -686,7 +706,7 @@ struct GameView: View {
     }
     
     func performAIMoveAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             
             // Let the AI perform its move and get the converted pieces.
             if let convertedPieces = self.board.performAIMove() {
@@ -704,6 +724,7 @@ struct GameView: View {
 
                 // Check if the game is over.
                 if board.isGameOver() {
+                    gameOverSounds()
                     self.gameCenterController.isGameOver = true
                     self.gameCenterController.isPaused = true
                     return
@@ -722,6 +743,17 @@ struct GameView: View {
     func configurePauseMenu() {
         gameCenterController.isPaused.toggle()
         showPauseMenu.toggle()
+    }
+    private func gameOverSounds() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if board.countPieces().player1 > player2PieceCount {
+                SoundManager.shared.playOverSound()
+            } else if player1PieceCount < player2PieceCount {
+                SoundManager.shared.playLoseSound()
+            } else {
+                SoundManager.shared.playLoseSound()
+            }
+        }
     }
 }
 

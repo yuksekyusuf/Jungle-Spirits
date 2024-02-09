@@ -40,7 +40,6 @@ struct Temple_BeastsApp: App {
         updateHeartsBasedOnTimeElapsed()
         
         heartTimer = Timer.scheduledTimer(withTimeInterval: 1800, repeats: true) { _ in
-            print("hearts: ", UserDefaults.standard.integer(forKey: "hearts"))
             let hearts = UserDefaults.standard.integer(forKey: "hearts")
             if hearts < 5 {
                 let heart = UserDefaults.standard.integer(forKey: "hearts") + 1

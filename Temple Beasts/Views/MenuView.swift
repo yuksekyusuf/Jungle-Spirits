@@ -20,6 +20,8 @@ struct MenuView: View {
     @State private var selectedMap = 1
     let numberOfMaps = 3
     
+    @State private var showResetGameAlert = false
+
     
     @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
@@ -320,7 +322,7 @@ struct MenuView: View {
                                 HStack {
                                     Spacer()
                                     ZStack {
-                                        NavigationLink(destination: GameView(gameType: .multiplayer, gameSize: (4, 4), obstacles: [(2, 2)]), isActive: $gameCenterController.isMatched) {
+                                        NavigationLink(destination: GameView(gameType: .multiplayer, gameSize: (8, 5), obstacles: []), isActive: $gameCenterController.isMatched) {
                                             EmptyView()
                                         }
                                         Button {
@@ -588,7 +590,16 @@ struct MenuView: View {
                         ButtonView(text: "RATE US", width: 200, height: 50)
                             .padding(.top, 10)
                     }
+                    
+                    Button {
+                        showResetGameAlert = true
+                    } label: {
+                        ButtonView(text: "RESET GAME", width: 200, height: 50)
+                            .padding(.top, 10)
+
+                    }
                     Spacer()
+
                 }
                 .scaleEffect(showCreditScreen ? 1 : 0)
                 .allowsHitTesting(showCreditScreen)
@@ -735,7 +746,7 @@ struct MenuView: View {
     private func loadCurrentBundle(){
         
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
     }
 }
 

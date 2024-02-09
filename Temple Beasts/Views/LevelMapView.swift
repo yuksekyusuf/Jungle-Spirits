@@ -96,17 +96,15 @@ struct LevelButtonNavigation: View {
             } label: {
                 LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
             }.simultaneousGesture(TapGesture().onEnded({
-                print("Button tapped!")
                 if gameCenterController.remainingHearts > 0 {
                     gameCenterController.currentLevel = gameLevel
                     gameCenterController.path.append(gameLevel)
-                    print("Path updated: \(gameCenterController.path)")
                     isNavigationActive = true
                 } else {
                     showHeartStatus.toggle()
                 }
             }))
-            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
+//            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
         } else {
             ZStack {
                 NavigationLink {
@@ -122,8 +120,8 @@ struct LevelButtonNavigation: View {
                                 showHeartStatus.toggle()
                             }
                         }))
-                        .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
-                        .disabled(!(gameCenterController.remainingHearts > 0))
+//                        .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
+//                        .disabled(!(gameCenterController.remainingHearts > 0))
                         .opacity(0.1)
                         .allowsHitTesting(false)
                     

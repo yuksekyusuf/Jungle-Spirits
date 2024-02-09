@@ -279,7 +279,7 @@ extension View {
     func autotoggle(_ binding: Binding<Bool>, with animation: Animation = .default) -> some View {
         self
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     withAnimation(animation) {
                         binding.wrappedValue = true
                     }
