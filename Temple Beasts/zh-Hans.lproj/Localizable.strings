@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  Temple Beasts
+
+  Created by Ahmet Yusuf Yuksek on 15.09.2023.
+  
+*/
+
+"VERSUS_AI" = "进入丛林";
+"LOCAL_DUEL" = "本地对决";
+"ONLINE_BATTLE" = "在线";
+"HOW_TO_PLAY_TITLE" = "如何玩";
+"SELECTING_A_GEM_TITLE" = "选择宝石";
+"SELECTING_A_GEM_DESC" = "选择一颗宝石。注意到绿色和黄色区域了吗？那是魔法发生的地方！";
+"CLONING_TITLE" = "克隆";
+"CLONING_DESC" = "移动到绿色区域，你的宝石就会克隆自己。双倍的乐趣！";
+"TELEPORTATION_TITLE" = "传送";
+"TELEPORTATION_DESC" = "跳跃到黄色区域，你的宝石会传送。这是两格的跳跃！";
+"CONVERTING_ENEMIES_TITLE" = "转换敌人";
+"CONVERTING_ENEMIES_DESC" = "无论何时你的宝石触碰到敌人 - 无论是水平的、垂直的还是对角线的 - 他们就会加入你的行列！制定策略以最大化转换。";
+"OBJECTIVE_TITLE" = "目标";
+"OBJECTIVE_DESC" = "统治棋盘，转换更多敌人，并智胜对手。准备好征服了吗？";
+"NEXT" = "下一个";
+"GOT_IT" = "明白了！";
+"MUSIC" = "音乐";
+"SOUND" = "声音";
+"HEARTS" = "心";
+"NEXT_HEARTS" = "下一颗心在";
+"OK" = "好的";
+"HOW_TO_PLAY" = "如何玩";
+"RATE_US" = "给我们评分";
+"RESET_GAME" = "重置游戏";
+"DESIGNER" = "设计师";
+"DEVELOPER" = "开发者";
+"ONLY_IF" = "只有当你相信";
+"FIND_MAPS" = "你很快会在这里找到更多\n地图...";
+"BE_CONTINUED" = "未完待续...";
+"GETTING_HOT" = "变得热情";
+"CROSS_RIVER" = "过河";
+"INTO_VALLEY" = "进入山谷";
+"YOU_SURE" = "你确定吗？";
+"LOSE_PROGRESS" = "你将失去所有进度，游戏将重新开始。";
+"CANCEL" = "取消";
+"RESET_GAME_2" = "重置游戏";
+
+
+

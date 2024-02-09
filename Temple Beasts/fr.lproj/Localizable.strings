@@ -6,21 +6,40 @@
   
 */
 
-"VERSUS_AI" = "CONTRE IA";
+"VERSUS_AI" = "ENTRER DANS LA JUNGLE";
 "LOCAL_DUEL" = "DUEL LOCAL";
-"ONLINE_BATTLE" = "BATAILLE EN LIGNE";
+"ONLINE_BATTLE" = "EN LIGNE";
 "HOW_TO_PLAY_TITLE" = "Comment jouer";
-"SELECTING_A_GEM_TITLE" = "Sélection d'une gemme";
-"SELECTING_A_GEM_DESC" = "Sélectionnez une gemme. Vous voyez les zones vertes et jaunes? C'est là que la magie opère!";
+"SELECTING_A_GEM_TITLE" = "Sélectionner une gemme";
+"SELECTING_A_GEM_DESC" = "Sélectionnez une gemme. Remarquez les zones vertes et jaunes ? C'est là que la magie opère !";
 "CLONING_TITLE" = "Clonage";
-"CLONING_DESC" = "Déplacez-vous vers une zone verte, et votre gemme se clone. Double plaisir!";
+"CLONING_DESC" = "Déplacez-vous dans une zone verte et votre gemme se clone. Deux fois plus de plaisir !";
 "TELEPORTATION_TITLE" = "Téléportation";
-"TELEPORTATION_DESC" = "Sautez dans une zone jaune, et votre gemme se téléporte. C'est un saut de deux cases!";
+"TELEPORTATION_DESC" = "Sautez dans une zone jaune et votre gemme se téléporte. C'est un saut de deux cases !";
 "CONVERTING_ENEMIES_TITLE" = "Conversion des ennemis";
-"CONVERTING_ENEMIES_DESC" = "Chaque fois que votre gemme touche un ennemi - que ce soit horizontalement, verticalement ou en diagonale - ils rejoignent vos rangs! Élaborez une stratégie pour maximiser les conversions.";
+"CONVERTING_ENEMIES_DESC" = "Chaque fois que votre gemme touche un ennemi - horizontalement, verticalement ou en diagonale - ils rejoignent vos rangs ! Stratégisez pour maximiser les conversions.";
 "OBJECTIVE_TITLE" = "Objectif";
-"OBJECTIVE_DESC" = "Dominez le plateau, convertissez plus d'ennemis et déjouez votre adversaire. Prêt à conquérir?";
+"OBJECTIVE_DESC" = "Dominez le plateau, convertissez plus d'ennemis et soyez plus malin que votre adversaire. Prêt à conquérir ?";
 "NEXT" = "SUIVANT";
-"GOT_IT" = "COMPRIS!";
+"GOT_IT" = "COMPRIS !";
 "MUSIC" = "MUSIQUE";
 "SOUND" = "SON";
+"HEARTS" = "Cœurs";
+"NEXT_HEARTS" = "Prochains cœurs dans";
+"OK" = "D'ACCORD";
+"HOW_TO_PLAY" = "COMMENT JOUER";
+"RATE_US" = "NOTEZ-NOUS";
+"RESET_GAME" = "RÉINITIALISER";
+"DESIGNER" = "DESIGNER";
+"DEVELOPER" = "DÉVELOPPEUR";
+"ONLY_IF" = "Seulement si vous croyez";
+"FIND_MAPS" = "Vous trouverez plus \nde cartes ici bientôt...";
+"BE_CONTINUED" = "à suivre...";
+"GETTING_HOT" = "Ça chauffe";
+"CROSS_RIVER" = "Traverser la rivière";
+"INTO_VALLEY" = "Dans la vallée";
+"YOU_SURE" = "Êtes-vous sûr ?";
+"LOSE_PROGRESS" = "Vous perdrez tous vos progrès, et le jeu recommencera.";
+"CANCEL" = "Annuler";
+"RESET_GAME_2" = "Réinitialiser le jeu";
+

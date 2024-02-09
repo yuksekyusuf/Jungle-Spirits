@@ -7,21 +7,40 @@
 */
 
 
-"VERSUS_AI" = "AI'YA KARŞI";
+"VERSUS_AI" = "ORMANA GİRİN";
 "LOCAL_DUEL" = "YEREL DÜELLO";
-"ONLINE_BATTLE" = "ÇEVRİMİÇİ MÜCADELE";
+"ONLINE_BATTLE" = "ÇEVRİMİÇİ";
 "HOW_TO_PLAY_TITLE" = "Nasıl Oynanır";
-"SELECTING_A_GEM_TITLE" = "Taş Seçme";
-"SELECTING_A_GEM_DESC" = "Bir taş seçin. Yeşil ve sarı alanları fark ettiniz mi? İşte sihir burada başlıyor!";
+"SELECTING_A_GEM_TITLE" = "Bir Mücevher Seçmek";
+"SELECTING_A_GEM_DESC" = "Bir mücevher seçin. Yeşil ve sarı alanları fark ettiniz mi? İşte büyünün gerçekleştiği yer burası!";
 "CLONING_TITLE" = "Klonlama";
-"CLONING_DESC" = "Yeşil bir alana gidin ve taşınız kendini klonlar. İki kat daha eğlenceli!";
+"CLONING_DESC" = "Yeşil bir alana hareket edin ve mücevheriniz kendini klonlar. İki kat eğlence!";
 "TELEPORTATION_TITLE" = "Işınlanma";
-"TELEPORTATION_DESC" = "Sarı bir alana atlayın ve taşınız ışınlanır. İki kutucukluk bir sıçrama!";
+"TELEPORTATION_DESC" = "Sarı bir alana atlayın ve mücevheriniz ışınlanır. Bu iki karo atlamadır!";
 "CONVERTING_ENEMIES_TITLE" = "Düşmanları Dönüştürme";
-"CONVERTING_ENEMIES_DESC" = "Taşınız bir düşmana dokunduğunda - yatay, dikey veya çapraz olarak - onlar sizin saflarınıza katılır! Maksimum dönüşüm için strateji yapın.";
+"CONVERTING_ENEMIES_DESC" = "Mücevheriniz bir düşmana - ister yatay, ister dikey, ister çapraz - dokunduğunda, onlar sizin saflarınıza katılır! Dönüşümleri en üst düzeye çıkarmak için strateji yapın.";
 "OBJECTIVE_TITLE" = "Amaç";
-"OBJECTIVE_DESC" = "Tahtayı yönetin, daha fazla düşmanı dönüştürün ve rakibinizi alt edin. Fethetmeye hazır mısınız?";
-"NEXT" = "SONRAKİ";
+"OBJECTIVE_DESC" = "Tahtayı yönetin, daha fazla düşman dönüştürün ve rakibinizi alt edin. Fethetmeye hazır mısınız?";
+"NEXT" = "İLERİ";
 "GOT_IT" = "ANLADIM!";
 "MUSIC" = "MÜZİK";
 "SOUND" = "SES";
+"HEARTS" = "Kalpler";
+"NEXT_HEARTS" = "Sonraki kalpler";
+"OK" = "TAMAM";
+"HOW_TO_PLAY" = "NASIL OYNANIR";
+"RATE_US" = "BİZİ DEĞERLENDİRİN";
+"RESET_GAME" = "OYUNU SIFIRLA";
+"DESIGNER" = "TASARIMCI";
+"DEVELOPER" = "GELİŞTİRİCİ";
+"ONLY_IF" = "Sadece inanıyorsanız";
+"FIND_MAPS" = "Yakında burada daha fazla \nharita bulacaksınız...";
+"BE_CONTINUED" = "devam edecek...";
+"GETTING_HOT" = "Isınıyor";
+"CROSS_RIVER" = "Nehri geçmek";
+"INTO_VALLEY" = "Vadiye doğru";
+"YOU_SURE" = "Emin misiniz?";
+"LOSE_PROGRESS" = "Tüm ilerlemenizi kaybedeceksiniz ve oyun yeniden başlayacak.";
+"CANCEL" = "İptal";
+"RESET_GAME_2" = "Oyunu Sıfırla";
+

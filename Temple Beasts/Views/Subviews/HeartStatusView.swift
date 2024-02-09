@@ -9,8 +9,23 @@ import SwiftUI
 
 struct HeartStatusView: View {
     let heartCount: Int
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
+    
+    var hearts: String {
+        appLanguageManager.localizedStringForKey("HEARTS", language: appLanguageManager.currentLanguage)
+    }
+    
+    var next_hearts: String {
+        appLanguageManager.localizedStringForKey("NEXT_HEARTS", language: appLanguageManager.currentLanguage)
+    }
+    
+    var okay: String {
+        appLanguageManager.localizedStringForKey("OK", language: appLanguageManager.currentLanguage)
+    }
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -43,7 +58,7 @@ struct HeartStatusView: View {
                         .frame(width: 148, height: 42, alignment: .center)
                         .cornerRadius(14)
                         .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-                    Text("OKAY")
+                    Text(okay)
                         .font(Font.custom("TempleGemsRegular", size: 24))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
@@ -55,14 +70,14 @@ struct HeartStatusView: View {
             }
             .offset(y: 80)
             VStack {
-                Text("\(heartCount) Hearts")
+                Text("\(heartCount) \(hearts.capitalizedSentence)")
                 .font(Font.custom("Watermelon", size: 32))
                 .kerning(0.96)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
                 .padding(.top, 10)
                 .padding(.bottom, 5)
-                Text("Next life in \(nextHeartTime)")
+                Text("\(next_hearts) \(nextHeartTime)")
                   .font(Font.custom("Temple Gems", size: 20))
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
@@ -90,12 +105,21 @@ struct HeartStatusView: View {
         }
         
     }
+    
+    func localizedStringForKey(_ key: String, language: String) -> String {
+        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
 }
 
 struct HeartStatusView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isPresentTrue = true
         @State var remainingTime = "9:27"
-        HeartStatusView(heartCount: 0, nextHeartTime: $remainingTime, isPresent: $isPresentTrue)
+        HeartStatusView(heartCount: 0, nextHeartTime: $remainingTime, isPresent: $isPresentTrue).environmentObject(AppLanguageManager())
+            
     }
 }
+
+

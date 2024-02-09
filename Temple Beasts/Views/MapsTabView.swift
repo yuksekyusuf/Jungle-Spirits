@@ -10,7 +10,6 @@ import Pow
 
 struct MapsTabView: View {
     let mapNumber: Int
-    let mapName: String
     let levelBundle: GameLevelBundle
     @Binding var heartStatus: Bool
     @State private var showSeal = UserDefaults.standard.bool(forKey: "firstShowMap")
@@ -47,7 +46,7 @@ struct MapsTabView: View {
 struct MapsTabView_Previews: PreviewProvider {
     static var previews: some View {
         @State var status = false
-        MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle3, heartStatus: $status).environmentObject(GameCenterManager(currentPlayer: .player1))
+        MapsTabView(mapNumber: 1, levelBundle: GameLevelBundle.bundle3, heartStatus: $status).environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }
 

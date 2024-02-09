@@ -24,4 +24,23 @@
 "GOT_IT" = "GOT IT!";
 "MUSIC" = "MUSIC";
 "SOUND" = "SOUND";
+"HEARTS" = "Hearts";
+"NEXT_HEARTS" = "Next hearts in";
+"OK" = "OKAY";
+"HOW_TO_PLAY" = "HOW TO PLAY";
+"RATE_US" = "RATE US";
+"RESET_GAME" = "RESET GAME";
+"DESIGNER" = "DESIGNER";
+"DEVELOPER" = "DEVELOPER";
+"ONLY_IF" = "Only if you believe";
+"FIND_MAPS" = "You will find more \nmaps here soon...";
+"BE_CONTINUED" = "to be continued...";
+"GETTING_HOT" = "Getting hot";
+"CROSS_RIVER" = "Crossing the river";
+"INTO_VALLEY" = "Into the valley";
+"YOU_SURE" = "Are you sure?";
+"LOSE_PROGRESS" = "You will lose all your progress, and the game will start over.";
+"CANCEL" = "Cancel";
+"RESET_GAME_2" = "Reset Game";
+
 

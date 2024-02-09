@@ -230,6 +230,8 @@ struct GameView: View {
 
                                         }
                                     }
+                                    .opacity(showWinMenu ? 0 : 1)
+
                                     HStack {
                                         if gameType == .multiplayer {
                                             TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
@@ -353,6 +355,8 @@ struct GameView: View {
                                             
                                         }
                                     }
+                                    .opacity(showWinMenu ? 0 : 1)
+
                                     HStack {
                                         if gameType == .multiplayer {
                                             TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
@@ -400,21 +404,21 @@ struct GameView: View {
                                                 if showWinMenu {
                                                     withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
                                                         showWinMenu.toggle()
-            //                                            gameCenterController.isPaused.toggle()
+                                                        showOverLay = false
+                                                        //                                            gameCenterController.isPaused.toggle()
                                                     }
                                                 }
                                             }
-
+                                        
                                     }
-                                                                    }
+                                }
                                 .onAppear {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                         withAnimation {
-                                            showOverLay.toggle()
+                                            showOverLay = true
                                         }
                                     }
                                 }
-                                
                             }
                         
                         
@@ -426,11 +430,45 @@ struct GameView: View {
                             ZStack {
                                 VStack {
                                     if UIScreen.main.bounds.height <= 667 {
-                                        HeartView(hearts: remainingHearts)
-                                            .padding(.top, 15)
+                                        HStack(alignment: .top) {
+                                            Image("Red Eye Open")
+                                                .frame(width: 55)
+                                                .padding(.leading, 20)
+                                                .padding(.top, 17)
+                                            PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                .padding(.top, 25)
+                                            Spacer()
+                                            HeartView(hearts: remainingHearts)
+                                                .padding(.top, 15)
+                                            Spacer()
+                                            PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                .padding(.top, 25)
+                                            Image("Blue Eye Open")
+                                                .frame(width: 55)
+                                                .padding(.trailing, 20)
+                                                .padding(.top, 17)
+                                        }
                                     } else {
-                                        HeartView(hearts: remainingHearts)
-                                            .padding(.top, 70)
+                                        HStack(alignment: .top) {
+                                            Image("Red Eye Open")
+                                                .frame(width: 55)
+                                                .padding(.leading, 20)
+                                                .padding(.top, 70)
+                                            PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                .padding(.top, 73)
+                                            Spacer()
+                                            HeartView(hearts: remainingHearts)
+                                                .padding(.top, 70)
+                                            Spacer()
+                                            PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                .padding(.top, 73)
+                                            Image("Blue Eye Open")
+                                                .frame(width: 55)
+                                                .padding(.trailing, 20)
+                                                .padding(.top, 70)
+                                            
+                                        }
+                                       
                                     }
                                     Spacer()
                                 }

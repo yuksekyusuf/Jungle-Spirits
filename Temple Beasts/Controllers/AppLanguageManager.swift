@@ -20,4 +20,10 @@ class AppLanguageManager: ObservableObject {
         UserDefaults.standard.set(language, forKey: "AppLanguage")
         currentLanguage = language
     }
+    
+    func localizedStringForKey(_ key: String, language: String) -> String {
+        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+        let bundle = Bundle(path: path!)
+        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+    }
 }

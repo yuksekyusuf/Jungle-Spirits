@@ -44,6 +44,7 @@
 		4D5FB6A52B760E2B00776CBB /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6A42B760E2B00776CBB /* SwiftUIIntrospect-Static */; };
 		4D5FB6A72B760EA300776CBB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6A62B760EA300776CBB /* SwiftUIIntrospect */; };
 		4D5FB6AB2B760EA300776CBB /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6AA2B760EA300776CBB /* SwiftUIIntrospect-Static */; };
+		4D5FB6B02B76C5C400776CBB /* Ext+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */; };
 		4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */; };
 		4D60E7102B1BCD7700762875 /* logo2.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D60E70F2B1BCD7700762875 /* logo2.json */; };
 		4D60E7122B1C3C4600762875 /* Red Guy Win.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D60E7112B1C3C4600762875 /* Red Guy Win.json */; };
@@ -134,6 +135,8 @@
 		4D4F35CB2B1D83D3009CBC48 /* Red guy fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Red guy fail.json"; sourceTree = "<group>"; };
 		4D4F35CD2B1D879C009CBC48 /* story.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = story.mp4; sourceTree = "<group>"; };
 		4D5E69452AB9CD030089CAB6 /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
+		4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+String.swift"; sourceTree = "<group>"; };
+		4D5FB6B12B76D7E000776CBB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartStatusView.swift; sourceTree = "<group>"; };
 		4D60E70F2B1BCD7700762875 /* logo2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo2.json; sourceTree = "<group>"; };
 		4D60E7112B1C3C4600762875 /* Red Guy Win.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Red Guy Win.json"; sourceTree = "<group>"; };
@@ -240,6 +243,14 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		4D5FB6AE2B76C5AE00776CBB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		4D6401332A89F61600917EC8 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +298,7 @@
 				4DED05552A31448900B2362A /* Assets */,
 				4D3A83CD2A0D33200059E2F0 /* Model */,
 				4D70D24D2A05545B002E9C0A /* Views */,
+				4D5FB6AE2B76C5AE00776CBB /* Helpers */,
 				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
 				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
 				4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */,
@@ -418,6 +430,7 @@
 				fr,
 				de,
 				es,
+				"zh-Hans",
 			);
 			mainGroup = 4D70D2322A05518F002E9C0A;
 			packageReferences = (
@@ -503,6 +516,7 @@
 				4DA0C7D02B05CF4100DDEE99 /* VideoPlayerView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
 				4DA0C7CC2AFF293700DDEE99 /* LevelMapView.swift in Sources */,
+				4D5FB6B02B76C5C400776CBB /* Ext+String.swift in Sources */,
 				4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
@@ -532,6 +546,7 @@
 				4D231DE82AB4FBA800F2D12A /* de */,
 				4D231DE92AB4FBA800F2D12A /* tr */,
 				4D231DEA2AB4FC1E00F2D12A /* es */,
+				4D5FB6B12B76D7E000776CBB /* zh-Hans */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

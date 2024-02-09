@@ -10,6 +10,8 @@ import SwiftUIIntrospect
 
 struct CreditView: View {
     @Environment(\.openURL) var openURL
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+
     let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
 //    @State private var scrollOffset: Int = 0
     @State private var autoScrolling = false
@@ -18,101 +20,100 @@ struct CreditView: View {
     @State private var contentOffset: CGPoint = .zero
 
     @Binding var isPresent: Bool
+    
+    var designer: String {
+        appLanguageManager.localizedStringForKey("DESIGNER", language: appLanguageManager.currentLanguage)
+    }
+    
+    var developer: String {
+        appLanguageManager.localizedStringForKey("DEVELOPER", language: appLanguageManager.currentLanguage)
+    }
     private var overlayView: some View {
         ZStack{
             
             ScrollViewReader { proxy in
                 
-                ScrollableView(self.$contentOffset, animationDuration: 6.0, showsScrollIndicator: false, axis: .vertical) {
-//                ScrollView(.vertical, showsIndicators: false) {
-                    LazyVStack {
-                        Color.clear.frame(height: 1).id(1)
-
-                        Image("CreditLogo")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 270, height: 168)
-                            .padding(.top, 48)
-//                            .id(1)
-                        Image("CreditLine")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 164, height: 48)
-                            .padding(.top, 10)
-                     
-
-                        VStack(spacing: 0) {
-                            Text("YASIR")
-                                .font(Font.custom("TempleGemsRegular", size: 28))
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                .padding(.top, 20)
-
-                            Text("DESIGNER")
-                                .font(Font.custom("TempleGemsRegular", size: 23))
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
-                                .offset(y: -10)
-                            Button {
-                                openURL(URL(string: "https://twitter.com/yasirbugra")!)
-                            } label: {
-                                Image("YasirButton")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .offset(y: -10)
-                                    .id(2)
-
-                            }
-
-                            VStack(spacing: 0) {
-                                Text("YUSUF")
-                                    .font(Font.custom("TempleGemsRegular", size: 28))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                    .padding(.top, 32)
-                                Text("DEVELOPER")
-                                    .font(Font.custom("TempleGemsRegular", size: 23))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
-                                    .offset(y: -10)
-                                Button {
-                                    openURL(URL(string: "https://twitter.com/ay_yuksek")!)
-                                } label: {
-                                    Image("YusufButton")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .offset(y: -10)
-                                }
-
-                            }
-                            .offset(y: -32)
-                            
-                            Text("MADE IN NYC . 2023")
-                                .font(Font.custom("TempleGemsRegular", size: 18))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
-                                .offset(y: -24)
-                                .id(3)
-
-                            
-                        }
-                        .frame(width: 168)
-                        Color.clear.frame(height: 1).id("end")
-
-                    }
-                    .frame(width: 270)
-                    .onAppear {
-    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            self.contentOffset = CGPoint(x: 0, y: (400))
-    //                    proxy.scrollTo("end")
-    //                    }
-                    }
-                }
-//                .introspectScrollView { $0.setValue(5.0, forKeyPath: "contentOffsetAnimationDuration")}
-
-//                .introspectScrollView { $0.setValue(5.0, forKeyPath: "contentOffsetAnimationDuration")}
-                .background {
-                    Image("CreditBackground")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 284, height: 302)
-                }
+//                ScrollableView(self.$contentOffset, animationDuration: 6.0, showsScrollIndicator: false, axis: .vertical) {
+////                ScrollView(.vertical, showsIndicators: false) {
+//                    LazyVStack {
+//                        Color.clear.frame(height: 1).id(1)
+//
+//                        Image("CreditLogo")
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(width: 270, height: 168)
+//                            .padding(.top, 48)
+////                            .id(1)
+//                        Image("CreditLine")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 164, height: 48)
+//                            .padding(.top, 10)
+//                     
+//
+//                        VStack(spacing: 0) {
+//                            Text("YASIR")
+//                                .font(Font.custom("TempleGemsRegular", size: 28))
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+//                                .padding(.top, 20)
+//
+//                            Text("DESIGNER")
+//                                .font(Font.custom("TempleGemsRegular", size: 23))
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
+//                                .offset(y: -10)
+//                            Button {
+//                                openURL(URL(string: "https://twitter.com/yasirbugra")!)
+//                            } label: {
+//                                Image("YasirButton")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .offset(y: -10)
+//                                    .id(2)
+//
+//                            }
+//
+//                            VStack(spacing: 0) {
+//                                Text("YUSUF")
+//                                    .font(Font.custom("TempleGemsRegular", size: 28))
+//                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+//                                    .padding(.top, 32)
+//                                Text("DEVELOPER")
+//                                    .font(Font.custom("TempleGemsRegular", size: 23))
+//                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
+//                                    .offset(y: -10)
+//                                Button {
+//                                    openURL(URL(string: "https://twitter.com/ay_yuksek")!)
+//                                } label: {
+//                                    Image("YusufButton")
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .offset(y: -10)
+//                                }
+//
+//                            }
+//                            .offset(y: -32)
+//                            Text("MADE IN NYC . 2023")
+//                                .font(Font.custom("TempleGemsRegular", size: 18))
+//                                .multilineTextAlignment(.center)
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             .frame(width: 211, alignment: .center)
+//                                .offset(y: -24)
+//                                .id(3)
+//                        }
+//                        .frame(width: 168)
+//                        Color.clear.frame(height: 1).id("end")
+//                    }
+//                    .frame(width: 270)
+//                    .onAppear {
+//                            self.contentOffset = CGPoint(x: 0, y: (400))
+//                    }
+//                }
+//
+//                .background {
+//                    Image("CreditBackground")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 284, height: 302)
+//                }
               
 //                .onReceive(timer, perform: { _ in
 //                    if autoScrolling {
@@ -272,219 +273,219 @@ struct CreditView: View {
     }
 }
 
-struct CreditView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var present = true
-        CreditView(isPresent: $present)
-    }
-}
+//struct CreditView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        @State var present = true
+//        CreditView(isPresent: $present)
+//    }
+//}
 
 
 
-struct ScrollableView<Content: View>: UIViewControllerRepresentable, Equatable {
-
-    // MARK: - Coordinator
-    final class Coordinator: NSObject, UIScrollViewDelegate {
-        
-        // MARK: - Properties
-        private let scrollView: UIScrollView
-        var offset: Binding<CGPoint>
-
-        // MARK: - Init
-        init(_ scrollView: UIScrollView, offset: Binding<CGPoint>) {
-            self.scrollView          = scrollView
-            self.offset              = offset
-            super.init()
-            self.scrollView.delegate = self
-        }
-        
-        // MARK: - UIScrollViewDelegate
-        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            DispatchQueue.main.async {
-                self.offset.wrappedValue = scrollView.contentOffset
-            }
-        }
-    }
-    
-    // MARK: - Type
-    typealias UIViewControllerType = UIScrollViewController<Content>
-    
-    // MARK: - Properties
-    var offset: Binding<CGPoint>
-    var animationDuration: TimeInterval
-    var showsScrollIndicator: Bool
-    var axis: Axis
-    var content: () -> Content
-    var onScale: ((CGFloat)->Void)?
-    var disableScroll: Bool
-    var forceRefresh: Bool
-    var stopScrolling: Binding<Bool>
-    private let scrollViewController: UIViewControllerType
-
-    // MARK: - Init
-    init(_ offset: Binding<CGPoint>, animationDuration: TimeInterval, showsScrollIndicator: Bool = true, axis: Axis = .vertical, onScale: ((CGFloat)->Void)? = nil, disableScroll: Bool = false, forceRefresh: Bool = false, stopScrolling: Binding<Bool> = .constant(false),  @ViewBuilder content: @escaping () -> Content) {
-        self.offset               = offset
-        self.onScale              = onScale
-        self.animationDuration    = animationDuration
-        self.content              = content
-        self.showsScrollIndicator = showsScrollIndicator
-        self.axis                 = axis
-        self.disableScroll        = disableScroll
-        self.forceRefresh         = forceRefresh
-        self.stopScrolling        = stopScrolling
-        self.scrollViewController = UIScrollViewController(rootView: self.content(), offset: self.offset, axis: self.axis, onScale: self.onScale)
-    }
-    
-    // MARK: - Updates
-    func makeUIViewController(context: UIViewControllerRepresentableContext<Self>) -> UIViewControllerType {
-        self.scrollViewController
-    }
-
-    func updateUIViewController(_ viewController: UIViewControllerType, context: UIViewControllerRepresentableContext<Self>) {
-        
-        viewController.scrollView.showsVerticalScrollIndicator   = self.showsScrollIndicator
-        viewController.scrollView.showsHorizontalScrollIndicator = self.showsScrollIndicator
-        viewController.updateContent(self.content)
-
-        let duration: TimeInterval                = self.duration(viewController)
-        let newValue: CGPoint                     = self.offset.wrappedValue
-        viewController.scrollView.isScrollEnabled = !self.disableScroll
-        
-        if self.stopScrolling.wrappedValue {
-            viewController.scrollView.setContentOffset(viewController.scrollView.contentOffset, animated:false)
-            return
-        }
-        
-        guard duration != .zero else {
-            viewController.scrollView.contentOffset = newValue
-            return
-        }
-        
-        UIView.animate(withDuration: duration, delay: 1, options: [.allowUserInteraction, .curveEaseInOut, .beginFromCurrentState], animations: {
-            viewController.scrollView.contentOffset = newValue
-        }, completion: nil)
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self.scrollViewController.scrollView, offset: self.offset)
-    }
-    
-    //Calcaulte max offset
-    private func newContentOffset(_ viewController: UIViewControllerType, newValue: CGPoint) -> CGPoint {
-        
-        let maxOffsetViewFrame: CGRect = viewController.view.frame
-        let maxOffsetFrame: CGRect     = viewController.hostingController.view.frame
-        let maxOffsetX: CGFloat        = maxOffsetFrame.maxX - maxOffsetViewFrame.maxX
-        let maxOffsetY: CGFloat        = maxOffsetFrame.maxY - maxOffsetViewFrame.maxY
-        
-        return CGPoint(x: min(newValue.x, maxOffsetX), y: min(newValue.y, maxOffsetY))
-    }
-    
-    //Calculate animation speed
-    private func duration(_ viewController: UIViewControllerType) -> TimeInterval {
-        
-        var diff: CGFloat = 0
-        
-        switch axis {
-            case .horizontal:
-                diff = abs(viewController.scrollView.contentOffset.x - self.offset.wrappedValue.x)
-            default:
-                diff = abs(viewController.scrollView.contentOffset.y - self.offset.wrappedValue.y)
-        }
-        
-        if diff == 0 {
-            return .zero
-        }
-        
-        let percentageMoved = diff / UIScreen.main.bounds.height
-        
-        return self.animationDuration * min(max(TimeInterval(percentageMoved), 0.25), 1)
-    }
-    
-    // MARK: - Equatable
-    static func == (lhs: ScrollableView, rhs: ScrollableView) -> Bool {
-        return !lhs.forceRefresh && lhs.forceRefresh == rhs.forceRefresh
-    }
-}
-
-final class UIScrollViewController<Content: View> : UIViewController, ObservableObject {
-
-    // MARK: - Properties
-    var offset: Binding<CGPoint>
-    var onScale: ((CGFloat)->Void)?
-    let hostingController: UIHostingController<Content>
-    private let axis: Axis
-    lazy var scrollView: UIScrollView = {
-        
-        let scrollView                                       = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.canCancelContentTouches                   = true
-        scrollView.delaysContentTouches                      = true
-        scrollView.scrollsToTop                              = false
-        scrollView.backgroundColor                           = .clear
-        
-        if self.onScale != nil {
-            scrollView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(self.onGesture)))
-        }
-        
-        return scrollView
-    }()
-    
-    @objc func onGesture(gesture: UIPinchGestureRecognizer) {
-        self.onScale?(gesture.scale)
-    }
-
-    // MARK: - Init
-    init(rootView: Content, offset: Binding<CGPoint>, axis: Axis, onScale: ((CGFloat)->Void)?) {
-        self.offset                                 = offset
-        self.hostingController                      = UIHostingController<Content>(rootView: rootView)
-        self.hostingController.view.backgroundColor = .clear
-        self.axis                                   = axis
-        self.onScale                                = onScale
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    // MARK: - Update
-    func updateContent(_ content: () -> Content) {
-        
-        self.hostingController.rootView = content()
-        self.scrollView.addSubview(self.hostingController.view)
-        
-        var contentSize: CGSize = self.hostingController.view.intrinsicContentSize
-        
-        switch axis {
-            case .vertical:
-                contentSize.width = self.scrollView.frame.width
-            case .horizontal:
-                contentSize.height = self.scrollView.frame.height
-        }
-        
-        self.hostingController.view.frame.size = contentSize
-        self.scrollView.contentSize            = contentSize
-        self.view.updateConstraintsIfNeeded()
-        self.view.layoutIfNeeded()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.addSubview(self.scrollView)
-        self.createConstraints()
-        self.view.setNeedsUpdateConstraints()
-        self.view.updateConstraintsIfNeeded()
-        self.view.layoutIfNeeded()
-    }
-    
-    // MARK: - Constraints
-    fileprivate func createConstraints() {
-        NSLayoutConstraint.activate([
-            self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
-    }
-}
+//struct ScrollableView<Content: View>: UIViewControllerRepresentable, Equatable {
+//
+//    // MARK: - Coordinator
+//    final class Coordinator: NSObject, UIScrollViewDelegate {
+//        
+//        // MARK: - Properties
+//        private let scrollView: UIScrollView
+//        var offset: Binding<CGPoint>
+//
+//        // MARK: - Init
+//        init(_ scrollView: UIScrollView, offset: Binding<CGPoint>) {
+//            self.scrollView          = scrollView
+//            self.offset              = offset
+//            super.init()
+//            self.scrollView.delegate = self
+//        }
+//        
+//        // MARK: - UIScrollViewDelegate
+//        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//            DispatchQueue.main.async {
+//                self.offset.wrappedValue = scrollView.contentOffset
+//            }
+//        }
+//    }
+//    
+//    // MARK: - Type
+//    typealias UIViewControllerType = UIScrollViewController<Content>
+//    
+//    // MARK: - Properties
+//    var offset: Binding<CGPoint>
+//    var animationDuration: TimeInterval
+//    var showsScrollIndicator: Bool
+//    var axis: Axis
+//    var content: () -> Content
+//    var onScale: ((CGFloat)->Void)?
+//    var disableScroll: Bool
+//    var forceRefresh: Bool
+//    var stopScrolling: Binding<Bool>
+//    private let scrollViewController: UIViewControllerType
+//
+//    // MARK: - Init
+//    init(_ offset: Binding<CGPoint>, animationDuration: TimeInterval, showsScrollIndicator: Bool = true, axis: Axis = .vertical, onScale: ((CGFloat)->Void)? = nil, disableScroll: Bool = false, forceRefresh: Bool = false, stopScrolling: Binding<Bool> = .constant(false),  @ViewBuilder content: @escaping () -> Content) {
+//        self.offset               = offset
+//        self.onScale              = onScale
+//        self.animationDuration    = animationDuration
+//        self.content              = content
+//        self.showsScrollIndicator = showsScrollIndicator
+//        self.axis                 = axis
+//        self.disableScroll        = disableScroll
+//        self.forceRefresh         = forceRefresh
+//        self.stopScrolling        = stopScrolling
+//        self.scrollViewController = UIScrollViewController(rootView: self.content(), offset: self.offset, axis: self.axis, onScale: self.onScale)
+//    }
+//    
+//    // MARK: - Updates
+//    func makeUIViewController(context: UIViewControllerRepresentableContext<Self>) -> UIViewControllerType {
+//        self.scrollViewController
+//    }
+//
+//    func updateUIViewController(_ viewController: UIViewControllerType, context: UIViewControllerRepresentableContext<Self>) {
+//        
+//        viewController.scrollView.showsVerticalScrollIndicator   = self.showsScrollIndicator
+//        viewController.scrollView.showsHorizontalScrollIndicator = self.showsScrollIndicator
+//        viewController.updateContent(self.content)
+//
+//        let duration: TimeInterval                = self.duration(viewController)
+//        let newValue: CGPoint                     = self.offset.wrappedValue
+//        viewController.scrollView.isScrollEnabled = !self.disableScroll
+//        
+//        if self.stopScrolling.wrappedValue {
+//            viewController.scrollView.setContentOffset(viewController.scrollView.contentOffset, animated:false)
+//            return
+//        }
+//        
+//        guard duration != .zero else {
+//            viewController.scrollView.contentOffset = newValue
+//            return
+//        }
+//        
+//        UIView.animate(withDuration: duration, delay: 1, options: [.allowUserInteraction, .curveEaseInOut, .beginFromCurrentState], animations: {
+//            viewController.scrollView.contentOffset = newValue
+//        }, completion: nil)
+//    }
+//    
+//    func makeCoordinator() -> Coordinator {
+//        Coordinator(self.scrollViewController.scrollView, offset: self.offset)
+//    }
+//    
+//    //Calcaulte max offset
+//    private func newContentOffset(_ viewController: UIViewControllerType, newValue: CGPoint) -> CGPoint {
+//        
+//        let maxOffsetViewFrame: CGRect = viewController.view.frame
+//        let maxOffsetFrame: CGRect     = viewController.hostingController.view.frame
+//        let maxOffsetX: CGFloat        = maxOffsetFrame.maxX - maxOffsetViewFrame.maxX
+//        let maxOffsetY: CGFloat        = maxOffsetFrame.maxY - maxOffsetViewFrame.maxY
+//        
+//        return CGPoint(x: min(newValue.x, maxOffsetX), y: min(newValue.y, maxOffsetY))
+//    }
+//    
+//    //Calculate animation speed
+//    private func duration(_ viewController: UIViewControllerType) -> TimeInterval {
+//        
+//        var diff: CGFloat = 0
+//        
+//        switch axis {
+//            case .horizontal:
+//                diff = abs(viewController.scrollView.contentOffset.x - self.offset.wrappedValue.x)
+//            default:
+//                diff = abs(viewController.scrollView.contentOffset.y - self.offset.wrappedValue.y)
+//        }
+//        
+//        if diff == 0 {
+//            return .zero
+//        }
+//        
+//        let percentageMoved = diff / UIScreen.main.bounds.height
+//        
+//        return self.animationDuration * min(max(TimeInterval(percentageMoved), 0.25), 1)
+//    }
+//    
+//    // MARK: - Equatable
+//    static func == (lhs: ScrollableView, rhs: ScrollableView) -> Bool {
+//        return !lhs.forceRefresh && lhs.forceRefresh == rhs.forceRefresh
+//    }
+//}
+//
+//final class UIScrollViewController<Content: View> : UIViewController, ObservableObject {
+//
+//    // MARK: - Properties
+//    var offset: Binding<CGPoint>
+//    var onScale: ((CGFloat)->Void)?
+//    let hostingController: UIHostingController<Content>
+//    private let axis: Axis
+//    lazy var scrollView: UIScrollView = {
+//        
+//        let scrollView                                       = UIScrollView()
+//        scrollView.translatesAutoresizingMaskIntoConstraints = false
+//        scrollView.canCancelContentTouches                   = true
+//        scrollView.delaysContentTouches                      = true
+//        scrollView.scrollsToTop                              = false
+//        scrollView.backgroundColor                           = .clear
+//        
+//        if self.onScale != nil {
+//            scrollView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(self.onGesture)))
+//        }
+//        
+//        return scrollView
+//    }()
+//    
+//    @objc func onGesture(gesture: UIPinchGestureRecognizer) {
+//        self.onScale?(gesture.scale)
+//    }
+//
+//    // MARK: - Init
+//    init(rootView: Content, offset: Binding<CGPoint>, axis: Axis, onScale: ((CGFloat)->Void)?) {
+//        self.offset                                 = offset
+//        self.hostingController                      = UIHostingController<Content>(rootView: rootView)
+//        self.hostingController.view.backgroundColor = .clear
+//        self.axis                                   = axis
+//        self.onScale                                = onScale
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    // MARK: - Update
+//    func updateContent(_ content: () -> Content) {
+//        
+//        self.hostingController.rootView = content()
+//        self.scrollView.addSubview(self.hostingController.view)
+//        
+//        var contentSize: CGSize = self.hostingController.view.intrinsicContentSize
+//        
+//        switch axis {
+//            case .vertical:
+//                contentSize.width = self.scrollView.frame.width
+//            case .horizontal:
+//                contentSize.height = self.scrollView.frame.height
+//        }
+//        
+//        self.hostingController.view.frame.size = contentSize
+//        self.scrollView.contentSize            = contentSize
+//        self.view.updateConstraintsIfNeeded()
+//        self.view.layoutIfNeeded()
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        self.view.addSubview(self.scrollView)
+//        self.createConstraints()
+//        self.view.setNeedsUpdateConstraints()
+//        self.view.updateConstraintsIfNeeded()
+//        self.view.layoutIfNeeded()
+//    }
+//    
+//    // MARK: - Constraints
+//    fileprivate func createConstraints() {
+//        NSLayoutConstraint.activate([
+//            self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//            self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+//            self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+//        ])
+//    }
+//}

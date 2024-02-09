@@ -69,8 +69,8 @@ struct MenuView: View {
     //    // To periodically check for heart updates
     //    @State var heartTimer: Timer?
     
-    let availableLanguages = ["en", "tr", "de", "fr", "es"]
-    let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español"]
+    let availableLanguages = ["en", "tr", "de", "fr", "es", "zh"]
+//    let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español", "Chinese"]
     
     
     var versusAI: String {
@@ -85,7 +85,73 @@ struct MenuView: View {
         localizedStringForKey("ONLINE_BATTLE", language: appLanguageManager.currentLanguage)
     }
     
+    var howToPlay: String {
+        localizedStringForKey("HOW_TO_PLAY", language: appLanguageManager.currentLanguage)
+
+    }
+
+    var rateUs: String {
+        localizedStringForKey("RATE_US", language: appLanguageManager.currentLanguage)
+
+    }
     
+    var resetGame: String {
+        localizedStringForKey("RESET_GAME", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    var onlyIf: String {
+        localizedStringForKey("ONLY_IF", language: appLanguageManager.currentLanguage)
+
+    }
+    
+
+    var findMaps: String {
+        localizedStringForKey("FIND_MAPS", language: appLanguageManager.currentLanguage)
+
+    }
+    var beContinued: String {
+        localizedStringForKey("BE_CONTINUED", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    
+    var gettingHot: String {
+        localizedStringForKey("GETTING_HOT", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    var crossRiver: String {
+        localizedStringForKey("CROSS_RIVER", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    
+    var intoValley: String {
+        localizedStringForKey("INTO_VALLEY", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    
+    var areYouSure: String {
+        localizedStringForKey("YOU_SURE", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    var loseProgress: String {
+        localizedStringForKey("LOSE_PROGRESS", language: appLanguageManager.currentLanguage)
+
+    }
+    
+    var cancel: String {
+        localizedStringForKey("CANCEL", language: appLanguageManager.currentLanguage)
+
+    }
+    var resetGame2: String {
+        localizedStringForKey("RESET_GAME_2", language: appLanguageManager.currentLanguage)
+    }
+    
+
     let buttonWidth = UIScreen.main.bounds.width * 0.8
     let singleButtonWidth = UIScreen.main.bounds.width * 0.40
     let smallButtonWidth = UIScreen.main.bounds.width * 0.18
@@ -218,23 +284,21 @@ struct MenuView: View {
                                         
                                         if selectedMap == 4 {
                                             VStack(spacing: 0) {
-                                                Spacer()
-                                                Spacer()
-                                                Spacer()
-                                                Text("Only if you believe")
+                                                Text(onlyIf.capitalizedSentence)
                                                     .font(.custom("TempleGemsRegular", size: 24))
                                                     .foregroundColor(.white)
                                                     .stroke(color: .black, width: 1.0)
                                                     .shadow(color: .black, radius: 0, x: 0, y: 3)
-                                                Text("You will find more \nmaps here soon...")
+                                                Text(findMaps.capitalizedSentence)
                                                     .font(.custom("TempleGemsRegular", size: 22))
                                                     .foregroundColor(Color(#colorLiteral(red: 0.63, green: 0.64, blue: 1, alpha: 1)))
                                                     .tracking(0.72)
                                                     .multilineTextAlignment(.center)
                                                     .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.25)), radius:0, x:0, y:1)
                                                     .padding(.bottom, 30)
-                                                Spacer()
+//                                                Spacer()
                                             }
+                                            .padding(.top, UIScreen.main.bounds.height * 0.3)
                                         }
                                         
                                         
@@ -244,30 +308,30 @@ struct MenuView: View {
                                     
                                     TabView(selection: $selectedMap) {
                                         VStack {
-                                            ExtractedView(id: "1. ", title: "Into the valley")
-                                            MapsTabView(mapNumber: 1, mapName: "Into the valley", levelBundle: GameLevelBundle.bundle1, heartStatus: $showHeartAlert)
+                                            MapItemName(id: "1. ", title: intoValley)
+                                            MapsTabView(mapNumber: 1, levelBundle: GameLevelBundle.bundle1, heartStatus: $showHeartAlert)
                                         }
                                         .tag(1)
                                         .padding(.bottom, 30)
                                         VStack {
-                                            ExtractedView(id: "2. ", title: "Crossing the river")
-                                            MapsTabView(mapNumber: 2, mapName: "Crossing the river", levelBundle: GameLevelBundle.bundle2, heartStatus: $showHeartAlert)
+                                            MapItemName(id: "2. ", title: crossRiver)
+                                            MapsTabView(mapNumber: 2, levelBundle: GameLevelBundle.bundle2, heartStatus: $showHeartAlert)
                                             
                                         }
                                         .tag(2)
                                         .padding(.bottom, 30)
                                         
                                         VStack {
-                                            ExtractedView(id: "3. ", title: "Getting hot")
-                                            MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert)
+                                            MapItemName(id: "3. ", title: gettingHot)
+                                            MapsTabView(mapNumber: 3, levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert)
                                             
                                         }
                                         .tag(3)
                                         .padding(.bottom, 30)
                                         VStack {
-                                            ExtractedView(id: "", title: "to be continued...")
-//                                            MapsTabView(mapNumber: 3, mapName: "Getting hot", levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert, firstShow: $showFirstMapThree)
-//                                                .padding(.bottom, 30).opacity(0)
+                                            MapItemName(id: "", title: beContinued)
+                                            MapsTabView(mapNumber: 4, levelBundle: GameLevelBundle.bundle3,  heartStatus: $showHeartAlert)
+                                                .opacity(0)
                                             
                                         }
                                         .tag(4)
@@ -288,7 +352,7 @@ struct MenuView: View {
                                                 .resizable()
                                                 .frame(width: 32, height: 32)
                                                 .onTapGesture {
-                                                    withAnimation {
+                                                    withAnimation(.easeInOut(duration: 0.5)) {
                                                         selectedMap = index
                                                         
                                                     }
@@ -298,8 +362,9 @@ struct MenuView: View {
                                                 .resizable()
                                                 .frame(width: 8, height: 8)
                                                 .onTapGesture {
-                                                    withAnimation {
+                                                    withAnimation(.easeInOut(duration: 0.5)) {
                                                         selectedMap = index
+                                                        
                                                     }
                                                 }
                                         }
@@ -577,7 +642,7 @@ struct MenuView: View {
                     NavigationLink {
                         HowToPlayView()
                     } label: {
-                        ButtonView(text: "HOW TO PLAY", width: 200, height: 50)
+                        ButtonView(text: howToPlay, width: 200, height: 50)
                         //                                .offset(y: 40)
                     }
                     .simultaneousGesture(
@@ -590,27 +655,27 @@ struct MenuView: View {
                         requestReview()
                         
                     } label: {
-                        ButtonView(text: "RATE US", width: 200, height: 50)
+                        ButtonView(text: rateUs, width: 200, height: 50)
                             .padding(.top, 10)
                     }
                     
                     Button {
                         showResetGameAlert = true
                     } label: {
-                        ButtonView(text: "RESET GAME", width: 200, height: 50)
+                        ButtonView(text: resetGame, width: 200, height: 50)
                             .padding(.top, 10)
 
                     }
-                    .alert("Are you sure?", isPresented: $showResetGameAlert) {
-                        Button("Reset Game") {
+                    .alert(areYouSure, isPresented: $showResetGameAlert) {
+                        Button(resetGame2) {
                             UserDefaults.standard.setValue(1, forKey: "currentLevel")
                             UserDefaults.standard.setValue(1, forKey: "currentBundle")
                             loadCurrentBundle()
                             loadCurrentLevel()
                         }
-                        Button("Cancel", role: .cancel) { }
+                        Button(cancel, role: .cancel) { }
                     } message: {
-                        Text("You will lose all your progress, and the game will start over.")
+                        Text(loseProgress)
                     }
                     Spacer()
 
@@ -771,7 +836,7 @@ struct MenuView_Previews: PreviewProvider {
     }
 }
 
-struct ExtractedView: View {
+struct MapItemName: View {
     let id: String
     let title: String
     var body: some View {
