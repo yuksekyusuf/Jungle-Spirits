@@ -598,6 +598,17 @@ struct MenuView: View {
                             .padding(.top, 10)
 
                     }
+                    .alert("Are you sure?", isPresented: $showResetGameAlert) {
+                        Button("Reset Game") {
+                            UserDefaults.standard.setValue(1, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(1, forKey: "currentBundle")
+                            loadCurrentBundle()
+                            loadCurrentLevel()
+                        }
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
+                        Text("You will lose all your progress, and the game will start over.")
+                    }
                     Spacer()
 
                 }
@@ -714,7 +725,7 @@ struct MenuView: View {
         let lastHeartTime = UserDefaults.standard.integer(forKey: "lastHeartTime")
         let lastTime = Date(timeIntervalSinceReferenceDate: TimeInterval(lastHeartTime))
         let elapsedTime = Date().timeIntervalSince(lastTime)
-        let remainingTime = 1800 - (elapsedTime.truncatingRemainder(dividingBy: 1800))
+        let remainingTime = 900 - (elapsedTime.truncatingRemainder(dividingBy: 900))
         return max(0, remainingTime)
     }
     

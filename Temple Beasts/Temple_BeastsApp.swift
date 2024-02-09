@@ -39,7 +39,7 @@ struct Temple_BeastsApp: App {
         // Check if a heart should be given right away
         updateHeartsBasedOnTimeElapsed()
         
-        heartTimer = Timer.scheduledTimer(withTimeInterval: 1800, repeats: true) { _ in
+        heartTimer = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { _ in
             let hearts = UserDefaults.standard.integer(forKey: "hearts")
             if hearts < 5 {
                 let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
@@ -54,7 +54,7 @@ struct Temple_BeastsApp: App {
         let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
         let elapsedTime = Date().timeIntervalSince(lastTime)
         
-        let heartIntervals = Int(elapsedTime / 1800)
+        let heartIntervals = Int(elapsedTime / 900)
         
         if heartIntervals > 0 {
             let hearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
