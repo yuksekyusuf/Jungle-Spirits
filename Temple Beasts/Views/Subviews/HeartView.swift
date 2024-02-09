@@ -27,10 +27,10 @@ struct HeartView: View {
                     .stroke(color: .black, width: 1.0)
                     .shadow(color: .black, radius: 0, x: 0, y: 3)
                     .offset(x: -1, y: 1)
-
+                
             }
         }                .frame(width: 74, height: 50)
-
+        
         
     }
 }

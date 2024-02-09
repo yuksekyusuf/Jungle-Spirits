@@ -94,6 +94,7 @@ struct MenuView: View {
         NavigationStack(path: $gameCenterController.path) {
             ZStack {
                 if isBackgroundShown {
+                    Color.black
                     Image("Menu Screen")
                         .resizable()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -569,7 +570,9 @@ struct MenuView: View {
                 
                 VStack {
                     Spacer()
-                    CreditView(isPresent: $showCreditScreen)
+                    if showCreditScreen {
+                        CreditView(isPresent: $showCreditScreen)
+                    }
                     
                     NavigationLink {
                         HowToPlayView()
