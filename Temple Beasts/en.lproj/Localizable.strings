@@ -42,5 +42,9 @@
 "LOSE_PROGRESS" = "You will lose all your progress, and the game will start over.";
 "CANCEL" = "Cancel";
 "RESET_GAME_2" = "Reset Game";
+"SEALED" = "Map is sealed";
+"FINISH_MAP" = "Finish the other maps first to unseal this map";
+"CONTINUE" = "Continue";
+
 
 

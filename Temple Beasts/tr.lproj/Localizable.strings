@@ -29,7 +29,7 @@
 "NEXT_HEARTS" = "Sonraki kalpler";
 "OK" = "TAMAM";
 "HOW_TO_PLAY" = "NASIL OYNANIR";
-"RATE_US" = "BİZİ DEĞERLENDİRİN";
+"RATE_US" = "BİZİ OYLA";
 "RESET_GAME" = "OYUNU SIFIRLA";
 "DESIGNER" = "TASARIMCI";
 "DEVELOPER" = "GELİŞTİRİCİ";
@@ -43,4 +43,7 @@
 "LOSE_PROGRESS" = "Tüm ilerlemenizi kaybedeceksiniz ve oyun yeniden başlayacak.";
 "CANCEL" = "İptal";
 "RESET_GAME_2" = "Oyunu Sıfırla";
+"SEALED" = "Harita mühürlendi";
+"FINISH_MAP" = "Bu haritayı açmak için önce diğer haritaları tamamlayın";
+"CONTINUE" = "Devam Et";
 

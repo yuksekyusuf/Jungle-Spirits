@@ -336,6 +336,15 @@ struct WinView: View {
 struct NextLevelNavigation: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     @State private var navigateToGame = false
+    
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+
+    
+    var continueButton: String {
+        appLanguageManager.localizedStringForKey("CONTINUE", language: appLanguageManager.currentLanguage)
+    }
+    
+    
     let boardSize: (rows: Int, cols: Int)
     let obstacles: [(Int, Int)]
     var onContinue: () -> Void
@@ -351,7 +360,7 @@ struct NextLevelNavigation: View {
             }
         } label: {
             HStack{
-                Text("Continue")
+                Text(continueButton)
                     .font(Font.custom("TempleGemsRegular", size: 24))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))

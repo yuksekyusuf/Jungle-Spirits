@@ -42,4 +42,7 @@
 "LOSE_PROGRESS" = "Vous perdrez tous vos progrès, et le jeu recommencera.";
 "CANCEL" = "Annuler";
 "RESET_GAME_2" = "Réinitialiser le jeu";
+"SEALED" = "Carte scellée";
+"FINISH_MAP" = "Terminez les autres cartes d'abord pour débloquer cette carte";
+"CONTINUE" = "Continuer";
 

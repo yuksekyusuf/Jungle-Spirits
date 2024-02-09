@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4D0779672ABC72EC009DE89E /* ResizeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0779662ABC72EC009DE89E /* ResizeTest.swift */; };
 		4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F06992A48D60C00B53823 /* SoundManager.swift */; };
-		4D0F06A52A48EBB800B53823 /* victory.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F06A42A48EBB800B53823 /* victory.wav */; };
+		4D0F06A52A48EBB800B53823 /* victory3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F06A42A48EBB800B53823 /* victory3.wav */; };
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
 		4D15F0B82A0C355E00539383 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B72A0C355E00539383 /* GameView.swift */; };
 		4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0BA2A0C37BE00539383 /* CellView.swift */; };
@@ -45,6 +45,8 @@
 		4D5FB6A72B760EA300776CBB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6A62B760EA300776CBB /* SwiftUIIntrospect */; };
 		4D5FB6AB2B760EA300776CBB /* SwiftUIIntrospect-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6AA2B760EA300776CBB /* SwiftUIIntrospect-Static */; };
 		4D5FB6B02B76C5C400776CBB /* Ext+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */; };
+		4D5FB6B32B76E45700776CBB /* ScrollableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5FB6B22B76E45700776CBB /* ScrollableView.swift */; };
+		4D5FB6B52B76E55700776CBB /* victory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4D5FB6B42B76E55700776CBB /* victory.mp3 */; };
 		4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */; };
 		4D60E7102B1BCD7700762875 /* logo2.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D60E70F2B1BCD7700762875 /* logo2.json */; };
 		4D60E7122B1C3C4600762875 /* Red Guy Win.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D60E7112B1C3C4600762875 /* Red Guy Win.json */; };
@@ -103,7 +105,7 @@
 /* Begin PBXFileReference section */
 		4D0779662ABC72EC009DE89E /* ResizeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeTest.swift; sourceTree = "<group>"; };
 		4D0F06992A48D60C00B53823 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
-		4D0F06A42A48EBB800B53823 /* victory.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = victory.wav; sourceTree = "<group>"; };
+		4D0F06A42A48EBB800B53823 /* victory3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = victory3.wav; sourceTree = "<group>"; };
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4D15F0B72A0C355E00539383 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		4D15F0BA2A0C37BE00539383 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -137,6 +139,8 @@
 		4D5E69452AB9CD030089CAB6 /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
 		4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+String.swift"; sourceTree = "<group>"; };
 		4D5FB6B12B76D7E000776CBB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		4D5FB6B22B76E45700776CBB /* ScrollableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableView.swift; sourceTree = "<group>"; };
+		4D5FB6B42B76E55700776CBB /* victory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = victory.mp3; sourceTree = "<group>"; };
 		4D60E70D2B1BCB0200762875 /* HeartStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartStatusView.swift; sourceTree = "<group>"; };
 		4D60E70F2B1BCD7700762875 /* logo2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo2.json; sourceTree = "<group>"; };
 		4D60E7112B1C3C4600762875 /* Red Guy Win.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Red Guy Win.json"; sourceTree = "<group>"; };
@@ -214,7 +218,8 @@
 				4D4F35C92B1D7BCC009CBC48 /* lose.mp3 */,
 				4D2B38932A54D7EB00DA7D8F /* soundtrack.wav */,
 				4DD7C1622A896B7D005B34BE /* countdown.mp3 */,
-				4D0F06A42A48EBB800B53823 /* victory.wav */,
+				4D5FB6B42B76E55700776CBB /* victory.mp3 */,
+				4D0F06A42A48EBB800B53823 /* victory3.wav */,
 				4D2B38952A54D81300DA7D8F /* move.wav */,
 				4D2B38972A54D84A00DA7D8F /* convert.wav */,
 			);
@@ -357,6 +362,7 @@
 				4D20A7692B5496A9000F2D8B /* SealedMapView.swift */,
 				4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */,
 				4D20A7672B531C22000F2D8B /* SwiftUIView.swift */,
+				4D5FB6B22B76E45700776CBB /* ScrollableView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -412,7 +418,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					4D70D23A2A05518F002E9C0A = {
 						CreatedOnToolsVersion = 14.3;
@@ -456,10 +462,11 @@
 				4D4F35CA2B1D7BCC009CBC48 /* lose.mp3 in Resources */,
 				4D457DAF2A85594A00E0FB34 /* LaunchScreen.storyboard in Resources */,
 				4D83E84F2A8AA717003A57BB /* blueDefault.json in Resources */,
+				4D5FB6B52B76E55700776CBB /* victory.mp3 in Resources */,
 				4D2B38962A54D81400DA7D8F /* move.wav in Resources */,
 				4D2B38922A54D22D00DA7D8F /* Tricky Jimmy.ttf in Resources */,
 				4D6401302A89F24500917EC8 /* blueToRed.json in Resources */,
-				4D0F06A52A48EBB800B53823 /* victory.wav in Resources */,
+				4D0F06A52A48EBB800B53823 /* victory3.wav in Resources */,
 				4D60E7122B1C3C4600762875 /* Red Guy Win.json in Resources */,
 				4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */,
 				4D4F35CC2B1D83D3009CBC48 /* Red guy fail.json in Resources */,
@@ -523,6 +530,7 @@
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,
+				4D5FB6B32B76E45700776CBB /* ScrollableView.swift in Sources */,
 				4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */,
 				4D20A76A2B5496A9000F2D8B /* SealedMapView.swift in Sources */,
 				4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */,
@@ -558,6 +566,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -587,9 +596,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -619,6 +630,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -648,9 +660,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -678,7 +692,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -717,7 +732,8 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;

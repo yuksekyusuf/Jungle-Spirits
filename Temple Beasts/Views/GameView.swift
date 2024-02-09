@@ -400,16 +400,6 @@ struct GameView: View {
                                     if showOverLay {
                                         Color.black.opacity(0.65)
                                             .ignoresSafeArea()
-                                            .onTapGesture {
-                                                if showWinMenu {
-                                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
-                                                        showWinMenu.toggle()
-                                                        showOverLay = false
-                                                        //                                            gameCenterController.isPaused.toggle()
-                                                    }
-                                                }
-                                            }
-                                        
                                     }
                                 }
                                 .onAppear {
@@ -419,14 +409,12 @@ struct GameView: View {
                                         }
                                     }
                                 }
+                                .onDisappear {
+                                    showOverLay = false
+                                }
                             }
-                        
-                        
-                        
-                        
+
                         if showWinMenu {
-//                            Color.black.opacity(0.65)
-//                                .ignoresSafeArea()
                             ZStack {
                                 VStack {
                                     if UIScreen.main.bounds.height <= 667 {
@@ -744,7 +732,7 @@ struct GameView: View {
     }
     
     func performAIMoveAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             
             // Let the AI perform its move and get the converted pieces.
             if let convertedPieces = self.board.performAIMove() {

@@ -1,11 +1,11 @@
-/* 
-  Localizable.strings
-  Temple Beasts
-
-  Created by Ahmet Yusuf Yuksek on 15.09.2023.
-  
-*/
-
+///* 
+//  Localizable.strings
+//  Temple Beasts
+//
+//  Created by Ahmet Yusuf Yuksek on 15.09.2023.
+//  
+//*/
+//
 "VERSUS_AI" = "进入丛林";
 "LOCAL_DUEL" = "本地对决";
 "ONLINE_BATTLE" = "在线";
@@ -42,6 +42,6 @@
 "LOSE_PROGRESS" = "你将失去所有进度，游戏将重新开始。";
 "CANCEL" = "取消";
 "RESET_GAME_2" = "重置游戏";
-
-
-
+"SEALED" = "地图已封印";
+"FINISH_MAP" = "请先完成其他地图以解封此地图";
+"CONTINUE" = "继续";

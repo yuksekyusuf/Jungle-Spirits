@@ -95,7 +95,7 @@ class SoundManager {
     func playOverSound() {
         guard UserDefaults.standard.bool(forKey: "sound") else { return }
 
-        guard let url = Bundle.main.url(forResource: "victory", withExtension: ".wav") else { return }
+        guard let url = Bundle.main.url(forResource: "victory", withExtension: ".mp3") else { return }
 
         do {
             player1 = try AVAudioPlayer(contentsOf: url)

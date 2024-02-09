@@ -8,6 +8,16 @@
 import SwiftUI
 
 struct SealedMapView: View {
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+
+    var sealed: String {
+        appLanguageManager.localizedStringForKey("SEALED", language: appLanguageManager.currentLanguage)
+    }
+    
+    var finishMap: String {
+        appLanguageManager.localizedStringForKey("FINISH_MAP", language: appLanguageManager.currentLanguage)
+    }
+    
     var body: some View {
         ZStack {
             Image("sealedMap")
@@ -15,12 +25,12 @@ struct SealedMapView: View {
                 .scaledToFit()
                 .frame(width: UIScreen.main.bounds.width * 0.95)
             VStack(spacing: 0) {
-                Text("Map is sealed")
+                Text(sealed)
                     .font(.custom("TempleGemsRegular", size: 30))
                     .foregroundColor(.white)
                     .stroke(color: .black, width: 1.0)
                     .shadow(color: .black, radius: 0, x: 0, y: 3)
-                Text("Finish the other maps first to unseal this map")
+                Text(finishMap)
                     .font(.custom("TempleGemsRegular", size: 16))
                     .kerning(0.48)
                     .multilineTextAlignment(.center)

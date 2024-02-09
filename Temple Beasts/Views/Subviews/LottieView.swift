@@ -9,24 +9,21 @@ import SwiftUI
 import Lottie
 
 struct LottieView: UIViewRepresentable {
-    var animationName: String
-    var ifActive: Bool
-    var contentMode: Bool
-    var isLoop: Bool
+    var animationName: String = "L"
+    var ifActive: Bool = false
+    var contentMode: Bool = false
+    var isLoop: Bool = false
     var completion: (() -> Void)? = nil
 
-    func makeUIView(context: Context) -> Lottie.LottieAnimationView {
-        let animationView = LottieAnimationView(name: animationName)
+    func makeUIView(context: Context) -> UIView {
         let view = UIView(frame: .zero)
+        let animationView = LottieAnimationView(name: animationName)
         animationView.contentMode = .scaleAspectFit
-        
         if ifActive {
             animationView.animationSpeed = 1.75
         }
         if contentMode && isLoop {
             animationView.loopMode = .loop
-            
-
         }
         animationView.play { (finished) in
                 if finished {
@@ -34,20 +31,19 @@ struct LottieView: UIViewRepresentable {
                 }
             }
         animationView.translatesAutoresizingMaskIntoConstraints = false
-
         view.addSubview(animationView)
 
         NSLayoutConstraint.activate([
             animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
             animationView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
-        return animationView
+        return view
     }
     
-    func updateUIView(_ uiView: Lottie.LottieAnimationView, context: Context) {
+    func updateUIView(_ uiView: UIViewType, context: Context) {
     }
     
-    typealias UIViewType = LottieAnimationView
+//    typealias UIViewType = LottieAnimationView
     
     
 }

@@ -7,7 +7,7 @@
 */
 
 
-"VERSUS_AI" = "BETRETEN SIE DEN DSCHUNGEL";
+"VERSUS_AI" = "IM DSCHUNGEL";
 "LOCAL_DUEL" = "LOKALES DUELL";
 "ONLINE_BATTLE" = "ONLINE";
 "HOW_TO_PLAY_TITLE" = "Spielanleitung";
@@ -30,7 +30,7 @@
 "OK" = "OKAY";
 "HOW_TO_PLAY" = "SPIELANLEITUNG";
 "RATE_US" = "BEWERTEN SIE UNS";
-"RESET_GAME" = "SPIEL ZURÜCKSETZEN";
+"RESET_GAME" = "NEUSTART";
 "DESIGNER" = "DESIGNER";
 "DEVELOPER" = "ENTWICKLER";
 "ONLY_IF" = "Nur wenn du glaubst";
@@ -43,3 +43,6 @@
 "LOSE_PROGRESS" = "Du wirst alle Fortschritte verlieren und das Spiel beginnt von vorne.";
 "CANCEL" = "Abbrechen";
 "RESET_GAME_2" = "Spiel zurücksetzen";
+"SEALED" = "Karte versiegelt";
+"FINISH_MAP" = "Schließen Sie zuerst die anderen Karten ab, um diese Karte freizuschalten";
+"CONTINUE" = "Fortsetzen";

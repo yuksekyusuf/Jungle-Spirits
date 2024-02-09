@@ -42,3 +42,6 @@
 "LOSE_PROGRESS" = "Perderás todo tu progreso, y el juego comenzará de nuevo.";
 "CANCEL" = "Cancelar";
 "RESET_GAME_2" = "Reiniciar Juego";
+"SEALED" = "Mapa sellado";
+"FINISH_MAP" = "Termina los demás mapas primero para desbloquear este mapa";
+"CONTINUE" = "Continuar";

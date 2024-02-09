@@ -69,86 +69,86 @@ struct MenuView: View {
     //    // To periodically check for heart updates
     //    @State var heartTimer: Timer?
     
-    let availableLanguages = ["en", "tr", "de", "fr", "es", "zh"]
+    let availableLanguages = ["en", "tr", "de", "fr", "es", "zh-Hans"]
 //    let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español", "Chinese"]
     
     
     var versusAI: String {
-        localizedStringForKey("VERSUS_AI", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("VERSUS_AI", language: appLanguageManager.currentLanguage)
     }
     
     var localDuel: String {
-        localizedStringForKey("LOCAL_DUEL", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("LOCAL_DUEL", language: appLanguageManager.currentLanguage)
     }
     
     var onlineBattle: String {
-        localizedStringForKey("ONLINE_BATTLE", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("ONLINE_BATTLE", language: appLanguageManager.currentLanguage)
     }
     
     var howToPlay: String {
-        localizedStringForKey("HOW_TO_PLAY", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("HOW_TO_PLAY", language: appLanguageManager.currentLanguage)
 
     }
 
     var rateUs: String {
-        localizedStringForKey("RATE_US", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("RATE_US", language: appLanguageManager.currentLanguage)
 
     }
     
     var resetGame: String {
-        localizedStringForKey("RESET_GAME", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("RESET_GAME", language: appLanguageManager.currentLanguage)
 
     }
     
     var onlyIf: String {
-        localizedStringForKey("ONLY_IF", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("ONLY_IF", language: appLanguageManager.currentLanguage)
 
     }
     
 
     var findMaps: String {
-        localizedStringForKey("FIND_MAPS", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("FIND_MAPS", language: appLanguageManager.currentLanguage)
 
     }
     var beContinued: String {
-        localizedStringForKey("BE_CONTINUED", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("BE_CONTINUED", language: appLanguageManager.currentLanguage)
 
     }
     
     
     var gettingHot: String {
-        localizedStringForKey("GETTING_HOT", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("GETTING_HOT", language: appLanguageManager.currentLanguage)
 
     }
     
     var crossRiver: String {
-        localizedStringForKey("CROSS_RIVER", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("CROSS_RIVER", language: appLanguageManager.currentLanguage)
 
     }
     
     
     var intoValley: String {
-        localizedStringForKey("INTO_VALLEY", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("INTO_VALLEY", language: appLanguageManager.currentLanguage)
 
     }
     
     
     var areYouSure: String {
-        localizedStringForKey("YOU_SURE", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("YOU_SURE", language: appLanguageManager.currentLanguage)
 
     }
     
     var loseProgress: String {
-        localizedStringForKey("LOSE_PROGRESS", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("LOSE_PROGRESS", language: appLanguageManager.currentLanguage)
 
     }
     
     var cancel: String {
-        localizedStringForKey("CANCEL", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("CANCEL", language: appLanguageManager.currentLanguage)
 
     }
     var resetGame2: String {
-        localizedStringForKey("RESET_GAME_2", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("RESET_GAME_2", language: appLanguageManager.currentLanguage)
     }
     
 
@@ -159,8 +159,9 @@ struct MenuView: View {
     var body: some View {
         NavigationStack(path: $gameCenterController.path) {
             ZStack {
+                Color.black.ignoresSafeArea()
+
                 if isBackgroundShown {
-                    Color.black
                     Image("Menu Screen")
                         .resizable()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -171,12 +172,7 @@ struct MenuView: View {
                             .resizable()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    
-                    
-
-                }
-                      
-                    
+                }  
                 VStack(spacing: 0) {
                     VStack {
                         HStack {
@@ -807,13 +803,13 @@ struct MenuView: View {
         let time = timeUntilNextHeart()
         remainingTime = formatTimeForDisplay(seconds: time)
     }
-    
-    func localizedStringForKey(_ key: String, language: String) -> String {
-        let path = Bundle.main.path(forResource: language, ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
-    }
-    
+//    
+//    func localizedStringForKey(_ key: String, language: String) -> String {
+//        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+//        let bundle = Bundle(path: path!)
+//        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+//    }
+//    
     private func loadCurrentLevel() {
         // Fetch the saved level ID from UserDefaults
         let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
@@ -825,7 +821,7 @@ struct MenuView: View {
     private func loadCurrentBundle(){
         
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
     }
 }
 

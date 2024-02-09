@@ -27,8 +27,11 @@ struct PlayerView: View {
                             }
 
                         }
+//                        LottieView2(lottieFile: "blueToRed")
 
                     } else {
+//                        LottieView2(lottieFile: "redToBlue")
+
                         LottieView(animationName: "redToBlue", ifActive: false, contentMode: false, isLoop: false)
                         {
                             if let index = convertedCells.firstIndex(where: { $0.row == cellPosition.row && $0.col == cellPosition.col }) {
