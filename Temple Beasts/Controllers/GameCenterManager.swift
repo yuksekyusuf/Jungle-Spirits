@@ -32,6 +32,7 @@ struct GameState: Codable {
 }
 
 class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPlayerListener {
+    
     @Published var isPaused: Bool = false
     @Published var isGameOver: Bool = false
     @Published var currentPlayer: CellState
@@ -58,7 +59,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var invite: GKInvite?
     @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     @Published var achievedLevel: GameLevel = GameLevel.level1_1
-    @Published var currentLevel: GameLevel = GameLevel.level1_1
+    @Published var currentLevel: GameLevel? = nil
     @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle1
     
 

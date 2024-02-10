@@ -116,7 +116,7 @@ struct WinView: View {
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                     gameCenterManager.path = NavigationPath()
                                                 }
-                                                print("Current level: ", gameCenterManager.currentLevel.id)
+//                                                print("Current level: ", gameCenterManager.currentLevel.id)
                                                 print("Achieved level: ", gameCenterManager.achievedLevel.id)
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
@@ -152,19 +152,24 @@ struct WinView: View {
                                     }
                                     
                                     if winner == .player1 {
-                                        //MARK: - Definitely fix this!!!!
-                                        if gameCenterManager.currentLevel.id < 22 {
-//                                            if let size = gameCenterManager.currentLevel.next?.boardSize {
-//                                                if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
-//                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
-//                                                        .offset(y: 130)
-//                                                }
-//                                            }
-                                            let size = gameCenterManager.currentLevel.boardSize
-                                            let obstacles = gameCenterManager.currentLevel.obstacles
-                                            NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
+                                        //MARK: - DEFINITELY FIX THIS
+                                        if let nextLevel = gameCenterManager.currentLevel?.next {
+                                            NextLevelNavigation(boardSize: nextLevel.boardSize, obstacles: nextLevel.obstacles, onContinue: onContinue)
                                                 .offset(y: 130)
+
                                         }
+//                                        if gameCenterManager.currentLevel.id < 22 {
+////                                            if let size = gameCenterManager.currentLevel.next?.boardSize {
+////                                                if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
+////                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
+////                                                        .offset(y: 130)
+////                                                }
+////                                            }
+//                                            let size = gameCenterManager.currentLevel.boardSize
+//                                            let obstacles = gameCenterManager.currentLevel.obstacles
+//                                            NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
+//                                                .offset(y: 130)
+//                                        }
                                     }
                                     Image("winLights")
                                         .resizable()

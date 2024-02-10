@@ -554,23 +554,23 @@ struct GameView: View {
                     UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
                 } else if gameType == .ai && winner == .player1 {
                     if gameCenterController.currentLevel == gameCenterController.achievedLevel {
-                        let nextLevelId = gameCenterController.achievedLevel.id + 1
+                        guard let nextLevel = gameCenterController.currentLevel else { return }
+                        let nextLevelId = nextLevel.id + 1
                         if nextLevelId <= 7 {
                             gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            // Optionally, save the new current level to UserDefaults
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
                         } else if (nextLevelId > 7) && (nextLevelId < 15) {
                             gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
                             gameCenterController.currentBundle = .bundle2
                             UserDefaults.standard.setValue(2, forKey: "currentBundle")
                         } else {
                             gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
                             gameCenterController.currentBundle = .bundle3
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
-                        gameCenterController.currentLevel = gameCenterController.achievedLevel
+//                        gameCenterController.currentLevel = gameCenterController.achievedLevel
                     
                     }
                     
@@ -618,8 +618,6 @@ struct GameView: View {
             }
         }
         .onAppear {
-            print("Current level: ", gameCenterController.currentLevel.id)
-            print("Achieved level: ", gameCenterController.achievedLevel.id)
             gameCenterController.remainingTime = 15
             gameCenterController.board = self.board
             gameCenterController.isQuitGame = false

@@ -664,10 +664,10 @@ struct MenuView: View {
                     }
                     .alert(areYouSure, isPresented: $showResetGameAlert) {
                         Button(resetGame2) {
-                            UserDefaults.standard.setValue(1, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(1, forKey: "achievedLevel")
                             UserDefaults.standard.setValue(1, forKey: "currentBundle")
                             loadCurrentBundle()
-                            loadCurrentLevel()
+                            loadAchievedLevel()
                         }
                         Button(cancel, role: .cancel) { }
                     } message: {
@@ -691,13 +691,12 @@ struct MenuView: View {
             //            }
             
         }
-        
-        .onChange(of: gameCenterController.currentLevel.id) { newValue in
+        .onChange(of: gameCenterController.currentPlayer) { newValue in
             print("Currently selected level: ", newValue)
         }
         .onAppear {
             
-            loadCurrentLevel()
+            loadAchievedLevel()
             loadCurrentBundle()
             selectedMap = gameCenterController.currentBundle.id
             UserDefaults.standard.set(soundState, forKey: "sound")
@@ -810,16 +809,12 @@ struct MenuView: View {
 //        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
 //    }
 //    
-    private func loadCurrentLevel() {
-        // Fetch the saved level ID from UserDefaults
-        let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
-        // Set the currentLevel in gameCenterController
-        // If there is no saved level, it will return 0, which should default to level 1
+    private func loadAchievedLevel() {
+        let savedLevelID = UserDefaults.standard.integer(forKey: "achievedLevel")
         gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
     }
     
     private func loadCurrentBundle(){
-        
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
         gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
     }
