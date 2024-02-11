@@ -6,8 +6,14 @@
 //
 
 import SwiftUI
+import AmplitudeSwift
+import Combine
+import GoogleMobileAds
 
 
+extension Amplitude {
+    static let shared = Amplitude(configuration: Configuration(apiKey: "63de0cb932aea846edc6311602875225"))
+}
 
 @main
 struct Temple_BeastsApp: App {
@@ -15,23 +21,53 @@ struct Temple_BeastsApp: App {
     @AppStorage("remainingHearts") var remainingHearts: Int?
     @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
     @State var heartTimer: Timer?
+    @Environment(\.scenePhase) private var scenePhase
+    private var sessionStartTime: Date?
 
-        var body: some Scene {
-            WindowGroup {
-                MenuView()
-                    .environmentObject(appLanguageManager)
-                    .environment(\.appLanguage, appLanguageManager.currentLanguage)
-                    .onAppear {
-                        startHeartTimer()
+    let event = BaseEvent(
+        eventType: "Button Clicked",
+        eventProperties: ["my event prop key": "my event prop value"]
+    )
+    init() {
+        let _ = Amplitude.shared
+        initMobileAds()
+
+    }
+    
+    var body: some Scene {
+        WindowGroup {
+            MenuView()
+                .environmentObject(appLanguageManager)
+                .environment(\.appLanguage, appLanguageManager.currentLanguage)
+                .onAppear {
+                    startHeartTimer()
+
+                }
+                .onDisappear(perform: {
+                    heartTimer?.invalidate()
+                })
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    updateHeartsBasedOnTimeElapsed()
+                }
+                .onChange(of: scenePhase) { newScene in
+                    switch newScene {
+                    case .active:
+                        initMobileAds()
+                        SessionManager.shared.logSessionStart()
+                    case .background:
+                        SessionManager.shared.logSessionEnd()
+                    case .inactive:
+                        break
+                    @unknown default:
+                        break
                     }
-                    .onDisappear(perform: {
-                        heartTimer?.invalidate()
-                    })
-                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                        updateHeartsBasedOnTimeElapsed()
-                    }
-            }
+                    
+                }
+//            AdView()
+//              
         }
+        
+    }
     
     func startHeartTimer() {
         heartTimer?.invalidate()
@@ -44,7 +80,7 @@ struct Temple_BeastsApp: App {
             if hearts < 5 {
                 let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
                 UserDefaults.standard.set(heart, forKey: "hearts")
-
+                
             }
             
         }
@@ -62,6 +98,13 @@ struct Temple_BeastsApp: App {
             lastHeartTime = Date().timeIntervalSinceReferenceDate
         }
     }
+    
+    func initMobileAds() {
+            GADMobileAds.sharedInstance().start(completionHandler: nil)
+            // comment this if you want SDK Crash Reporting:
+            GADMobileAds.sharedInstance().disableSDKCrashReporting()
+        }
+        
 }
 
 
@@ -73,5 +116,29 @@ extension EnvironmentValues {
     var appLanguage: String {
         get { self[LanguageKey.self] }
         set { self[LanguageKey.self] = newValue }
+    }
+}
+
+
+class SessionManager: ObservableObject {
+    static let shared = SessionManager()
+    
+    @Published var sessionStartTime: Date?
+
+    private init() {} // Make it a singleton
+
+    func logSessionStart() {
+        sessionStartTime = Date()
+        Amplitude.shared.track(eventType: "Session_Start", eventProperties: ["start_time": sessionStartTime ?? Date()])
+        // Optionally log "Session Start" event to Amplitude here
+    }
+
+    func logSessionEnd() {
+        guard let startTime = sessionStartTime else { return }
+        let sessionDuration = Date().timeIntervalSince(startTime)
+        Amplitude.shared.track(eventType: "Session_End", eventProperties: ["end_time": sessionDuration])
+        // Log "Session End" event with duration to Amplitude here
+        // Reset session start time
+        sessionStartTime = nil
     }
 }

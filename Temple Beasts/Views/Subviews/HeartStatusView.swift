@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct HeartStatusView: View {
-    let heartCount: Int
+//    var heartCount: Int
     @EnvironmentObject var appLanguageManager: AppLanguageManager
+    @EnvironmentObject var gameCenterManager: GameCenterManager
 
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
+//    @Binding var remainingHearts: Int
+    @State var newHeart = 0
     
     var hearts: String {
         appLanguageManager.localizedStringForKey("HEARTS", language: appLanguageManager.currentLanguage)
@@ -24,6 +27,16 @@ struct HeartStatusView: View {
     
     var okay: String {
         appLanguageManager.localizedStringForKey("OK", language: appLanguageManager.currentLanguage)
+    }
+    
+    var rewardAd: RewardedAd
+    
+    init(nextHeartTime: Binding<String>, isPresent: Binding<Bool>) {
+//        self.heartCount = gameCenterManager.
+            self._nextHeartTime = nextHeartTime // Use underscore to directly initialize @Binding properties
+            self._isPresent = isPresent
+            self.rewardAd = RewardedAd()
+            rewardAd.load()
     }
     
     var body: some View {
@@ -47,30 +60,81 @@ struct HeartStatusView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 252)
-            Button {
-                withAnimation {
+//            Button {
+//                withAnimation {
+//                    self.isPresent.toggle()
+//                }
+//            } label: {
+//                ZStack(alignment: .center) {
+//                    Rectangle()
+//                        .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+//                        .frame(width: 148, height: 42, alignment: .center)
+//                        .cornerRadius(14)
+//                        .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+//                    Text(okay)
+//                        .font(Font.custom("TempleGemsRegular", size: 24))
+//                        .multilineTextAlignment(.center)
+//                        .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+//                        .frame(width: 148, height: 42, alignment: .center)
+//                        .offset(y: 2)
+//                }
+//                
+//               
+//            }
+//            .offset(y: 80)
+            
+    
+            VStack(spacing: 0) {
+                Button {
+                    SoundManager.shared.stopBackgroundMusic()
+                    self.rewardAd.showAd(rewardFunction: {
+                        // TODO: give the user a reward for watching
+                        if gameCenterManager.remainingHearts < 5 {
+                            gameCenterManager.remainingHearts += 1
+                        }
+                    })
+                } label: {
+                    ZStack(alignment: .center) {
+                        Rectangle()
+                            .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+                            .frame(width: 221, height: 44, alignment: .center)
+                            .cornerRadius(14)
+                            .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+                        
+                            Text("FREE LIFE")
+                                .font(Font.custom("TempleGemsRegular", size: 24))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+                                .frame(width: 148, height: 42, alignment: .center)
+                                .offset(y: 2)
+                            Image("plusOneHeart")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30)
+                                .offset(x: 80)
+                    }
+                }
+                
+                Button(action: {
                     self.isPresent.toggle()
-                }
-            } label: {
-                ZStack(alignment: .center) {
-                    Rectangle()
-                        .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
-                        .frame(width: 148, height: 42, alignment: .center)
-                        .cornerRadius(14)
-                        .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-                    Text(okay)
-                        .font(Font.custom("TempleGemsRegular", size: 24))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-                        .frame(width: 148, height: 42, alignment: .center)
-                        .offset(y: 2)
+                }, label: {
+                    Image("closeTab")
+                        .resizable()
+//                        .scaledToFill()
+                        .scaledToFit()
+                        .frame(width: 75)
+                })
 
-                }
-               
+                    
+                
+                
             }
-            .offset(y: 80)
+            .offset(y: 120)
+            
+
+            
             VStack {
-                Text("\(heartCount) \(hearts.capitalizedSentence)")
+                Text("\(gameCenterManager.remainingHearts) \(hearts.capitalizedSentence)")
                 .font(Font.custom("Watermelon", size: 32))
                 .kerning(0.96)
                 .multilineTextAlignment(.center)
@@ -82,12 +146,17 @@ struct HeartStatusView: View {
                   .multilineTextAlignment(.center)
                   .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                   .frame(width: 168, alignment: .center)
+//                Text("New Heart \(newHeart)")
+//                  .font(Font.custom("Temple Gems", size: 20))
+//                  .multilineTextAlignment(.center)
+//                  .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+//                  .frame(width: 168, alignment: .center)
             }
             .offset(y: 2)
             
 
             .frame(width: 253, alignment: .center)
-            if heartCount == 0 {
+            if gameCenterManager.remainingHearts == 0 {
                 Image("noHeart")
                     .resizable()
                     .scaledToFit()
@@ -106,19 +175,19 @@ struct HeartStatusView: View {
         
     }
     
-    func localizedStringForKey(_ key: String, language: String) -> String {
-        let path = Bundle.main.path(forResource: language, ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
-    }
+//    func localizedStringForKey(_ key: String, language: String) -> String {
+//        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+//        let bundle = Bundle(path: path!)
+//        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+//    }
 }
-
+//
 struct HeartStatusView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isPresentTrue = true
         @State var remainingTime = "9:27"
-        HeartStatusView(heartCount: 0, nextHeartTime: $remainingTime, isPresent: $isPresentTrue).environmentObject(AppLanguageManager())
-            
+        HeartStatusView(nextHeartTime: $remainingTime, isPresent: $isPresentTrue).environmentObject(AppLanguageManager()).environmentObject(GameCenterManager(currentPlayer: .player1))
+
     }
 }
 

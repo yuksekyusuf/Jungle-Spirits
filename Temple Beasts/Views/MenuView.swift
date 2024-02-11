@@ -8,6 +8,8 @@
 import SwiftUI
 import StoreKit
 import Pow
+import GoogleMobileAds
+
 
 
 
@@ -232,7 +234,7 @@ struct MenuView: View {
                                 Button {
                                     showHeartAlert.toggle()
                                 } label: {
-                                    HeartView(hearts: remainingHearts)
+                                    HeartView()
                                         .padding(.trailing, 20)
                                 }
                             }
@@ -611,7 +613,7 @@ struct MenuView: View {
                             }
                         }
                 }
-                HeartStatusView(heartCount: remainingHearts ?? 0, nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
+                HeartStatusView(nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
                     .scaleEffect(showHeartAlert ? 1 : 0)
                     .allowsHitTesting(showHeartAlert)
                     .animation(showHeartAlert ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showHeartAlert)
@@ -758,6 +760,7 @@ struct MenuView: View {
         //        }
         
     }
+    
     
     //    func updateHeartsBasedOnTimeElapsed() {
     //        let lastTime = Date(timeIntervalSinceReferenceDate: lastBackgroundTime)

@@ -21,9 +21,21 @@ class AppLanguageManager: ObservableObject {
         currentLanguage = language
     }
     
+//    func localizedStringForKey(_ key: String, language: String) -> String {
+//        let path = Bundle.main.path(forResource: language, ofType: "lproj")
+//        let bundle = Bundle(path: path!)
+//        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+//    }
     func localizedStringForKey(_ key: String, language: String) -> String {
-        let path = Bundle.main.path(forResource: language, ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+        // Safely unwrap the optional path
+        if let path = Bundle.main.path(forResource: language, ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            // Use the found bundle for localization
+            return NSLocalizedString(key, tableName: nil, bundle: bundle, value: "", comment: "")
+        } else {
+            // Fallback behavior if the path or bundle could not be found
+            // You can choose to return the key itself or any other default string
+            return key // or "Translation not found"
+        }
     }
 }

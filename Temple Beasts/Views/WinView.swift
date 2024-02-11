@@ -28,11 +28,11 @@ struct WinView: View {
 //                .opacity(0.65)
             VStack {
                 if UIScreen.main.bounds.height <= 667 {
-                    HeartView(hearts: remainingHearts)
+                    HeartView()
                         .padding(.top, 20)
                         .opacity(0)
                 } else {
-                    HeartView(hearts: remainingHearts)
+                    HeartView()
                         .padding(.top, 70)
                         .opacity(0)
                 }

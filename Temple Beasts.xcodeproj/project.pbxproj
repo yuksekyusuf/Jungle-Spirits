@@ -78,6 +78,12 @@
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
 		4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
+		4DD2BC522B78149000CD246B /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC512B78149000CD246B /* AmplitudeSwift */; };
+		4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */; };
+		4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC562B7827EA00CD246B /* GoogleMobileAds */; };
+		4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5A2B78324900CD246B /* AdBannerView.swift */; };
+		4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5C2B7832BD00CD246B /* AdView.swift */; };
+		4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */; };
 		4DD4B5FF2A8F29EB004085B0 /* logo.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD4B5FE2A8F29EB004085B0 /* logo.json */; };
 		4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7C1622A896B7D005B34BE /* countdown.mp3 */; };
 		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
@@ -172,6 +178,10 @@
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
 		4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TempleGems-Regular.otf"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSessionManager.swift; sourceTree = "<group>"; };
+		4DD2BC5A2B78324900CD246B /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
+		4DD2BC5C2B7832BD00CD246B /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
+		4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Temple-Beasts-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4DD4B5FE2A8F29EB004085B0 /* logo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo.json; sourceTree = "<group>"; };
 		4DD7C1622A896B7D005B34BE /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
 		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
@@ -193,9 +203,11 @@
 				4D5FB6A52B760E2B00776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D6401262A89D95E00917EC8 /* Lottie in Frameworks */,
 				4D5FB6A32B760E2B00776CBB /* SwiftUIIntrospect in Frameworks */,
+				4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */,
 				4D5FB6A12B760CD100776CBB /* SwiftUIIntrospect in Frameworks */,
 				4D5FB6AB2B760EA300776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */,
+				4DD2BC522B78149000CD246B /* AmplitudeSwift in Frameworks */,
 				4D5FB6A72B760EA300776CBB /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +220,7 @@
 			children = (
 				4D0F06992A48D60C00B53823 /* SoundManager.swift */,
 				4D95187C2A50C5B100ED284D /* HapticManager.swift */,
+				4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -296,6 +309,7 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
+				4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */,
 				4D6401332A89F61600917EC8 /* Animations */,
 				4D42DC142A56046100E8809C /* Controllers */,
 				4D0F069B2A48D89600B53823 /* Sounds */,
@@ -307,6 +321,8 @@
 				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
 				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
 				4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */,
+				4DD2BC5A2B78324900CD246B /* AdBannerView.swift */,
+				4DD2BC5C2B7832BD00CD246B /* AdView.swift */,
 				4D70D2442A055190002E9C0A /* Preview Content */,
 				4D231DE62AB4FB9C00F2D12A /* Localizable.strings */,
 			);
@@ -405,6 +421,8 @@
 				4D5FB6A42B760E2B00776CBB /* SwiftUIIntrospect-Static */,
 				4D5FB6A62B760EA300776CBB /* SwiftUIIntrospect */,
 				4D5FB6AA2B760EA300776CBB /* SwiftUIIntrospect-Static */,
+				4DD2BC512B78149000CD246B /* AmplitudeSwift */,
+				4DD2BC562B7827EA00CD246B /* GoogleMobileAds */,
 			);
 			productName = "Temple Beasts";
 			productReference = 4D70D23B2A05518F002E9C0A /* Temple Gems.app */;
@@ -444,6 +462,8 @@
 				4D4F35C42B1D7AC6009CBC48 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 				4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */,
 				4D5FB6992B760C4B00776CBB /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
+				4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 4D70D23C2A05518F002E9C0A /* Products */;
 			projectDirPath = "";
@@ -482,6 +502,7 @@
 				4D4F35CE2B1D8854009CBC48 /* story.mp4 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
+				4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */,
 				4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */,
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
@@ -510,6 +531,7 @@
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
+				4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */,
 				4D2B388E2A54C5EB00DA7D8F /* CountDownView.swift in Sources */,
 				4D930D462A897107006D139B /* LottieView.swift in Sources */,
 				4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */,
@@ -519,6 +541,7 @@
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
 				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
 				4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */,
+				4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
 				4DA0C7D02B05CF4100DDEE99 /* VideoPlayerView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
@@ -527,6 +550,7 @@
 				4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
+				4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,
@@ -819,6 +843,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -866,6 +906,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */;
 			productName = Pow;
+		};
+		4DD2BC512B78149000CD246B /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
+		};
+		4DD2BC562B7827EA00CD246B /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

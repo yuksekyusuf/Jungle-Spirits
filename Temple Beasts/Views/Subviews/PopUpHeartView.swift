@@ -9,13 +9,14 @@ import SwiftUI
 import Pow
 
 struct PopUpHeartView: View {
-    let remainingHearts: Int
+//    let remainingHearts: Int
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     @State var isAdded = false
     var body: some View {
         VStack {
             ZStack {
                 if isAdded {
-                    HeartView(hearts: remainingHearts)
+                    HeartView()
                     .transition(.movingParts.vanish(.blue))            }
 //                    .transition(AnyTransition.asymmetric(insertion: .movingParts.vanish(.blue), removal: .movingParts.vanish(.blue)))            }
                 
@@ -38,6 +39,6 @@ struct PopUpHeartView: View {
 
 struct PopUpHeartView_Previews: PreviewProvider {
     static var previews: some View {
-        PopUpHeartView(remainingHearts: 5)
+        PopUpHeartView()
     }
 }

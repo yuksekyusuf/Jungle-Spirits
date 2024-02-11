@@ -27,7 +27,7 @@ struct GameView: View {
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @State private var showAlert: Bool = false
-    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
+//    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     @State private var showOverLay: Bool = false
     
     private var player1PieceCount: Int {
@@ -84,7 +84,7 @@ struct GameView: View {
                    
 
                     if showWinMenu {
-                        PopUpWinView(gameType: gameType, winner: winner, remainingHearts: $remainingHearts, showWinView: $showWinMenu)
+                        PopUpWinView(gameType: gameType, winner: winner, showWinView: $showWinMenu)
                             .zIndex(1)
                     }
 //                    if showWinMenu {
@@ -177,6 +177,7 @@ struct GameView: View {
                                                             showPauseMenu.toggle()
                                                         }
                                                     }
+                                                    showPauseMenu.toggle()
                                                 }
                                             }) {
                                                 if !showWinMenu {
@@ -426,7 +427,7 @@ struct GameView: View {
                                             PieceCountView(pieceCount: player1PieceCount, size: 30)
                                                 .padding(.top, 25)
                                             Spacer()
-                                            HeartView(hearts: remainingHearts)
+                                            HeartView()
                                                 .padding(.top, 15)
                                             Spacer()
                                             PieceCountView(pieceCount: player2PieceCount, size: 30)
@@ -445,7 +446,7 @@ struct GameView: View {
                                             PieceCountView(pieceCount: player1PieceCount, size: 30)
                                                 .padding(.top, 73)
                                             Spacer()
-                                            HeartView(hearts: remainingHearts)
+                                            HeartView()
                                                 .padding(.top, 70)
                                             Spacer()
                                             PieceCountView(pieceCount: player2PieceCount, size: 30)
@@ -550,8 +551,9 @@ struct GameView: View {
 //                gameCenterController.isGameOver = true
 //                self.gameCenterController.isPaused = true
                 if gameType == .ai && winner == .player2 {
-                    remainingHearts -= 1
-                    UserDefaults.standard.setValue(remainingHearts, forKey: "hearts")
+                    gameCenterController.remainingHearts -= 1
+                    let hearts = gameCenterController.remainingHearts
+                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
                 } else if gameType == .ai && winner == .player1 {
                     if gameCenterController.currentLevel == gameCenterController.achievedLevel {
                         guard let nextLevel = gameCenterController.currentLevel else { return }
