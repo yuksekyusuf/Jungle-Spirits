@@ -13,7 +13,6 @@ import GoogleMobileAds
 
 
 
-
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager

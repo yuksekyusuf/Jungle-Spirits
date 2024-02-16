@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4D0779672ABC72EC009DE89E /* ResizeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0779662ABC72EC009DE89E /* ResizeTest.swift */; };
+		4D09B08E2B80052F008B1CC1 /* ShareButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */; };
+		4D09B0902B801BE3008B1CC1 /* SubsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */; };
 		4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F06992A48D60C00B53823 /* SoundManager.swift */; };
 		4D0F06A52A48EBB800B53823 /* victory3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F06A42A48EBB800B53823 /* victory3.wav */; };
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
@@ -110,6 +112,8 @@
 
 /* Begin PBXFileReference section */
 		4D0779662ABC72EC009DE89E /* ResizeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeTest.swift; sourceTree = "<group>"; };
+		4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButtonView.swift; sourceTree = "<group>"; };
+		4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubsTest.swift; sourceTree = "<group>"; };
 		4D0F06992A48D60C00B53823 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		4D0F06A42A48EBB800B53823 /* victory3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = victory3.wav; sourceTree = "<group>"; };
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -379,6 +383,8 @@
 				4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */,
 				4D20A7672B531C22000F2D8B /* SwiftUIView.swift */,
 				4D5FB6B22B76E45700776CBB /* ScrollableView.swift */,
+				4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */,
+				4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -521,8 +527,10 @@
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
+				4D09B08E2B80052F008B1CC1 /* ShareButtonView.swift in Sources */,
 				4D42DC132A55DE6B00E8809C /* GameCenterManager.swift in Sources */,
 				4D231DDF2AB4E05A00F2D12A /* TextView.swift in Sources */,
+				4D09B0902B801BE3008B1CC1 /* SubsTest.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
 				4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */,
@@ -716,7 +724,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -726,7 +734,7 @@
 				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -756,7 +764,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -766,7 +774,7 @@
 				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;

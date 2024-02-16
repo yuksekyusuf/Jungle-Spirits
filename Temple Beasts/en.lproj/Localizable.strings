@@ -45,6 +45,7 @@
 "SEALED" = "Map is sealed";
 "FINISH_MAP" = "Finish the other maps first to unseal this map";
 "CONTINUE" = "Continue";
+"SHARE" = "SHARE";
 
 
 

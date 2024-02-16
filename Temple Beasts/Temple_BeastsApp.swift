@@ -9,6 +9,10 @@ import SwiftUI
 import AmplitudeSwift
 import Combine
 import GoogleMobileAds
+import RevenueCat
+
+let REVENUECATID = "app69847db565"
+let REVENUECAT = "sk_WYLEPTQfDUDEiMFPflKTwwfsowkoV"
 
 
 extension Amplitude {
@@ -28,10 +32,13 @@ struct Temple_BeastsApp: App {
         eventType: "Button Clicked",
         eventProperties: ["my event prop key": "my event prop value"]
     )
+   
+    
     init() {
         let _ = Amplitude.shared
         initMobileAds()
-
+        Purchases.logLevel = .debug
+        Purchases.configure(withAPIKey: REVENUECAT)
     }
     
     var body: some Scene {
@@ -65,6 +72,8 @@ struct Temple_BeastsApp: App {
                 }
 //            AdView()
 //              
+            
+//            ShareButtonView()
         }
         
     }
