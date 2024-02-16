@@ -814,12 +814,12 @@ struct MenuView: View {
 //    
     private func loadAchievedLevel() {
         let savedLevelID = UserDefaults.standard.integer(forKey: "achievedLevel")
-        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
+        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level3_7
     }
     
     private func loadCurrentBundle(){
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
     }
 }
 

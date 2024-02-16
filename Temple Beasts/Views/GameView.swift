@@ -572,7 +572,7 @@ struct GameView: View {
                             gameCenterController.currentBundle = .bundle3
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
-//                        gameCenterController.currentLevel = gameCenterController.achievedLevel
+                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
                     
                     }
                     
