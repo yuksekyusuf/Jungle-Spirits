@@ -21,6 +21,6 @@ struct PauseMenuIconView: View {
 
 struct PauseMenuIconView_Previews: PreviewProvider {
     static var previews: some View {
-        PauseMenuIconView(imageName: "iconReplay")
+        PauseMenuIconView(imageName: "iconMap")
     }
 }

@@ -32,7 +32,6 @@ struct Temple_BeastsApp: App {
         eventType: "Button Clicked",
         eventProperties: ["my event prop key": "my event prop value"]
     )
-   
     
     init() {
         let _ = Amplitude.shared

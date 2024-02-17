@@ -734,7 +734,7 @@ struct MenuView: View {
             }
         }
         .onChange(of: gameCenterController.path, perform: { value in
-            print("Current paths :", value)
+//            print("Current paths :", value)
         })
         //        .alert(isPresented: $showHeartAlert) {
         //            Alert(

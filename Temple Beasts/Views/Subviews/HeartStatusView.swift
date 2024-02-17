@@ -113,7 +113,7 @@ struct HeartStatusView: View {
             }
             .offset(y: 2)
             .frame(width: 253, alignment: .center)
-            if gameCenterManager.remainingHearts == 0 {
+            if !(gameCenterManager.remainingHearts > 0) {
                 Image("noHeart")
                     .resizable()
                     .scaledToFit()

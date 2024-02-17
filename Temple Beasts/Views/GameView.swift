@@ -54,76 +54,12 @@ struct GameView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(height: geometry.size.height)
-                    
-                    
-//                    if showWinMenu {
-//
-//                    }
-//                    if showWinMenu {
-//
-//                            ZStack{
-//                                if showWinMenu {
-//                                    //                    PlaceholderView()
-//                                    WinView(showWinMenu: $showWinMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
-//                                                                withAnimation {
-//                                                                    showWinMenu.toggle()
-//                                                                }
-//
-//                                                            })
-//                                    .transition(.movingParts.swoosh.combined(with: .opacity))
-//
-//                                    //                    .frame(width: 250, height: 250)
-//
-//                                }
-//                                    .autotoggle($showWinMenu, with: .spring())
-//
-//                            }
-//                            .zIndex(1)
-//
-//                    }
-                   
 
                     if showWinMenu {
                         PopUpWinView(gameType: gameType, winner: winner, showWinView: $showWinMenu)
                             .zIndex(1)
                     }
-//                    if showWinMenu {
-//                        VanishView()
-//
-//
-////                        ZStack {
-////                            VStack {
-////                                if UIScreen.main.bounds.height <= 667 {
-////                                    HeartView(hearts: remainingHearts)
-////                                        .padding(.top, 20)
-////                                } else {
-////                                    HeartView(hearts: remainingHearts)
-////                                        .padding(.top, 70)
-////                                }
-////                            }
-//////                            .offset(y: -geometry.size.height * 0.44)
-////                        WinView(showWinMenu: $showWinMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
-////                            withAnimation {
-////                                showWinMenu.toggle()
-////                            }
-////
-////                        })
-////                        .transition(.movingParts.swoosh.combined(with: .opacity))
-////                        .zIndex(1)
-////                        .autotoggle($showWinMenu, with: .spring())
-//
-////                        }
-//
-//
-//
-////                        .frame(width: 250, height: 250)
-//                        .transition(
-//                            .movingParts.vanish(.blue)
-//                        )
-////                        .zIndex(1)
-//                    }
                     ZStack {
-                        
                         VStack {
                             if UIScreen.main.bounds.height <= 667 {
                                 VStack {
@@ -232,6 +168,7 @@ struct GameView: View {
                                         }
                                     }
                                     .opacity(showWinMenu ? 0 : 1)
+                                    .opacity(showPauseMenu ? 0 : 1)
 
                                     HStack {
                                         if gameType == .multiplayer {
@@ -357,6 +294,7 @@ struct GameView: View {
                                         }
                                     }
                                     .opacity(showWinMenu ? 0 : 1)
+                                    .opacity(showPauseMenu ? 0 : 1)
 
                                     HStack {
                                         if gameType == .multiplayer {
@@ -396,6 +334,19 @@ struct GameView: View {
                             Spacer()
                         }
                         
+                        if showPauseMenu {
+                            Color.black.opacity(0.65)
+                                .ignoresSafeArea()
+                                .onTapGesture {
+                                    if showPauseMenu {
+                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+                                            showPauseMenu.toggle()
+                                            gameCenterController.isPaused.toggle()
+                                        }
+                                    }
+                                }
+                        }
+                        
                             if showWinMenu {
                                 ZStack {
                                     if showOverLay {
@@ -414,8 +365,11 @@ struct GameView: View {
                                     showOverLay = false
                                 }
                             }
+                        
+                        
+                        
 
-                        if showWinMenu {
+                        if showWinMenu || showPauseMenu {
                             ZStack {
                                 VStack {
                                     if UIScreen.main.bounds.height <= 667 {
@@ -467,18 +421,7 @@ struct GameView: View {
                         
                        
 
-                        if showPauseMenu {
-                            Color.black.opacity(0.65)
-                                .ignoresSafeArea()
-                                .onTapGesture {
-                                    if showPauseMenu {
-                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
-                                            showPauseMenu.toggle()
-                                            gameCenterController.isPaused.toggle()
-                                        }
-                                    }
-                                }
-                        }
+                       
                         
                         PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                             .scaleEffect(showPauseMenu ? 1 : 0)
@@ -786,7 +729,8 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(gameType: .ai, gameSize: (4, 4), obstacles: [])
-            .environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
+
+//            .environmentObject(AppLanguageManager())
     }
 }
