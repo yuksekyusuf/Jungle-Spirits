@@ -16,7 +16,8 @@ import GoogleMobileAds
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
-    @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
+    @EnvironmentObject var gameCenterController: GameCenterManager
+//    @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
     
     @State private var selectedMap = 1
     let numberOfMaps = 3

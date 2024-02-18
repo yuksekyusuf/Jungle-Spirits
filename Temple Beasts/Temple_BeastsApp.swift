@@ -22,6 +22,7 @@ extension Amplitude {
 @main
 struct Temple_BeastsApp: App {
     @StateObject var appLanguageManager = AppLanguageManager()
+    @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
     @AppStorage("remainingHearts") var remainingHearts: Int?
     @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
     @State var heartTimer: Timer?
@@ -44,6 +45,7 @@ struct Temple_BeastsApp: App {
         WindowGroup {
             MenuView()
                 .environmentObject(appLanguageManager)
+                .environmentObject(gameCenterManager)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
                 .onAppear {
                     startHeartTimer()
@@ -88,6 +90,7 @@ struct Temple_BeastsApp: App {
             if hearts < 5 {
                 let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
                 UserDefaults.standard.set(heart, forKey: "hearts")
+                gameCenterManager.remainingHearts = heart
                 
             }
             
@@ -104,6 +107,7 @@ struct Temple_BeastsApp: App {
             let hearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
             UserDefaults.standard.set(hearts, forKey: "hearts")
             lastHeartTime = Date().timeIntervalSinceReferenceDate
+            gameCenterManager.remainingHearts = hearts
         }
     }
     
