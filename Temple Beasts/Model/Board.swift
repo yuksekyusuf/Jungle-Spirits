@@ -13,6 +13,7 @@ class Board: ObservableObject {
     
     @Published private(set) var cells: [[CellState]]
     @Published var gameOver: Bool = false
+    @Published var convertedCells: [(row: Int, col: Int)] = []
     
     
     
@@ -446,7 +447,7 @@ extension Board {
     }
     
     private func performConversionMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
-        let convertedCells = performMove(from: source, to: destination, player: .player1)
+        convertedCells = performMove(from: source, to: destination, player: .player1)
         return !convertedCells.isEmpty
     }
     

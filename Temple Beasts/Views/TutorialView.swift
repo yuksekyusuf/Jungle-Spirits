@@ -9,11 +9,14 @@ import SwiftUI
 
 struct TutorialView: View {
     @StateObject private var board = Board(tutorialSize: (rows: 7, columns: 5), tutorialStep: .clonePiece)
+    @StateObject private var gameCenterManager = GameCenterManager(currentPlayer: .player1)
     @State private var selectedCell: (row: Int, col: Int)? = nil
     @State  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @State  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @State private var moveMade: Bool = false
     @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
+    @State private var taskDone: Bool = false
+    
     
     
     private var selectText: String {
@@ -77,7 +80,7 @@ struct TutorialView: View {
                                 ForEach(0..<board.size.rows, id: \.self) { row in
                                     HStack(spacing: 0) {
                                         ForEach(0..<board.size.columns, id: \.self) { col in
-                                            CellView(state: board.cellState(at: (row: row, col: col)), isSelected: selectedCell != nil && selectedCell! == (row: row, col: col), highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col), outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize, isPressed: isCellPressed(row: row, col: col), convertedCells:  $convertedCells, previouslyConvertedCells: $previouslyConvertedCells, cellPosition: (row: row, col: col), moveMade: $moveMade)
+                                            CellView(state: board.cellState(at: (row: row, col: col)), isSelected: selectedCell != nil && selectedCell! == (row: row, col: col), highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col), outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize, isPressed: isCellPressed(row: row, col: col), convertedCells:  $gameCenterManager.convertedCells, previouslyConvertedCells: $gameCenterManager.previouslyConvertedCells, cellPosition: (row: row, col: col), moveMade: $moveMade)
                                                 .frame(width: cellSize, height: cellSize)
                                                 .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
                                                     if pressing {
@@ -101,12 +104,15 @@ struct TutorialView: View {
                     
                     //                    Spacer()
                     Button {
-                        //                        requestReview()
+                        moveToNextTutorialStep()
                         
+
                     } label: {
                         ButtonView(text: "NEXT", width: 200, height: 50)
                             .padding(.top, 25)
+                            .opacity(taskDone ? 1 : 0.3)
                     }
+                    .disabled(!taskDone)
                 }
             }
         }
@@ -146,34 +152,45 @@ struct TutorialView: View {
         return false
     }
     
-    private func handleCellTap(at destionation: (row: Int, col: Int)) {
-        if let source = selectedCell, source == destionation {
+    private func handleCellTap(at destination: (row: Int, col: Int)) {
+        if let source = selectedCell, source == destination {
             selectedCell = nil
             return
         }
         guard let source = selectedCell else {
-            if board.cellState(at: destionation) == .player1 {
-                selectedCell = destionation
+            if board.cellState(at: destination) == .player1 {
+                selectedCell = destination
             }
             return
         }
         
-        let moveSuccessful = board.performTutorialMove(from: source, to: destionation)
+        let moveSuccessful = board.performTutorialMove(from: source, to: destination)
         if moveSuccessful {
-            selectedCell = nil
-            moveToNextTutorialStep()
-            self.moveMade.toggle()
+            let convertedCells = board.convertedCells
+            if !convertedCells.isEmpty {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+                print(convertedCells)
+                for piece in convertedCells {
+                    gameCenterManager.convertedCells.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                    gameCenterManager.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                }
+            }
+            
+            
+                taskDone.toggle()
+                selectedCell = nil
         } else {
-            // If the move wasn't successful, provide feedback.
-                    // SoundManager.shared.playErrorSound() // Uncomment or modify if you have a sound manager.
-                    // HapticManager.shared.triggerErrorFeedback() // Uncomment or modify if you have a haptic manager.
-                    
-                    // Keep the current cell selected for a possible retry.
-                    // You can also handle this differently, for example by resetting the selected cell or showing an error message.
+            guard let tutorialStep = board.tutorialStep else { return }
+            if tutorialStep != .complextConvert {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    selectedCell = nil
+                    board.setupTutorialBoard(for: tutorialStep)
+                }
+            } else {
+                selectedCell = nil
+            }
         }
-        // Implement what should happen when a cell is tapped.
-        // This could include selecting the cell, performing a move, or showing an error.
-        
     }
     private func calculateCellSize(geometry: GeometryProxy) -> CGFloat {
         let maxCellWidth = geometry.size.width * 0.175
@@ -195,11 +212,22 @@ struct TutorialView: View {
     private func moveToNextTutorialStep() {
         switch board.tutorialStep {
         case .clonePiece:
-            board.setupTutorialBoard(for: .teleportPiece)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                board.setupTutorialBoard(for: .teleportPiece)
+                taskDone.toggle()
+            }
+
         case .teleportPiece:
-            board.setupTutorialBoard(for: .convertPiece)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                board.setupTutorialBoard(for: .convertPiece)
+                taskDone.toggle()
+
+            }
         case .convertPiece:
-            board.setupTutorialBoard(for: .complextConvert)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                board.setupTutorialBoard(for: .complextConvert)
+                taskDone.toggle()
+            }
         case .complextConvert:
             print("DONE")
         case .none:

@@ -131,7 +131,7 @@ struct BoardView: View {
 
  struct BoardView_Previews: PreviewProvider {
     static var previews: some View {
-        @State var selectedCell: (row: Int, col: Int)? = (row: 5, col: 5)
+        @State var selectedCell: (row: Int, col: Int)? = (row: 0, col: 0)
         @State var currentPlayer: CellState = .player1
         BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, rows: 8, cols: 5, cellSize: 80, onMoveCompleted: {_ in print("pring")}, gameType: .ai)
             .environmentObject(GameCenterManager(currentPlayer: .player1))
