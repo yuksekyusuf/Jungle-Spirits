@@ -93,6 +93,7 @@
 		4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05582A3145D400B2362A /* CustomToggleView.swift */; };
 		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
 		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
+		4DF554062B86A969000DAF49 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF554052B86A969000DAF49 /* TutorialView.swift */; };
 		4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */; };
 		4DFE9A022B087242003FA745 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFE9A012B087242003FA745 /* HeartView.swift */; };
 /* End PBXBuildFile section */
@@ -193,6 +194,7 @@
 		4DED05562A31449100B2362A /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Watermelon-Regular.otf"; sourceTree = "<group>"; };
 		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
 		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
+		4DF554052B86A969000DAF49 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 		4DFE9A012B087242003FA745 /* HeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -355,6 +357,7 @@
 				4D0779662ABC72EC009DE89E /* ResizeTest.swift */,
 				4DA0C7CB2AFF293700DDEE99 /* LevelMapView.swift */,
 				4DA0C7CD2B05C28600DDEE99 /* MapsTabView.swift */,
+				4DF554052B86A969000DAF49 /* TutorialView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */,
 				4D9518792A50A58100ED284D /* WinView.swift in Sources */,
 				4D20A7662B530B84000F2D8B /* PopUpHeartView.swift in Sources */,
+				4DF554062B86A969000DAF49 /* TutorialView.swift in Sources */,
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,

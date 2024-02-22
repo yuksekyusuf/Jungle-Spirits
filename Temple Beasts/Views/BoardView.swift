@@ -129,13 +129,13 @@ struct BoardView: View {
     }
 }
 
-// struct BoardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        @State var selectedCell: (row: Int, col: Int)? = (row: 5, col: 5)
-//        @State var currentPlayer: CellState = .player1
-//        BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, rows: 0, cols: 0, cellSize: <#T##CGFloat#>, onMoveCompleted: <#T##(Move) -> Void#>, gameType: <#T##GameType#>)
-//        BoardView(board: Board(size: (rows: 8, columns: 5)), selectedCell: $selectedCell, currentPlayer: .player1) {
-//
-//        }
-//    }
-// }
+ struct BoardView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var selectedCell: (row: Int, col: Int)? = (row: 5, col: 5)
+        @State var currentPlayer: CellState = .player1
+        BoardView(selectedCell: $selectedCell, currentPlayer: $currentPlayer, rows: 8, cols: 5, cellSize: 80, onMoveCompleted: {_ in print("pring")}, gameType: .ai)
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(Board(size: (8, 5), gameType: .ai, obstacles: []))
+       
+    }
+ }

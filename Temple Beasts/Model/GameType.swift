@@ -11,6 +11,7 @@ enum GameType: Identifiable {
     case ai
     case oneVone
     case multiplayer
+    case tutorial
 
     var id: Int {
         switch self {
@@ -20,6 +21,8 @@ enum GameType: Identifiable {
             return 2
         case .multiplayer:
             return 3
+        case .tutorial:
+            return 4
         }
     }
 }
