@@ -13,13 +13,13 @@ struct PopUpWinView: View {
     @State var isAdded: Bool = false
     let gameType: GameType
     let winner: CellState
-    @Binding var remainingHearts: Int
+//    @Binding var remainingHearts: Int
     @Binding var showWinView: Bool
     
     var body: some View {
         ZStack{
             if isAdded {
-                    WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
+                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $gameCenterController.remainingHearts, onContinue: {
                         withAnimation {
                             isAdded.toggle()
                             showWinView.toggle()
@@ -75,7 +75,7 @@ struct PopUpWinView_Previews: PreviewProvider {
     static var previews: some View {
         @State var hearts = 5
         @State var boolion = false
-        PopUpWinView(gameType: .ai, winner: .player1, remainingHearts: $hearts, showWinView: $boolion)
+        PopUpWinView(gameType: .ai, winner: .player1, showWinView: $boolion)
             .environmentObject(GameCenterManager(currentPlayer: .player1))
     }
 }

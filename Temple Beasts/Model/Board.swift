@@ -15,6 +15,7 @@ class Board: ObservableObject {
     @Published var gameOver: Bool = false
     
     
+    
     let size: (rows: Int, columns: Int)
     let obstacles: [(Int, Int)]
     var gameType: GameType
@@ -23,12 +24,12 @@ class Board: ObservableObject {
         self.gameType = gameType
         self.size = size
         cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
+     
         let topLeft = (row: 0, col: 0)
         let bottomRight = (row: size.rows - 1, col: size.columns - 1)
         let topRight = (row: 0, col: size.columns - 1)
         let bottomLeft = (row: size.rows - 1, col: 0)
         self.obstacles = obstacles
-        
         cells[topLeft.row][topLeft.col] = .player1
         cells[bottomRight.row][bottomRight.col] = .player1
         cells[topRight.row][topRight.col] = .player2
@@ -51,6 +52,14 @@ class Board: ObservableObject {
         }
         self.obstacles = reconstructedObstacles
     }
+    
+    //MARK: - Initialization for the Tutorial
+//    init(size: (rows: Int, columns: Int)) {
+//        self.size = size
+//        self.gameType = .tutorial
+//        self.obstacles = []
+//        cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
+//    }
     func copy() -> Board {
         let newCells = self.cells.map { $0 }
         let copiedBoard = Board(cells: newCells, gameType: gameType)

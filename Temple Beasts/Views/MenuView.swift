@@ -8,6 +8,7 @@
 import SwiftUI
 import StoreKit
 import Pow
+import GoogleMobileAds
 
 
 
@@ -15,7 +16,7 @@ import Pow
 struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
-    @StateObject var gameCenterController: GameCenterManager = GameCenterManager(currentPlayer: .player1)
+    @EnvironmentObject var gameCenterController: GameCenterManager
     
     @State private var selectedMap = 1
     let numberOfMaps = 3
@@ -232,7 +233,7 @@ struct MenuView: View {
                                 Button {
                                     showHeartAlert.toggle()
                                 } label: {
-                                    HeartView(hearts: remainingHearts)
+                                    HeartView()
                                         .padding(.trailing, 20)
                                 }
                             }
@@ -611,7 +612,7 @@ struct MenuView: View {
                             }
                         }
                 }
-                HeartStatusView(heartCount: remainingHearts ?? 0, nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
+                HeartStatusView(nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
                     .scaleEffect(showHeartAlert ? 1 : 0)
                     .allowsHitTesting(showHeartAlert)
                     .animation(showHeartAlert ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showHeartAlert)
@@ -664,10 +665,10 @@ struct MenuView: View {
                     }
                     .alert(areYouSure, isPresented: $showResetGameAlert) {
                         Button(resetGame2) {
-                            UserDefaults.standard.setValue(1, forKey: "currentLevel")
+                            UserDefaults.standard.setValue(1, forKey: "achievedLevel")
                             UserDefaults.standard.setValue(1, forKey: "currentBundle")
                             loadCurrentBundle()
-                            loadCurrentLevel()
+                            loadAchievedLevel()
                         }
                         Button(cancel, role: .cancel) { }
                     } message: {
@@ -691,13 +692,12 @@ struct MenuView: View {
             //            }
             
         }
-        
-        .onChange(of: gameCenterController.currentLevel.id) { newValue in
+        .onChange(of: gameCenterController.currentPlayer) { newValue in
             print("Currently selected level: ", newValue)
         }
         .onAppear {
             
-            loadCurrentLevel()
+            loadAchievedLevel()
             loadCurrentBundle()
             selectedMap = gameCenterController.currentBundle.id
             UserDefaults.standard.set(soundState, forKey: "sound")
@@ -734,7 +734,7 @@ struct MenuView: View {
             }
         }
         .onChange(of: gameCenterController.path, perform: { value in
-            print("Current paths :", value)
+//            print("Current paths :", value)
         })
         //        .alert(isPresented: $showHeartAlert) {
         //            Alert(
@@ -759,6 +759,7 @@ struct MenuView: View {
         //        }
         
     }
+    
     
     //    func updateHeartsBasedOnTimeElapsed() {
     //        let lastTime = Date(timeIntervalSinceReferenceDate: lastBackgroundTime)
@@ -810,18 +811,14 @@ struct MenuView: View {
 //        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
 //    }
 //    
-    private func loadCurrentLevel() {
-        // Fetch the saved level ID from UserDefaults
-        let savedLevelID = UserDefaults.standard.integer(forKey: "currentLevel")
-        // Set the currentLevel in gameCenterController
-        // If there is no saved level, it will return 0, which should default to level 1
-        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
+    private func loadAchievedLevel() {
+        let savedLevelID = UserDefaults.standard.integer(forKey: "achievedLevel")
+        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level3_7
     }
     
     private func loadCurrentBundle(){
-        
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
     }
 }
 

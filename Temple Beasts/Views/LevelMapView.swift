@@ -93,24 +93,23 @@ struct LevelButtonNavigation: View {
         
         ZStack {
             Button(action: {
-                            if gameCenterController.remainingHearts > 0 {
-                                gameCenterController.currentLevel = gameLevel
-                                gameCenterController.path.append(gameLevel)
-                                isNavigationActive = true
-                            } else {
-                                showHeartStatus.toggle()
-                            }
-                        }) {
-                            LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
-                                .zIndex(1)
-                        }
-                        .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
-                        
-                        // Conditional NavigationLink that is activated programmatically
-                        NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles), isActive: $isNavigationActive) {
-                            EmptyView()
-                        }
-                        .hidden() // Hide
+                if gameCenterController.remainingHearts > 0 {
+                    gameCenterController.currentLevel = gameLevel
+                    gameCenterController.path.append(gameLevel)
+                    isNavigationActive = true
+                } else {
+                    showHeartStatus.toggle()
+                }
+            }) {
+                LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
+            }
+            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
+            
+            // Conditional NavigationLink that is activated programmatically
+            NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles), isActive: $isNavigationActive) {
+                EmptyView()
+            }
+            .hidden() // Hide
         }
 //        NavigationLink {
 //            GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)

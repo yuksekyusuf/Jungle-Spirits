@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4D0779672ABC72EC009DE89E /* ResizeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0779662ABC72EC009DE89E /* ResizeTest.swift */; };
+		4D09B08E2B80052F008B1CC1 /* ShareButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */; };
+		4D09B0902B801BE3008B1CC1 /* SubsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */; };
+		4D09B0982B81BAFE008B1CC1 /* story.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4D09B0972B81BAFE008B1CC1 /* story.mp4 */; };
 		4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0F06992A48D60C00B53823 /* SoundManager.swift */; };
 		4D0F06A52A48EBB800B53823 /* victory3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D0F06A42A48EBB800B53823 /* victory3.wav */; };
 		4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15F0B52A0C31AB00539383 /* BoardView.swift */; };
@@ -37,7 +40,6 @@
 		4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4D4F35C72B1D7AC6009CBC48 /* RevenueCatUI */; };
 		4D4F35CA2B1D7BCC009CBC48 /* lose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4D4F35C92B1D7BCC009CBC48 /* lose.mp3 */; };
 		4D4F35CC2B1D83D3009CBC48 /* Red guy fail.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D4F35CB2B1D83D3009CBC48 /* Red guy fail.json */; };
-		4D4F35CE2B1D8854009CBC48 /* story.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4D4F35CD2B1D879C009CBC48 /* story.mp4 */; };
 		4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5E69452AB9CD030089CAB6 /* CreditView.swift */; };
 		4D5FB6A12B760CD100776CBB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6A02B760CD100776CBB /* SwiftUIIntrospect */; };
 		4D5FB6A32B760E2B00776CBB /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5FB6A22B760E2B00776CBB /* SwiftUIIntrospect */; };
@@ -78,6 +80,12 @@
 		4DA579EC2A1AA4D700C989BE /* PauseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */; };
 		4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */; };
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
+		4DD2BC522B78149000CD246B /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC512B78149000CD246B /* AmplitudeSwift */; };
+		4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */; };
+		4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC562B7827EA00CD246B /* GoogleMobileAds */; };
+		4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5A2B78324900CD246B /* AdBannerView.swift */; };
+		4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5C2B7832BD00CD246B /* AdView.swift */; };
+		4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */; };
 		4DD4B5FF2A8F29EB004085B0 /* logo.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD4B5FE2A8F29EB004085B0 /* logo.json */; };
 		4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7C1622A896B7D005B34BE /* countdown.mp3 */; };
 		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
@@ -85,6 +93,7 @@
 		4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05582A3145D400B2362A /* CustomToggleView.swift */; };
 		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
 		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
+		4DF554062B86A969000DAF49 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF554052B86A969000DAF49 /* TutorialView.swift */; };
 		4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */; };
 		4DFE9A022B087242003FA745 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFE9A012B087242003FA745 /* HeartView.swift */; };
 /* End PBXBuildFile section */
@@ -104,6 +113,9 @@
 
 /* Begin PBXFileReference section */
 		4D0779662ABC72EC009DE89E /* ResizeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizeTest.swift; sourceTree = "<group>"; };
+		4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButtonView.swift; sourceTree = "<group>"; };
+		4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubsTest.swift; sourceTree = "<group>"; };
+		4D09B0972B81BAFE008B1CC1 /* story.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = story.mp4; sourceTree = "<group>"; };
 		4D0F06992A48D60C00B53823 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		4D0F06A42A48EBB800B53823 /* victory3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = victory3.wav; sourceTree = "<group>"; };
 		4D15F0B52A0C31AB00539383 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -135,7 +147,6 @@
 		4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D4F35C92B1D7BCC009CBC48 /* lose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lose.mp3; sourceTree = "<group>"; };
 		4D4F35CB2B1D83D3009CBC48 /* Red guy fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Red guy fail.json"; sourceTree = "<group>"; };
-		4D4F35CD2B1D879C009CBC48 /* story.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = story.mp4; sourceTree = "<group>"; };
 		4D5E69452AB9CD030089CAB6 /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
 		4D5FB6AF2B76C5C400776CBB /* Ext+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+String.swift"; sourceTree = "<group>"; };
 		4D5FB6B12B76D7E000776CBB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -172,6 +183,10 @@
 		4DA579EB2A1AA4D700C989BE /* PauseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuView.swift; sourceTree = "<group>"; };
 		4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TempleGems-Regular.otf"; sourceTree = "<group>"; };
 		4DC62BF92A1A73F700CD2007 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSessionManager.swift; sourceTree = "<group>"; };
+		4DD2BC5A2B78324900CD246B /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
+		4DD2BC5C2B7832BD00CD246B /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
+		4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Temple-Beasts-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4DD4B5FE2A8F29EB004085B0 /* logo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo.json; sourceTree = "<group>"; };
 		4DD7C1622A896B7D005B34BE /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
 		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
@@ -179,6 +194,7 @@
 		4DED05562A31449100B2362A /* Watermelon-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Watermelon-Regular.otf"; sourceTree = "<group>"; };
 		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
 		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
+		4DF554052B86A969000DAF49 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 		4DFE9A012B087242003FA745 /* HeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,9 +209,11 @@
 				4D5FB6A52B760E2B00776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D6401262A89D95E00917EC8 /* Lottie in Frameworks */,
 				4D5FB6A32B760E2B00776CBB /* SwiftUIIntrospect in Frameworks */,
+				4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */,
 				4D5FB6A12B760CD100776CBB /* SwiftUIIntrospect in Frameworks */,
 				4D5FB6AB2B760EA300776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */,
+				4DD2BC522B78149000CD246B /* AmplitudeSwift in Frameworks */,
 				4D5FB6A72B760EA300776CBB /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,6 +226,7 @@
 			children = (
 				4D0F06992A48D60C00B53823 /* SoundManager.swift */,
 				4D95187C2A50C5B100ED284D /* HapticManager.swift */,
+				4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -259,7 +278,7 @@
 		4D6401332A89F61600917EC8 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				4D4F35CD2B1D879C009CBC48 /* story.mp4 */,
+				4D09B0972B81BAFE008B1CC1 /* story.mp4 */,
 				4D60E7112B1C3C4600762875 /* Red Guy Win.json */,
 				4D60E70F2B1BCD7700762875 /* logo2.json */,
 				4D83E84E2A8AA717003A57BB /* blueDefault.json */,
@@ -296,6 +315,7 @@
 		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
 			isa = PBXGroup;
 			children = (
+				4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */,
 				4D6401332A89F61600917EC8 /* Animations */,
 				4D42DC142A56046100E8809C /* Controllers */,
 				4D0F069B2A48D89600B53823 /* Sounds */,
@@ -307,6 +327,8 @@
 				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
 				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
 				4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */,
+				4DD2BC5A2B78324900CD246B /* AdBannerView.swift */,
+				4DD2BC5C2B7832BD00CD246B /* AdView.swift */,
 				4D70D2442A055190002E9C0A /* Preview Content */,
 				4D231DE62AB4FB9C00F2D12A /* Localizable.strings */,
 			);
@@ -335,6 +357,7 @@
 				4D0779662ABC72EC009DE89E /* ResizeTest.swift */,
 				4DA0C7CB2AFF293700DDEE99 /* LevelMapView.swift */,
 				4DA0C7CD2B05C28600DDEE99 /* MapsTabView.swift */,
+				4DF554052B86A969000DAF49 /* TutorialView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -363,6 +386,8 @@
 				4D20A7652B530B84000F2D8B /* PopUpHeartView.swift */,
 				4D20A7672B531C22000F2D8B /* SwiftUIView.swift */,
 				4D5FB6B22B76E45700776CBB /* ScrollableView.swift */,
+				4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */,
+				4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -405,6 +430,8 @@
 				4D5FB6A42B760E2B00776CBB /* SwiftUIIntrospect-Static */,
 				4D5FB6A62B760EA300776CBB /* SwiftUIIntrospect */,
 				4D5FB6AA2B760EA300776CBB /* SwiftUIIntrospect-Static */,
+				4DD2BC512B78149000CD246B /* AmplitudeSwift */,
+				4DD2BC562B7827EA00CD246B /* GoogleMobileAds */,
 			);
 			productName = "Temple Beasts";
 			productReference = 4D70D23B2A05518F002E9C0A /* Temple Gems.app */;
@@ -444,6 +471,8 @@
 				4D4F35C42B1D7AC6009CBC48 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 				4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */,
 				4D5FB6992B760C4B00776CBB /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */,
+				4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = 4D70D23C2A05518F002E9C0A /* Products */;
 			projectDirPath = "";
@@ -464,6 +493,7 @@
 				4D83E84F2A8AA717003A57BB /* blueDefault.json in Resources */,
 				4D5FB6B52B76E55700776CBB /* victory.mp3 in Resources */,
 				4D2B38962A54D81400DA7D8F /* move.wav in Resources */,
+				4D09B0982B81BAFE008B1CC1 /* story.mp4 in Resources */,
 				4D2B38922A54D22D00DA7D8F /* Tricky Jimmy.ttf in Resources */,
 				4D6401302A89F24500917EC8 /* blueToRed.json in Resources */,
 				4D0F06A52A48EBB800B53823 /* victory3.wav in Resources */,
@@ -479,9 +509,9 @@
 				4DD4B5FF2A8F29EB004085B0 /* logo.json in Resources */,
 				4D6401282A89DB5A00917EC8 /* gemBlue-deselect.json in Resources */,
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
-				4D4F35CE2B1D8854009CBC48 /* story.mp4 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
+				4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */,
 				4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */,
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
@@ -500,16 +530,20 @@
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
 				4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
+				4D09B08E2B80052F008B1CC1 /* ShareButtonView.swift in Sources */,
 				4D42DC132A55DE6B00E8809C /* GameCenterManager.swift in Sources */,
 				4D231DDF2AB4E05A00F2D12A /* TextView.swift in Sources */,
+				4D09B0902B801BE3008B1CC1 /* SubsTest.swift in Sources */,
 				4D70D2532A055910002E9C0A /* PlayerView.swift in Sources */,
 				4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */,
 				4D231DF02AB56E5900F2D12A /* MatchmakingPopupView.swift in Sources */,
 				4D9518792A50A58100ED284D /* WinView.swift in Sources */,
 				4D20A7662B530B84000F2D8B /* PopUpHeartView.swift in Sources */,
+				4DF554062B86A969000DAF49 /* TutorialView.swift in Sources */,
 				4D95187D2A50C5B100ED284D /* HapticManager.swift in Sources */,
 				4D231DE12AB4E48C00F2D12A /* ButtonView.swift in Sources */,
 				4D70D2512A0555D5002E9C0A /* Board.swift in Sources */,
+				4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */,
 				4D2B388E2A54C5EB00DA7D8F /* CountDownView.swift in Sources */,
 				4D930D462A897107006D139B /* LottieView.swift in Sources */,
 				4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */,
@@ -519,6 +553,7 @@
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
 				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
 				4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */,
+				4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
 				4DA0C7D02B05CF4100DDEE99 /* VideoPlayerView.swift in Sources */,
 				4D231DEC2AB4FE1C00F2D12A /* AppLanguageManager.swift in Sources */,
@@ -527,6 +562,7 @@
 				4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
+				4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
 				4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */,
 				4D231DDB2AB08F7700F2D12A /* CellState.swift in Sources */,
@@ -692,7 +728,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -702,7 +738,7 @@
 				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -732,7 +768,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 16;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -742,7 +778,7 @@
 				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -819,6 +855,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-Swift";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -866,6 +918,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4D8C8C2A2B1E663000FAC725 /* XCRemoteSwiftPackageReference "Pow" */;
 			productName = Pow;
+		};
+		4DD2BC512B78149000CD246B /* AmplitudeSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
+			productName = AmplitudeSwift;
+		};
+		4DD2BC562B7827EA00CD246B /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

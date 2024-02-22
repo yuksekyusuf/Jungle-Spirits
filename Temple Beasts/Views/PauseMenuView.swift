@@ -30,11 +30,11 @@ struct PauseMenuView: View {
     
     
     var music: String {
-        localizedStringForKey("MUSIC", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("MUSIC", language: appLanguageManager.currentLanguage)
     }
     
     var sound: String {
-        localizedStringForKey("SOUND", language: appLanguageManager.currentLanguage)
+        appLanguageManager.localizedStringForKey("SOUND", language: appLanguageManager.currentLanguage)
     }
     
     var body: some View {
@@ -167,7 +167,10 @@ struct PauseMenuView: View {
                                             gameCenterController.path = NavigationPath()
 
                                         } label: {
-                                            PauseMenuIconView(imageName: "iconHome")
+                                            
+
+                                            PauseMenuIconView(imageName: "iconMap2")
+
                                         }
                                     }
                                 }
@@ -183,12 +186,15 @@ struct PauseMenuView: View {
     
     
 }
-//struct PauseMenuView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        @State var check = true
-//        @State var show = true
-//        @State var player: CellState = .player1
-//        @State var remainingTime: Int = 15
-//        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, gameType: .multiplayer, currentPlayer: $player)
-//    }
-//}
+struct PauseMenuView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var check = true
+        @State var show = true
+        @State var player: CellState = .player1
+        @State var remainingTime: Int = 15
+        @State var cell: (row: Int, col: Int)? = (1, 1)
+        PauseMenuView(showPauseMenu: $check, isPaused: $show, remainingTime: $remainingTime, selectedCell: $cell, gameType: .ai, currentPlayer: $player)
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(AppLanguageManager())
+    }
+}
