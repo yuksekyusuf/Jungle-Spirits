@@ -17,8 +17,11 @@ class Board: ObservableObject {
     
     
     let size: (rows: Int, columns: Int)
-    let obstacles: [(Int, Int)]
+    var obstacles: [(Int, Int)]
     var gameType: GameType
+    var tutorialStep: TutorialStep?
+
+
     var turn = 0
     init(size: (rows: Int, columns: Int), gameType: GameType ,obstacles: [(Int, Int)]) {
         self.gameType = gameType
@@ -60,6 +63,9 @@ class Board: ObservableObject {
 //        self.obstacles = []
 //        cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
 //    }
+    
+    
+    
     func copy() -> Board {
         let newCells = self.cells.map { $0 }
         let copiedBoard = Board(cells: newCells, gameType: gameType)
@@ -381,6 +387,87 @@ extension Board {
         }
         return moves
     }
+}
+
+
+//MARK: - TUTORIAL CONFIGURATION
+extension Board {
+    
+    convenience init(tutorialSize: (rows: Int, columns: Int), tutorialStep: TutorialStep) {
+        self.init(size: tutorialSize, gameType: .tutorial, obstacles: [])
+        setupTutorialBoard(for: tutorialStep)
+    }
+    func setupTutorialBoard(for step: TutorialStep) {
+        cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
+        switch step {
+        case .clonePiece, .teleportPiece:
+            let center = (row: size.rows / 2, col: size.columns / 2)
+            cells[center.row][center.col] = .player1
+        case .convertPiece:
+            let middle = (row: size.rows / 2, col: size.columns / 2)
+            cells[middle.row][middle.col] = .player1
+            cells[middle.row + 2][middle.col] = .player2
+        case .complextConvert:
+            let middle = (row: size.rows / 2, col: size.columns / 2)
+            cells[middle.row + 1][middle.col - 1] = .player1
+            cells[middle.row - 2][middle.col + 1] = .player2
+            obstacles = [(middle.row, middle.col), (0, 0), (1, 0), (5, 0), (6, 0), (0, 4), (1, 4), (5, 4), (6, 4)]
+            for obstacle in obstacles {
+                   cells[obstacle.0][obstacle.1] = .obstacle
+               }
+        }
+        tutorialStep = step
+    }
+    func performTutorialMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        guard let step = tutorialStep else { return false }
+        switch step {
+        case .clonePiece:
+            return performCloneMove(from: source, to: destination)
+        case .teleportPiece:
+            return performTeleportMove(from: source, to: destination)
+        case .convertPiece, .complextConvert:
+            return performConversionMove(from: source, to: destination)
+        }
+    }
+    private func performCloneMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        if isCloneMove(from: source, to: destination) {
+            _ = performMove(from: source, to: destination, player: .player1)
+            return true
+        }
+        return false
+    }
+    
+    private func performTeleportMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        if isTeleportMove(from: source, to: destination) {
+            _ = performMove(from: source, to: destination, player: .player1)
+            return true
+        }
+        return false
+    }
+    
+    private func performConversionMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        let convertedCells = performMove(from: source, to: destination, player: .player1)
+        return !convertedCells.isEmpty
+    }
+    
+    
+    //Helper functions
+    private func isCloneMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        let rowDifference = abs(destination.row - source.row)
+        let colDifference = abs(destination.col - source.col)
+        return rowDifference <= 1 && colDifference <= 1
+    }
+    
+    private func isTeleportMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
+        let rowDifference = abs(destination.row - source.row)
+        let colDifference = abs(destination.col - source.col)
+        
+        return (rowDifference > 1 || colDifference > 1) && isLegalMove(from: source, to: destination, player: .player1)
+
+        
+    }
+    
+
 }
 
 ///##### MAYBE FOR LATER USE ######

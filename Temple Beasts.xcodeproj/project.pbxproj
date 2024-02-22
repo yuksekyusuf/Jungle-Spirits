@@ -94,6 +94,7 @@
 		4DED055B2A3147D500B2362A /* PauseMenuIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */; };
 		4DED055C2A31494800B2362A /* Watermelon-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4DED05562A31449100B2362A /* Watermelon-Regular.otf */; };
 		4DF554062B86A969000DAF49 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF554052B86A969000DAF49 /* TutorialView.swift */; };
+		4DF554082B86E9F2000DAF49 /* TutorialStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF554072B86E9F2000DAF49 /* TutorialStep.swift */; };
 		4DFC29EC2A5817A500AAE8DE /* GameCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */; };
 		4DFE9A022B087242003FA745 /* HeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFE9A012B087242003FA745 /* HeartView.swift */; };
 /* End PBXBuildFile section */
@@ -195,6 +196,7 @@
 		4DED05582A3145D400B2362A /* CustomToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleView.swift; sourceTree = "<group>"; };
 		4DED055A2A3147D500B2362A /* PauseMenuIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseMenuIconView.swift; sourceTree = "<group>"; };
 		4DF554052B86A969000DAF49 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		4DF554072B86E9F2000DAF49 /* TutorialStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialStep.swift; sourceTree = "<group>"; };
 		4DFC29EB2A5817A500AAE8DE /* GameCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterView.swift; sourceTree = "<group>"; };
 		4DFE9A012B087242003FA745 /* HeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,6 +255,7 @@
 				4D70D2502A0555D5002E9C0A /* Board.swift */,
 				4D231DDC2AB08FA300F2D12A /* Move.swift */,
 				4DA0C7C92AFF291C00DDEE99 /* GameLevel.swift */,
+				4DF554072B86E9F2000DAF49 /* TutorialStep.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
+				4DF554082B86E9F2000DAF49 /* TutorialStep.swift in Sources */,
 				4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
 				4D09B08E2B80052F008B1CC1 /* ShareButtonView.swift in Sources */,
