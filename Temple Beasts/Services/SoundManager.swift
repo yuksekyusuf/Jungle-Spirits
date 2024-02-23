@@ -122,7 +122,38 @@ class SoundManager {
         musicPlayer?.volume = 0.25
     }
     
+    func playLowerBackground() {
+        guard UserDefaults.standard.bool(forKey: "music") else { return }
+        guard let url = Bundle.main.url(forResource: "soundtrack", withExtension: ".wav") else { return }
+
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try AVAudioSession.sharedInstance().setActive(true)
+
+                /* The following line is required for the player to play on the background */
+                UIApplication.shared.beginReceivingRemoteControlEvents()
+
+                musicPlayer = try AVAudioPlayer(contentsOf: url)
+                musicPlayer!.numberOfLoops = -1 // Infinite loop
+                musicPlayer!.prepareToPlay()
+                musicPlayer!.volume = 0.25
+                musicPlayer!.play()
+            } catch {
+                print("Could not create audio player")
+                return
+            }
+
+
+    }
+    
     func turnUpMusic() {
         musicPlayer?.volume = 1.0
+    }
+    
+    func pauseMusic() {
+        musicPlayer?.pause()
+    }
+    func resumeMusic() {
+        musicPlayer?.play()
     }
 }

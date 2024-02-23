@@ -17,8 +17,9 @@ struct CellView: View {
     var isPressed: Bool
     @Binding var convertedCells: [(row: Int, col: Int, byPlayer: CellState)]
     @Binding var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)]
+    @Binding var isShaking: Bool
     let cellPosition: (row: Int, col: Int)
-    @Binding var moveMade: Bool
+//    @Binding var moveMade: Bool
     @State private var selectedUnselectedImage: String = Self.randomUnselectedImage()
     
     
@@ -37,6 +38,7 @@ struct CellView: View {
                     .transition(.opacity)
                     .scaleEffect(isPressed ? 0.9 : 1.0)
                     .offset(y: -4)
+                    .modifier(ShakeEffect(animatableData: (isShaking && state == .player1) ? 1 : 0))
                 
                 if state == .obstacle {
                     Image("") // Replace with your obstacle image name
@@ -94,6 +96,7 @@ struct CellView_Previews: PreviewProvider {
     static var previews: some View {
         @State var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = [(1, 1, byPlayer: .player1)]
         @State var booli = false
-        CellView(state: .empty, isSelected: true, highlighted: true, outerHighlighted: false, width: 80, isPressed: false, convertedCells: $convertedCells, previouslyConvertedCells: $convertedCells, cellPosition: (row: 30, col: 1), moveMade: $booli)
+        @State var shaking: Bool = false
+        CellView(state: .empty, isSelected: true, highlighted: true, outerHighlighted: false, width: 80, isPressed: false, convertedCells: $convertedCells, previouslyConvertedCells: $convertedCells, isShaking: $shaking, cellPosition: (row: 30, col: 1))
     }
 }

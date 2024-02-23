@@ -158,18 +158,6 @@ struct WinView: View {
                                                 .offset(y: 130)
 
                                         }
-//                                        if gameCenterManager.currentLevel.id < 22 {
-////                                            if let size = gameCenterManager.currentLevel.next?.boardSize {
-////                                                if let obstacles = gameCenterManager.currentLevel.next?.obstacles {
-////                                                    NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
-////                                                        .offset(y: 130)
-////                                                }
-////                                            }
-//                                            let size = gameCenterManager.currentLevel.boardSize
-//                                            let obstacles = gameCenterManager.currentLevel.obstacles
-//                                            NextLevelNavigation(boardSize: size, obstacles: obstacles, onContinue: onContinue)
-//                                                .offset(y: 130)
-//                                        }
                                     }
                                     Image("winLights")
                                         .resizable()
@@ -380,29 +368,6 @@ struct NextLevelNavigation: View {
                     gameCenterController.isQuitGame = false
                     gameCenterController.isGameOver = false
                 }))
-
-//        NavigationLink {
-//            withAnimation(.easeInOut(duration: 0.5)) {
-//                GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
-//            }
-//        } label: {
-//            HStack{
-//                Text("Continue")
-//                    .font(Font.custom("TempleGemsRegular", size: 24))
-//                    .multilineTextAlignment(.center)
-//                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-//                    .frame(width: 122, height: 22, alignment: .center)
-//            }
-//            .frame(width: 199, height: 42)
-//            .background(Color(red: 0.48, green: 0.4, blue: 0.98))
-//            .cornerRadius(14)
-//        }
-//        .simultaneousGesture(TapGesture().onEnded({
-//            gameCenterController.isPaused.toggle()
-//            gameCenterController.isQuitGame = false
-//            gameCenterController.isGameOver = false
-//
-//        }))
     }
 }
 

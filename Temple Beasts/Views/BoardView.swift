@@ -14,6 +14,7 @@ struct BoardView: View {
     @Binding var currentPlayer: CellState
     @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
     @State private var moveMade: Bool = false
+    @State private var isShaking: Bool = false
     
     let rows: Int
     let cols: Int
@@ -38,11 +39,12 @@ struct BoardView: View {
                                 state: board.cellState(at: (row: row, col: col)),
                                 isSelected: selectedCell != nil && selectedCell! == (row: row, col: col),
                                 highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col),
-                                outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize,
+                                outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), 
+                                width: cellSize,
                                 isPressed: isCellPressed(row: row, col: col),
                                 convertedCells: $gameCenterController.convertedCells,
-                                previouslyConvertedCells: $gameCenterController.previouslyConvertedCells,
-                                cellPosition: (row: row, col: col), moveMade: $moveMade
+                                previouslyConvertedCells: $gameCenterController.previouslyConvertedCells, isShaking: $isShaking,
+                                cellPosition: (row: row, col: col)
                             )
                             .frame(width: cellSize, height: cellSize)
                             .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in

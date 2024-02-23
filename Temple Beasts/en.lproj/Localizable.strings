@@ -46,6 +46,14 @@
 "FINISH_MAP" = "Finish the other maps first to unseal this map";
 "CONTINUE" = "Continue";
 "SHARE" = "SHARE";
+"SELECT_PIECE" = "Select the spirit";
+"GETTING_IT" = "You’re getting it!";
+"ONE_MORE" = "One more time!";
+"CLONE_YOURSELF" = "Then clone yourself";
+"TELEPORT_YOURSELF" = "Then teleport yourself";
+"COVERT_BLUE_RED" = "Convert the blue to red";
+"FULL" = "Full";
+
 
 
 

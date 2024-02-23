@@ -23,9 +23,11 @@ extension Amplitude {
 struct Temple_BeastsApp: App {
     @StateObject var appLanguageManager = AppLanguageManager()
     @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
-    @AppStorage("remainingHearts") var remainingHearts: Int?
-    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
-    @State var heartTimer: Timer?
+    @StateObject var heartManager = HeartManager()
+//    @AppStorage("remainingHearts") var remainingHearts: Int?
+//    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
+//    @State var heartTimer: Timer?
+//    @State var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
     @Environment(\.scenePhase) private var scenePhase
     private var sessionStartTime: Date?
 
@@ -35,8 +37,9 @@ struct Temple_BeastsApp: App {
     )
     
     init() {
+        
         let _ = Amplitude.shared
-        initMobileAds()
+//        initMobileAds()
         Purchases.logLevel = .debug
         Purchases.configure(withAPIKey: REVENUECAT)
     }
@@ -46,24 +49,28 @@ struct Temple_BeastsApp: App {
             MenuView()
                 .environmentObject(appLanguageManager)
                 .environmentObject(gameCenterManager)
+                .environmentObject(heartManager)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
-                .onAppear {
-                    startHeartTimer()
-
-                }
+            
+//                .onAppear {
+//                    startHeartTimer()
+//
+//                }
                 .onDisappear(perform: {
-                    heartTimer?.invalidate()
+                    gameCenterManager.heartTimer?.invalidate()
                 })
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-                    updateHeartsBasedOnTimeElapsed()
-                }
+//                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+//                    updateHeartsBasedOnTimeElapsed()
+//                }
                 .onChange(of: scenePhase) { newScene in
                     switch newScene {
                     case .active:
-                        initMobileAds()
+                        heartManager.startHeartTimer()
+//                        initMobileAds()
                         SessionManager.shared.logSessionStart()
                     case .background:
                         SessionManager.shared.logSessionEnd()
+                        UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime")
                     case .inactive:
                         break
                     @unknown default:
@@ -71,45 +78,41 @@ struct Temple_BeastsApp: App {
                     }
                     
                 }
-//            AdView()
-//              
-            
-//            ShareButtonView()
+
         }
         
     }
     
-    func startHeartTimer() {
-        heartTimer?.invalidate()
-        
-        // Check if a heart should be given right away
-        updateHeartsBasedOnTimeElapsed()
-        
-        heartTimer = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { _ in
-            let hearts = UserDefaults.standard.integer(forKey: "hearts")
-            if hearts < 5 {
-                let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
-                UserDefaults.standard.set(heart, forKey: "hearts")
-                gameCenterManager.remainingHearts = heart
-                
-            }
-            
-        }
-    }
-    
-    func updateHeartsBasedOnTimeElapsed() {
-        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
-        let elapsedTime = Date().timeIntervalSince(lastTime)
-        
-        let heartIntervals = Int(elapsedTime / 900)
-        
-        if heartIntervals > 0 {
-            let hearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
-            UserDefaults.standard.set(hearts, forKey: "hearts")
-            lastHeartTime = Date().timeIntervalSinceReferenceDate
-            gameCenterManager.remainingHearts = hearts
-        }
-    }
+//    func startHeartTimer() {
+//        gameCenterManager.heartTimer?.invalidate()
+//        
+//        // Check if a heart should be given right away
+//        updateHeartsBasedOnTimeElapsed()
+//        
+//        gameCenterManager.heartTimer = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { _ in
+//            let hearts = UserDefaults.standard.integer(forKey: "hearts")
+//            if hearts < 5 {
+//                gameCenterManager.remainingHearts = UserDefaults.standard.integer(forKey: "hearts") + 1
+//                UserDefaults.standard.set(gameCenterManager.remainingHearts, forKey: "hearts")
+//                
+//            }
+//            
+//        }
+//    }
+//    
+//    func updateHeartsBasedOnTimeElapsed() {
+//        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
+//        let elapsedTime = Date().timeIntervalSince(lastTime)
+//        
+//        let heartIntervals = Int(elapsedTime / 900)
+//        
+//        if heartIntervals > 0 {
+//            gameCenterManager.remainingHearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
+//            UserDefaults.standard.set(gameCenterManager.remainingHearts, forKey: "hearts")
+//            lastHeartTime = Date().timeIntervalSinceReferenceDate
+//            UserDefaults.standard.set(lastHeartTime, forKey: "lastHeartTime") // Persist the new lastHeartTime
+//        }
+//    }
     
     func initMobileAds() {
             GADMobileAds.sharedInstance().start(completionHandler: nil)

@@ -15,8 +15,9 @@ struct HowToPlayView: View {
     
     func localizedStringForKey(_ key: String, language: String) -> String {
         let path = Bundle.main.path(forResource: language, ofType: "lproj")
-        let bundle = Bundle(path: path!)
-        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
+        guard let path = path else { return ""}
+        guard let bundle = Bundle(path: path) else { return "" }
+        return NSLocalizedString(key, tableName: nil, bundle: bundle, value: "", comment: "")
     }
     
     
@@ -184,6 +185,9 @@ struct HowToPlayView: View {
 struct HowToPlayView_Previews: PreviewProvider {
     static var previews: some View {
         HowToPlayView()
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(AppLanguageManager())
+
     }
 }
 

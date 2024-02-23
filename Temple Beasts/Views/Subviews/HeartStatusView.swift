@@ -11,6 +11,7 @@ struct HeartStatusView: View {
     //    var heartCount: Int
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterManager: GameCenterManager
+    @EnvironmentObject var heartManager: HeartManager
     
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
@@ -30,14 +31,18 @@ struct HeartStatusView: View {
         appLanguageManager.localizedStringForKey("OK", language: appLanguageManager.currentLanguage)
     }
     
-    var rewardAd: RewardedAd
+    var fullHeart: String {
+        appLanguageManager.localizedStringForKey("FULL", language: appLanguageManager.currentLanguage)
+    }
+    
+//    var rewardAd: RewardedAd
     
     init(nextHeartTime: Binding<String>, isPresent: Binding<Bool>) {
         //        self.heartCount = gameCenterManager.
         self._nextHeartTime = nextHeartTime // Use underscore to directly initialize @Binding properties
         self._isPresent = isPresent
-        self.rewardAd = RewardedAd()
-        rewardAd.load()
+//        self.rewardAd = RewardedAd()
+//        rewardAd.load()
     }
     
     var body: some View {
@@ -91,18 +96,27 @@ struct HeartStatusView: View {
             
             
             VStack {
-                Text("\(gameCenterManager.remainingHearts) \(hearts.capitalizedSentence)")
+                Text("\(heartManager.remainingHearts) \(hearts.capitalizedSentence)")
                     .font(Font.custom("Watermelon", size: 32))
                     .kerning(0.96)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.top, 10)
                     .padding(.bottom, 5)
-                Text("\(next_hearts) \(nextHeartTime)")
-                    .font(Font.custom("Temple Gems", size: 20))
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
-                    .frame(width: 168, alignment: .center)
+                if heartManager.remainingHearts == 5 {
+                    Text(fullHeart)
+                        .font(Font.custom("Temple Gems", size: 24))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                        .frame(width: 168, alignment: .center)
+                } else {
+                    Text("\(next_hearts) \(heartManager.remainingTime)")
+                        .font(Font.custom("Temple Gems", size: 20))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                        .frame(width: 168, alignment: .center)
+                }
+                
                 //                Text("New Heart \(newHeart)")
                 //                  .font(Font.custom("Temple Gems", size: 20))
                 //                  .multilineTextAlignment(.center)
@@ -113,7 +127,7 @@ struct HeartStatusView: View {
             }
             .offset(y: 2)
             .frame(width: 253, alignment: .center)
-            if !(gameCenterManager.remainingHearts > 0) {
+            if !(heartManager.remainingHearts > 0) {
                 Image("noHeart")
                     .resizable()
                     .scaledToFit()
@@ -128,13 +142,13 @@ struct HeartStatusView: View {
             }
             
             VStack {
-                if gameCenterManager.remainingHearts < 5 {
+                if heartManager.remainingHearts < 5 {
                     VStack(spacing: 0) {
                         Button {
                             SoundManager.shared.stopBackgroundMusic()
-                            self.rewardAd.showAd(rewardFunction: {
-                                gameCenterManager.remainingHearts += 1
-                            })
+//                            self.rewardAd.showAd(rewardFunction: {
+//                                gameCenterManager.remainingHearts += 1
+//                            })
                         } label: {
                             ZStack(alignment: .center) {
                                 Rectangle()
@@ -213,6 +227,7 @@ struct HeartStatusView_Previews: PreviewProvider {
         @State var isPresentTrue = true
         @State var remainingTime = "9:27"
         HeartStatusView(nextHeartTime: $remainingTime, isPresent: $isPresentTrue).environmentObject(AppLanguageManager()).environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(HeartManager())
         
     }
 }

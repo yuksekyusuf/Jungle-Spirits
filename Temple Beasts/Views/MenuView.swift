@@ -17,6 +17,7 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterController: GameCenterManager
+    @EnvironmentObject var heartManager: HeartManager
     
     @State private var selectedMap = 1
     let numberOfMaps = 3
@@ -44,7 +45,7 @@ struct MenuView: View {
     
     //    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     
-    @AppStorage("hearts") var remainingHearts: Int?
+//    @AppStorage("hearts") var remainingHearts: Int?
     
     @State private var selectedLanguage: String = UserDefaults.standard.string(forKey: "AppLanguage") ?? "en"
     @State private var currentLanguageIndex: Int = 0
@@ -229,14 +230,14 @@ struct MenuView: View {
                             //                                    }
                             //                                }
                             
-                            if let remainingHearts = remainingHearts {
+                            
                                 Button {
                                     showHeartAlert.toggle()
                                 } label: {
                                     HeartView()
                                         .padding(.trailing, 20)
                                 }
-                            }
+                            
                             //                                Button {
                             ////                                    if hasUserBeenPromptedForReview {
                             ////                                        withAnimation(.spring()) {
@@ -637,14 +638,15 @@ struct MenuView: View {
                     }
                     
                     NavigationLink {
-                        HowToPlayView()
+                        TutorialView(gameCenterManager: gameCenterController)
+                            .environmentObject(gameCenterController)
                     } label: {
                         ButtonView(text: howToPlay, width: 200, height: 50)
                         //                                .offset(y: 40)
                     }
                     .simultaneousGesture(
                         TapGesture()
-                            .onEnded({gameCenterController.path.append(1)})
+                            .onEnded({gameCenterController.path.append(gameCenterController.currentLevel?.rawValue ?? 100 + 100)})
                     )
                     .padding(.top, 30)
                     
@@ -713,14 +715,14 @@ struct MenuView: View {
             } else {
                 gameCenterController.fetchLocalPlayerImage()
             }
-            if remainingHearts == nil {
-                gameCenterController.remainingHearts = 5
-                UserDefaults.standard.set(5, forKey: "hearts")
-            }
+//            if remainingHearts == nil {
+//                gameCenterController.remainingHearts = 5
+//                UserDefaults.standard.set(5, forKey: "hearts")
+//            }
             
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                self.updateRemainingTime()
-            }
+//            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//                self.updateRemainingTime()
+//            }
         }
         .onChange(of: gameCenterController.isMatchFound) { matchFound in
             if matchFound {
@@ -786,24 +788,24 @@ struct MenuView: View {
     //        }
     //    }
     
-    func timeUntilNextHeart() -> TimeInterval {
-        let lastHeartTime = UserDefaults.standard.integer(forKey: "lastHeartTime")
-        let lastTime = Date(timeIntervalSinceReferenceDate: TimeInterval(lastHeartTime))
-        let elapsedTime = Date().timeIntervalSince(lastTime)
-        let remainingTime = 900 - (elapsedTime.truncatingRemainder(dividingBy: 900))
-        return max(0, remainingTime)
-    }
-    
-    func formatTimeForDisplay(seconds: TimeInterval) -> String {
-        let minutes = Int(seconds) / 60
-        let remainingSeconds = Int(seconds) % 60
-        return "\(minutes):\(String(format: "%02d", remainingSeconds))"
-    }
-    
-    func updateRemainingTime() {
-        let time = timeUntilNextHeart()
-        remainingTime = formatTimeForDisplay(seconds: time)
-    }
+//    func timeUntilNextHeart() -> TimeInterval {
+//        let lastHeartTime = UserDefaults.standard.integer(forKey: "lastHeartTime")
+//        let lastTime = Date(timeIntervalSinceReferenceDate: TimeInterval(lastHeartTime))
+//        let elapsedTime = Date().timeIntervalSince(lastTime)
+//        let remainingTime = 20 - (elapsedTime.truncatingRemainder(dividingBy: 900))
+//        return max(0, remainingTime)
+//    }
+//    
+//    func formatTimeForDisplay(seconds: TimeInterval) -> String {
+//        let minutes = Int(seconds) / 60
+//        let remainingSeconds = Int(seconds) % 60
+//        return "\(minutes):\(String(format: "%02d", remainingSeconds))"
+//    }
+//    
+//    func updateRemainingTime() {
+//        let time = timeUntilNextHeart()
+//        remainingTime = formatTimeForDisplay(seconds: time)
+//    }
 //    
 //    func localizedStringForKey(_ key: String, language: String) -> String {
 //        let path = Bundle.main.path(forResource: language, ofType: "lproj")

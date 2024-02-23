@@ -399,7 +399,9 @@ extension Board {
         setupTutorialBoard(for: tutorialStep)
     }
     func setupTutorialBoard(for step: TutorialStep) {
+        self.objectWillChange.send()
         cells = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
+        
         switch step {
         case .clonePiece, .teleportPiece:
             let center = (row: size.rows / 2, col: size.columns / 2)
@@ -468,6 +470,12 @@ extension Board {
         
     }
     
+    func updateCell(row: Int, col: Int, newState: CellState) {
+        var updatedCells = cells
+        updatedCells[row][col] = newState
+        self.cells = updatedCells // Reassigning triggers @Published
+    }
+
 
 }
 

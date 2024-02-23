@@ -11,6 +11,7 @@ import Pow
 struct GameView: View {
     @StateObject private var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
+    @EnvironmentObject var heartManager: HeartManager
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
@@ -27,13 +28,12 @@ struct GameView: View {
     @State var selectedCell: (row: Int, col: Int)?
     @State var gameType: GameType
     @State private var showAlert: Bool = false
-//    @State private var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     @State private var showOverLay: Bool = false
     
     private var player1PieceCount: Int {
         board.countPieces().player1
     }
-
+    
     private var player2PieceCount: Int {
         board.countPieces().player2
     }
@@ -44,427 +44,422 @@ struct GameView: View {
     var otherPlayerName: String {
         String(gameCenterController.otherPlayer?.displayName.prefix(8) ?? "")
     }
-
+    
     var body: some View {
-            GeometryReader { geometry in
-                let cellSize = self.calculateCellSize(geometry: geometry)
-                let boardWidth = cellSize * CGFloat(self.board.size.columns)
+        GeometryReader { geometry in
+            let cellSize = self.calculateCellSize(geometry: geometry)
+            let boardWidth = cellSize * CGFloat(self.board.size.columns)
+            ZStack {
+                Image("backgroundImage")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: geometry.size.height)
+                
+                if showWinMenu {
+                    PopUpWinView(gameType: gameType, winner: winner, showWinView: $showWinMenu)
+                        .zIndex(1)
+                }
                 ZStack {
-                    Image("backgroundImage")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: geometry.size.height)
-
-                    if showWinMenu {
-                        PopUpWinView(gameType: gameType, winner: winner, showWinView: $showWinMenu)
-                            .zIndex(1)
-                    }
-                    ZStack {
-                        VStack {
-                            if UIScreen.main.bounds.height <= 667 {
-                                VStack {
-                                    HStack {
-                                        VStack {
-                                            HStack(alignment: .top) {
-                                                if gameCenterController.otherPlayerPlaying {
-                                                    Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.leading, 20)
-                                                } else {
-                                                    Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.leading, 20)
-                                                }
-                                                if gameType == .multiplayer {
-                                                    VStack(alignment: .leading) {
-                                                        PieceCountView(pieceCount: player1PieceCount, size: 25)
-                                                            .padding(.top, 5)
-                                                            if gameCenterController.priority > gameCenterController.otherPriority {
-                                                                Text(localPlayerName)
-                                                                    .foregroundColor(.white)
-                                                                    .truncationMode(.tail)
-                                                                    .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                    .fixedSize(horizontal: true, vertical: false)
-                                                            } else {
-                                                                Text(otherPlayerName)
-                                                                    .foregroundColor(.white)
-                                                                    .truncationMode(.tail)
-                                                                    .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                    .fixedSize(horizontal: true, vertical: false)
-
-                                                            }
-
-                                                    }
-                                                } else {
-                                                    PieceCountView(pieceCount: player1PieceCount, size: 30)
-                                                        .padding(.top, 5)
-                                                }
-                                            }
-                                        }
-                                        Spacer()
-                                        VStack {
-                                            Button(action: {
-                                                if gameType == .multiplayer {
-                                                    showPauseMenu.toggle()
-                                                } else {
-                                                    gameCenterController.isPaused.toggle()
-                                                    if showPauseMenu {
-                                                        withAnimation {
-                                                            showPauseMenu.toggle()
-                                                        }
-                                                    }
-                                                    showPauseMenu.toggle()
-                                                }
-                                            }) {
-                                                if !showWinMenu {
-                                                    Image("Pause button")
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 74, height: 50)
-                                                }
-                                                    
-                                            }
-                                        }
-
-                                        Spacer()
-                                        VStack {
-                                            HStack(alignment: .top) {
-                                                if gameType == .multiplayer {
-                                                    VStack(alignment: .trailing){
-                                                        PieceCountView(pieceCount: player2PieceCount, size: 25)
-                                                            .padding(.top, 5)
-                                                            if gameCenterController.priority < gameCenterController.otherPriority{
-                                                                Text(localPlayerName)
-                                                                    .foregroundColor(.white)
-                                                                    .truncationMode(.tail)
-                                                                    .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                    .fixedSize(horizontal: true, vertical: false)
-                                                            } else {
-                                                                Text(otherPlayerName)
-                                                                    .foregroundColor(.white)
-                                                                    .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                    .truncationMode(.tail)
-                                                                    .fixedSize(horizontal: true, vertical: false)
-                                                            }
-
-
-                                                    }
-                                                } else {
-                                                    PieceCountView(pieceCount: player2PieceCount, size: 30)
-                                                        .padding(.top, 5)
-                                                }
-
-                                                if gameCenterController.otherPlayerPlaying {
-                                                    Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.trailing, 20)
-                                                } else {
-                                                    Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.trailing, 20)
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                    .opacity(showWinMenu ? 0 : 1)
-                                    .opacity(showPauseMenu ? 0 : 1)
-
-                                    HStack {
-                                        if gameType == .multiplayer {
-                                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
-                                                .padding([.horizontal, .trailing], 5)
-                                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
-                                        } else {
-                                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
-                                                .padding([.horizontal, .trailing], 5)
-                                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
-                                        }
-
-                                    }
-                                }
-                                .padding(.top ,20)
-                            } else {
-                                VStack {
-                                    HStack {
-                                        VStack {
-                                            HStack(alignment: .top) {
-                                                if gameCenterController.otherPlayerPlaying {
-                                                    Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.leading, 20)
-                                                } else {
-                                                    Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.leading, 20)
-                                                }
-                                                if gameType == .multiplayer {
-                                                    VStack(alignment: .leading) {
-                                                        PieceCountView(pieceCount: player1PieceCount, size: 25)
-                                                            .padding(.top, 5)
-
-                                                        if gameCenterController.priority > gameCenterController.otherPriority {
-                                                            Text(localPlayerName)
-                                                                .foregroundColor(.white)
-                                                                .truncationMode(.tail)
-                                                                .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                .fixedSize(horizontal: true, vertical: false)
-                                                        } else {
-                                                            Text(otherPlayerName)
-                                                                .foregroundColor(.white)
-                                                                .truncationMode(.tail)
-                                                                .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                .fixedSize(horizontal: true, vertical: false)
-                                                            
-                                                        }
-                                                        
-                                                    }
-                                                } else {
-                                                    PieceCountView(pieceCount: player1PieceCount, size: 30)
-                                                        .padding(.top, 5)
-                                                }
-                                            }
-                                        }
-                                        Spacer()
-                                        VStack {
-                                            Button(action: {
-                                                if gameType == .multiplayer {
-                                                    showPauseMenu.toggle()
-                                                } else {
-                                                    gameCenterController.isPaused.toggle()
-                                                    if showPauseMenu {
-                                                        withAnimation {
-                                                            showPauseMenu.toggle()
-                                                        }
-                                                    }
-                                                    
-                                                    showPauseMenu.toggle()
-                                                    
-                                                }
-                                            }) {
-                                                if !showWinMenu {
-                                                    Image("Pause button")
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 74, height: 50)
-                                                }
-                                                
-                                            }
-                                        }
-                                        
-                                        Spacer()
-                                        VStack {
-                                            HStack(alignment: .top) {
-                                                if gameType == .multiplayer {
-                                                    VStack(alignment: .trailing){
-                                                        PieceCountView(pieceCount: player2PieceCount, size: 25)
-                                                            .padding(.top, 5)
-                                                        if gameCenterController.priority < gameCenterController.otherPriority{
-                                                            Text(localPlayerName)
-                                                                .foregroundColor(.white)
-                                                                .truncationMode(.tail)
-                                                                .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                .fixedSize(horizontal: true, vertical: false)
-                                                        } else {
-                                                            Text(otherPlayerName)
-                                                                .foregroundColor(.white)
-                                                                .font(Font.custom("TempleGemsRegular", size: 14))
-                                                                .truncationMode(.tail)
-                                                                .fixedSize(horizontal: true, vertical: false)
-                                                        }
-                                                        
-                                                        
-                                                    }
-                                                } else {
-                                                    PieceCountView(pieceCount: player2PieceCount, size: 30)
-                                                        .padding(.top, 5)
-                                                }
-                                                
-                                                if gameCenterController.otherPlayerPlaying {
-                                                    Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.trailing, 20)
-                                                } else {
-                                                    Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
-                                                        .frame(width: 55)
-                                                        .padding(.trailing, 20)
-                                                }
-                                            }
-                                            
-                                        }
-                                    }
-                                    .opacity(showWinMenu ? 0 : 1)
-                                    .opacity(showPauseMenu ? 0 : 1)
-
-                                    HStack {
-                                        if gameType == .multiplayer {
-                                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
-                                                .padding([.horizontal, .trailing], 5)
-                                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
-                                        } else {
-                                            TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
-                                                .padding([.horizontal, .trailing], 5)
-                                                .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
-                                        }
-                                        
-                                    }
-                                }
-                                .padding(.top, 70)
-                            }
-                            Spacer()
-                            HStack{
-                                Spacer()
-                                BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
-                                    .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
-                                    .allowsHitTesting(!showPauseMenu)
-                                    .overlay {
-                                        Image("Lights")
-                                            .blendMode(.overlay)
-                                            .allowsHitTesting(false)
-                                        Image("Shadow")
-                                            .opacity(0.80)
-                                            .blendMode(.overlay)
-                                            .allowsHitTesting(false)
-                                    }
-                                    .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
-                                Spacer()
-                            }
-                            Spacer()
-                            Spacer()
-                            Spacer()
-                        }
-                        
-                        if showPauseMenu {
-                            Color.black.opacity(0.65)
-                                .ignoresSafeArea()
-                                .onTapGesture {
-                                    if showPauseMenu {
-                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
-                                            showPauseMenu.toggle()
-                                            gameCenterController.isPaused.toggle()
-                                        }
-                                    }
-                                }
-                        }
-                        
-                            if showWinMenu {
-                                ZStack {
-                                    if showOverLay {
-                                        Color.black.opacity(0.65)
-                                            .ignoresSafeArea()
-                                    }
-                                }
-                                .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                        withAnimation {
-                                            showOverLay = true
-                                        }
-                                    }
-                                }
-                                .onDisappear {
-                                    showOverLay = false
-                                }
-                            }
-                        
-                        
-                        
-
-                        if showWinMenu || showPauseMenu {
-                            ZStack {
-                                VStack {
-                                    if UIScreen.main.bounds.height <= 667 {
+                    VStack {
+                        if UIScreen.main.bounds.height <= 667 {
+                            VStack {
+                                HStack {
+                                    VStack {
                                         HStack(alignment: .top) {
-                                            Image("Red Eye Open")
-                                                .frame(width: 55)
-                                                .padding(.leading, 20)
-                                                .padding(.top, 17)
-                                            PieceCountView(pieceCount: player1PieceCount, size: 30)
-                                                .padding(.top, 25)
-                                            Spacer()
-                                            HeartView()
-                                                .padding(.top, 15)
-                                            Spacer()
-                                            PieceCountView(pieceCount: player2PieceCount, size: 30)
-                                                .padding(.top, 25)
-                                            Image("Blue Eye Open")
-                                                .frame(width: 55)
-                                                .padding(.trailing, 20)
-                                                .padding(.top, 17)
+                                            if gameCenterController.otherPlayerPlaying {
+                                                Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.leading, 20)
+                                            } else {
+                                                Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.leading, 20)
+                                            }
+                                            if gameType == .multiplayer {
+                                                VStack(alignment: .leading) {
+                                                    PieceCountView(pieceCount: player1PieceCount, size: 25)
+                                                        .padding(.top, 5)
+                                                    if gameCenterController.priority > gameCenterController.otherPriority {
+                                                        Text(localPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    } else {
+                                                        Text(otherPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                        
+                                                    }
+                                                    
+                                                }
+                                            } else {
+                                                PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                    .padding(.top, 5)
+                                            }
                                         }
-                                    } else {
-                                        HStack(alignment: .top) {
-                                            Image("Red Eye Open")
-                                                .frame(width: 55)
-                                                .padding(.leading, 20)
-                                                .padding(.top, 70)
-                                            PieceCountView(pieceCount: player1PieceCount, size: 30)
-                                                .padding(.top, 73)
-                                            Spacer()
-                                            HeartView()
-                                                .padding(.top, 70)
-                                            Spacer()
-                                            PieceCountView(pieceCount: player2PieceCount, size: 30)
-                                                .padding(.top, 73)
-                                            Image("Blue Eye Open")
-                                                .frame(width: 55)
-                                                .padding(.trailing, 20)
-                                                .padding(.top, 70)
-                                            
-                                        }
-                                       
                                     }
                                     Spacer()
+                                    VStack {
+                                        Button(action: {
+                                            if gameType == .multiplayer {
+                                                showPauseMenu.toggle()
+                                            } else {
+                                                gameCenterController.isPaused.toggle()
+                                                if showPauseMenu {
+                                                    withAnimation {
+                                                        showPauseMenu.toggle()
+                                                    }
+                                                }
+                                                showPauseMenu.toggle()
+                                            }
+                                        }) {
+                                            if !showWinMenu {
+                                                Image("Pause button")
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 74, height: 50)
+                                            }
+                                            
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    VStack {
+                                        HStack(alignment: .top) {
+                                            if gameType == .multiplayer {
+                                                VStack(alignment: .trailing){
+                                                    PieceCountView(pieceCount: player2PieceCount, size: 25)
+                                                        .padding(.top, 5)
+                                                    if gameCenterController.priority < gameCenterController.otherPriority{
+                                                        Text(localPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    } else {
+                                                        Text(otherPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .truncationMode(.tail)
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    }
+                                                    
+                                                    
+                                                }
+                                            } else {
+                                                PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                    .padding(.top, 5)
+                                            }
+                                            
+                                            if gameCenterController.otherPlayerPlaying {
+                                                Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.trailing, 20)
+                                            } else {
+                                                Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.trailing, 20)
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                                .opacity(showWinMenu ? 0 : 1)
+                                .opacity(showPauseMenu ? 0 : 1)
+                                
+                                HStack {
+                                    if gameType == .multiplayer {
+                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
+                                            .padding([.horizontal, .trailing], 5)
+                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                    } else {
+                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
+                                            .padding([.horizontal, .trailing], 5)
+                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                    }
+                                    
+                                }
+                            }
+                            .padding(.top ,20)
+                        }
+                        else {
+                            VStack {
+                                HStack {
+                                    VStack {
+                                        HStack(alignment: .top) {
+                                            if gameCenterController.otherPlayerPlaying {
+                                                Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.leading, 20)
+                                            } else {
+                                                Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.leading, 20)
+                                            }
+                                            if gameType == .multiplayer {
+                                                VStack(alignment: .leading) {
+                                                    PieceCountView(pieceCount: player1PieceCount, size: 25)
+                                                        .padding(.top, 5)
+                                                    
+                                                    if gameCenterController.priority > gameCenterController.otherPriority {
+                                                        Text(localPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    } else {
+                                                        Text(otherPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                        
+                                                    }
+                                                    
+                                                }
+                                            } else {
+                                                PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                                    .padding(.top, 5)
+                                            }
+                                        }
+                                    }
+                                    Spacer()
+                                    VStack {
+                                        Button(action: {
+                                            if gameType == .multiplayer {
+                                                showPauseMenu.toggle()
+                                            } else {
+                                                gameCenterController.isPaused.toggle()
+                                                if showPauseMenu {
+                                                    withAnimation {
+                                                        showPauseMenu.toggle()
+                                                    }
+                                                }
+                                                
+                                                showPauseMenu.toggle()
+                                                
+                                            }
+                                        }) {
+                                            if !showWinMenu {
+                                                Image("Pause button")
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 74, height: 50)
+                                            }
+                                            
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    VStack {
+                                        HStack(alignment: .top) {
+                                            if gameType == .multiplayer {
+                                                VStack(alignment: .trailing){
+                                                    PieceCountView(pieceCount: player2PieceCount, size: 25)
+                                                        .padding(.top, 5)
+                                                    if gameCenterController.priority < gameCenterController.otherPriority{
+                                                        Text(localPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .truncationMode(.tail)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    } else {
+                                                        Text(otherPlayerName)
+                                                            .foregroundColor(.white)
+                                                            .font(Font.custom("TempleGemsRegular", size: 14))
+                                                            .truncationMode(.tail)
+                                                            .fixedSize(horizontal: true, vertical: false)
+                                                    }
+                                                    
+                                                    
+                                                }
+                                            } else {
+                                                PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                                    .padding(.top, 5)
+                                            }
+                                            
+                                            if gameCenterController.otherPlayerPlaying {
+                                                Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.trailing, 20)
+                                            } else {
+                                                Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                    .frame(width: 55)
+                                                    .padding(.trailing, 20)
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                                .opacity(showWinMenu ? 0 : 1)
+                                .opacity(showPauseMenu ? 0 : 1)
+                                
+                                HStack {
+                                    if gameType == .multiplayer {
+                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
+                                            .padding([.horizontal, .trailing], 5)
+                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                    } else {
+                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
+                                            .padding([.horizontal, .trailing], 5)
+                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                    }
+                                    
+                                }
+                            }
+                            .padding(.top, 70)
+                        }
+                        Spacer()
+                        HStack{
+                            Spacer()
+                            BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
+                                .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
+                                .allowsHitTesting(!showPauseMenu)
+                                .overlay {
+                                    Image("Lights")
+                                        .blendMode(.overlay)
+                                        .allowsHitTesting(false)
+                                    Image("Shadow")
+                                        .opacity(0.80)
+                                        .blendMode(.overlay)
+                                        .allowsHitTesting(false)
+                                }
+                                .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
+                            Spacer()
+                        }
+                        Spacer()
+                        Spacer()
+                        Spacer()
+                    }
+                    
+                    if showPauseMenu {
+                        Color.black.opacity(0.65)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                if showPauseMenu {
+                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+                                        showPauseMenu.toggle()
+                                        gameCenterController.isPaused.toggle()
+                                    }
+                                }
+                            }
+                    }
+                    
+                    if showWinMenu {
+                        ZStack {
+                            if showOverLay {
+                                Color.black.opacity(0.65)
+                                    .ignoresSafeArea()
+                            }
+                        }
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                withAnimation {
+                                    showOverLay = true
+                                    SoundManager.shared.stopBackgroundMusic()
                                 }
                             }
                         }
-                        
-                        
-                       
-
-                       
-                        
-                        PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
-                            .scaleEffect(showPauseMenu ? 1 : 0)
-                            .allowsHitTesting(showPauseMenu)
-                            .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
-
-
-
-                        
-                        
-                        
-                        if isCountDownVisible {
-                            CountDownView(isVisible: $isCountDownVisible)
-                        }
-                        LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
-                            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                            .allowsHitTesting(false)
-                            .edgesIgnoringSafeArea(.all)
-                    }
-                    VStack {
-                        Spacer()
-                        if UIScreen.main.bounds.height <= 667 {
-                            Image("Bottom")
-                                .resizable()
-                                .scaledToFit()
-    //                            .edgesIgnoringSafeArea(.bottom)
-                                .allowsHitTesting(false)
-                                .offset(y: 65)
-                        } else {
-                            Image("Bottom")
-                                .resizable()
-                                .scaledToFit()
-                                .allowsHitTesting(false)
-                                .offset(y: 45)
-    //                            .edgesIgnoringSafeArea(.bottom)
+                        .onDisappear {
+                            showOverLay = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                SoundManager.shared.playLowerBackground()
+                               
+                            }
                         }
                     }
-    //                .frame(height: UIScreen.main.bounds.height * 1)
                     
+                    
+                    
+                    
+                    if showWinMenu || showPauseMenu {
+                        ZStack {
+                            VStack {
+                                if UIScreen.main.bounds.height <= 667 {
+                                    HStack(alignment: .top) {
+                                        Image("Red Eye Open")
+                                            .frame(width: 55)
+                                            .padding(.leading, 20)
+                                            .padding(.top, 17)
+                                        PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                            .padding(.top, 25)
+                                        Spacer()
+                                        HeartView()
+                                            .padding(.top, 15)
+                                        Spacer()
+                                        PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                            .padding(.top, 25)
+                                        Image("Blue Eye Open")
+                                            .frame(width: 55)
+                                            .padding(.trailing, 20)
+                                            .padding(.top, 17)
+                                    }
+                                } else {
+                                    HStack(alignment: .top) {
+                                        Image("Red Eye Open")
+                                            .frame(width: 55)
+                                            .padding(.leading, 20)
+                                            .padding(.top, 70)
+                                        PieceCountView(pieceCount: player1PieceCount, size: 30)
+                                            .padding(.top, 73)
+                                        Spacer()
+                                        HeartView()
+                                            .padding(.top, 70)
+                                        Spacer()
+                                        PieceCountView(pieceCount: player2PieceCount, size: 30)
+                                            .padding(.top, 73)
+                                        Image("Blue Eye Open")
+                                            .frame(width: 55)
+                                            .padding(.trailing, 20)
+                                            .padding(.top, 70)
+                                        
+                                    }
+                                    
+                                }
+                                Spacer()
+                            }
+                        }
+                    }
+                    
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
+                        .scaleEffect(showPauseMenu ? 1 : 0)
+                        .allowsHitTesting(showPauseMenu)
+                        .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
+                    
+                    if isCountDownVisible {
+                        CountDownView(isVisible: $isCountDownVisible)
+                    }
+                    LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                        .allowsHitTesting(false)
+                        .edgesIgnoringSafeArea(.all)
+                }
+                //BOTTOM Image
+                VStack {
+                    Spacer()
+                    if UIScreen.main.bounds.height <= 667 {
+                        Image("Bottom")
+                            .resizable()
+                            .scaledToFit()
+                        //                            .edgesIgnoringSafeArea(.bottom)
+                            .allowsHitTesting(false)
+                            .offset(y: 65)
+                    } else {
+                        Image("Bottom")
+                            .resizable()
+                            .scaledToFit()
+                            .allowsHitTesting(false)
+                            .offset(y: 45)
+                        //                            .edgesIgnoringSafeArea(.bottom)
+                    }
                 }
                 
-
             }
+
+        }
         .edgesIgnoringSafeArea(.all)
         .onChange(of: gameCenterController.connectionLost, perform: { newValue in
             if newValue && gameType == .multiplayer {
@@ -473,29 +468,22 @@ struct GameView: View {
         })
         .alert(isPresented: $showAlert) {
             Alert(
-                    title: Text("Player disconnected"),
-                    message: Text("The other player disconnected from the match!"),
-                    dismissButton: .default(Text("OK"), action: {
-                        // Handle what should happen when the user dismisses the alert
-                        gameCenterController.resetGame()
-                    })
-                )
+                title: Text("Player disconnected"),
+                message: Text("The other player disconnected from the match!"),
+                dismissButton: .default(Text("OK"), action: {
+                    // Handle what should happen when the user dismisses the alert
+                    gameCenterController.resetGame()
+                })
+            )
         }
         .navigationBarHidden(true)
-//        .onChange(of: board.cells) { _ in
-//            if board.isGameOver() == true {
-//                gameCenterController.isGameOver = true
-//                self.gameCenterController.isPaused = true
-//            }
-//        }
         .onChange(of: board.gameOver, perform: { newValue in
-            
             if newValue == true {
-//                gameCenterController.isGameOver = true
-//                self.gameCenterController.isPaused = true
+                //                gameCenterController.isGameOver = true
+                //                self.gameCenterController.isPaused = true
                 if gameType == .ai && winner == .player2 {
-                    gameCenterController.remainingHearts -= 1
-                    let hearts = gameCenterController.remainingHearts
+                    heartManager.remainingHearts -= 1
+                    let hearts = heartManager.remainingHearts
                     UserDefaults.standard.setValue(hearts, forKey: "hearts")
                 } else if gameType == .ai && winner == .player1 {
                     if gameCenterController.currentLevel == gameCenterController.achievedLevel {
@@ -516,7 +504,7 @@ struct GameView: View {
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
                         gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
-                    
+                        
                     }
                     
                     
@@ -531,11 +519,11 @@ struct GameView: View {
                 switchPlayer()
                 gameCenterController.remainingTime = 15
                 selectedCell = nil
-//                gameCenterController.isSelected = false
+                //                gameCenterController.isSelected = false
                 selectedCell = nil
             } else if newValue == 0 && gameType == .ai {
                 gameCenterController.remainingTime = 15
-//                gameCenterController.isSelected = false
+                //                gameCenterController.isSelected = false
                 selectedCell = nil
                 switchPlayer()
                 performAIMoveAfterDelay()
@@ -550,7 +538,7 @@ struct GameView: View {
                         try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
                     } catch {
                         print("Failed to send move: ", error)
-
+                        
                     }
                 }
             }
@@ -582,7 +570,7 @@ struct GameView: View {
             SoundManager.shared.turnUpMusic()
             self.isCountDownVisible = false
         }
-
+        
     }
     var winner: CellState {
         let (player1Count, player2Count, _) = board.countPieces()
@@ -601,18 +589,18 @@ struct GameView: View {
         let maxCellWidth = geometry.size.width * 0.175
         let availableWidth = geometry.size.width * 0.90
         let maxWidthBasedCellSize = min(maxCellWidth, availableWidth / CGFloat(board.size.columns))
-
+        
         let maxBoardHeight = geometry.size.height * 0.75
         let maxHeightBasedCellSize = maxBoardHeight / CGFloat(board.size.rows)
-
+        
         var cellWidth = max(maxWidthBasedCellSize, maxHeightBasedCellSize)
-
+        
         if cellWidth * CGFloat(board.size.columns) > availableWidth {
             cellWidth = availableWidth / CGFloat(board.size.columns)
         } else if cellWidth * CGFloat(board.size.rows) > maxBoardHeight {
             cellWidth = maxBoardHeight / CGFloat(board.size.rows)
         }
-
+        
         return cellWidth
     }
     
@@ -637,7 +625,7 @@ struct GameView: View {
             self.gameCenterController.isPaused = true
             return
         }
-       
+        
         if gameType == .multiplayer {
             gameCenterController.otherPlayerPlaying.toggle()
             gameCenterController.currentlyPlaying.toggle()
@@ -649,7 +637,7 @@ struct GameView: View {
                     try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
                 } catch {
                     print("Failed to send move: ", error)
-
+                    
                 }
             }
             gameCenterController.remainingTime = 15
@@ -664,7 +652,7 @@ struct GameView: View {
             }
             else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
                 // Use a single main thread delay, instead of nested or global ones.
-
+                
                 performAIMoveAfterDelay()
                 // This is outside the async block. If you want this reset to always occur immediately after the AI makes a move, then it's correctly placed.
             }
@@ -690,7 +678,7 @@ struct GameView: View {
                 if !convertedPieces.isEmpty {
                     SoundManager.shared.playConvertSound()
                 }
-
+                
                 // Check if the game is over.
                 if board.isGameOver() {
                     gameOverSounds()
@@ -702,13 +690,13 @@ struct GameView: View {
                 // Switch the current player and reset the timer.
                 self.gameCenterController.currentPlayer = .player1
                 self.gameCenterController.remainingTime = 15
-
+                
                 // Play move sound.
                 SoundManager.shared.playMoveSound()
             }
         }
     }
-
+    
     func configurePauseMenu() {
         gameCenterController.isPaused.toggle()
         showPauseMenu.toggle()
@@ -730,7 +718,7 @@ struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(gameType: .ai, gameSize: (4, 4), obstacles: [])
             .environmentObject(GameCenterManager(currentPlayer: .player1))
-
-//            .environmentObject(AppLanguageManager())
+        
+        //            .environmentObject(AppLanguageManager())
     }
 }

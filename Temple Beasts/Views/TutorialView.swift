@@ -6,132 +6,115 @@
 //
 
 import SwiftUI
+class TutorialViewModel: ObservableObject {
+    @Published var board: Board
+    @Published var selectedCell: (row: Int, col: Int)? = nil
+    @Published var convertedPieces: [(row: Int, col: Int, byPlayer: CellState)] = []
+    @Published var previouslyConvertedPieces: [(row: Int, col: Int, byPlayer: CellState)] = []
+    @Published var currentlyPressedCell: (row: Int, col: Int)? = nil
+    @Published var taskDone: Bool = false
+    @Published var invalidMove: Bool = false
+    @Published var navigateToGame: Bool = false
+    @Published var version = UUID()
 
-struct TutorialView: View {
-    @StateObject private var board = Board(tutorialSize: (rows: 7, columns: 5), tutorialStep: .clonePiece)
-    @StateObject private var gameCenterManager = GameCenterManager(currentPlayer: .player1)
-    @State private var selectedCell: (row: Int, col: Int)? = nil
-    @State  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
-    @State  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
-    @State private var moveMade: Bool = false
-    @State private var currentlyPressedCell: (row: Int, col: Int)? = nil
-    @State private var taskDone: Bool = false
+    private var gameCenterManager: GameCenterManager
     
-    
-    
-    private var selectText: String {
-        switch board.tutorialStep {
-        case .clonePiece:
-            return "Select the spirit"
-        case .teleportPiece:
-            return "Select the spirit"
-        case .convertPiece:
-            return "You’re getting it!"
-        case .complextConvert:
-            return "One more time!"
-        case .none:
-            return ""
-        }
+    init(gameCenterManager: GameCenterManager) {
+        self.board = Board(tutorialSize: (rows: 7, columns: 5), tutorialStep: .clonePiece)
+        self.gameCenterManager = gameCenterManager
     }
     
-    private var taskText: String {
-        switch board.tutorialStep {
-        case .clonePiece:
-            return "Then clone yourself"
-        case .teleportPiece:
-            return "Then teleport yourself"
-        case .convertPiece:
-            return "Convert the blue to red"
-        case .complextConvert:
-            return "Convert the blue to red"
-        case .none:
-            return ""
-        }
+    func setupBoard(for step: TutorialStep) {
+        board.setupTutorialBoard(for: step)
+        self.objectWillChange.send()
     }
     
+    func refreshView() {
+            version = UUID() // Changing this will force SwiftUI to update the view
+        }
     
-    var body: some View {
-        GeometryReader { geometry in
-            let cellSize = self.calculateCellSize(geometry: geometry)
-            let boardWidth = cellSize * CGFloat(self.board.size.columns)
-            ZStack{
-                Image("tutorialBackground")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: geometry.size.height)
-                VStack {
-                    //Select the spirit
-                    //                    Spacer()
-                    //                    Spacer()
-                    
-                    
-                    //                    Spacer()
-                    VStack(spacing: 0) {
-                        VStack {
-                            Text(selectText).font(.custom("Watermelon", size: 28)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
-                            Text(taskText).font(.custom("Watermelon", size: 24)).foregroundColor(Color(#colorLiteral(red: 1, green: 0.91, blue: 0.44, alpha: 1))).multilineTextAlignment(.center)
-                                .padding(
-                                    .top, 1)
-                        }
-                        .padding(.bottom, 30)
-                        HStack {
-                            Spacer()
-                            VStack(spacing: 0) {
-                                ForEach(0..<board.size.rows, id: \.self) { row in
-                                    HStack(spacing: 0) {
-                                        ForEach(0..<board.size.columns, id: \.self) { col in
-                                            CellView(state: board.cellState(at: (row: row, col: col)), isSelected: selectedCell != nil && selectedCell! == (row: row, col: col), highlighted: selectedCell != nil && isAdjacentToSelectedCell(row: row, col: col), outerHighlighted: selectedCell != nil && isOuterToSelectedCell(row: row, col: col), width: cellSize, isPressed: isCellPressed(row: row, col: col), convertedCells:  $gameCenterManager.convertedCells, previouslyConvertedCells: $gameCenterManager.previouslyConvertedCells, cellPosition: (row: row, col: col), moveMade: $moveMade)
-                                                .frame(width: cellSize, height: cellSize)
-                                                .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
-                                                    if pressing {
-                                                        self.currentlyPressedCell = (row, col)
-                                                    } else {
-                                                        self.handleCellTap(at: (row: row, col: col))
-                                                        HapticManager.shared.impact(style: .soft)
-                                                        self.currentlyPressedCell = nil
-                                                    }
-                                                }, perform: { })
-                                            
-                                        }
-                                        
-                                    }
-                                }
-                            }
-                            //                            .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
-                            Spacer()
-                        }
-                    }
-                    
-                    //                    Spacer()
-                    Button {
-                        moveToNextTutorialStep()
-                        
-
-                    } label: {
-                        ButtonView(text: "NEXT", width: 200, height: 50)
-                            .padding(.top, 25)
-                            .opacity(taskDone ? 1 : 0.3)
-                    }
-                    .disabled(!taskDone)
+    func handleCellTap(at destination: (row: Int, col: Int)) {
+        if let source = selectedCell, source == destination {
+            selectedCell = nil
+            return
+        }
+        guard let source = selectedCell else {
+            if board.cellState(at: destination) == .player1 {
+                selectedCell = destination
+            }
+            return
+        }
+        let moveSuccessful = board.performTutorialMove(from: source, to: destination)
+        if moveSuccessful {
+            SoundManager.shared.playMoveSound()
+            let convertedCells = board.convertedCells
+            if !convertedCells.isEmpty {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+                print(convertedCells)
+                for piece in convertedCells {
+                    self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                    self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
                 }
             }
-        }
-        .edgesIgnoringSafeArea(.all)
-        .navigationBarHidden(true)
-        .onAppear {
-            board.setupTutorialBoard(for: .clonePiece)
+                taskDone = true
+                selectedCell = nil
+                invalidMove = false
+        } else {
+            guard let tutorialStep = board.tutorialStep else { return }
+            if tutorialStep != .complextConvert {
+                HapticManager.shared.notification(type: .error)
+                withAnimation(.default.repeatCount(3, autoreverses: true)) {
+                    invalidMove = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.selectedCell = nil
+                    self.board.setupTutorialBoard(for: tutorialStep)
+                    self.invalidMove = false
+                }
+            } else {
+                selectedCell = nil
+            }
         }
     }
-
     
-    private func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
+    func moveToNextTutorialStep() {
+        switch board.tutorialStep {
+        case .clonePiece:
+            taskDone = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.setupBoard(for: .teleportPiece)
+            }
+        case .teleportPiece:
+            taskDone = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.setupBoard(for: .convertPiece)
+            }
+        case .convertPiece:
+            taskDone = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.setupBoard(for: .complextConvert)
+            }
+        case .complextConvert:
+            if !UserDefaults.standard.bool(forKey: "tutorialDone") {
+                UserDefaults.standard.set(true, forKey: "tutorialDone")
+                self.navigateToGame = true
+            } else {
+                gameCenterManager.path = NavigationPath()
+            }
+        case .none:
+            break
+        }
+    }
+    //MARK: - HELPER METHODS
+    func isAdjacentToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
         return (deltaRow <= 1 && deltaCol <= 1) && !(deltaRow == 0 && deltaCol == 0)
     }
     
-    private func isOuterToSelectedCell(row: Int, col: Int) -> Bool {
+    func isOuterToSelectedCell(row: Int, col: Int) -> Bool {
         guard let selected = selectedCell else { return false }
         let deltaRow = abs(selected.row - row)
         let deltaCol = abs(selected.col - col)
@@ -144,55 +127,14 @@ struct TutorialView: View {
         }
         return false
     }
-    
-    private func isCellPressed(row: Int, col: Int) -> Bool {
+    func isCellPressed(row: Int, col: Int) -> Bool {
         if let pressedCell = currentlyPressedCell, pressedCell == (row, col) {
             return true
         }
         return false
     }
     
-    private func handleCellTap(at destination: (row: Int, col: Int)) {
-        if let source = selectedCell, source == destination {
-            selectedCell = nil
-            return
-        }
-        guard let source = selectedCell else {
-            if board.cellState(at: destination) == .player1 {
-                selectedCell = destination
-            }
-            return
-        }
-        
-        let moveSuccessful = board.performTutorialMove(from: source, to: destination)
-        if moveSuccessful {
-            let convertedCells = board.convertedCells
-            if !convertedCells.isEmpty {
-                SoundManager.shared.playConvertSound()
-                HapticManager.shared.notification(type: .success)
-                print(convertedCells)
-                for piece in convertedCells {
-                    gameCenterManager.convertedCells.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                    gameCenterManager.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                }
-            }
-            
-            
-                taskDone.toggle()
-                selectedCell = nil
-        } else {
-            guard let tutorialStep = board.tutorialStep else { return }
-            if tutorialStep != .complextConvert {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    selectedCell = nil
-                    board.setupTutorialBoard(for: tutorialStep)
-                }
-            } else {
-                selectedCell = nil
-            }
-        }
-    }
-    private func calculateCellSize(geometry: GeometryProxy) -> CGFloat {
+    func calculateCellSize(geometry: GeometryProxy) -> CGFloat {
         let maxCellWidth = geometry.size.width * 0.175
         let availableWidth = geometry.size.width * 0.90
         let maxWidthBasedCellSize = min(maxCellWidth, availableWidth / CGFloat(board.size.columns))
@@ -209,41 +151,159 @@ struct TutorialView: View {
         }
         return cellWidth
     }
-    private func moveToNextTutorialStep() {
-        switch board.tutorialStep {
-        case .clonePiece:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-                board.setupTutorialBoard(for: .teleportPiece)
-                taskDone.toggle()
-            }
+    
+}
 
-        case .teleportPiece:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-                board.setupTutorialBoard(for: .convertPiece)
-                taskDone.toggle()
 
+struct TutorialView: View {
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+    @EnvironmentObject var gameCenterManager: GameCenterManager
+    @StateObject var tutorialViewModel: TutorialViewModel
+    
+    init(gameCenterManager: GameCenterManager) {
+        _tutorialViewModel = StateObject(wrappedValue: TutorialViewModel(gameCenterManager: gameCenterManager))
+    }
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let cellSize = tutorialViewModel.calculateCellSize(geometry: geometry)
+            ZStack{
+                Image("tutorialBackground")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: geometry.size.height)
+                VStack {
+                    VStack(spacing: 0) {
+                        VStack {
+                            Text(selectText).font(.custom("Watermelon", size: 28)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                            Text(taskText).font(.custom("Watermelon", size: 24)).foregroundColor(Color(taskColor)).multilineTextAlignment(.center)
+                                .padding(
+                                    .top, 1)
+                        }
+                        .padding(.bottom, 30)
+                        HStack {
+                            Spacer()
+                            VStack(spacing: 0) {
+                                ForEach(0..<tutorialViewModel.board.size.rows, id: \.self) { row in
+                                    HStack(spacing: 0) {
+                                        ForEach(0..<tutorialViewModel.board.size.columns, id: \.self) { col in
+                                            CellView(state: tutorialViewModel.board.cellState(at: (row: row, col: col)), isSelected: tutorialViewModel.selectedCell != nil && tutorialViewModel.selectedCell! == (row: row, col: col), highlighted: tutorialViewModel.selectedCell != nil && tutorialViewModel.isAdjacentToSelectedCell(row: row, col: col), outerHighlighted: tutorialViewModel.selectedCell != nil && tutorialViewModel.isOuterToSelectedCell(row: row, col: col), width: cellSize, isPressed: tutorialViewModel.isCellPressed(row: row, col: col), convertedCells:  $tutorialViewModel.convertedPieces, previouslyConvertedCells: $tutorialViewModel.previouslyConvertedPieces, isShaking: $tutorialViewModel.invalidMove, cellPosition: (row: row, col: col))
+                                                .frame(width: cellSize, height: cellSize)
+                                                .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                                                    if pressing {
+                                                        tutorialViewModel.currentlyPressedCell = (row, col)
+                                                    } else {
+                                                        tutorialViewModel.handleCellTap(at: (row: row, col: col))
+                                                        HapticManager.shared.impact(style: .soft)
+                                                        tutorialViewModel.currentlyPressedCell = nil
+                                                    }
+                                                }, perform: {})
+
+                                            
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                            .id(tutorialViewModel.version)
+                            Spacer()
+                        }
+                    }
+                    Button {
+                        tutorialViewModel.moveToNextTutorialStep()
+                    } label: {
+                        ButtonView(text: "NEXT", width: 200, height: 50)
+                            .padding(.top, 25)
+                            .opacity(tutorialViewModel.taskDone ? 1 : 0.3)
+                    }
+                    .disabled(!tutorialViewModel.taskDone)
+                }
             }
-        case .convertPiece:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-                board.setupTutorialBoard(for: .complextConvert)
-                taskDone.toggle()
+            if let nextLevel = gameCenterManager.currentLevel?.next {
+                NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: nextLevel.boardSize.rows, col: nextLevel.boardSize.cols), obstacles: nextLevel.obstacles), isActive: $tutorialViewModel.navigateToGame) {
+                    EmptyView()
+                }
+                .hidden()
             }
-        case .complextConvert:
-            print("DONE")
-        case .none:
-            break
-            
-            
-            
-            // This function should determine what the next step is and set up the board for that step.
-            // For instance, it could increment an index and call `board.setupTutorialStep` with the new step.
-            // If it's the last step of the tutorial, it could perform cleanup or navigate to the main menu.
-            // Implement this based on your tutorial steps and game logic.
         }
-        
+        .edgesIgnoringSafeArea(.all)
+        .navigationBarHidden(true)
+        .onAppear {
+            gameCenterManager.currentLevel = GameLevel(rawValue: 1)
+            tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
+        }
+        .onDisappear {
+            if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
+                guard let nextLevel = gameCenterManager.currentLevel else { return }
+                let nextLevelId = nextLevel.id + 1
+                gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
+                UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+                gameCenterManager.path.append(gameCenterManager.currentLevel?.id)
+            }
+        }
+    }
+    
+    //MARK: - HELPER VARIABLES
+    private var selectText: String {
+        switch tutorialViewModel.board.tutorialStep {
+        case .clonePiece:
+            return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
+        case .teleportPiece:
+            return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
+        case .convertPiece:
+            return appLanguageManager.localizedStringForKey("GETTING_IT", language: appLanguageManager.currentLanguage)
+        case .complextConvert:
+            return appLanguageManager.localizedStringForKey("ONE_MORE", language: appLanguageManager.currentLanguage)
+        case .none:
+            return ""
+        }
+    }
+    
+    private var taskText: String {
+        switch tutorialViewModel.board.tutorialStep {
+        case .clonePiece:
+            return appLanguageManager.localizedStringForKey("CLONE_YOURSELF", language: appLanguageManager.currentLanguage)
+        case .teleportPiece:
+            return appLanguageManager.localizedStringForKey("TELEPORT_YOURSELF", language: appLanguageManager.currentLanguage)
+        case .convertPiece:
+            return appLanguageManager.localizedStringForKey("COVERT_BLUE_RED", language: appLanguageManager.currentLanguage)
+        case .complextConvert:
+            return appLanguageManager.localizedStringForKey("COVERT_BLUE_RED", language: appLanguageManager.currentLanguage)
+        case .none:
+            return ""
+        }
+    }
+    
+    private var taskColor: String {
+        switch tutorialViewModel.board.tutorialStep {
+        case .clonePiece:
+            return "tutorialGreen"
+        case .teleportPiece:
+            return "tutorialYellow"
+        case .convertPiece:
+            return "tutorialBlue"
+        case .complextConvert:
+            return "tutorialBlue"
+        case .none:
+            return ""
+        }
     }
 }
 
 #Preview {
-    TutorialView()
+    TutorialView(gameCenterManager: GameCenterManager(currentPlayer: .player1))
+        .environmentObject(AppLanguageManager())
+        .environmentObject(GameCenterManager(currentPlayer: .player1))
+}
+
+
+struct ShakeEffect: GeometryEffect {
+    var amount: CGFloat = 10
+    var shakesPerUnit = 3
+    var animatableData: CGFloat
+
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(translationX:
+            amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)), y: 0))
+    }
 }

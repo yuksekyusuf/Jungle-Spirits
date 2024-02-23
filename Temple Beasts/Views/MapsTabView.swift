@@ -18,7 +18,11 @@ struct MapsTabView: View {
         ZStack {
             
             if levelBundle.id <= gameCenterManager.currentBundle.id {
-                LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus)
+                if levelBundle.id == 1 {
+                    LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: true)
+                } else {
+                    LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: false)
+                }
                 
             } else {
                 SealedMapView()
