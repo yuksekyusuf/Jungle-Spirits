@@ -58,9 +58,9 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
 //    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
-    @Published var achievedLevel: GameLevel = GameLevel.level3_7
+    @Published var achievedLevel: GameLevel = GameLevel.level2_7
     @Published var currentLevel: GameLevel? = nil
-    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle3
+    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle2
     
     //MARK: - Heart Timer
     @Published var heartTimer: Timer?

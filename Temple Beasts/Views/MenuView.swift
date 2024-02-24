@@ -614,9 +614,10 @@ struct MenuView: View {
                         }
                 }
                 HeartStatusView(nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
+                    .padding(.bottom, 100)
                     .scaleEffect(showHeartAlert ? 1 : 0)
                     .allowsHitTesting(showHeartAlert)
-                    .animation(showHeartAlert ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showHeartAlert)
+                    .animation(showHeartAlert ? .spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0) : .linear(duration: 0.001), value: showHeartAlert)
                 
                 
                 //                    if showStory {
@@ -637,13 +638,15 @@ struct MenuView: View {
                         CreditView(isPresent: $showCreditScreen)
                     }
                     
+                    
                     NavigationLink {
-                        TutorialView(gameCenterManager: gameCenterController)
+                        TutorialView(gameCenterManager: gameCenterController, storyMode: false)
                             .environmentObject(gameCenterController)
                     } label: {
                         ButtonView(text: howToPlay, width: 200, height: 50)
                         //                                .offset(y: 40)
                     }
+
                     .simultaneousGesture(
                         TapGesture()
                             .onEnded({gameCenterController.path.append(gameCenterController.currentLevel?.rawValue ?? 100 + 100)})
@@ -669,8 +672,10 @@ struct MenuView: View {
                         Button(resetGame2) {
                             UserDefaults.standard.setValue(1, forKey: "achievedLevel")
                             UserDefaults.standard.setValue(1, forKey: "currentBundle")
+                            UserDefaults.standard.set(false, forKey: "hasLaunchedBefore")
                             loadCurrentBundle()
                             loadAchievedLevel()
+                            showCreditScreen = false
                         }
                         Button(cancel, role: .cancel) { }
                     } message: {
@@ -681,7 +686,7 @@ struct MenuView: View {
                 }
                 .scaleEffect(showCreditScreen ? 1 : 0)
                 .allowsHitTesting(showCreditScreen)
-                .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
+                .animation(showCreditScreen ? .spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0) : .linear(duration: 0.001), value: showCreditScreen)
             }
             .autotoggle($isBackgroundShown, with: .spring(dampingFraction: 1))
             .ignoresSafeArea()
@@ -815,12 +820,12 @@ struct MenuView: View {
 //    
     private func loadAchievedLevel() {
         let savedLevelID = UserDefaults.standard.integer(forKey: "achievedLevel")
-        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level3_7
+        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level2_7
     }
     
     private func loadCurrentBundle(){
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle3
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle2
     }
 }
 
@@ -828,6 +833,8 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView().environmentObject(AppLanguageManager())
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(HeartManager())
     }
 }
 

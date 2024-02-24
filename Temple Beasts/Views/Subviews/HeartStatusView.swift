@@ -15,7 +15,6 @@ struct HeartStatusView: View {
     
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
-    //    @Binding var remainingHearts: Int
     @State var newHeart = 0
     
     
@@ -95,14 +94,13 @@ struct HeartStatusView: View {
             
             
             
-            VStack {
+            VStack(spacing: 6) {
                 Text("\(heartManager.remainingHearts) \(hearts.capitalizedSentence)")
                     .font(Font.custom("Watermelon", size: 32))
                     .kerning(0.96)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.top, 10)
-                    .padding(.bottom, 5)
                 if heartManager.remainingHearts == 5 {
                     Text(fullHeart)
                         .font(Font.custom("Temple Gems", size: 24))
@@ -115,6 +113,7 @@ struct HeartStatusView: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                         .frame(width: 168, alignment: .center)
+                
                 }
                 
                 //                Text("New Heart \(newHeart)")
@@ -132,13 +131,13 @@ struct HeartStatusView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 116)
-                    .offset(y: -65)
+                    .offset(y: -69)
             } else {
                 Image("heartRemains")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 116)
-                    .offset(y: -65)
+                    .offset(y: -69)
             }
             
             VStack {
@@ -179,25 +178,25 @@ struct HeartStatusView: View {
                     
                                         
                 }
-                VStack(spacing: 0) {
-                    HStack {
-                        Button(action: {
-                            
-                        }, label: {
-                            Image("oneWeekLife")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 48)
-                        })
-                        
-                        Button(action: {
-                            
-                        }, label: {
-                            Image("lifeTime")
-                        })
-                        
-                    }
-                }
+//                VStack(spacing: 0) {
+//                    HStack {
+//                        Button(action: {
+//                            
+//                        }, label: {
+//                            Image("oneWeekLife")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(height: 48)
+//                        })
+//                        
+//                        Button(action: {
+//                            
+//                        }, label: {
+//                            Image("lifeTime")
+//                        })
+//                        
+//                    }
+//                }
                 Button(action: {
                     self.isPresent.toggle()
                 }, label: {
@@ -206,6 +205,7 @@ struct HeartStatusView: View {
                         .scaledToFit()
                         .frame(width: 75)
                 })
+                .offset(y: -90)
 
             }
             .offset(y: 170)

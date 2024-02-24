@@ -21,6 +21,7 @@ class VideoPlayerViewController: UIViewController {
             let videoURL = URL(fileURLWithPath: filePath)
             player = AVPlayer(url: videoURL)
             
+            
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.frame = self.view.bounds
             playerLayer.videoGravity = .resizeAspectFill

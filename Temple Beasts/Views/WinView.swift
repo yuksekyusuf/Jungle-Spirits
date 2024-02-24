@@ -153,7 +153,7 @@ struct WinView: View {
                                     
                                     if winner == .player1 {
                                         //MARK: - DEFINITELY FIX THIS
-                                        if let nextLevel = gameCenterManager.currentLevel?.next {
+                                        if let nextLevel = gameCenterManager.currentLevel {
                                             NextLevelNavigation(boardSize: nextLevel.boardSize, obstacles: nextLevel.obstacles, onContinue: onContinue)
                                                 .offset(y: 130)
 
@@ -379,5 +379,6 @@ struct WinView_Previews: PreviewProvider {
         @State var remainingTime = 15
         @State var remainingHearts = 5
         WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {}).environmentObject(GameCenterManager(currentPlayer: .player1))
+            
     }
 }

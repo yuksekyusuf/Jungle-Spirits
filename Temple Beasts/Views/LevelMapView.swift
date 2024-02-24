@@ -113,7 +113,7 @@ struct LevelButtonNavigation: View {
             }
             .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
             if isTutorial {
-                NavigationLink(destination: TutorialView(gameCenterManager: gameCenterController), isActive: $isNavigationActive) {
+                NavigationLink(destination: TutorialView(gameCenterManager: gameCenterController, storyMode: true), isActive: $isNavigationActive) {
                     EmptyView()
                 }
                 .hidden() // Hide

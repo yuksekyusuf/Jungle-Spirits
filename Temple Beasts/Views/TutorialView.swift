@@ -78,7 +78,7 @@ class TutorialViewModel: ObservableObject {
         }
     }
     
-    func moveToNextTutorialStep() {
+    func moveToNextTutorialStep(storyMode: Bool) {
         switch board.tutorialStep {
         case .clonePiece:
             taskDone = false
@@ -96,8 +96,13 @@ class TutorialViewModel: ObservableObject {
                 self.setupBoard(for: .complextConvert)
             }
         case .complextConvert:
-            if !UserDefaults.standard.bool(forKey: "tutorialDone") {
-                UserDefaults.standard.set(true, forKey: "tutorialDone")
+            if storyMode {
+                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
+                    guard let nextLevel = gameCenterManager.currentLevel else { return }
+                    let nextLevelId = nextLevel.id + 1
+                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
+                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+                }
                 self.navigateToGame = true
             } else {
                 gameCenterManager.path = NavigationPath()
@@ -160,8 +165,11 @@ struct TutorialView: View {
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @StateObject var tutorialViewModel: TutorialViewModel
     
-    init(gameCenterManager: GameCenterManager) {
+    let storyMode: Bool
+    
+    init(gameCenterManager: GameCenterManager, storyMode: Bool) {
         _tutorialViewModel = StateObject(wrappedValue: TutorialViewModel(gameCenterManager: gameCenterManager))
+        self.storyMode = storyMode
     }
     
     var body: some View {
@@ -198,6 +206,7 @@ struct TutorialView: View {
                                                         tutorialViewModel.currentlyPressedCell = nil
                                                     }
                                                 }, perform: {})
+                                                .disabled(tutorialViewModel.taskDone)
 
                                             
                                         }
@@ -210,7 +219,7 @@ struct TutorialView: View {
                         }
                     }
                     Button {
-                        tutorialViewModel.moveToNextTutorialStep()
+                        tutorialViewModel.moveToNextTutorialStep(storyMode: storyMode)
                     } label: {
                         ButtonView(text: "NEXT", width: 200, height: 50)
                             .padding(.top, 25)
@@ -233,12 +242,8 @@ struct TutorialView: View {
             tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
         }
         .onDisappear {
-            if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
-                guard let nextLevel = gameCenterManager.currentLevel else { return }
-                let nextLevelId = nextLevel.id + 1
-                gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
-                UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                gameCenterManager.path.append(gameCenterManager.currentLevel?.id)
+            if storyMode {
+                gameCenterManager.currentLevel = gameCenterManager.currentLevel?.next
             }
         }
     }
@@ -291,7 +296,7 @@ struct TutorialView: View {
 }
 
 #Preview {
-    TutorialView(gameCenterManager: GameCenterManager(currentPlayer: .player1))
+    TutorialView(gameCenterManager: GameCenterManager(currentPlayer: .player1), storyMode: false)
         .environmentObject(AppLanguageManager())
         .environmentObject(GameCenterManager(currentPlayer: .player1))
 }

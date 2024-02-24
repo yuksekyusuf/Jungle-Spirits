@@ -340,7 +340,7 @@ struct GameView: View {
                             .ignoresSafeArea()
                             .onTapGesture {
                                 if showPauseMenu {
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0)) {
                                         showPauseMenu.toggle()
                                         gameCenterController.isPaused.toggle()
                                     }
@@ -427,7 +427,7 @@ struct GameView: View {
                     PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
                         .scaleEffect(showPauseMenu ? 1 : 0)
                         .allowsHitTesting(showPauseMenu)
-                        .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
+                        .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
                     
                     if isCountDownVisible {
                         CountDownView(isVisible: $isCountDownVisible)
@@ -486,9 +486,9 @@ struct GameView: View {
                     let hearts = heartManager.remainingHearts
                     UserDefaults.standard.setValue(hearts, forKey: "hearts")
                 } else if gameType == .ai && winner == .player1 {
+                    guard let nextLevel = gameCenterController.currentLevel else { return }
+                    let nextLevelId = nextLevel.id + 1
                     if gameCenterController.currentLevel == gameCenterController.achievedLevel {
-                        guard let nextLevel = gameCenterController.currentLevel else { return }
-                        let nextLevelId = nextLevel.id + 1
                         if nextLevelId <= 7 {
                             gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
                             UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
@@ -503,11 +503,11 @@ struct GameView: View {
                             gameCenterController.currentBundle = .bundle3
                             UserDefaults.standard.setValue(3, forKey: "currentBundle")
                         }
-                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
                         
                     }
                     
-                    
+                    gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
+
                 }
                 gameCenterController.isGameOver = true
                 self.gameCenterController.isPaused = true
@@ -717,8 +717,6 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView(gameType: .ai, gameSize: (4, 4), obstacles: [])
-            .environmentObject(GameCenterManager(currentPlayer: .player1))
-        
-        //            .environmentObject(AppLanguageManager())
+            .environmentObject(GameCenterManager(currentPlayer: .player1))        
     }
 }
