@@ -374,9 +374,12 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         }
         self.currentPlayer = self.currentPlayer == .player1 ? .player2 : .player1
         self.remainingTime = 15
+        print("\(matchRequest)")
     }
     
 }
+
+///comment test
 
 extension GameCenterManager {
     // Start Group Activity and wait for recipients
