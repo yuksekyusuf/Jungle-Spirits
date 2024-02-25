@@ -37,6 +37,8 @@
 		4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D4419332A896E80007293F0 /* redActiveAnimation.json */; };
 		4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4506EB2A7D14B400585259 /* SlideView.swift */; };
 		4D457DAF2A85594A00E0FB34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */; };
+		4D4EEF232B8A73B500AA2DC5 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4EEF222B8A73B500AA2DC5 /* NavigationCoordinator.swift */; };
+		4D4EEF292B8B118000AA2DC5 /* testui.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4EEF282B8B118000AA2DC5 /* testui.swift */; };
 		4D4F35C62B1D7AC6009CBC48 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 4D4F35C52B1D7AC6009CBC48 /* RevenueCat */; };
 		4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4D4F35C72B1D7AC6009CBC48 /* RevenueCatUI */; };
 		4D4F35CA2B1D7BCC009CBC48 /* lose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4D4F35C92B1D7BCC009CBC48 /* lose.mp3 */; };
@@ -60,7 +62,7 @@
 		4D6401322A89F52900917EC8 /* redToBlue.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D6401312A89F52900917EC8 /* redToBlue.json */; };
 		4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D69639F2A7A57E70096D805 /* HowToPlayView.swift */; };
 		4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D6963A12A7A5C940096D805 /* InfoTabView.swift */; };
-		4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */; };
+		4D70D23F2A05518F002E9C0A /* Jungle_SpiritsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D23E2A05518F002E9C0A /* Jungle_SpiritsApp.swift */; };
 		4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2422A055190002E9C0A /* Assets.xcassets */; };
 		4D70D2462A055190002E9C0A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D70D2452A055190002E9C0A /* Preview Assets.xcassets */; };
 		4D70D2512A0555D5002E9C0A /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D70D2502A0555D5002E9C0A /* Board.swift */; };
@@ -86,7 +88,7 @@
 		4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC562B7827EA00CD246B /* GoogleMobileAds */; };
 		4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5A2B78324900CD246B /* AdBannerView.swift */; };
 		4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5C2B7832BD00CD246B /* AdView.swift */; };
-		4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */; };
+		4DD2BC642B78670C00CD246B /* Jungle-Spirits-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DD2BC632B78670C00CD246B /* Jungle-Spirits-Info.plist */; };
 		4DD4B5FF2A8F29EB004085B0 /* logo.json in Resources */ = {isa = PBXBuildFile; fileRef = 4DD4B5FE2A8F29EB004085B0 /* logo.json */; };
 		4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7C1622A896B7D005B34BE /* countdown.mp3 */; };
 		4DED05512A31402900B2362A /* TimeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DED05502A31402900B2362A /* TimeBarView.swift */; };
@@ -149,6 +151,9 @@
 		4D4419332A896E80007293F0 /* redActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redActiveAnimation.json; sourceTree = "<group>"; };
 		4D4506EB2A7D14B400585259 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
 		4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4D4EEF212B8A6AD900AA2DC5 /* Jungle_Spirits.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Jungle_Spirits.entitlements; sourceTree = "<group>"; };
+		4D4EEF222B8A73B500AA2DC5 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		4D4EEF282B8B118000AA2DC5 /* testui.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testui.swift; sourceTree = "<group>"; };
 		4D4F35C92B1D7BCC009CBC48 /* lose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lose.mp3; sourceTree = "<group>"; };
 		4D4F35CB2B1D83D3009CBC48 /* Red guy fail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Red guy fail.json"; sourceTree = "<group>"; };
 		4D5E69452AB9CD030089CAB6 /* CreditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditView.swift; sourceTree = "<group>"; };
@@ -165,11 +170,10 @@
 		4D6401312A89F52900917EC8 /* redToBlue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redToBlue.json; sourceTree = "<group>"; };
 		4D69639F2A7A57E70096D805 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
 		4D6963A12A7A5C940096D805 /* InfoTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTabView.swift; sourceTree = "<group>"; };
-		4D70D23B2A05518F002E9C0A /* Temple Gems.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Temple Gems.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Temple_BeastsApp.swift; sourceTree = "<group>"; };
+		4D70D23B2A05518F002E9C0A /* Jungle Spirits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jungle Spirits.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D70D23E2A05518F002E9C0A /* Jungle_SpiritsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jungle_SpiritsApp.swift; sourceTree = "<group>"; };
 		4D70D2422A055190002E9C0A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D70D2452A055190002E9C0A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Temple_Beasts.entitlements; sourceTree = "<group>"; };
 		4D70D2502A0555D5002E9C0A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		4D70D2522A055910002E9C0A /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		4D83E84E2A8AA717003A57BB /* blueDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueDefault.json; sourceTree = "<group>"; };
@@ -190,7 +194,7 @@
 		4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSessionManager.swift; sourceTree = "<group>"; };
 		4DD2BC5A2B78324900CD246B /* AdBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdBannerView.swift; sourceTree = "<group>"; };
 		4DD2BC5C2B7832BD00CD246B /* AdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdView.swift; sourceTree = "<group>"; };
-		4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Temple-Beasts-Info.plist"; sourceTree = SOURCE_ROOT; };
+		4DD2BC632B78670C00CD246B /* Jungle-Spirits-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Jungle-Spirits-Info.plist"; sourceTree = SOURCE_ROOT; };
 		4DD4B5FE2A8F29EB004085B0 /* logo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = logo.json; sourceTree = "<group>"; };
 		4DD7C1622A896B7D005B34BE /* countdown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countdown.mp3; sourceTree = "<group>"; };
 		4DED05502A31402900B2362A /* TimeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBarView.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 				4D0F06992A48D60C00B53823 /* SoundManager.swift */,
 				4D95187C2A50C5B100ED284D /* HapticManager.swift */,
 				4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */,
+				4D4EEF222B8A73B500AA2DC5 /* NavigationCoordinator.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -308,7 +313,7 @@
 		4D70D2322A05518F002E9C0A = {
 			isa = PBXGroup;
 			children = (
-				4D70D23D2A05518F002E9C0A /* Temple Beasts */,
+				4D70D23D2A05518F002E9C0A /* Jungle Spirits */,
 				4D70D23C2A05518F002E9C0A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -316,15 +321,15 @@
 		4D70D23C2A05518F002E9C0A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4D70D23B2A05518F002E9C0A /* Temple Gems.app */,
+				4D70D23B2A05518F002E9C0A /* Jungle Spirits.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4D70D23D2A05518F002E9C0A /* Temple Beasts */ = {
+		4D70D23D2A05518F002E9C0A /* Jungle Spirits */ = {
 			isa = PBXGroup;
 			children = (
-				4DD2BC632B78670C00CD246B /* Temple-Beasts-Info.plist */,
+				4DD2BC632B78670C00CD246B /* Jungle-Spirits-Info.plist */,
 				4D6401332A89F61600917EC8 /* Animations */,
 				4D42DC142A56046100E8809C /* Controllers */,
 				4D0F069B2A48D89600B53823 /* Sounds */,
@@ -333,15 +338,15 @@
 				4D3A83CD2A0D33200059E2F0 /* Model */,
 				4D70D24D2A05545B002E9C0A /* Views */,
 				4D5FB6AE2B76C5AE00776CBB /* Helpers */,
-				4D70D23E2A05518F002E9C0A /* Temple_BeastsApp.swift */,
-				4D70D2472A055190002E9C0A /* Temple_Beasts.entitlements */,
+				4D70D23E2A05518F002E9C0A /* Jungle_SpiritsApp.swift */,
+				4D4EEF212B8A6AD900AA2DC5 /* Jungle_Spirits.entitlements */,
 				4D457DAE2A85594A00E0FB34 /* LaunchScreen.storyboard */,
 				4DD2BC5A2B78324900CD246B /* AdBannerView.swift */,
 				4DD2BC5C2B7832BD00CD246B /* AdView.swift */,
 				4D70D2442A055190002E9C0A /* Preview Content */,
 				4D231DE62AB4FB9C00F2D12A /* Localizable.strings */,
 			);
-			path = "Temple Beasts";
+			path = "Jungle Spirits";
 			sourceTree = "<group>";
 		};
 		4D70D2442A055190002E9C0A /* Preview Content */ = {
@@ -397,6 +402,7 @@
 				4D5FB6B22B76E45700776CBB /* ScrollableView.swift */,
 				4D09B08D2B80052F008B1CC1 /* ShareButtonView.swift */,
 				4D09B08F2B801BE3008B1CC1 /* SubsTest.swift */,
+				4D4EEF282B8B118000AA2DC5 /* testui.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -415,9 +421,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4D70D23A2A05518F002E9C0A /* Temple Beasts */ = {
+		4D70D23A2A05518F002E9C0A /* Jungle Spirits */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4D70D24A2A055190002E9C0A /* Build configuration list for PBXNativeTarget "Temple Beasts" */;
+			buildConfigurationList = 4D70D24A2A055190002E9C0A /* Build configuration list for PBXNativeTarget "Jungle Spirits" */;
 			buildPhases = (
 				4D70D2372A05518F002E9C0A /* Sources */,
 				4D70D2382A05518F002E9C0A /* Frameworks */,
@@ -428,7 +434,7 @@
 			);
 			dependencies = (
 			);
-			name = "Temple Beasts";
+			name = "Jungle Spirits";
 			packageProductDependencies = (
 				4D6401252A89D95E00917EC8 /* Lottie */,
 				4D4F35C52B1D7AC6009CBC48 /* RevenueCat */,
@@ -443,7 +449,7 @@
 				4DD2BC562B7827EA00CD246B /* GoogleMobileAds */,
 			);
 			productName = "Temple Beasts";
-			productReference = 4D70D23B2A05518F002E9C0A /* Temple Gems.app */;
+			productReference = 4D70D23B2A05518F002E9C0A /* Jungle Spirits.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -461,7 +467,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4D70D2362A05518F002E9C0A /* Build configuration list for PBXProject "Temple Beasts" */;
+			buildConfigurationList = 4D70D2362A05518F002E9C0A /* Build configuration list for PBXProject "Jungle Spirits" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -487,7 +493,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4D70D23A2A05518F002E9C0A /* Temple Beasts */,
+				4D70D23A2A05518F002E9C0A /* Jungle Spirits */,
 			);
 		};
 /* End PBXProject section */
@@ -520,7 +526,7 @@
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
-				4DD2BC642B78670C00CD246B /* Temple-Beasts-Info.plist in Resources */,
+				4DD2BC642B78670C00CD246B /* Jungle-Spirits-Info.plist in Resources */,
 				4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */,
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
 				4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */,
@@ -536,7 +542,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D70D23F2A05518F002E9C0A /* Temple_BeastsApp.swift in Sources */,
+				4D70D23F2A05518F002E9C0A /* Jungle_SpiritsApp.swift in Sources */,
 				4DF554082B86E9F2000DAF49 /* TutorialStep.swift in Sources */,
 				4D60E70E2B1BCB0200762875 /* HeartStatusView.swift in Sources */,
 				4D15F0B62A0C31AB00539383 /* BoardView.swift in Sources */,
@@ -581,10 +587,12 @@
 				4D5FB6B32B76E45700776CBB /* ScrollableView.swift in Sources */,
 				4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */,
 				4D20A76A2B5496A9000F2D8B /* SealedMapView.swift in Sources */,
+				4D4EEF292B8B118000AA2DC5 /* testui.swift in Sources */,
 				4D6963A02A7A57E70096D805 /* HowToPlayView.swift in Sources */,
 				4D20A7682B531C22000F2D8B /* SwiftUIView.swift in Sources */,
 				4D0779672ABC72EC009DE89E /* ResizeTest.swift in Sources */,
 				4D6963A22A7A5C940096D805 /* InfoTabView.swift in Sources */,
+				4D4EEF232B8A73B500AA2DC5 /* NavigationCoordinator.swift in Sources */,
 				4DA0C7CA2AFF291C00DDEE99 /* GameLevel.swift in Sources */,
 				4D0F069A2A48D60C00B53823 /* SoundManager.swift in Sources */,
 				4DA0C7CE2B05C28600DDEE99 /* MapsTabView.swift in Sources */,
@@ -736,32 +744,33 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Temple Beasts/Temple_Beasts.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Jungle Spirits/Jungle_Spirits.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
+				INFOPLIST_FILE = "Jungle-Spirits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 0.1.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
-				PRODUCT_NAME = "Temple Gems";
+				PRODUCT_BUNDLE_IDENTIFIER = "Spirits.games.Jungle-Spirits";
+				PRODUCT_NAME = "Jungle Spirits";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -777,32 +786,33 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Temple Beasts/Temple_Beasts.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Jungle Spirits/Jungle_Spirits.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 6;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"Temple Beasts/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Temple-Beasts-Info.plist";
+				INFOPLIST_FILE = "Jungle-Spirits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Jungle Sprints";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 0.1.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
-				PRODUCT_NAME = "Temple Gems";
+				PRODUCT_BUNDLE_IDENTIFIER = "Spirits.games.Jungle-Spirits";
+				PRODUCT_NAME = "Jungle Spirits";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -816,7 +826,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4D70D2362A05518F002E9C0A /* Build configuration list for PBXProject "Temple Beasts" */ = {
+		4D70D2362A05518F002E9C0A /* Build configuration list for PBXProject "Jungle Spirits" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4D70D2482A055190002E9C0A /* Debug */,
@@ -825,7 +835,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4D70D24A2A055190002E9C0A /* Build configuration list for PBXNativeTarget "Temple Beasts" */ = {
+		4D70D24A2A055190002E9C0A /* Build configuration list for PBXNativeTarget "Jungle Spirits" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4D70D24B2A055190002E9C0A /* Debug */,

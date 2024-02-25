@@ -45,3 +45,11 @@
 "SEALED" = "Mapa sellado";
 "FINISH_MAP" = "Termina los demás mapas primero para desbloquear este mapa";
 "CONTINUE" = "Continuar";
+"SHARE" = "Compartir";
+"SELECT_PIECE" = "Selecciona el espíritu";
+"GETTING_IT" = "¡Lo estás consiguiendo!";
+"ONE_MORE" = "¡Una vez más!";
+"CLONE_YOURSELF" = "Luego clónate";
+"TELEPORT_YOURSELF" = "Luego teletranspórtate";
+"COVERT_BLUE_RED" = "Convierte el azul en rojo";
+"FULL" = "Lleno";

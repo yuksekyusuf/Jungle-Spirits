@@ -17,6 +17,7 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterController: GameCenterManager
+//    @EnvironmentObject var navCoordinator: NavigationCoordinator
     @EnvironmentObject var heartManager: HeartManager
     
     @State private var selectedMap = 1
@@ -69,7 +70,7 @@ struct MenuView: View {
     
     //    @AppStorage("lastBackgroundTime") var lastBackgroundTime: TimeInterval = 0
     //    // To periodically check for heart updates
-    //    @State var heartTimer: Timer?
+    @State var heartTimer: Timer?
     
     let availableLanguages = ["en", "tr", "de", "fr", "es", "zh-Hans"]
 //    let languageNames = ["English", "Türkçe", "Deutsch", "Français", "Español", "Chinese"]
@@ -397,7 +398,7 @@ struct MenuView: View {
                                             
                                         }
                                         .sheet(isPresented: $isMatchmakingPresented) {
-                                            GameCenterView().environmentObject(gameCenterController)
+                                            GameCenterView(isPresentingMatchmaker: $isMatchmakingPresented).environmentObject(gameCenterController)
                                         }
                                         
                                         //                                    Button(action: {
@@ -638,20 +639,47 @@ struct MenuView: View {
                         CreditView(isPresent: $showCreditScreen)
                     }
                     
+                    NavigationLink(value: Destination.tutorialPage) {
+                                            Button {
+                                                gameCenterController.path.append(Destination.tutorialPage)
+                                            } label: {
+                                                ButtonView(text: howToPlay, width: 200, height: 50)
+                                                                                .padding(.top, 30)
+                                            }
+                                        }
+//                    NavigationLink(value: Destination.firstPage) {
+//                        Button {
+//                            navCoordinator.path.append(Destination.firstPage)
+//                        } label: {
+//                            ButtonView(text: howToPlay, width: 200, height: 50)
+//                                .padding(.top, 30)
+//                        }
+//                    }
                     
-                    NavigationLink {
-                        TutorialView(gameCenterManager: gameCenterController, storyMode: false)
-                            .environmentObject(gameCenterController)
-                    } label: {
-                        ButtonView(text: howToPlay, width: 200, height: 50)
-                        //                                .offset(y: 40)
-                    }
+//                    NavigationLink(value: Destination.firstPage)  {
+//                        Button {
+//                            gameCenterController.path.append(gameCenterController.currentLevel?.rawValue
+//                        } label: {
+//                            ButtonView(text: howToPlay, width: 200, height: 50)
+//                                
+//                        }
+//
+//                    }
 
-                    .simultaneousGesture(
-                        TapGesture()
-                            .onEnded({gameCenterController.path.append(gameCenterController.currentLevel?.rawValue ?? 100 + 100)})
-                    )
-                    .padding(.top, 30)
+                    
+//                    NavigationLink {
+//                        TutorialView(gameCenterManager: gameCenterController, storyMode: false)
+//                            .environmentObject(gameCenterController)
+//                    } label: {
+//                        ButtonView(text: howToPlay, width: 200, height: 50)
+//                        //                                .offset(y: 40)
+//                    }
+//
+//                    .simultaneousGesture(
+//                        TapGesture()
+//                            .onEnded({gameCenterController.path.append(gameCenterController.currentLevel?.rawValue ?? 100 + 100)})
+//                    )
+//                    .padding(.top, 30)
                     
                     Button {
                         requestReview()
@@ -690,20 +718,13 @@ struct MenuView: View {
             }
             .autotoggle($isBackgroundShown, with: .spring(dampingFraction: 1))
             .ignoresSafeArea()
-            //                }
-            //            } else {
-            //                HowToPlayView()
-            //                //                    .onAppear{
-            //                //                        gameCenterController.path.append(20)
-            //                //                    }
-            //            }
-            
-        }
-        .onChange(of: gameCenterController.currentPlayer) { newValue in
-            print("Currently selected level: ", newValue)
+            .navigationDestination(for: Destination.self, destination: { value in
+                if value == .tutorialPage {
+                    TutorialView(gameCenterManager: gameCenterController, storyMode: false)
+                }
+            })
         }
         .onAppear {
-            
             loadAchievedLevel()
             loadCurrentBundle()
             selectedMap = gameCenterController.currentBundle.id
@@ -820,12 +841,12 @@ struct MenuView: View {
 //    
     private func loadAchievedLevel() {
         let savedLevelID = UserDefaults.standard.integer(forKey: "achievedLevel")
-        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level2_7
+        gameCenterController.achievedLevel = GameLevel(rawValue: savedLevelID) ?? .level1_1
     }
     
     private func loadCurrentBundle(){
         let savedBundleID = UserDefaults.standard.integer(forKey: "currentBundle")
-        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle2
+        gameCenterController.currentBundle = GameLevelBundle(rawValue: savedBundleID) ?? .bundle1
     }
 }
 

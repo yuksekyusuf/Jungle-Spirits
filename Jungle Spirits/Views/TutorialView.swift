@@ -105,6 +105,7 @@ class TutorialViewModel: ObservableObject {
                 }
                 self.navigateToGame = true
             } else {
+//                navCoordinator.gotoHomePage()
                 gameCenterManager.path = NavigationPath()
             }
         case .none:
@@ -169,6 +170,8 @@ struct TutorialView: View {
     
     init(gameCenterManager: GameCenterManager, storyMode: Bool) {
         _tutorialViewModel = StateObject(wrappedValue: TutorialViewModel(gameCenterManager: gameCenterManager))
+
+
         self.storyMode = storyMode
     }
     

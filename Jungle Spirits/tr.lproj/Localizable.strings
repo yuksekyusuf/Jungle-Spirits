@@ -46,4 +46,11 @@
 "SEALED" = "Harita mühürlendi";
 "FINISH_MAP" = "Bu haritayı açmak için önce diğer haritaları tamamlayın";
 "CONTINUE" = "Devam Et";
-
+"SHARE" = "Paylaş";
+"SELECT_PIECE" = "Ruhu seç";
+"GETTING_IT" = "Anlıyorsun!";
+"ONE_MORE" = "Bir kez daha!";
+"CLONE_YOURSELF" = "Kendini klonla";
+"TELEPORT_YOURSELF" = "Kendini ışınla";
+"COVERT_BLUE_RED" = "Maviyi kırmızıya dönüştür";
+"FULL" = "Dolu";

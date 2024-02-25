@@ -45,3 +45,11 @@
 "SEALED" = "地图已封印";
 "FINISH_MAP" = "请先完成其他地图以解封此地图";
 "CONTINUE" = "继续";
+"SHARE" = "分享";
+"SELECT_PIECE" = "选择精神";
+"GETTING_IT" = "你懂了！";
+"ONE_MORE" = "再来一次！";
+"CLONE_YOURSELF" = "然后克隆自己";
+"TELEPORT_YOURSELF" = "然后传送自己";
+"COVERT_BLUE_RED" = "将蓝色转换为红色";
+"FULL" = "满";

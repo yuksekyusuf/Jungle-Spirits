@@ -141,43 +141,43 @@ struct HeartStatusView: View {
             }
             
             VStack {
-                if heartManager.remainingHearts < 5 {
-                    VStack(spacing: 0) {
-                        Button {
-                            SoundManager.shared.stopBackgroundMusic()
-//                            self.rewardAd.showAd(rewardFunction: {
-//                                gameCenterManager.remainingHearts += 1
-//                            })
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Rectangle()
-                                    .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
-                                    .frame(width: 221, height: 44, alignment: .center)
-                                    .cornerRadius(14)
-                                    .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-                                
-                                Text("FREE LIFE")
-                                    .font(Font.custom("TempleGemsRegular", size: 24))
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-                                    .frame(width: 148, height: 42, alignment: .center)
-                                    .offset(y: 2)
-                                Image("plusOneHeart")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 30)
-                                    .offset(x: 80)
-                            }
-                        }
-                        
-                        ShareButtonView()
-                            .padding(.top, 10)
-                        
-                        
-                    }
-                    
-                                        
-                }
+//                if heartManager.remainingHearts < 5 {
+//                    VStack(spacing: 0) {
+//                        Button {
+//                            SoundManager.shared.stopBackgroundMusic()
+////                            self.rewardAd.showAd(rewardFunction: {
+////                                gameCenterManager.remainingHearts += 1
+////                            })
+//                        } label: {
+//                            ZStack(alignment: .center) {
+//                                Rectangle()
+//                                    .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+//                                    .frame(width: 221, height: 44, alignment: .center)
+//                                    .cornerRadius(14)
+//                                    .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+//                                
+//                                Text("FREE LIFE")
+//                                    .font(Font.custom("TempleGemsRegular", size: 24))
+//                                    .multilineTextAlignment(.center)
+//                                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+//                                    .frame(width: 148, height: 42, alignment: .center)
+//                                    .offset(y: 2)
+//                                Image("plusOneHeart")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(width: 30)
+//                                    .offset(x: 80)
+//                            }
+//                        }
+//                        
+//                        ShareButtonView()
+//                            .padding(.top, 10)
+//                        
+//                        
+//                    }
+//                    
+//                                        
+//                }
 //                VStack(spacing: 0) {
 //                    HStack {
 //                        Button(action: {

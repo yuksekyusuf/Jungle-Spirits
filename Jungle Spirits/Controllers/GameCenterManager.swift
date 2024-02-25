@@ -58,9 +58,9 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
 //    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
-    @Published var achievedLevel: GameLevel = GameLevel.level2_7
+    @Published var achievedLevel: GameLevel = GameLevel.level1_1
     @Published var currentLevel: GameLevel? = nil
-    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle2
+    @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle1
     
     //MARK: - Heart Timer
     @Published var heartTimer: Timer?
@@ -72,6 +72,14 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
             self?.updateRemainingTime()
         }
     }
+    
+
+    
+    //MARK: - GROUP ACTIVITY
+    var recipients = [GKPlayer]()
+    var matchRequest: GKMatchRequest?
+  
+    
     
     private func timeUntilNextHeart() -> TimeInterval {
            let lastHeartTime = UserDefaults.standard.double(forKey: "lastHeartTime")
@@ -114,7 +122,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
     init(currentPlayer: CellState) {
         self.currentPlayer = currentPlayer
-
+        matchRequest = GKMatchRequest()
         super.init()
         startObservingAppLifecycle()
     }
@@ -165,6 +173,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
         localPlayer.authenticateHandler = { [self] gcAuthVC, error in
             if GKLocalPlayer.local.isAuthenticated {
                 // Player is already authenticated
+                GKLocalPlayer.local.register(self)
                 self.isUserAuthenticated = true
                 self.onAuthenticated?()
                 
@@ -369,6 +378,37 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
 }
 
+extension GameCenterManager {
+    // Start Group Activity and wait for recipients
+    @available(iOS 16.2, *)
+    func startGroupActivity() {
+        GKMatchmaker.shared().startGroupActivity { [weak self] player in
+            print("Found a player: \(player)")
+            self?.recipients.append(player)
+        }
+    }
+
+    // Async method to start the match
+//    func startMatch() async throws -> GKMatch? {
+//        guard let matchRequest = self.matchRequest else {
+//            return nil
+//        }
+//        matchRequest.recipients = self.recipients
+//
+//        do {
+//            let match = try await GKMatchmaker.shared().findMatch(for: matchRequest)
+//            DispatchQueue.main.async {
+//                // Configure your game to start with the found match
+//                self.startGame(newMatch: match)
+//            }
+//            return match
+//        } catch {
+//            print("Failed to find a match: \(error)")
+//            throw error
+//        }
+//    }
+}
+
 //extension GameCenterManager {
 //    func findMatch(for request: GKMatchRequest) async throws -> GKMatch {
 //        return try await withCheckedThrowingContinuation { continuation in
@@ -470,6 +510,7 @@ extension GameCenterManager {
 //        }
 //    }
 //
+    
 
 
     func startQuickMatch() {

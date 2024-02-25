@@ -20,7 +20,8 @@ extension Amplitude {
 }
 
 @main
-struct Temple_BeastsApp: App {
+struct Jungle_SpiritsApp: App {
+//    @StateObject var navigationCoordinator = NavigationCoordinator()
     @StateObject var appLanguageManager = AppLanguageManager()
     @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
     @StateObject var heartManager = HeartManager()
@@ -46,6 +47,11 @@ struct Temple_BeastsApp: App {
     
     var body: some Scene {
         WindowGroup {
+//            MainDatabaseView()
+//                .environmentObject(gameCenterManager)
+//                .environmentObject(navigationCoordinator)
+//                            .environmentObject(appLanguageManager)
+
             MenuView()
                 .environmentObject(appLanguageManager)
                 .environmentObject(gameCenterManager)

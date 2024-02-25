@@ -46,3 +46,11 @@
 "SEALED" = "Karte versiegelt";
 "FINISH_MAP" = "Schließen Sie zuerst die anderen Karten ab, um diese Karte freizuschalten";
 "CONTINUE" = "Fortsetzen";
+"SHARE" = "Teilen";
+"SELECT_PIECE" = "Wähle den Geist";
+"GETTING_IT" = "Du kriegst es hin!";
+"ONE_MORE" = "Noch einmal!";
+"CLONE_YOURSELF" = "Klone dich selbst";
+"TELEPORT_YOURSELF" = "Teleportiere dich selbst";
+"COVERT_BLUE_RED" = "Verwandle Blau in Rot";
+"FULL" = "Voll";
