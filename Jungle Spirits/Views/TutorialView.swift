@@ -45,7 +45,7 @@ class TutorialViewModel: ObservableObject {
             }
             return
         }
-        withAnimation(.easeInOut) {
+        
             let moveSuccessful = board.performTutorialMove(from: source, to: destination)
             if moveSuccessful {
                 SoundManager.shared.playMoveSound()
@@ -80,7 +80,7 @@ class TutorialViewModel: ObservableObject {
                     selectedCell = nil
                 }
             }
-        }
+        
     }
     
     func moveToNextTutorialStep(storyMode: Bool) {
@@ -428,15 +428,6 @@ struct TutorialView: View {
                 gameCenterManager.currentLevel = GameLevel(rawValue: 1)
             }
             tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
-            
-            for family: String in UIFont.familyNames
-                    {
-                        print(family)
-                        for names: String in UIFont.fontNames(forFamilyName: family)
-                        {
-                            print("== \(names)")
-                        }
-                    }
         }
 //        .onDisappear {
 //            if storyMode {

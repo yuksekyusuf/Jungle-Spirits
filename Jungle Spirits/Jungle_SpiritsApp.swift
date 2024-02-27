@@ -71,7 +71,10 @@ struct Jungle_SpiritsApp: App {
                 .onChange(of: scenePhase) { newScene in
                     switch newScene {
                     case .active:
-                        heartManager.startHeartTimer()
+                        //MARK: - YOU NEED TO FIX THIS ERROR!!!!!!!
+                        if heartManager.remainingHearts != 5 {
+//                           heartManager.startHeartTimer()
+                        }
 //                        initMobileAds()
                         SessionManager.shared.logSessionStart()
                     case .background:
