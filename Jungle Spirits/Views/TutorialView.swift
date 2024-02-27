@@ -66,6 +66,15 @@ class TutorialViewModel: ObservableObject {
                 invalidMove = false
             } else {
                 guard let tutorialStep = board.tutorialStep else { return }
+                let convertedCells = board.convertedCells
+                if !convertedCells.isEmpty {
+                    SoundManager.shared.playConvertSound()
+                    HapticManager.shared.notification(type: .success)
+                    for piece in convertedCells {
+                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                    }
+                }
                 if tutorialStep != .complextConvert {
                     HapticManager.shared.notification(type: .error)
                     withAnimation(.default.repeatCount(3, autoreverses: true)) {
@@ -79,6 +88,7 @@ class TutorialViewModel: ObservableObject {
                 } else {
                     selectedCell = nil
                 }
+                
             }
         
     }
@@ -103,6 +113,8 @@ class TutorialViewModel: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
                     self.setupBoard(for: .complextConvert)
+                    self.previouslyConvertedPieces.removeAll()
+                    self.board.convertedCells.removeAll()
                 }            }
         case .complextConvert:
             break
@@ -423,6 +435,9 @@ struct TutorialView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .navigationBarHidden(true)
+        .onChange(of: tutorialViewModel.board.convertedCells.count, perform: { value in
+            print("Converted cells: ", value)
+        })
         .onAppear {
             if storyMode {
                 gameCenterManager.currentLevel = GameLevel(rawValue: 1)

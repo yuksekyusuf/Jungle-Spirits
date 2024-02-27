@@ -419,9 +419,6 @@ extension Board {
             cells[middle.row - 3][middle.col] = .player2
             cells[middle.row - 3][middle.col - 1] = .player2
             cells[middle.row - 2][middle.col - 1] = .player2
-
-
-
             obstacles = [(middle.row, middle.col), (0, 0), (1, 0), (5, 0), (6, 0), (0, 4), (1, 4), (5, 4), (6, 4)]
             for obstacle in obstacles {
                    cells[obstacle.0][obstacle.1] = .obstacle
@@ -436,7 +433,9 @@ extension Board {
             return performCloneMove(from: source, to: destination)
         case .teleportPiece:
             return performTeleportMove(from: source, to: destination)
-        case .convertPiece, .complextConvert:
+        case .convertPiece:
+            return performConversionMove(from: source, to: destination)
+        case .complextConvert:
             return performConversionMove(from: source, to: destination)
         }
     }
@@ -457,8 +456,12 @@ extension Board {
     }
     
     private func performConversionMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
-        convertedCells = performMove(from: source, to: destination, player: .player1)
-        return !convertedCells.isEmpty
+        convertedCells += performMove(from: source, to: destination, player: .player1)
+        if tutorialStep == .convertPiece {
+            return !convertedCells.isEmpty
+        } else {
+            return convertedCells.count >= 6
+        }
     }
     
     
