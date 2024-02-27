@@ -70,7 +70,7 @@
 		4D83E84F2A8AA717003A57BB /* blueDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E84E2A8AA717003A57BB /* blueDefault.json */; };
 		4D83E8512A8AA71D003A57BB /* redDefault.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8502A8AA71D003A57BB /* redDefault.json */; };
 		4D83E8552A8D3AFC003A57BB /* particles.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D83E8542A8D3AFC003A57BB /* particles.json */; };
-		4D84BBB32B8D9E2700AE2638 /* Bubble Sans.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4D84BBB22B8D9E2700AE2638 /* Bubble Sans.otf */; };
+		4D84BBB32B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4D84BBB22B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
 		4D8C8C2C2B1E663000FAC725 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = 4D8C8C2B2B1E663000FAC725 /* Pow */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
@@ -180,7 +180,7 @@
 		4D83E84E2A8AA717003A57BB /* blueDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blueDefault.json; sourceTree = "<group>"; };
 		4D83E8502A8AA71D003A57BB /* redDefault.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redDefault.json; sourceTree = "<group>"; };
 		4D83E8542A8D3AFC003A57BB /* particles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = particles.json; sourceTree = "<group>"; };
-		4D84BBB22B8D9E2700AE2638 /* Bubble Sans.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Bubble Sans.otf"; path = "../../../../../Downloads/Bubble Sans.otf"; sourceTree = "<group>"; };
+		4D84BBB22B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Yasir -Speech BubbleRegular.otf"; path = "../../../../../Downloads/Yasir -Speech BubbleRegular.otf"; sourceTree = "<group>"; };
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
 		4D930D452A897107006D139B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		4D930D472A897467006D139B /* redNonActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redNonActiveAnimation.json; sourceTree = "<group>"; };
@@ -412,7 +412,7 @@
 		4DED05552A31448900B2362A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				4D84BBB22B8D9E2700AE2638 /* Bubble Sans.otf */,
+				4D84BBB22B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf */,
 				4DA829C62AB744B9008FE05D /* TempleGems-Regular.otf */,
 				4D2B38912A54D22D00DA7D8F /* Tricky Jimmy.ttf */,
 				4DED05562A31449100B2362A /* Watermelon-Regular.otf */,
@@ -529,7 +529,7 @@
 				4DD7C1632A896B7D005B34BE /* countdown.mp3 in Resources */,
 				4D70D2432A055190002E9C0A /* Assets.xcassets in Resources */,
 				4D64012A2A89DB7000917EC8 /* gemBlue-select.json in Resources */,
-				4D84BBB32B8D9E2700AE2638 /* Bubble Sans.otf in Resources */,
+				4D84BBB32B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf in Resources */,
 				4DD2BC642B78670C00CD246B /* Jungle-Spirits-Info.plist in Resources */,
 				4DA829C72AB744B9008FE05D /* TempleGems-Regular.otf in Resources */,
 				4D6401322A89F52900917EC8 /* redToBlue.json in Resources */,
@@ -752,7 +752,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -794,7 +794,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;

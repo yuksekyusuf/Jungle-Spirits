@@ -45,38 +45,40 @@ class TutorialViewModel: ObservableObject {
             }
             return
         }
-        let moveSuccessful = board.performTutorialMove(from: source, to: destination)
-        if moveSuccessful {
-            SoundManager.shared.playMoveSound()
-            let convertedCells = board.convertedCells
-            if !convertedCells.isEmpty {
-                SoundManager.shared.playConvertSound()
-                HapticManager.shared.notification(type: .success)
-                for piece in convertedCells {
-                    self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                    self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+        withAnimation(.easeInOut) {
+            let moveSuccessful = board.performTutorialMove(from: source, to: destination)
+            if moveSuccessful {
+                SoundManager.shared.playMoveSound()
+                let convertedCells = board.convertedCells
+                if !convertedCells.isEmpty {
+                    SoundManager.shared.playConvertSound()
+                    HapticManager.shared.notification(type: .success)
+                    for piece in convertedCells {
+                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+                    }
                 }
-            }
-            if board.tutorialStep == .complextConvert {
-                tutorialGuide = true
-            }
-            taskDone = true
-            selectedCell = nil
-            invalidMove = false
-        } else {
-            guard let tutorialStep = board.tutorialStep else { return }
-            if tutorialStep != .complextConvert {
-                HapticManager.shared.notification(type: .error)
-                withAnimation(.default.repeatCount(3, autoreverses: true)) {
-                    invalidMove = true
+                if board.tutorialStep == .complextConvert {
+                    tutorialGuide = true
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.selectedCell = nil
-                    self.board.setupTutorialBoard(for: tutorialStep)
-                    self.invalidMove = false
-                }
-            } else {
+                taskDone = true
                 selectedCell = nil
+                invalidMove = false
+            } else {
+                guard let tutorialStep = board.tutorialStep else { return }
+                if tutorialStep != .complextConvert {
+                    HapticManager.shared.notification(type: .error)
+                    withAnimation(.default.repeatCount(3, autoreverses: true)) {
+                        invalidMove = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        self.selectedCell = nil
+                        self.board.setupTutorialBoard(for: tutorialStep)
+                        self.invalidMove = false
+                    }
+                } else {
+                    selectedCell = nil
+                }
             }
         }
     }
@@ -249,7 +251,30 @@ struct TutorialView: View {
                         }
                         
                     } label: {
-                        ButtonView(text: "NEXT", width: 200, height: 50)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 50)
+                                    .fill(LinearGradient(
+                                        gradient: Gradient(stops: [
+                                            .init(color: Color("ButtonColor"), location: 0),
+                                            .init(color: Color("ButtonColor"), location: 1)]),
+                                        startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
+                                        endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: Color("ShadowColor"), radius: 0, x: 0, y: -3)))
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 50)
+                                            .stroke(.black, lineWidth: 8)
+                                    )
+                                    .shadow(color: .black, radius: 0, x: 0, y: 4)
+                                    .frame(width: 200, height: 50)
+                                ZStack {
+                                    if tutorialViewModel.taskDone {
+                                        TextView(text: "NEXT")
+                                    } else {
+                                        Text("NEXT")
+                                            .font(.custom("TempleGemsRegular", size: 24))
+                                            .foregroundColor(.white).opacity(0.25)
+                                    }
+                                }
+                            }
                             .padding(.top, 25)
                             .opacity(tutorialViewModel.taskDone ? 1 : 0.3)
                             .opacity(tutorialViewModel.tutorialGuide ? 0 : 1)
@@ -275,7 +300,8 @@ struct TutorialView: View {
                                     .font(.custom("TempleGemsRegular", size: 18))
                                     .textCase(.uppercase)
                                     .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
-                                Text(tutorialText).font(.custom("TempleGemsRegular", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Text(tutorialText).font(.custom("Yasir -Speech Bubble", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center).padding(.bottom, 2)
+                                    .lineSpacing(5)
                                 Button {
                                     tutorialViewModel.tutorialGuide.toggle()
                                 } label: {
@@ -335,7 +361,7 @@ struct TutorialView: View {
                                     .font(.custom("TempleGemsRegular", size: 18))
                                     .textCase(.uppercase)
                                     .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
-                                Text(tutorialText).font(.custom("TempleGemsRegular", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Text(tutorialText).font(.custom("Yasir -Speech Bubble", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center)
                                 Button {
                                     if tutorialViewModel.board.tutorialStep != .complextConvert {
                                         tutorialViewModel.tutorialGuide.toggle()
@@ -397,14 +423,20 @@ struct TutorialView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .navigationBarHidden(true)
-        .onChange(of: tutorialViewModel.taskDone, perform: { value in
-            print("Task is done: ", value)
-        })
         .onAppear {
             if storyMode {
                 gameCenterManager.currentLevel = GameLevel(rawValue: 1)
             }
             tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
+            
+            for family: String in UIFont.familyNames
+                    {
+                        print(family)
+                        for names: String in UIFont.fontNames(forFamilyName: family)
+                        {
+                            print("== \(names)")
+                        }
+                    }
         }
 //        .onDisappear {
 //            if storyMode {
