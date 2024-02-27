@@ -11,12 +11,12 @@ struct testui: View {
     @State var present = false
     var body: some View {
         ZStack {
-            GameCenterView(isPresentingMatchmaker: $present)
+            Text("Hello world")
         }
     }
 }
 
 #Preview {
     testui()
-        .environmentObject(GameCenterManager(currentPlayer: .player1))
+//        .environmentObject(GameCenterManager(currentPlayer: .player1))
 }

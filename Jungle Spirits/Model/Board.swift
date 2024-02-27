@@ -412,8 +412,16 @@ extension Board {
             cells[middle.row + 2][middle.col] = .player2
         case .complextConvert:
             let middle = (row: size.rows / 2, col: size.columns / 2)
-            cells[middle.row + 1][middle.col - 1] = .player1
+            cells[middle.row][middle.col - 1] = .player1
+            cells[middle.row - 1][middle.col + 1] = .player2
             cells[middle.row - 2][middle.col + 1] = .player2
+            cells[middle.row - 3][middle.col + 1] = .player2
+            cells[middle.row - 3][middle.col] = .player2
+            cells[middle.row - 3][middle.col - 1] = .player2
+            cells[middle.row - 2][middle.col - 1] = .player2
+
+
+
             obstacles = [(middle.row, middle.col), (0, 0), (1, 0), (5, 0), (6, 0), (0, 4), (1, 4), (5, 4), (6, 4)]
             for obstacle in obstacles {
                    cells[obstacle.0][obstacle.1] = .obstacle

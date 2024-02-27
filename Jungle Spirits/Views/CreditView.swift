@@ -33,86 +33,86 @@ struct CreditView: View {
             
             ScrollViewReader { proxy in
                 
-                ScrollableView(self.$contentOffset, animationDuration: 6.0, showsScrollIndicator: false, axis: .vertical) {
-                    LazyVStack {
-                        Color.clear.frame(height: 1).id(1)
-
-                        Image("CreditLogo")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 270, height: 168)
-                            .padding(.top, 48)
-//                            .id(1)
-                        Image("CreditLine")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 164, height: 48)
-                            .padding(.top, 10)
-                     
-
-                        VStack(spacing: 0) {
-                            Text("YASIR")
-                                .font(Font.custom("TempleGemsRegular", size: 28))
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                .padding(.top, 20)
-
-                            Text(designer)
-                                .font(Font.custom("TempleGemsRegular", size: 23))
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
-                                .offset(y: -10)
-                            Button {
-                                openURL(URL(string: "https://twitter.com/yasirbugra")!)
-                            } label: {
-                                Image("YasirButton")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .offset(y: -10)
-                                    .id(2)
-
-                            }
-
-                            VStack(spacing: 0) {
-                                Text("YUSUF")
-                                    .font(Font.custom("TempleGemsRegular", size: 28))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
-                                    .padding(.top, 32)
-                                Text(developer)
-                                    .font(Font.custom("TempleGemsRegular", size: 23))
-                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
-                                    .offset(y: -10)
-                                Button {
-                                    openURL(URL(string: "https://twitter.com/ay_yuksek")!)
-                                } label: {
-                                    Image("YusufButton")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .offset(y: -10)
-                                }
-
-                            }
-                            .offset(y: -32)
-                            Text("MADE IN NYC . 2023")
-                                .font(Font.custom("TempleGemsRegular", size: 18))
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             
-                                .frame(width: 211, alignment: .center)
-                                .offset(y: -24)
-                                .id(3)
-                        }
-                        .frame(width: 168)
-                        Color.clear.frame(height: 1).id("end")
-                    }
-                    .frame(width: 270)
-                    .onAppear {
-                            self.contentOffset = CGPoint(x: 0, y: (300))
-                    }
-                }
-                .background {
-                    Image("CreditBackground")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 284, height: 302)
-                }
+//                ScrollableView(self.$contentOffset, animationDuration: 6.0, showsScrollIndicator: false, axis: .vertical) {
+//                    LazyVStack {
+//                        Color.clear.frame(height: 1).id(1)
+//
+//                        Image("CreditLogo")
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(width: 270, height: 168)
+//                            .padding(.top, 48)
+////                            .id(1)
+//                        Image("CreditLine")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 164, height: 48)
+//                            .padding(.top, 10)
+//                     
+//
+//                        VStack(spacing: 0) {
+//                            Text("YASIR")
+//                                .font(Font.custom("TempleGemsRegular", size: 28))
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+//                                .padding(.top, 20)
+//
+//                            Text(designer)
+//                                .font(Font.custom("TempleGemsRegular", size: 23))
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
+//                                .offset(y: -10)
+//                            Button {
+//                                openURL(URL(string: "https://twitter.com/yasirbugra")!)
+//                            } label: {
+//                                Image("YasirButton")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .offset(y: -10)
+//                                    .id(2)
+//
+//                            }
+//
+//                            VStack(spacing: 0) {
+//                                Text("YUSUF")
+//                                    .font(Font.custom("TempleGemsRegular", size: 28))
+//                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))
+//                                    .padding(.top, 32)
+//                                Text(developer)
+//                                    .font(Font.custom("TempleGemsRegular", size: 23))
+//                                    .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95).opacity(0.4))
+//                                    .offset(y: -10)
+//                                Button {
+//                                    openURL(URL(string: "https://twitter.com/ay_yuksek")!)
+//                                } label: {
+//                                    Image("YusufButton")
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .offset(y: -10)
+//                                }
+//
+//                            }
+//                            .offset(y: -32)
+//                            Text("MADE IN NYC . 2023")
+//                                .font(Font.custom("TempleGemsRegular", size: 18))
+//                                .multilineTextAlignment(.center)
+//                                .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             
+//                                .frame(width: 211, alignment: .center)
+//                                .offset(y: -24)
+//                                .id(3)
+//                        }
+//                        .frame(width: 168)
+//                        Color.clear.frame(height: 1).id("end")
+//                    }
+//                    .frame(width: 270)
+//                    .onAppear {
+//                            self.contentOffset = CGPoint(x: 0, y: (300))
+//                    }
+//                }
+//                .background {
+//                    Image("CreditBackground")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 284, height: 302)
+//                }
 
             }
             

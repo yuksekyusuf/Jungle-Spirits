@@ -16,6 +16,7 @@ class TutorialViewModel: ObservableObject {
     @Published var invalidMove: Bool = false
     @Published var navigateToGame: Bool = false
     @Published var version = UUID()
+    @Published var tutorialGuide: Bool = true
 
     private var gameCenterManager: GameCenterManager
     
@@ -51,15 +52,17 @@ class TutorialViewModel: ObservableObject {
             if !convertedCells.isEmpty {
                 SoundManager.shared.playConvertSound()
                 HapticManager.shared.notification(type: .success)
-                print(convertedCells)
                 for piece in convertedCells {
                     self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
                     self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
                 }
             }
-                taskDone = true
-                selectedCell = nil
-                invalidMove = false
+            if board.tutorialStep == .complextConvert {
+                tutorialGuide = true
+            }
+            taskDone = true
+            selectedCell = nil
+            invalidMove = false
         } else {
             guard let tutorialStep = board.tutorialStep else { return }
             if tutorialStep != .complextConvert {
@@ -83,31 +86,36 @@ class TutorialViewModel: ObservableObject {
         case .clonePiece:
             taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.setupBoard(for: .teleportPiece)
+                withAnimation {
+                    self.setupBoard(for: .teleportPiece)
+                }
             }
         case .teleportPiece:
             taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.setupBoard(for: .convertPiece)
-            }
+                withAnimation {
+                    self.setupBoard(for: .convertPiece)
+                }            }
         case .convertPiece:
             taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.setupBoard(for: .complextConvert)
-            }
+                withAnimation {
+                    self.setupBoard(for: .complextConvert)
+                }            }
         case .complextConvert:
-            if storyMode {
-                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
-                    guard let nextLevel = gameCenterManager.currentLevel else { return }
-                    let nextLevelId = nextLevel.id + 1
-                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
-                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                }
-                self.navigateToGame = true
-            } else {
-//                navCoordinator.gotoHomePage()
-                gameCenterManager.path = NavigationPath()
-            }
+            break
+//            if storyMode {
+//                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
+//                    guard let nextLevel = gameCenterManager.currentLevel else { return }
+//                    let nextLevelId = nextLevel.id + 1
+//                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
+//                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+//                }
+//                self.navigateToGame = true
+//            } else {
+////                navCoordinator.gotoHomePage()
+//                gameCenterManager.path = NavigationPath()
+//            }
         case .none:
             break
         }
@@ -170,8 +178,6 @@ struct TutorialView: View {
     
     init(gameCenterManager: GameCenterManager, storyMode: Bool) {
         _tutorialViewModel = StateObject(wrappedValue: TutorialViewModel(gameCenterManager: gameCenterManager))
-
-
         self.storyMode = storyMode
     }
     
@@ -183,6 +189,7 @@ struct TutorialView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(height: geometry.size.height)
+               
                 VStack {
                     VStack(spacing: 0) {
                         VStack {
@@ -192,6 +199,7 @@ struct TutorialView: View {
                                     .top, 1)
                         }
                         .padding(.bottom, 30)
+                        .opacity(tutorialViewModel.tutorialGuide ? 0 : 1)
                         HStack {
                             Spacer()
                             VStack(spacing: 0) {
@@ -209,7 +217,7 @@ struct TutorialView: View {
                                                         tutorialViewModel.currentlyPressedCell = nil
                                                     }
                                                 }, perform: {})
-                                                .disabled(tutorialViewModel.taskDone)
+//                                                .disabled(tutorialViewModel.taskDone)
 
                                             
                                         }
@@ -220,38 +228,225 @@ struct TutorialView: View {
                             .id(tutorialViewModel.version)
                             Spacer()
                         }
+                        
                     }
                     Button {
-                        tutorialViewModel.moveToNextTutorialStep(storyMode: storyMode)
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            if tutorialViewModel.board.tutorialStep != .convertPiece{
+                                tutorialViewModel.moveToNextTutorialStep(storyMode: storyMode)
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        tutorialViewModel.tutorialGuide.toggle()
+
+                                    }
+                                }
+                            } else {
+                                tutorialViewModel.moveToNextTutorialStep(storyMode: storyMode)
+                            }
+                            
+                            
+                        }
+                        
                     } label: {
                         ButtonView(text: "NEXT", width: 200, height: 50)
                             .padding(.top, 25)
                             .opacity(tutorialViewModel.taskDone ? 1 : 0.3)
+                            .opacity(tutorialViewModel.tutorialGuide ? 0 : 1)
+                            .opacity((tutorialViewModel.board.tutorialStep == .complextConvert) ? 0 : 1)
+//                            .opacity((tutorialViewMode))
                     }
                     .disabled(!tutorialViewModel.taskDone)
                 }
+                if tutorialViewModel.board.tutorialStep != .complextConvert {
+                    
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Image("redTutorial")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geometry.size.width * 0.4)
+    //
+                            Spacer()
+                            //Hey there!
+                            VStack {
+                                Text(tutorialTitle)
+                                    .font(.custom("TempleGemsRegular", size: 18))
+                                    .textCase(.uppercase)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Text(tutorialText).font(.custom("TempleGemsRegular", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Button {
+                                    tutorialViewModel.tutorialGuide.toggle()
+                                } label: {
+                                    ZStack {
+                                        Rectangle()
+                                        .fill(Color("ButtonColor4"))
+                                        .frame(width: 169, height: 42)
+                                        .cornerRadius(14)
+                                        Text("CONTINUE")
+                                            .font(.custom("TempleGemsRegular", size: 20))
+                                            .textCase(.uppercase)
+                                            .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
+                                            .multilineTextAlignment(.center)
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .padding(.bottom, geometry.size.height * 0.1)
+                        .padding([.leading, .trailing], 10)
+                        .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
+                        
+                        
+                    }
+                    .zIndex(1)
+//                    Color.black
+                    Rectangle()
+                        .fill(LinearGradient(
+                                gradient: Gradient(stops: [
+                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
+                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
+                                startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
+                                endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
+                        .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
+//                        .allowsHitTesting(false)
+                    Image("shadowTutorial")
+                        .resizable()
+                        .scaledToFit()
+                        .blendMode(.destinationOut)
+                        .opacity(tutorialViewModel.tutorialGuide ? 0.6 : 0)
+//                        .allowsHitTesting(false)
+                        
+
+                }
+                if tutorialViewModel.board.tutorialStep == .complextConvert && tutorialViewModel.taskDone == true {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Image("redTutorial")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: geometry.size.width * 0.4)
+    //
+                            Spacer()
+                            VStack {
+                                Text(tutorialTitle)
+                                    .font(.custom("TempleGemsRegular", size: 18))
+                                    .textCase(.uppercase)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Text(tutorialText).font(.custom("TempleGemsRegular", size: 16)).foregroundColor(Color(#colorLiteral(red: 0.79, green: 0.76, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                                Button {
+                                    if tutorialViewModel.board.tutorialStep != .complextConvert {
+                                        tutorialViewModel.tutorialGuide.toggle()
+                                    } else {
+                                        if storyMode {
+                                            tutorialViewModel.navigateToGame = true
+                                        } else {
+                                            gameCenterManager.path = NavigationPath()
+                                        }
+                                    }
+                                } label: {
+                                    ZStack {
+                                        Rectangle()
+                                        .fill(Color("ButtonColor4"))
+                                        .frame(width: 169, height: 42)
+                                        .cornerRadius(14)
+                                        Text("CONTINUE")
+                                            .font(.custom("TempleGemsRegular", size: 20))
+                                            .textCase(.uppercase)
+                                            .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
+                                            .multilineTextAlignment(.center)
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
+                        .padding(.bottom, geometry.size.height * 0.1)
+                        .padding([.leading, .trailing], 10)
+                        .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
+                        
+                    }
+                    .zIndex(1)
+                    Rectangle()
+                        .fill(LinearGradient(
+                                gradient: Gradient(stops: [
+                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
+                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
+                                startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
+                                endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
+                        .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
+                    Image("shadowTutorial")
+                        .resizable()
+                        .scaledToFit()
+                        .blendMode(.destinationOut)
+                        .opacity(tutorialViewModel.tutorialGuide ? 0.6 : 0)
+                        
+                }
+                                
             }
-            if let nextLevel = gameCenterManager.currentLevel?.next {
-                NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: nextLevel.boardSize.rows, col: nextLevel.boardSize.cols), obstacles: nextLevel.obstacles), isActive: $tutorialViewModel.navigateToGame) {
+            
+            if let level = gameCenterManager.currentLevel {
+                NavigationLink(destination: GameView(gameType: .ai, gameSize: (row: level.boardSize.rows, col: level.boardSize.cols), obstacles: level.obstacles), isActive: $tutorialViewModel.navigateToGame) {
                     EmptyView()
                 }
                 .hidden()
             }
+            
+            
         }
         .edgesIgnoringSafeArea(.all)
         .navigationBarHidden(true)
+        .onChange(of: tutorialViewModel.taskDone, perform: { value in
+            print("Task is done: ", value)
+        })
         .onAppear {
-            gameCenterManager.currentLevel = GameLevel(rawValue: 1)
+            if storyMode {
+                gameCenterManager.currentLevel = GameLevel(rawValue: 1)
+            }
             tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
         }
-        .onDisappear {
-            if storyMode {
-                gameCenterManager.currentLevel = gameCenterManager.currentLevel?.next
-            }
-        }
+//        .onDisappear {
+//            if storyMode {
+//                gameCenterManager.currentLevel = gameCenterManager.currentLevel?.next
+//            }
+//        }
+       
     }
     
     //MARK: - HELPER VARIABLES
+    
+    private var tutorialText: String {
+        switch tutorialViewModel.board.tutorialStep {
+        case .clonePiece:
+            return "I'm Reddy, your jungle sidekick! Ready to master the spirits?"
+        case .teleportPiece:
+            return "Next up: Teleporting"
+        case .convertPiece:
+            return "Let’s convert some spirits!"
+        case .complextConvert:
+            return "Now the real adventure begins..."
+        case .none:
+            return ""
+        }
+    }
+    
+    private var tutorialTitle: String {
+        switch tutorialViewModel.board.tutorialStep {
+        case .clonePiece:
+            return "Hey There!"
+        case .teleportPiece:
+            return "Awesome work!"
+        case .convertPiece:
+            return "Ready for more?"
+        case .complextConvert:
+            return "Great work!"
+        case .none:
+            return ""
+        }
+    }
+    
+    
     private var selectText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
