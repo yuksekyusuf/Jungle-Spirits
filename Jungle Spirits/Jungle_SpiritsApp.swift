@@ -58,10 +58,11 @@ struct Jungle_SpiritsApp: App {
                 .environmentObject(heartManager)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
             
-//                .onAppear {
+                .onAppear {
 //                    startHeartTimer()
-//
-//                }
+//                    heartManager.startHeartTimer()
+
+                }
                 .onDisappear(perform: {
                     gameCenterManager.heartTimer?.invalidate()
                 })
@@ -72,13 +73,13 @@ struct Jungle_SpiritsApp: App {
                     switch newScene {
                     case .active:
                         //MARK: - YOU NEED TO FIX THIS ERROR!!!!!!!
-                        if heartManager.remainingHearts != 5 {
-//                           heartManager.startHeartTimer()
-                        }
+//                        if heartManager.remainingHearts != 5 {
+                           heartManager.startHeartTimer()
+//                        }
 //                        initMobileAds()
-                        SessionManager.shared.logSessionStart()
+//                        SessionManager.shared.logSessionStart()
                     case .background:
-                        SessionManager.shared.logSessionEnd()
+//                        SessionManager.shared.logSessionEnd()
                         UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime")
                     case .inactive:
                         break
@@ -108,7 +109,7 @@ struct Jungle_SpiritsApp: App {
 //            
 //        }
 //    }
-//    
+////    
 //    func updateHeartsBasedOnTimeElapsed() {
 //        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
 //        let elapsedTime = Date().timeIntervalSince(lastTime)
@@ -116,8 +117,8 @@ struct Jungle_SpiritsApp: App {
 //        let heartIntervals = Int(elapsedTime / 900)
 //        
 //        if heartIntervals > 0 {
-//            gameCenterManager.remainingHearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
-//            UserDefaults.standard.set(gameCenterManager.remainingHearts, forKey: "hearts")
+//            heartManager.remainingHearts = min((UserDefaults.standard.integer(forKey: "hearts")) + heartIntervals, 5)
+//            UserDefaults.standard.set(heartManager.remainingHearts, forKey: "hearts")
 //            lastHeartTime = Date().timeIntervalSinceReferenceDate
 //            UserDefaults.standard.set(lastHeartTime, forKey: "lastHeartTime") // Persist the new lastHeartTime
 //        }
@@ -144,25 +145,25 @@ extension EnvironmentValues {
 }
 
 
-class SessionManager: ObservableObject {
-    static let shared = SessionManager()
-    
-    @Published var sessionStartTime: Date?
-
-    private init() {} // Make it a singleton
-
-    func logSessionStart() {
-        sessionStartTime = Date()
-        Amplitude.shared.track(eventType: "Session_Start", eventProperties: ["start_time": sessionStartTime ?? Date()])
-        // Optionally log "Session Start" event to Amplitude here
-    }
-
-    func logSessionEnd() {
-        guard let startTime = sessionStartTime else { return }
-        let sessionDuration = Date().timeIntervalSince(startTime)
-        Amplitude.shared.track(eventType: "Session_End", eventProperties: ["end_time": sessionDuration])
-        // Log "Session End" event with duration to Amplitude here
-        // Reset session start time
-        sessionStartTime = nil
-    }
-}
+//class SessionManager: ObservableObject {
+//    static let shared = SessionManager()
+//    
+//    @Published var sessionStartTime: Date?
+//
+//    private init() {} // Make it a singleton
+//
+//    func logSessionStart() {
+//        sessionStartTime = Date()
+//        Amplitude.shared.track(eventType: "Session_Start", eventProperties: ["start_time": sessionStartTime ?? Date()])
+//        // Optionally log "Session Start" event to Amplitude here
+//    }
+//
+//    func logSessionEnd() {
+//        guard let startTime = sessionStartTime else { return }
+//        let sessionDuration = Date().timeIntervalSince(startTime)
+//        Amplitude.shared.track(eventType: "Session_End", eventProperties: ["end_time": sessionDuration])
+//        // Log "Session End" event with duration to Amplitude here
+//        // Reset session start time
+//        sessionStartTime = nil
+//    }
+//}

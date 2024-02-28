@@ -45,19 +45,12 @@ class TutorialViewModel: ObservableObject {
             }
             return
         }
-        
+
             let moveSuccessful = board.performTutorialMove(from: source, to: destination)
+
             if moveSuccessful {
                 SoundManager.shared.playMoveSound()
-                let convertedCells = board.convertedCells
-                if !convertedCells.isEmpty {
-                    SoundManager.shared.playConvertSound()
                     HapticManager.shared.notification(type: .success)
-                    for piece in convertedCells {
-                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                    }
-                }
                 if board.tutorialStep == .complextConvert {
                     tutorialGuide = true
                 }
@@ -67,14 +60,14 @@ class TutorialViewModel: ObservableObject {
             } else {
                 guard let tutorialStep = board.tutorialStep else { return }
                 let convertedCells = board.convertedCells
-                if !convertedCells.isEmpty {
-                    SoundManager.shared.playConvertSound()
-                    HapticManager.shared.notification(type: .success)
-                    for piece in convertedCells {
-                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-                    }
-                }
+//                if !convertedCells.isEmpty {
+//                    SoundManager.shared.playConvertSound()
+//                    HapticManager.shared.notification(type: .success)
+//                    for piece in convertedCells {
+//                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+//                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+//                    }
+//                }
                 if tutorialStep != .complextConvert {
                     HapticManager.shared.notification(type: .error)
                     withAnimation(.default.repeatCount(3, autoreverses: true)) {
@@ -90,7 +83,16 @@ class TutorialViewModel: ObservableObject {
                 }
                 
             }
-        
+        let convertedCells = board.convertedCells
+        for piece in convertedCells {
+            self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+            self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+        }
+        if !previouslyConvertedPieces.isEmpty {
+            SoundManager.shared.playConvertSound()
+            HapticManager.shared.notification(type: .success)
+
+        }
     }
     
     func moveToNextTutorialStep(storyMode: Bool) {
@@ -113,7 +115,7 @@ class TutorialViewModel: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
                     self.setupBoard(for: .complextConvert)
-                    self.previouslyConvertedPieces.removeAll()
+//                    self.previouslyConvertedPieces.removeAll()
                     self.board.convertedCells.removeAll()
                 }            }
         case .complextConvert:
