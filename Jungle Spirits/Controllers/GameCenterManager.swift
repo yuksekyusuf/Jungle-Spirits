@@ -43,6 +43,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
 //    @Published var path: [Int] = []
     @Published var path = NavigationPath()
 
+    @Published var isMatchmakingPresented = false
     @Published var connectionLost: Bool = false
     @Published  var convertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []
     @Published  var previouslyConvertedCells: [(row: Int, col: Int, byPlayer: CellState)] = []

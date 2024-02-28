@@ -12,6 +12,7 @@ struct GameCenterView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var isPresentingMatchmaker: Bool
+    @State var controller: GKMatchmakerViewController?
 //    var matchRequest: GKMatchRequest?
     
     
@@ -37,7 +38,6 @@ struct GameCenterView: UIViewControllerRepresentable {
             parent.presentationMode.wrappedValue.dismiss()
             // Here you get the match object, which you can use to send and receive data between players
             
-//            gameCenterController.recipients.
             DispatchQueue.main.async {
                 self.gameCenterController.path.append(Int.random(in: 100...10000))
                 self.gameCenterController.startGame(newMatch: match)
@@ -45,14 +45,18 @@ struct GameCenterView: UIViewControllerRepresentable {
         }
         
         func player(_ player: GKPlayer, didAccept invite: GKInvite) {
-            if let viewController = GKMatchmakerViewController(invite: invite) {
-                viewController.matchmakerDelegate = self
-
+            gameCenterController.invite = invite
+            DispatchQueue.main.async {
+                self.gameCenterController.isMatchmakingPresented.toggle()
             }
+
         }
         
         func player(_ player: GKPlayer, didRequestMatchWithRecipients recipientPlayers: [GKPlayer]) {
             gameCenterController.recipients = recipientPlayers
+            DispatchQueue.main.async {
+                self.gameCenterController.isMatchmakingPresented.toggle()
+            }
             
         }
         
@@ -66,21 +70,22 @@ struct GameCenterView: UIViewControllerRepresentable {
         Coordinator(self, gameCenterController: gameCenterController)
     }
     func makeUIViewController(context: Context) -> GKMatchmakerViewController {
-        if #available(iOS 16.2, *) {
-            if let matchRequest = gameCenterController.matchRequest {
-                matchRequest.recipients = gameCenterController.recipients
-            }
-        }
         gameCenterController.matchRequest?.minPlayers = 2
         gameCenterController.matchRequest?.maxPlayers = 2
-        let vc = GKMatchmakerViewController(matchRequest: gameCenterController.matchRequest!)
-        vc?.matchmakerDelegate = context.coordinator
-        return vc!
+        if let matchmakerVC = GKMatchmakerViewController(invite: gameCenterController.invite!) {
+            controller = matchmakerVC
+            controller?.matchmakerDelegate = context.coordinator
+            return controller!
+        }
+        controller = GKMatchmakerViewController(matchRequest: gameCenterController.matchRequest!)
+        controller?.matchmakerDelegate = context.coordinator
+        return controller!
         
     }
     func updateUIViewController(_ uiViewController: GKMatchmakerViewController, context: Context) {
         // Update the view controller
     }
+    
 }
 
 //extension GameCenterView.Coordinator {

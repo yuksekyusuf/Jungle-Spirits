@@ -26,7 +26,7 @@ struct MenuView: View {
     @State private var showResetGameAlert = false
 
     
-    @State private var isMatchmakingPresented = false
+//    @State private var isMatchmakingPresented = false
     @State var gameType: GameType?
     @AppStorage("music") var musicState: Bool = true
     @AppStorage("haptic") var hapticState: Bool = true
@@ -391,14 +391,14 @@ struct MenuView: View {
                                             EmptyView()
                                         }
                                         Button {
-                                            self.isMatchmakingPresented = true
+                                            self.gameCenterController.isMatchmakingPresented = true
                                         } label: {
                                             
                                             ButtonView(text: onlineBattle, width: buttonWidth, height: 48)
                                             
                                         }
-                                        .sheet(isPresented: $isMatchmakingPresented) {
-                                            GameCenterView(isPresentingMatchmaker: $isMatchmakingPresented).environmentObject(gameCenterController)
+                                        .sheet(isPresented: $gameCenterController.isMatchmakingPresented) {
+                                            GameCenterView(isPresentingMatchmaker: $gameCenterController.isMatchmakingPresented).environmentObject(gameCenterController)
                                         }
                                         
                                         //                                    Button(action: {

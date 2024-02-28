@@ -50,6 +50,7 @@ class TutorialViewModel: ObservableObject {
 
             if moveSuccessful {
                 SoundManager.shared.playMoveSound()
+
                     HapticManager.shared.notification(type: .success)
                 if board.tutorialStep == .complextConvert {
                     tutorialGuide = true
@@ -79,6 +80,7 @@ class TutorialViewModel: ObservableObject {
                         self.invalidMove = false
                     }
                 } else {
+                    SoundManager.shared.playMoveSound()
                     selectedCell = nil
                 }
                 
