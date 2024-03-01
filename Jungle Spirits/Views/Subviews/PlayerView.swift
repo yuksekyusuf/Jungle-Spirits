@@ -29,7 +29,7 @@ struct PlayerView: View {
                         }
 //                        LottieView2(lottieFile: "blueToRed")
 
-                    } else {
+                    } else if conversion.byPlayer == .player2 {
 //                        LottieView2(lottieFile: "redToBlue")
 
                         LottieView(animationName: "redToBlue", ifActive: false, contentMode: false, isLoop: false)

@@ -63,16 +63,20 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var currentLevel: GameLevel? = nil
     @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle1
     
-    //MARK: - Heart Timer
-    @Published var heartTimer: Timer?
+//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 5 : UserDefaults.standard.integer(forKey: "hearts")
+//    @Published var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
     @Published var remainingHeartTime: String = "0:00"
-    private let heartTimeInterval: TimeInterval = 900
-    func startHeartTimer() {
-        heartTimer?.invalidate()
-        heartTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.updateRemainingTime()
-        }
-    }
+
+    
+    //MARK: - Heart Timer
+//    @Published var heartTimer: Timer?
+//    private let heartTimeInterval: TimeInterval = 900
+//    func startHeartTimer() {
+//        heartTimer?.invalidate()
+//        heartTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+//            self?.updateRemainingTime()
+//        }
+//    }
     
 
     
@@ -82,28 +86,28 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
   
     
     
-    private func timeUntilNextHeart() -> TimeInterval {
-           let lastHeartTime = UserDefaults.standard.double(forKey: "lastHeartTime")
-           let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
-           let elapsedTime = Date().timeIntervalSince(lastTime)
-           let remainingTime = heartTimeInterval - (elapsedTime.truncatingRemainder(dividingBy: heartTimeInterval))
-           return max(0, remainingTime)
-       }
+//    private func timeUntilNextHeart() -> TimeInterval {
+//           let lastHeartTime = UserDefaults.standard.double(forKey: "lastHeartTime")
+//           let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
+//           let elapsedTime = Date().timeIntervalSince(lastTime)
+//           let remainingTime = heartTimeInterval - (elapsedTime.truncatingRemainder(dividingBy: heartTimeInterval))
+//           return max(0, remainingTime)
+//       }
 
-       private func formatTimeForDisplay(seconds: TimeInterval) -> String {
-           let minutes = Int(seconds) / 60
-           let remainingSeconds = Int(seconds) % 60
-           return "\(minutes):\(String(format: "%02d", remainingSeconds))"
-       }
-
-       private func updateRemainingTime() {
-           let time = timeUntilNextHeart()
-           remainingHeartTime = formatTimeForDisplay(seconds: time)
-       }
-       
-       deinit {
-           heartTimer?.invalidate()
-       }
+//       private func formatTimeForDisplay(seconds: TimeInterval) -> String {
+//           let minutes = Int(seconds) / 60
+//           let remainingSeconds = Int(seconds) % 60
+//           return "\(minutes):\(String(format: "%02d", remainingSeconds))"
+//       }
+//
+//       private func updateRemainingTime() {
+//           let time = timeUntilNextHeart()
+//           remainingHeartTime = formatTimeForDisplay(seconds: time)
+//       }
+//       
+//       deinit {
+//           heartTimer?.invalidate()
+//       }
     
     
     

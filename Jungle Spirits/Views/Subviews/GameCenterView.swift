@@ -12,7 +12,7 @@ struct GameCenterView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var isPresentingMatchmaker: Bool
-    @State var controller: GKMatchmakerViewController?
+//    @State var controller: GKMatchmakerViewController?
 //    var matchRequest: GKMatchRequest?
     
     
@@ -72,14 +72,15 @@ struct GameCenterView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> GKMatchmakerViewController {
         gameCenterController.matchRequest?.minPlayers = 2
         gameCenterController.matchRequest?.maxPlayers = 2
-        if let matchmakerVC = GKMatchmakerViewController(invite: gameCenterController.invite!) {
-            controller = matchmakerVC
-            controller?.matchmakerDelegate = context.coordinator
-            return controller!
+        if let invite = gameCenterController.invite {
+            let mvc = GKMatchmakerViewController(invite: invite)
+            mvc?.matchmakerDelegate = context.coordinator
+            return mvc!
         }
-        controller = GKMatchmakerViewController(matchRequest: gameCenterController.matchRequest!)
-        controller?.matchmakerDelegate = context.coordinator
-        return controller!
+
+        let vc = GKMatchmakerViewController(matchRequest: gameCenterController.matchRequest!)
+        vc?.matchmakerDelegate = context.coordinator
+        return vc!
         
     }
     func updateUIViewController(_ uiViewController: GKMatchmakerViewController, context: Context) {

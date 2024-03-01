@@ -91,7 +91,7 @@ struct CreditView: View {
 
                             }
                             .offset(y: -32)
-                            Text("MADE IN NYC . 2023")
+                            Text("MADE IN NYC . 2024")
                                 .font(Font.custom("TempleGemsRegular", size: 18))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.62, green: 0.55, blue: 0.95))                             

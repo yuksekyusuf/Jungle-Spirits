@@ -11,7 +11,7 @@ import Pow
 struct GameView: View {
     @StateObject private var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
-    @EnvironmentObject var heartManager: HeartManager
+//    @EnvironmentObject var heartManager: HeartManager
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
@@ -482,8 +482,8 @@ struct GameView: View {
                 //                gameCenterController.isGameOver = true
                 //                self.gameCenterController.isPaused = true
                 if gameType == .ai && winner == .player2 {
-                    heartManager.remainingHearts -= 1
-                    let hearts = heartManager.remainingHearts
+//                    gameCenterController.remainingHearts -= 1
+                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
                     UserDefaults.standard.setValue(hearts, forKey: "hearts")
                 } else if gameType == .ai && winner == .player1 {
                     guard let nextLevel = gameCenterController.currentLevel else { return }
@@ -544,11 +544,21 @@ struct GameView: View {
             }
         })
         .onReceive(timer) { _ in
+            
             if gameType == .ai && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible {
-                gameCenterController.remainingTime -= 1
+                
+                    gameCenterController.remainingTime -= 1
+
+                
+
+
             } else if gameType == .multiplayer && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible && !gameCenterController.isQuitGame {
-                gameCenterController.remainingTime -= 1
+                
+                    gameCenterController.remainingTime -= 1
+
+                
             }
+            print("remaining time:", gameCenterController.remainingTime)
         }
         .onAppear {
             gameCenterController.remainingTime = 15

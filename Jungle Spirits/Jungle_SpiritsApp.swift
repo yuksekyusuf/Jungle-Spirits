@@ -24,10 +24,15 @@ struct Jungle_SpiritsApp: App {
 //    @StateObject var navigationCoordinator = NavigationCoordinator()
     @StateObject var appLanguageManager = AppLanguageManager()
     @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
-    @StateObject var heartManager = HeartManager()
+//    @StateObject var heartManager = HeartManager()
+    
+   
+    
+    @AppStorage("hearts") var remainingHearts: Int = 0
+        @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
 //    @AppStorage("remainingHearts") var remainingHearts: Int?
 //    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
-//    @State var heartTimer: Timer?
+    @State var heartTimer: Timer?
 //    @State var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
     @Environment(\.scenePhase) private var scenePhase
     private var sessionStartTime: Date?
@@ -43,49 +48,53 @@ struct Jungle_SpiritsApp: App {
 //        initMobileAds()
         Purchases.logLevel = .debug
         Purchases.configure(withAPIKey: REVENUECAT)
+        
+        if UserDefaults.standard.value(forKey: "hearts") == nil {
+            UserDefaults.standard.set(5, forKey: "hearts") // Set default hearts to 5
+        }
+        
+        // Initialize lastHeartTime if it hasn't been set
+        if UserDefaults.standard.value(forKey: "lastHeartTime") == nil {
+            UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime") // Set to current time
+        }
     }
     
     var body: some Scene {
         WindowGroup {
-//            MainDatabaseView()
-//                .environmentObject(gameCenterManager)
-//                .environmentObject(navigationCoordinator)
-//                            .environmentObject(appLanguageManager)
 
             MenuView()
                 .environmentObject(appLanguageManager)
                 .environmentObject(gameCenterManager)
-                .environmentObject(heartManager)
+//                .environmentObject(heartManager)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
             
-                .onAppear {
-//                    startHeartTimer()
-//                    heartManager.startHeartTimer()
-
-                }
-                .onDisappear(perform: {
-                    gameCenterManager.heartTimer?.invalidate()
-                })
+//                .onAppear {
+////                    startHeartTimer()
+////                    heartManager.startHeartTimer()
+//
+//                }
+//                .onDisappear(perform: {
+//                    gameCenterManager.heartTimer?.invalidate()
+//                })
 //                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
 //                    updateHeartsBasedOnTimeElapsed()
 //                }
+                
                 .onChange(of: scenePhase) { newScene in
                     switch newScene {
-                    case .active:
-                        //MARK: - YOU NEED TO FIX THIS ERROR!!!!!!!
-//                        if heartManager.remainingHearts != 5 {
-                           heartManager.startHeartTimer()
-//                        }
-//                        initMobileAds()
-//                        SessionManager.shared.logSessionStart()
-                    case .background:
-//                        SessionManager.shared.logSessionEnd()
-                        UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime")
-                    case .inactive:
-                        break
-                    @unknown default:
-                        break
-                    }
+                       case .active:
+                        print("something")
+//                        if gameCenterManager.remainingHearts < 5 {
+//                               startHeartTimer()
+//                           }
+                       case .background:
+                           UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime")
+                           stopHeartTimer()
+                       case .inactive:
+                           break
+                       @unknown default:
+                           break
+                       }
                     
                 }
 
@@ -93,23 +102,51 @@ struct Jungle_SpiritsApp: App {
         
     }
     
-//    func startHeartTimer() {
-//        gameCenterManager.heartTimer?.invalidate()
-//        
-//        // Check if a heart should be given right away
-//        updateHeartsBasedOnTimeElapsed()
-//        
-//        gameCenterManager.heartTimer = Timer.scheduledTimer(withTimeInterval: 900, repeats: true) { _ in
-//            let hearts = UserDefaults.standard.integer(forKey: "hearts")
-//            if hearts < 5 {
-//                gameCenterManager.remainingHearts = UserDefaults.standard.integer(forKey: "hearts") + 1
-//                UserDefaults.standard.set(gameCenterManager.remainingHearts, forKey: "hearts")
-//                
-//            }
-//            
-//        }
-//    }
-////    
+    private func startHeartTimer() {
+        heartTimer?.invalidate() // Invalidate any existing timer
+            heartTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+
+                let remainingTime = self.timeUntilNextHeart()
+                let formattedTime = self.formatTimeForDisplay(seconds: remainingTime)
+                
+                // Update GameCenterManager with the remaining time
+                DispatchQueue.main.async {
+                    self.gameCenterManager.remainingHeartTime = formattedTime
+                
+                }
+
+                self.updateHeartsBasedOnTimeElapsed()
+            }
+    }
+    private func updateHeartsBasedOnTimeElapsed() {
+        let elapsedTime = Date().timeIntervalSince(Date(timeIntervalSinceReferenceDate: lastHeartTime))
+        let heartTimeInterval: TimeInterval = 900 // 15 minutes
+        let heartIntervals = Int(elapsedTime / heartTimeInterval)
+        
+        if heartIntervals > 0 {
+            let newHearts = min(remainingHearts + heartIntervals, 5)
+            remainingHearts = newHearts // Update the heart count
+            lastHeartTime += TimeInterval(heartIntervals) * heartTimeInterval // Update the last heart time
+        }
+    }
+    
+    private func timeUntilNextHeart() -> TimeInterval {
+        let elapsedTime = Date().timeIntervalSince(Date(timeIntervalSinceReferenceDate: lastHeartTime))
+        let heartTimeInterval: TimeInterval = 900 // 15 minutes
+        let remainingTime = heartTimeInterval - elapsedTime.truncatingRemainder(dividingBy: heartTimeInterval)
+        return max(0, remainingTime)
+    }
+    
+    private func formatTimeForDisplay(seconds: TimeInterval) -> String {
+        let minutes = Int(seconds) / 60
+        let remainingSeconds = Int(seconds) % 60
+        return "\(minutes):\(String(format: "%02d", remainingSeconds))"
+    }
+    
+    private func stopHeartTimer() {
+            heartTimer?.invalidate()
+        }
+////
 //    func updateHeartsBasedOnTimeElapsed() {
 //        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
 //        let elapsedTime = Date().timeIntervalSince(lastTime)

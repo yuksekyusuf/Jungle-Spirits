@@ -19,7 +19,12 @@ struct MapsTabView: View {
             
             if levelBundle.id <= gameCenterManager.currentBundle.id {
                 if levelBundle.id == 1 {
-                    LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: true)
+                    if !UserDefaults.standard.bool(forKey: "tutorialDone") {
+                        LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: true)
+                    } else {
+                        LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: false)
+                    }
+                    
                 } else {
                     LevelMapView(gameLevelBundle: levelBundle, showHeartStatus: $heartStatus, isTutorial: false)
                 }

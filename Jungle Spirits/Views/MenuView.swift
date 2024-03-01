@@ -18,7 +18,7 @@ struct MenuView: View {
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterController: GameCenterManager
 //    @EnvironmentObject var navCoordinator: NavigationCoordinator
-    @EnvironmentObject var heartManager: HeartManager
+//    @EnvironmentObject var heartManager: HeartManager
     
     @State private var selectedMap = 1
     let numberOfMaps = 3
@@ -855,7 +855,7 @@ struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView().environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
-            .environmentObject(HeartManager())
+//            .environmentObject(HeartManager())
     }
 }
 

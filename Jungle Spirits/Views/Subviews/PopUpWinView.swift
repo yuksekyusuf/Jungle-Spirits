@@ -10,17 +10,18 @@ import Pow
 
 struct PopUpWinView: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
-    @EnvironmentObject var heartManager: HeartManager
+//    @EnvironmentObject var heartManager: HeartManager
     @State var isAdded: Bool = false
     let gameType: GameType
     let winner: CellState
 //    @Binding var remainingHearts: Int
     @Binding var showWinView: Bool
+    @State var remainingHearts = UserDefaults.standard.integer(forKey: "hearts")
     
     var body: some View {
         ZStack{
             if isAdded {
-                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $heartManager.remainingHearts, onContinue: {
+                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $remainingHearts, onContinue: {
                         withAnimation {
                             isAdded.toggle()
                             showWinView.toggle()

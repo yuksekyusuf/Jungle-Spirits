@@ -17,7 +17,9 @@ class TutorialViewModel: ObservableObject {
     @Published var navigateToGame: Bool = false
     @Published var version = UUID()
     @Published var tutorialGuide: Bool = true
-
+    @Published var uniqueCheckSet = Set<String>()
+    
+    
     private var gameCenterManager: GameCenterManager
     
     init(gameCenterManager: GameCenterManager) {
@@ -31,8 +33,8 @@ class TutorialViewModel: ObservableObject {
     }
     
     func refreshView() {
-            version = UUID() // Changing this will force SwiftUI to update the view
-        }
+        version = UUID() // Changing this will force SwiftUI to update the view
+    }
     
     func handleCellTap(at destination: (row: Int, col: Int)) {
         if let source = selectedCell, source == destination {
@@ -45,95 +47,153 @@ class TutorialViewModel: ObservableObject {
             }
             return
         }
-
-            let moveSuccessful = board.performTutorialMove(from: source, to: destination)
-
-            if moveSuccessful {
-                SoundManager.shared.playMoveSound()
-
-                    HapticManager.shared.notification(type: .success)
-                if board.tutorialStep == .complextConvert {
-                    tutorialGuide = true
-                }
-                taskDone = true
-                selectedCell = nil
-                invalidMove = false
-            } else {
-                guard let tutorialStep = board.tutorialStep else { return }
-                let convertedCells = board.convertedCells
-//                if !convertedCells.isEmpty {
-//                    SoundManager.shared.playConvertSound()
-//                    HapticManager.shared.notification(type: .success)
-//                    for piece in convertedCells {
-//                        self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-//                        self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-//                    }
-//                }
-                if tutorialStep != .complextConvert {
-                    HapticManager.shared.notification(type: .error)
-                    withAnimation(.default.repeatCount(3, autoreverses: true)) {
-                        invalidMove = true
+        
+        let moveSuccessful = board.performTutorialMove(from: source, to: destination)
+        
+        if moveSuccessful {
+            SoundManager.shared.playMoveSound()
+            let convertedCells = board.convertedCells
+            
+            if !self.taskDone {
+                for piece in convertedCells {
+                    let newPiece: (row: Int, col: Int, byPlayer: CellState) = (row: piece.row, col: piece.col, byPlayer: .player1)
+                    
+                    // Check if the newPiece is not already in previouslyConvertedPieces before adding
+                    if !previouslyConvertedPieces.contains(where: { $0.row == newPiece.row && $0.col == newPiece.col && $0.byPlayer == newPiece.byPlayer }) {
+                        self.previouslyConvertedPieces.append(newPiece)
+                        self.convertedPieces.append(newPiece)
+                        
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.selectedCell = nil
-                        self.board.setupTutorialBoard(for: tutorialStep)
-                        self.invalidMove = false
-                    }
-                } else {
-                    SoundManager.shared.playMoveSound()
-                    selectedCell = nil
                 }
+            }
+            
+            if board.tutorialStep == .convertPiece && convertedCells.count == 1 && !self.taskDone {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
+                //                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                //                        self.convertedPieces.removeAll()
+                //                        self.previouslyConvertedPieces.removeAll()
+                //                    }
+            }
+            
+            else if !convertedCells.isEmpty && board.tutorialStep == .complextConvert {
+                SoundManager.shared.playConvertSound()
+                HapticManager.shared.notification(type: .success)
                 
             }
-        let convertedCells = board.convertedCells
-        for piece in convertedCells {
-            self.convertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
-            self.previouslyConvertedPieces.append((row: piece.row, col: piece.col, byPlayer: .player1))
+            
+            if board.tutorialStep == .complextConvert {
+                tutorialGuide = true
+            }
+            taskDone = true
+            selectedCell = nil
+            invalidMove = false
+        } else {
+            guard let tutorialStep = board.tutorialStep else { return }
+            SoundManager.shared.playMoveSound()
+            
+            if tutorialStep != .complextConvert {
+                HapticManager.shared.notification(type: .error)
+                withAnimation(.default.repeatCount(3, autoreverses: true)) {
+                    invalidMove = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    self.selectedCell = nil
+                    self.board.setupTutorialBoard(for: tutorialStep)
+                    self.invalidMove = false
+                }
+            } else {
+                
+                
+                let convertedCells = board.convertedCells
+                for piece in convertedCells {
+                    let identifier = "\(piece.row)_\(piece.col)"
+                    if !uniqueCheckSet.contains(identifier) {
+                        let newPiece: (row: Int, col: Int, byPlayer: CellState) = (row: piece.row, col: piece.col, byPlayer: .player1)
+                        print(newPiece)
+                        self.convertedPieces.append(newPiece)
+                        self.previouslyConvertedPieces.append(newPiece)
+                        SoundManager.shared.playConvertSound()
+                        HapticManager.shared.notification(type: .success)
+                        uniqueCheckSet.insert(identifier)
+                    }
+                }
+                
+                //                    let convertedCells = board.convertedCells
+                //                    for piece in convertedCells {
+                //                        let newPiece: (row: Int, col: Int, byPlayer: CellState) = (row: piece.row, col: piece.col, byPlayer: .player1)
+                //
+                //                        // Check if the newPiece is not already in convertedPieces before adding
+                //                        if !convertedPieces.contains(where: { $0.row == newPiece.row && $0.col == newPiece.col && $0.byPlayer == newPiece.byPlayer }) {
+                //                            self.convertedPieces.append(newPiece)
+                //                            self.previouslyConvertedPieces.append(newPiece)
+                //
+                //                        }
+                //
+                //                    }
+                //                    if self.convertedPieces.count > previouslyConvertedPieces.count {
+                //                        SoundManager.shared.playConvertSound()
+                //                        HapticManager.shared.notification(type: .success)
+                //                    }
+                selectedCell = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                    self.convertedPieces.removeAll()
+                    
+                }
+            }
+            
         }
-        if !previouslyConvertedPieces.isEmpty {
-            SoundManager.shared.playConvertSound()
-            HapticManager.shared.notification(type: .success)
-
-        }
+        
+        
+        //        if !previouslyConvertedPieces.isEmpty {
+        //            SoundManager.shared.playConvertSound()
+        //            HapticManager.shared.notification(type: .success)
+        //
+        //        }
+        
     }
     
     func moveToNextTutorialStep(storyMode: Bool) {
         switch board.tutorialStep {
         case .clonePiece:
-            taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
                     self.setupBoard(for: .teleportPiece)
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        self.taskDone = false
+//                    }
+
                 }
             }
         case .teleportPiece:
-            taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
+                    self.taskDone = false
+
                     self.setupBoard(for: .convertPiece)
                 }            }
         case .convertPiece:
-            taskDone = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
+                    self.taskDone = false
                     self.setupBoard(for: .complextConvert)
-//                    self.previouslyConvertedPieces.removeAll()
                     self.board.convertedCells.removeAll()
+                    self.previouslyConvertedPieces.removeAll()
                 }            }
         case .complextConvert:
             break
-//            if storyMode {
-//                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
-//                    guard let nextLevel = gameCenterManager.currentLevel else { return }
-//                    let nextLevelId = nextLevel.id + 1
-//                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
-//                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-//                }
-//                self.navigateToGame = true
-//            } else {
-////                navCoordinator.gotoHomePage()
-//                gameCenterManager.path = NavigationPath()
-//            }
+            //            if storyMode {
+            //                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
+            //                    guard let nextLevel = gameCenterManager.currentLevel else { return }
+            //                    let nextLevelId = nextLevel.id + 1
+            //                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
+            //                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+            //                }
+            //                self.navigateToGame = true
+            //            } else {
+            ////                navCoordinator.gotoHomePage()
+            //                gameCenterManager.path = NavigationPath()
+            //            }
         case .none:
             break
         }
@@ -207,7 +267,9 @@ struct TutorialView: View {
                     .resizable()
                     .scaledToFill()
                     .frame(height: geometry.size.height)
-               
+                
+                
+                
                 VStack {
                     VStack(spacing: 0) {
                         VStack {
@@ -235,8 +297,8 @@ struct TutorialView: View {
                                                         tutorialViewModel.currentlyPressedCell = nil
                                                     }
                                                 }, perform: {})
-//                                                .disabled(tutorialViewModel.taskDone)
-
+                                            //                                                .disabled(tutorialViewModel.taskDone)
+                                            
                                             
                                         }
                                         
@@ -256,7 +318,7 @@ struct TutorialView: View {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                     withAnimation(.easeInOut(duration: 0.5)) {
                                         tutorialViewModel.tutorialGuide.toggle()
-
+                                        
                                     }
                                 }
                             } else {
@@ -267,35 +329,35 @@ struct TutorialView: View {
                         }
                         
                     } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 50)
+                                .fill(LinearGradient(
+                                    gradient: Gradient(stops: [
+                                        .init(color: Color("ButtonColor"), location: 0),
+                                        .init(color: Color("ButtonColor"), location: 1)]),
+                                    startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
+                                    endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: Color("ShadowColor"), radius: 0, x: 0, y: -3)))
+                                .background(
+                                    RoundedRectangle(cornerRadius: 50)
+                                        .stroke(.black, lineWidth: 8)
+                                )
+                                .shadow(color: .black, radius: 0, x: 0, y: 4)
+                                .frame(width: 200, height: 50)
                             ZStack {
-                                RoundedRectangle(cornerRadius: 50)
-                                    .fill(LinearGradient(
-                                        gradient: Gradient(stops: [
-                                            .init(color: Color("ButtonColor"), location: 0),
-                                            .init(color: Color("ButtonColor"), location: 1)]),
-                                        startPoint: UnitPoint(x: 1.001960580351438, y: 0.4999984904828132),
-                                        endPoint: UnitPoint(x: 0.001960653828999348, y: 0.4999989975336838)).shadow(.inner(color: Color("ShadowColor"), radius: 0, x: 0, y: -3)))
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 50)
-                                            .stroke(.black, lineWidth: 8)
-                                    )
-                                    .shadow(color: .black, radius: 0, x: 0, y: 4)
-                                    .frame(width: 200, height: 50)
-                                ZStack {
-                                    if tutorialViewModel.taskDone {
-                                        TextView(text: "NEXT")
-                                    } else {
-                                        Text("NEXT")
-                                            .font(.custom("TempleGemsRegular", size: 24))
-                                            .foregroundColor(.white).opacity(0.25)
-                                    }
+                                if tutorialViewModel.taskDone {
+                                    TextView(text: "NEXT")
+                                } else {
+                                    Text("NEXT")
+                                        .font(.custom("TempleGemsRegular", size: 24))
+                                        .foregroundColor(.white).opacity(0.25)
                                 }
                             }
-                            .padding(.top, 25)
-                            .opacity(tutorialViewModel.taskDone ? 1 : 0.3)
-                            .opacity(tutorialViewModel.tutorialGuide ? 0 : 1)
-                            .opacity((tutorialViewModel.board.tutorialStep == .complextConvert) ? 0 : 1)
-//                            .opacity((tutorialViewMode))
+                        }
+                        .padding(.top, 25)
+                        .opacity(tutorialViewModel.taskDone ? 1 : 0.3)
+                        .opacity(tutorialViewModel.tutorialGuide ? 0 : 1)
+                        .opacity((tutorialViewModel.board.tutorialStep == .complextConvert) ? 0 : 1)
+                        //                            .opacity((tutorialViewMode))
                     }
                     .disabled(!tutorialViewModel.taskDone)
                 }
@@ -308,7 +370,7 @@ struct TutorialView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: geometry.size.width * 0.4)
-    //
+                            //
                             Spacer()
                             //Hey there!
                             VStack {
@@ -323,9 +385,9 @@ struct TutorialView: View {
                                 } label: {
                                     ZStack {
                                         Rectangle()
-                                        .fill(Color("ButtonColor4"))
-                                        .frame(width: 169, height: 42)
-                                        .cornerRadius(14)
+                                            .fill(Color("ButtonColor4"))
+                                            .frame(width: 169, height: 42)
+                                            .cornerRadius(14)
                                         Text("CONTINUE")
                                             .font(.custom("TempleGemsRegular", size: 20))
                                             .textCase(.uppercase)
@@ -343,24 +405,24 @@ struct TutorialView: View {
                         
                     }
                     .zIndex(1)
-//                    Color.black
+                    //                    Color.black
                     Rectangle()
                         .fill(LinearGradient(
-                                gradient: Gradient(stops: [
-                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
-                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
-                                startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
-                                endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
+                            gradient: Gradient(stops: [
+                                .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
+                                .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
+                            startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
+                            endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
                         .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
-//                        .allowsHitTesting(false)
+                    //                        .allowsHitTesting(false)
                     Image("shadowTutorial")
                         .resizable()
                         .scaledToFit()
                         .blendMode(.destinationOut)
                         .opacity(tutorialViewModel.tutorialGuide ? 0.6 : 0)
-//                        .allowsHitTesting(false)
-                        
-
+                    //                        .allowsHitTesting(false)
+                    
+                    
                 }
                 if tutorialViewModel.board.tutorialStep == .complextConvert && tutorialViewModel.taskDone == true {
                     VStack {
@@ -370,7 +432,7 @@ struct TutorialView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: geometry.size.width * 0.4)
-    //
+                            //
                             Spacer()
                             VStack {
                                 Text(tutorialTitle)
@@ -382,6 +444,7 @@ struct TutorialView: View {
                                     if tutorialViewModel.board.tutorialStep != .complextConvert {
                                         tutorialViewModel.tutorialGuide.toggle()
                                     } else {
+                                        UserDefaults.standard.setValue(true, forKey: "tutorialDone")
                                         if storyMode {
                                             tutorialViewModel.navigateToGame = true
                                         } else {
@@ -391,9 +454,9 @@ struct TutorialView: View {
                                 } label: {
                                     ZStack {
                                         Rectangle()
-                                        .fill(Color("ButtonColor4"))
-                                        .frame(width: 169, height: 42)
-                                        .cornerRadius(14)
+                                            .fill(Color("ButtonColor4"))
+                                            .frame(width: 169, height: 42)
+                                            .cornerRadius(14)
                                         Text("CONTINUE")
                                             .font(.custom("TempleGemsRegular", size: 20))
                                             .textCase(.uppercase)
@@ -412,20 +475,42 @@ struct TutorialView: View {
                     .zIndex(1)
                     Rectangle()
                         .fill(LinearGradient(
-                                gradient: Gradient(stops: [
-                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
-                            .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
-                                startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
-                                endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
+                            gradient: Gradient(stops: [
+                                .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), location: 0),
+                                .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
+                            startPoint: UnitPoint(x: 0.5, y: -3.0616171314629196e-17),
+                            endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
                         .opacity(tutorialViewModel.tutorialGuide ? 1 : 0)
                     Image("shadowTutorial")
                         .resizable()
                         .scaledToFit()
                         .blendMode(.destinationOut)
                         .opacity(tutorialViewModel.tutorialGuide ? 0.6 : 0)
-                        
+                    
                 }
+                
+                if UserDefaults.standard.bool(forKey: "tutorialDone") {
+                    VStack {
+                        HStack {
+                            Button {
+                                gameCenterManager.path = NavigationPath()
                                 
+                            } label: {
+                                Image("xIcon")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40)
+                                    .padding(.top, geometry.size.height * 0.07)
+                                    .padding(.leading, geometry.size.width * 0.06)
+                            }
+                            
+                            
+                            Spacer()
+                        }
+                        Spacer()
+                        
+                    }
+                }
             }
             
             if let level = gameCenterManager.currentLevel {
@@ -439,21 +524,25 @@ struct TutorialView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .navigationBarHidden(true)
-        .onChange(of: tutorialViewModel.board.convertedCells.count, perform: { value in
-            print("Converted cells: ", value)
-        })
         .onAppear {
             if storyMode {
                 gameCenterManager.currentLevel = GameLevel(rawValue: 1)
             }
             tutorialViewModel.board.setupTutorialBoard(for: .clonePiece)
         }
-//        .onDisappear {
-//            if storyMode {
-//                gameCenterManager.currentLevel = gameCenterManager.currentLevel?.next
-//            }
-//        }
-       
+        .onChange(of: tutorialViewModel.convertedPieces.count) { new in
+            print("converted: ", tutorialViewModel.convertedPieces)
+        }
+        .onChange(of: tutorialViewModel.previouslyConvertedPieces.count) { new in
+            print("previously converted: ", tutorialViewModel.previouslyConvertedPieces)
+            
+        }
+        //        .onDisappear {
+        //            if storyMode {
+        //                gameCenterManager.currentLevel = gameCenterManager.currentLevel?.next
+        //            }
+        //        }
+        
     }
     
     //MARK: - HELPER VARIABLES
@@ -492,10 +581,19 @@ struct TutorialView: View {
     private var selectText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
+            if tutorialViewModel.taskDone {
+                return "Well done!"
+            }
             return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
+            if tutorialViewModel.taskDone {
+                return "Well done!"
+            }
             return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
         case .convertPiece:
+            if tutorialViewModel.taskDone {
+                return "Well done!"
+            }
             return appLanguageManager.localizedStringForKey("GETTING_IT", language: appLanguageManager.currentLanguage)
         case .complextConvert:
             return appLanguageManager.localizedStringForKey("ONE_MORE", language: appLanguageManager.currentLanguage)
@@ -507,10 +605,20 @@ struct TutorialView: View {
     private var taskText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
+            if tutorialViewModel.taskDone {
+                return "You've cloned a spirit!"
+            }
             return appLanguageManager.localizedStringForKey("CLONE_YOURSELF", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
+            if tutorialViewModel.taskDone {
+                return "You've teleported"
+            }
             return appLanguageManager.localizedStringForKey("TELEPORT_YOURSELF", language: appLanguageManager.currentLanguage)
         case .convertPiece:
+            
+            if tutorialViewModel.taskDone {
+                return "You turned blue to red"
+            }
             return appLanguageManager.localizedStringForKey("COVERT_BLUE_RED", language: appLanguageManager.currentLanguage)
         case .complextConvert:
             return appLanguageManager.localizedStringForKey("COVERT_BLUE_RED", language: appLanguageManager.currentLanguage)
@@ -546,9 +654,9 @@ struct ShakeEffect: GeometryEffect {
     var amount: CGFloat = 10
     var shakesPerUnit = 3
     var animatableData: CGFloat
-
+    
     func effectValue(size: CGSize) -> ProjectionTransform {
         ProjectionTransform(CGAffineTransform(translationX:
-            amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)), y: 0))
+                                                amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)), y: 0))
     }
 }
