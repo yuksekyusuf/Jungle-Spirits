@@ -32,6 +32,7 @@
 		4D2B38962A54D81400DA7D8F /* move.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38952A54D81300DA7D8F /* move.wav */; };
 		4D2B38982A54D84A00DA7D8F /* convert.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4D2B38972A54D84A00DA7D8F /* convert.wav */; };
 		4D325A642B89653D007F2161 /* Ext+NavigationStock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D325A632B89653D007F2161 /* Ext+NavigationStock.swift */; };
+		4D42AF262BB0D5DA00E91E6F /* HeartManager2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D42AF252BB0D5DA00E91E6F /* HeartManager2.swift */; };
 		4D42DC132A55DE6B00E8809C /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D42DC122A55DE6B00E8809C /* GameCenterManager.swift */; };
 		4D4419342A896E80007293F0 /* redActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D4419332A896E80007293F0 /* redActiveAnimation.json */; };
 		4D4506EC2A7D14B400585259 /* SlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D4506EB2A7D14B400585259 /* SlideView.swift */; };
@@ -86,7 +87,6 @@
 		4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC62BF92A1A73F700CD2007 /* MenuView.swift */; };
 		4DD2BC522B78149000CD246B /* AmplitudeSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC512B78149000CD246B /* AmplitudeSwift */; };
 		4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC532B781FCB00CD246B /* AppSessionManager.swift */; };
-		4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 4DD2BC562B7827EA00CD246B /* GoogleMobileAds */; };
 		4DD2BC5B2B78324900CD246B /* AdBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5A2B78324900CD246B /* AdBannerView.swift */; };
 		4DD2BC5D2B7832BD00CD246B /* AdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD2BC5C2B7832BD00CD246B /* AdView.swift */; };
 		4DD2BC642B78670C00CD246B /* Jungle-Spirits-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DD2BC632B78670C00CD246B /* Jungle-Spirits-Info.plist */; };
@@ -147,6 +147,7 @@
 		4D2B38952A54D81300DA7D8F /* move.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = move.wav; sourceTree = "<group>"; };
 		4D2B38972A54D84A00DA7D8F /* convert.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = convert.wav; sourceTree = "<group>"; };
 		4D325A632B89653D007F2161 /* Ext+NavigationStock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext+NavigationStock.swift"; sourceTree = "<group>"; };
+		4D42AF252BB0D5DA00E91E6F /* HeartManager2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartManager2.swift; sourceTree = "<group>"; };
 		4D42DC122A55DE6B00E8809C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 		4D4419332A896E80007293F0 /* redActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redActiveAnimation.json; sourceTree = "<group>"; };
 		4D4506EB2A7D14B400585259 /* SlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideView.swift; sourceTree = "<group>"; };
@@ -221,7 +222,6 @@
 				4D5FB6A52B760E2B00776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D6401262A89D95E00917EC8 /* Lottie in Frameworks */,
 				4D5FB6A32B760E2B00776CBB /* SwiftUIIntrospect in Frameworks */,
-				4DD2BC572B7827EA00CD246B /* GoogleMobileAds in Frameworks */,
 				4D5FB6A12B760CD100776CBB /* SwiftUIIntrospect in Frameworks */,
 				4D5FB6AB2B760EA300776CBB /* SwiftUIIntrospect-Static in Frameworks */,
 				4D4F35C82B1D7AC6009CBC48 /* RevenueCatUI in Frameworks */,
@@ -277,6 +277,7 @@
 				4D42DC122A55DE6B00E8809C /* GameCenterManager.swift */,
 				4D231DEB2AB4FE1C00F2D12A /* AppLanguageManager.swift */,
 				4DF554092B880FA0000DAF49 /* HeartManager.swift */,
+				4D42AF252BB0D5DA00E91E6F /* HeartManager2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -449,7 +450,6 @@
 				4D5FB6A62B760EA300776CBB /* SwiftUIIntrospect */,
 				4D5FB6AA2B760EA300776CBB /* SwiftUIIntrospect-Static */,
 				4DD2BC512B78149000CD246B /* AmplitudeSwift */,
-				4DD2BC562B7827EA00CD246B /* GoogleMobileAds */,
 			);
 			productName = "Temple Beasts";
 			productReference = 4D70D23B2A05518F002E9C0A /* Jungle Spirits.app */;
@@ -583,6 +583,7 @@
 				4D20A7642B519E02000F2D8B /* PopUpWinView.swift in Sources */,
 				4DED05512A31402900B2362A /* TimeBarView.swift in Sources */,
 				4DFE9A022B087242003FA745 /* HeartView.swift in Sources */,
+				4D42AF262BB0D5DA00E91E6F /* HeartManager2.swift in Sources */,
 				4DF5540A2B880FA0000DAF49 /* HeartManager.swift in Sources */,
 				4DD2BC542B781FCB00CD246B /* AppSessionManager.swift in Sources */,
 				4D15F0BB2A0C37BE00539383 /* CellView.swift in Sources */,
@@ -752,7 +753,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -793,7 +794,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -949,11 +950,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4DD2BC502B78149000CD246B /* XCRemoteSwiftPackageReference "Amplitude-Swift" */;
 			productName = AmplitudeSwift;
-		};
-		4DD2BC562B7827EA00CD246B /* GoogleMobileAds */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4DD2BC552B7827EA00CD246B /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
-			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

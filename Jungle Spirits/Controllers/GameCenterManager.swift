@@ -65,7 +65,7 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     
 //    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 5 : UserDefaults.standard.integer(forKey: "hearts")
 //    @Published var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
-    @Published var remainingHeartTime: String = "0:00"
+//    @Published var remainingHeartTime: String = "0:00"
 
     
     //MARK: - Heart Timer

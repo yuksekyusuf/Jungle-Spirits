@@ -12,9 +12,6 @@ struct GameCenterView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var gameCenterController: GameCenterManager
     @Binding var isPresentingMatchmaker: Bool
-//    @State var controller: GKMatchmakerViewController?
-//    var matchRequest: GKMatchRequest?
-    
     
     class Coordinator: NSObject, GKMatchmakerViewControllerDelegate, GKInviteEventListener {
         var parent: GameCenterView
@@ -34,20 +31,20 @@ struct GameCenterView: UIViewControllerRepresentable {
             print("Matchmaker vc did fail with error: \(error.localizedDescription)")
         }
         
+        
         func matchmakerViewController(_ viewController: GKMatchmakerViewController, didFind match: GKMatch) {
             parent.presentationMode.wrappedValue.dismiss()
-            // Here you get the match object, which you can use to send and receive data between players
-            
             DispatchQueue.main.async {
                 self.gameCenterController.path.append(Int.random(in: 100...10000))
                 self.gameCenterController.startGame(newMatch: match)
             }
         }
         
+        
         func player(_ player: GKPlayer, didAccept invite: GKInvite) {
             gameCenterController.invite = invite
             DispatchQueue.main.async {
-                self.gameCenterController.isMatchmakingPresented.toggle()
+                self.gameCenterController.isMatchmakingPresented = true
             }
 
         }
@@ -55,14 +52,11 @@ struct GameCenterView: UIViewControllerRepresentable {
         func player(_ player: GKPlayer, didRequestMatchWithRecipients recipientPlayers: [GKPlayer]) {
             gameCenterController.recipients = recipientPlayers
             DispatchQueue.main.async {
-                self.gameCenterController.isMatchmakingPresented.toggle()
+                self.gameCenterController.isMatchmakingPresented = true
+                
             }
             
         }
-        
-//        func presentMatchmakerViewController() {
-//            guard let matchRequest = gameCenterController.matchRequest else { return }
-//        }
         
     }
     
@@ -89,11 +83,6 @@ struct GameCenterView: UIViewControllerRepresentable {
     
 }
 
-//extension GameCenterView.Coordinator {
-//    var rootViewController: UIViewController? {
-//        return UIApplication.shared.windows.first { $0.isKeyWindow }?.rootViewController
-//    }
-//}
 
 //extension GameCenterView {
 //    func showMatchmakerViewController() {

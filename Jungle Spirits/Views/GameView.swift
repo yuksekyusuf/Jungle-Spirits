@@ -11,7 +11,7 @@ import Pow
 struct GameView: View {
     @StateObject private var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
-//    @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var heartManager: HeartManager
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
@@ -238,7 +238,7 @@ struct GameView: View {
                                                         showPauseMenu.toggle()
                                                     }
                                                 }
-                                                
+
                                                 showPauseMenu.toggle()
                                                 
                                             }
@@ -343,6 +343,7 @@ struct GameView: View {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0)) {
                                         showPauseMenu.toggle()
                                         gameCenterController.isPaused.toggle()
+                                        
                                     }
                                 }
                             }
@@ -483,8 +484,10 @@ struct GameView: View {
                 //                self.gameCenterController.isPaused = true
                 if gameType == .ai && winner == .player2 {
 //                    gameCenterController.remainingHearts -= 1
-                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
-                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
+//                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
+//                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
+//
+                    heartManager.loseHeart()
                 } else if gameType == .ai && winner == .player1 {
                     guard let nextLevel = gameCenterController.currentLevel else { return }
                     let nextLevelId = nextLevel.id + 1

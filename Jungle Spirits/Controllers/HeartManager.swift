@@ -1,15 +1,15 @@
+//////
+//////  HeartManager.swift
+//////  Temple Beasts
+//////
+//////  Created by Ahmet Yusuf Yuksek on 22.02.2024.
+//////
 ////
-////  HeartManager.swift
-////  Temple Beasts
-////
-////  Created by Ahmet Yusuf Yuksek on 22.02.2024.
-////
-//
 //import SwiftUI
 //
 //class HeartManager: ObservableObject {
 //    @Published var remainingHeartTime: String = "0:00"
-//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 5 : UserDefaults.standard.integer(forKey: "hearts")
+//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 100 : UserDefaults.standard.integer(forKey: "hearts")
 //    private var timer: Timer?
 //    private let heartTimeInterval: TimeInterval = 900 // 15 minutes
 //    private var lastHeartTime: TimeInterval {

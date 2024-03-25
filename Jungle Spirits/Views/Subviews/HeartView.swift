@@ -10,7 +10,7 @@ import SwiftUI
 struct HeartView: View {
 //    let hearts: Int
     @EnvironmentObject var gameCenterManager: GameCenterManager
-//    @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var heartManager: HeartManager
     var body: some View {
         ZStack {
             Image("heartFrame")
@@ -23,7 +23,7 @@ struct HeartView: View {
                     .scaledToFit()
                     .frame(width: 32, height: 32)
                     .padding(.trailing, 2)
-                Text("\(UserDefaults.standard.integer(forKey: "hearts"))")
+                Text("\(heartManager.currentHeartCount)")
                     .font(.custom("TempleGemsRegular", size: 30))
                     .foregroundColor(.white)
                     .stroke(color: .black, width: 1.0)

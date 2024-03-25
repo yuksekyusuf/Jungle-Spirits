@@ -11,7 +11,7 @@ struct HeartStatusView: View {
     //    var heartCount: Int
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterManager: GameCenterManager
-//    @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var heartManager: HeartManager
     
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
@@ -95,38 +95,36 @@ struct HeartStatusView: View {
             
             
             VStack(spacing: 6) {
-                Text("\(UserDefaults.standard.integer(forKey: "hearts")) \(hearts.capitalizedSentence)")
+                Text("\(heartManager.currentHeartCount) \(hearts.capitalizedSentence)")
                     .font(Font.custom("Watermelon", size: 32))
                     .kerning(0.96)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.top, 10)
-                if UserDefaults.standard.integer(forKey: "hearts") == 5 {
+                if heartManager.currentHeartCount == 50 {
                     Text(fullHeart)
                         .font(Font.custom("Temple Gems", size: 24))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                         .frame(width: 168, alignment: .center)
                 } else {
-                    Text("\(next_hearts) \(gameCenterManager.remainingHeartTime)")
+                    Text("\(next_hearts) \(heartManager.timeUntilNextHeartString)")
                         .font(Font.custom("Temple Gems", size: 20))
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                         .frame(width: 168, alignment: .center)
+                        .onAppear {
+                            
+                        }
                 
                 }
-                
-                //                Text("New Heart \(newHeart)")
-                //                  .font(Font.custom("Temple Gems", size: 20))
-                //                  .multilineTextAlignment(.center)
-                //                  .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
-                //                  .frame(width: 168, alignment: .center)
-                
+            
+        
                 
             }
             .offset(y: 2)
             .frame(width: 253, alignment: .center)
-            if !(UserDefaults.standard.integer(forKey: "hearts") > 0) {
+            if !(heartManager.currentHeartCount > 0) {
                 Image("noHeart")
                     .resizable()
                     .scaledToFit()
