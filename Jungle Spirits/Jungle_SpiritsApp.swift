@@ -12,7 +12,7 @@ import Combine
 import RevenueCat
 
 let REVENUECATID = "app69847db565"
-let REVENUECAT = "sk_WYLEPTQfDUDEiMFPflKTwwfsowkoV"
+let REVENUECAT = "appl_rIynXzEHyTQFnjkLHVEvofZNVUc"
 
 
 extension Amplitude {
@@ -25,6 +25,7 @@ struct Jungle_SpiritsApp: App {
     @StateObject var appLanguageManager = AppLanguageManager()
     @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
     @StateObject var heartManager = HeartManager.shared
+    @StateObject var userViewModel = UserViewModel()
     
 //    @AppStorage("hearts") var remainingHearts: Int = 0
 //    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
@@ -58,6 +59,7 @@ struct Jungle_SpiritsApp: App {
                 .environmentObject(appLanguageManager)
                 .environmentObject(gameCenterManager)
                 .environmentObject(heartManager)
+                .environmentObject(userViewModel)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
 //                .onChange(of: scenePhase) { newScene in
 //                    switch newScene {

@@ -8,7 +8,7 @@
 import SwiftUI
 import StoreKit
 import Pow
-import GoogleMobileAds
+//import GoogleMobileAds
 
 
 
@@ -640,13 +640,13 @@ struct MenuView: View {
                     }
                     
                     NavigationLink(value: Destination.tutorialPage) {
-                                            Button {
-                                                gameCenterController.path.append(Destination.tutorialPage)
-                                            } label: {
-                                                ButtonView(text: howToPlay, width: 200, height: 50)
-                                                                                .padding(.top, 30)
-                                            }
-                                        }
+                        Button {
+                            gameCenterController.path.append(Destination.tutorialPage)
+                        } label: {
+                            ButtonView(text: howToPlay, width: 200, height: 50)
+                                .padding(.top, 30)
+                        }
+                    }
 //                    NavigationLink(value: Destination.firstPage) {
 //                        Button {
 //                            navCoordinator.path.append(Destination.firstPage)

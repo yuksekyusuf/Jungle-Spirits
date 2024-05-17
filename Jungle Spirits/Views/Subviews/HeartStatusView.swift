@@ -6,17 +6,21 @@
 //
 
 import SwiftUI
+import RevenueCat
 
 struct HeartStatusView: View {
     //    var heartCount: Int
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var userViewModel: UserViewModel
     
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
     @State var newHeart = 0
     
+    
+    @State var currentOffering: Offering?
     
     var hearts: String {
         appLanguageManager.localizedStringForKey("HEARTS", language: appLanguageManager.currentLanguage)
@@ -101,7 +105,7 @@ struct HeartStatusView: View {
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.top, 10)
-                if heartManager.currentHeartCount == 50 {
+                if heartManager.currentHeartCount == 5 {
                     Text(fullHeart)
                         .font(Font.custom("Temple Gems", size: 24))
                         .multilineTextAlignment(.center)
@@ -139,62 +143,77 @@ struct HeartStatusView: View {
             }
             
             VStack {
-//                if heartManager.remainingHearts < 5 {
-//                    VStack(spacing: 0) {
-//                        Button {
-//                            SoundManager.shared.stopBackgroundMusic()
-////                            self.rewardAd.showAd(rewardFunction: {
-////                                gameCenterManager.remainingHearts += 1
-////                            })
-//                        } label: {
-//                            ZStack(alignment: .center) {
-//                                Rectangle()
-//                                    .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
-//                                    .frame(width: 221, height: 44, alignment: .center)
-//                                    .cornerRadius(14)
-//                                    .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-//                                
-//                                Text("FREE LIFE")
-//                                    .font(Font.custom("TempleGemsRegular", size: 24))
-//                                    .multilineTextAlignment(.center)
-//                                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-//                                    .frame(width: 148, height: 42, alignment: .center)
-//                                    .offset(y: 2)
-//                                Image("plusOneHeart")
-//                                    .resizable()
-//                                    .scaledToFit()
-//                                    .frame(width: 30)
-//                                    .offset(x: 80)
-//                            }
-//                        }
-//                        
-//                        ShareButtonView()
-//                            .padding(.top, 10)
-//                        
-//                        
-//                    }
-//                    
-//                                        
-//                }
-//                VStack(spacing: 0) {
-//                    HStack {
-//                        Button(action: {
-//                            
-//                        }, label: {
-//                            Image("oneWeekLife")
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(height: 48)
-//                        })
-//                        
-//                        Button(action: {
-//                            
-//                        }, label: {
-//                            Image("lifeTime")
-//                        })
-//                        
-//                    }
-//                }
+                if heartManager.currentHeartCount < 5 {
+                    VStack(spacing: 0) {
+                        Button {
+                            SoundManager.shared.stopBackgroundMusic()
+//                            self.rewardAd.showAd(rewardFunction: {
+//                                gameCenterManager.remainingHearts += 1
+//                            })
+                        } label: {
+                            ZStack(alignment: .center) {
+                                Rectangle()
+                                    .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+                                    .frame(width: 221, height: 44, alignment: .center)
+                                    .cornerRadius(14)
+                                    .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+                                
+                                Text("FREE LIFE")
+                                    .font(Font.custom("TempleGemsRegular", size: 24))
+                                    .multilineTextAlignment(.center)
+                                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+                                    .frame(width: 148, height: 42, alignment: .center)
+                                    .offset(y: 2)
+                                Image("plusOneHeart")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30)
+                                    .offset(x: 80)
+                            }
+                        }
+                        
+                        ShareButtonView()
+                            .padding(.top, 10)
+                        
+                        
+                    }
+                    
+                                        
+                }
+                
+                
+                if userViewModel.isSubscriptionActive == false {
+                    if currentOffering != nil {
+                        VStack(spacing: 0) {
+                            HStack {
+                                ForEach(currentOffering!.availablePackages) { pkg in
+                                    Button(action: {
+                                        Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
+                                          if customerInfo?.entitlements["Unlimited"]?.isActive == true {
+                                              userViewModel.isSubscriptionActive = true
+                                          }
+                                        }
+                                    }, label: {
+                                        if pkg.identifier == "$rc_annual" {
+                                            Image("lifeTime")
+                                        } else if pkg.identifier == "$rc_weekly" {
+                                            Image("oneWeekLife")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(height: 48)
+                                        }
+                                        
+                                    })
+                                    
+                                }
+                          
+                                    
+                            }
+                        }
+                    }
+                }
+                
+
                 Button(action: {
                     self.isPresent.toggle()
                 }, label: {
@@ -203,12 +222,19 @@ struct HeartStatusView: View {
                         .scaledToFit()
                         .frame(width: 75)
                 })
-                .offset(y: -90)
+//                .offset(y: -90)
 
             }
             .offset(y: 170)
             
             
+        }
+        .onAppear {
+            Purchases.shared.getOfferings { offerings, error in
+                if let offer = offerings?.current, error == nil {
+                    currentOffering = offer
+                }
+            }
         }
         
     }

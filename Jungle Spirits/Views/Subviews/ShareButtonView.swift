@@ -11,6 +11,7 @@ import UIKit
 struct ShareButtonView: View {
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var appLanguageManager: AppLanguageManager
+    @EnvironmentObject var heartManager: HeartManager
 //    @EnvironmentObject var heartManager: HeartManager
     var share: String {
         appLanguageManager.localizedStringForKey("SHARE", language: appLanguageManager.currentLanguage)
@@ -52,16 +53,11 @@ struct ShareButtonView: View {
                     if completed && error == nil {
                         // Share completed successfully, grant the reward
                         if UserDefaults.standard.integer(forKey: "hearts") <= 3 {
-                            let heart = UserDefaults.standard.integer(forKey: "hearts") + 2
-                            UserDefaults.standard.setValue(heart, forKey: "hearts")
-//                            self.gameCenterManager.remainingHearts += 2
+                            self.heartManager.currentHeartCount += 2
                         } else {
-                            let heart = UserDefaults.standard.integer(forKey: "hearts") + 1
-                            UserDefaults.standard.setValue(heart, forKey: "hearts")
-                            
+                            self.heartManager.currentHeartCount += 1
+
                         }
-//                        let z = UserDefaults.standard.integer(forKey: "hearts")
-//                        UserDefaults.standard.setValue(hearts, forKey: "hearts")
                     } else {
                         // Handle share cancellation or error
                         if let activityType = activityType {

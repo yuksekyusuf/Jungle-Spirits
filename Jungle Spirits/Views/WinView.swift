@@ -19,13 +19,12 @@ struct WinView: View {
     @State private var degrees = 0.0
     @Binding var remainingHearts: Int
     @State private var nextLevel: Int = 0
+
     
     var onContinue: () -> Void
     
     var body: some View {
         ZStack {
-//            Color.black.ignoresSafeArea()
-//                .opacity(0.65)
             VStack {
                 if UIScreen.main.bounds.height <= 667 {
                     HeartView()
@@ -109,6 +108,8 @@ struct WinView: View {
                                             .allowsHitTesting(false)
                                     }
                                     VStack {
+                                        
+                                        //MARK: - ADD GOOGLE AD MOBS HERE!!!
                                         HStack {
                                             
                                             Button {
@@ -378,7 +379,7 @@ struct WinView_Previews: PreviewProvider {
         @State var paused: Bool = true
         @State var remainingTime = 15
         @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {}).environmentObject(GameCenterManager(currentPlayer: .player1))
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {}).environmentObject(GameCenterManager(currentPlayer: .player1)).environmentObject(Board(cells: [], gameType: .ai))
             
     }
 }
