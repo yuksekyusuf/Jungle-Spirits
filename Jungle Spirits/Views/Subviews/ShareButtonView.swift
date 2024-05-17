@@ -12,7 +12,6 @@ struct ShareButtonView: View {
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var heartManager: HeartManager
-//    @EnvironmentObject var heartManager: HeartManager
     var share: String {
         appLanguageManager.localizedStringForKey("SHARE", language: appLanguageManager.currentLanguage)
     }

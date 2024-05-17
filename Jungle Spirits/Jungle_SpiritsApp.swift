@@ -8,7 +8,7 @@
 import SwiftUI
 import AmplitudeSwift
 import Combine
-//import GoogleMobileAds
+import GoogleMobileAds
 import RevenueCat
 
 let REVENUECATID = "app69847db565"
@@ -21,17 +21,12 @@ extension Amplitude {
 
 @main
 struct Jungle_SpiritsApp: App {
-    //    @StateObject var navigationCoordinator = NavigationCoordinator()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var appLanguageManager = AppLanguageManager()
     @StateObject var gameCenterManager = GameCenterManager(currentPlayer: .player1)
     @StateObject var heartManager = HeartManager.shared
     @StateObject var userViewModel = UserViewModel()
-    
-//    @AppStorage("hearts") var remainingHearts: Int = 0
-//    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
-    //    @AppStorage("remainingHearts") var remainingHearts: Int?
-    //    @AppStorage("lastHeartTime") var lastHeartTime: TimeInterval = 0
-    //    @State var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
+    @StateObject var rewardedAdManager = RewardedAdManager()
     @Environment(\.scenePhase) private var scenePhase
     private var sessionStartTime: Date?
     
@@ -43,7 +38,7 @@ struct Jungle_SpiritsApp: App {
     init() {
         
         let _ = Amplitude.shared
-        //        initMobileAds()
+//        initMobileAds()
         Purchases.logLevel = .debug
         Purchases.configure(withAPIKey: REVENUECAT)
         
@@ -61,21 +56,11 @@ struct Jungle_SpiritsApp: App {
                 .environmentObject(heartManager)
                 .environmentObject(userViewModel)
                 .environment(\.appLanguage, appLanguageManager.currentLanguage)
-//                .onChange(of: scenePhase) { newScene in
-//                    switch newScene {
-//                    case .active:
-////                        heartManager.startHeartTimer()
-//                        
-//                    case .background:
-//                        UserDefaults.standard.set(Date().timeIntervalSinceReferenceDate, forKey: "lastHeartTime")
-//                        heartManager.startHeartTimer()
-//                    case .inactive:
-//                        break
-//                    @unknown default:
-//                        break
-//                    }
-//                    
-//                }
+                .environmentObject(rewardedAdManager)
+                .onAppear {
+                    GADMobileAds.sharedInstance().start(completionHandler: nil)
+                    rewardedAdManager.loadAd()
+                }
         }
     }
     
@@ -83,11 +68,11 @@ struct Jungle_SpiritsApp: App {
     
     
     
-    //    func initMobileAds() {
-    //            GADMobileAds.sharedInstance().start(completionHandler: nil)
-    //            // comment this if you want SDK Crash Reporting:
-    //            GADMobileAds.sharedInstance().disableSDKCrashReporting()
-    //        }
+//        func initMobileAds() {
+//                GADMobileAds.sharedInstance().start(completionHandler: nil)
+//                // comment this if you want SDK Crash Reporting:
+//                GADMobileAds.sharedInstance().disableSDKCrashReporting()
+//            }
     
 }
 
@@ -126,3 +111,12 @@ extension EnvironmentValues {
 //        sessionStartTime = nil
 //    }
 //}
+
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Any additional setup can be done here
+        return true
+    }
+}

@@ -89,6 +89,7 @@ struct LevelMapView: View {
 struct LevelButtonNavigation: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var userViewModel: UserViewModel
 //    @EnvironmentObject var navCoordinator: NavigationCoordinator
     @State private var isNavigationActive = false
     @Binding var showHeartStatus: Bool
@@ -103,7 +104,7 @@ struct LevelButtonNavigation: View {
         ZStack {
             Button(action: {
                 
-                if heartManager.currentHeartCount > 0 {
+                if heartManager.currentHeartCount > 0 || userViewModel.isSubscriptionActive {
                     gameCenterController.currentLevel = gameLevel
                     gameCenterController.path.append(gameLevel)
                     isNavigationActive = true

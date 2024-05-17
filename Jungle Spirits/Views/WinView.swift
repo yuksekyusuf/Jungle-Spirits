@@ -7,19 +7,23 @@
 
 import SwiftUI
 
+
 struct WinView: View {
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var board: Board
+    @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var rewardedAdManager: RewardedAdManager
+    @EnvironmentObject var heartManager: HeartManager
     let gameType: GameType
     let winner: CellState
     @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
     @Binding var remainingHearts: Int
     @State private var nextLevel: Int = 0
-
+    
     
     var onContinue: () -> Void
     
@@ -110,6 +114,25 @@ struct WinView: View {
                                     VStack {
                                         
                                         //MARK: - ADD GOOGLE AD MOBS HERE!!!
+//                                        if remainingHearts == 0 && userViewModel.isSubscriptionActive == false {
+//                                            Button {
+//                                                onContinue()
+//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                                    withAnimation {
+//                                                        board.reset()
+//                                                        isPaused.toggle()
+//                                                        currentPlayer = .player1
+//                                                        remainingTime = 15
+//                                                    }
+//                                                }
+//                                            } label: {
+//                                                WatchVideo(text: "Watch Video")
+//                                                    .offset(y: 65)
+//                                            }
+//                                        }
+                                       
+
+                                        
                                         HStack {
                                             
                                             Button {
@@ -117,8 +140,7 @@ struct WinView: View {
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                     gameCenterManager.path = NavigationPath()
                                                 }
-//                                                print("Current level: ", gameCenterManager.currentLevel.id)
-                                                print("Achieved level: ", gameCenterManager.achievedLevel.id)
+                                                
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
                                                     .foregroundColor(Color("AnotherPause"))
@@ -127,7 +149,7 @@ struct WinView: View {
                                                     }
                                                     .frame(width: 94.5, height: 42)
                                             }
-                                            if remainingHearts > 0 {
+                                            if remainingHearts > 0 || userViewModel.isSubscriptionActive {
                                                 Button {
                                                     onContinue()
                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -136,6 +158,7 @@ struct WinView: View {
                                                             isPaused.toggle()
                                                             currentPlayer = .player1
                                                             remainingTime = 15
+
                                                         }
                                                     }
                                                 } label: {
@@ -143,6 +166,33 @@ struct WinView: View {
                                                         .foregroundColor(Color("AnotherPause"))
                                                         .overlay {
                                                             Image("iconReplay")
+                                                        }
+                                                        .frame(width: 94.5, height: 42)
+                                                }
+                                            } else {
+                                                Button {
+                                                    
+                                                    if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+                                                        rewardedAdManager.showAd(from: rootViewController) {
+                                                            onContinue()
+                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                withAnimation {
+                                                                    board.reset()
+                                                                    isPaused.toggle()
+                                                                    currentPlayer = .player1
+                                                                    remainingTime = 15
+                                                                    self.heartManager.currentHeartCount += 1
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                } label: {
+                                                    RoundedRectangle(cornerRadius: 14)
+                                                        .foregroundColor(Color("AnotherPause"))
+                                                        .overlay {
+                                                            Image("plusOneHeart")
                                                         }
                                                         .frame(width: 94.5, height: 42)
                                                 }
@@ -178,6 +228,7 @@ struct WinView: View {
                     .offset(y: -30)
                     Spacer()
                 } else {
+                    //Multiplayer
                     VStack {
                         Image("pauseMenuBackground")
                             .padding(.top, -200)
@@ -324,9 +375,6 @@ struct WinView: View {
     
 }
 
-
-
-
 struct NextLevelNavigation: View {
     @EnvironmentObject var gameCenterController: GameCenterManager
     @State private var navigateToGame = false
@@ -379,7 +427,10 @@ struct WinView_Previews: PreviewProvider {
         @State var paused: Bool = true
         @State var remainingTime = 15
         @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {}).environmentObject(GameCenterManager(currentPlayer: .player1)).environmentObject(Board(cells: [], gameType: .ai))
+        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {})
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(Board(cells: [], gameType: .ai))
+            .environmentObject(UserViewModel())
             
     }
 }

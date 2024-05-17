@@ -7,6 +7,8 @@
 
 import SwiftUI
 import RevenueCat
+import GoogleMobileAds
+
 
 struct HeartStatusView: View {
     //    var heartCount: Int
@@ -15,6 +17,10 @@ struct HeartStatusView: View {
     @EnvironmentObject var heartManager: HeartManager
     @EnvironmentObject var userViewModel: UserViewModel
     
+    @EnvironmentObject private var rewardedAdManager: RewardedAdManager
+
+//    var rewardAd: RewardedAd
+
     @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
     @State var newHeart = 0
@@ -38,10 +44,17 @@ struct HeartStatusView: View {
         appLanguageManager.localizedStringForKey("FULL", language: appLanguageManager.currentLanguage)
     }
     
+    var yearHeart: String {
+        appLanguageManager.localizedStringForKey("NEXT_YEAR", language: appLanguageManager.currentLanguage)
+    }
+    
+    var weekHeart: String {
+        appLanguageManager.localizedStringForKey("NEXT_WEEK", language: appLanguageManager.currentLanguage)
+    }
+    
 //    var rewardAd: RewardedAd
     
     init(nextHeartTime: Binding<String>, isPresent: Binding<Bool>) {
-        //        self.heartCount = gameCenterManager.
         self._nextHeartTime = nextHeartTime // Use underscore to directly initialize @Binding properties
         self._isPresent = isPresent
 //        self.rewardAd = RewardedAd()
@@ -50,184 +63,186 @@ struct HeartStatusView: View {
     
     var body: some View {
         ZStack {
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 272, height: 166)
-                .background(
-                    LinearGradient(
-                        stops: [
-                            Gradient.Stop(color: Color(red: 0.73, green: 0.76, blue: 1), location: 0.00),
-                            Gradient.Stop(color: Color(red: 0.54, green: 0.48, blue: 0.91), location: 1.00),
-                        ],
-                        startPoint: UnitPoint(x: 1, y: 0),
-                        endPoint: UnitPoint(x: 0, y: 1)
+            //Background
+            ZStack {
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 272, height: 166)
+                    .background(
+                        LinearGradient(
+                            stops: [
+                                Gradient.Stop(color: Color(red: 0.73, green: 0.76, blue: 1), location: 0.00),
+                                Gradient.Stop(color: Color(red: 0.54, green: 0.48, blue: 0.91), location: 1.00),
+                            ],
+                            startPoint: UnitPoint(x: 1, y: 0),
+                            endPoint: UnitPoint(x: 0, y: 1)
+                        )
                     )
-                )
-                .cornerRadius(44)
-                .shadow(color: .black.opacity(0.45), radius: 20, x: 0, y: 32)
-            Image("HeartBackground")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 252)
-            //            Button {
-            //                withAnimation {
-            //                    self.isPresent.toggle()
-            //                }
-            //            } label: {
-            //                ZStack(alignment: .center) {
-            //                    Rectangle()
-            //                        .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
-            //                        .frame(width: 148, height: 42, alignment: .center)
-            //                        .cornerRadius(14)
-            //                        .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-            //                    Text(okay)
-            //                        .font(Font.custom("TempleGemsRegular", size: 24))
-            //                        .multilineTextAlignment(.center)
-            //                        .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-            //                        .frame(width: 148, height: 42, alignment: .center)
-            //                        .offset(y: 2)
-            //                }
-            //
-            //
-            //            }
-            //            .offset(y: 80)
-            
-            
-            
-            
-            
-            
-            
-            VStack(spacing: 6) {
-                Text("\(heartManager.currentHeartCount) \(hearts.capitalizedSentence)")
-                    .font(Font.custom("Watermelon", size: 32))
-                    .kerning(0.96)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .padding(.top, 10)
-                if heartManager.currentHeartCount == 5 {
-                    Text(fullHeart)
-                        .font(Font.custom("Temple Gems", size: 24))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
-                        .frame(width: 168, alignment: .center)
-                } else {
-                    Text("\(next_hearts) \(heartManager.timeUntilNextHeartString)")
-                        .font(Font.custom("Temple Gems", size: 20))
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
-                        .frame(width: 168, alignment: .center)
-                        .onAppear {
-                            
-                        }
-                
-                }
-            
-        
-                
-            }
-            .offset(y: 2)
-            .frame(width: 253, alignment: .center)
-            if !(heartManager.currentHeartCount > 0) {
-                Image("noHeart")
+                    .cornerRadius(44)
+                    .shadow(color: .black.opacity(0.45), radius: 20, x: 0, y: 32)
+                Image("HeartBackground")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 116)
-                    .offset(y: -69)
-            } else {
-                Image("heartRemains")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 116)
-                    .offset(y: -69)
+                    .frame(width: 252)
             }
-            
+            //Top Heart
             VStack {
-                if heartManager.currentHeartCount < 5 {
-                    VStack(spacing: 0) {
-                        Button {
-                            SoundManager.shared.stopBackgroundMusic()
-//                            self.rewardAd.showAd(rewardFunction: {
-//                                gameCenterManager.remainingHearts += 1
-//                            })
-                        } label: {
-                            ZStack(alignment: .center) {
-                                Rectangle()
-                                    .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
-                                    .frame(width: 221, height: 44, alignment: .center)
-                                    .cornerRadius(14)
-                                    .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
-                                
-                                Text("FREE LIFE")
-                                    .font(Font.custom("TempleGemsRegular", size: 24))
-                                    .multilineTextAlignment(.center)
-                                    .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
-                                    .frame(width: 148, height: 42, alignment: .center)
-                                    .offset(y: 2)
-                                Image("plusOneHeart")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 30)
-                                    .offset(x: 80)
-                            }
-                        }
+                Spacer()
+                ZStack {
+                    if userViewModel.isSubscriptionActive {
                         
-                        ShareButtonView()
+                        if userViewModel.subscriptionType == .weekly {
+                            Image("weeklyHearts")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 116)
+                        
+                        } else if userViewModel.subscriptionType == .yearly {
+                            Image("yearlyHearts")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 116)
+                        }
+
+                    } else if !(heartManager.currentHeartCount > 0) {
+                        Image("noHeart")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 116)
+                    } else {
+                        Image("heartRemains")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 116)
+                    }
+                }
+                .padding(.top, 50)
+                Spacer()
+                Spacer()
+            }
+            //Text
+            VStack {
+                
+
+                VStack(spacing: 6) {
+                    if userViewModel.isSubscriptionActive {
+                        Text("∞ \(hearts.capitalizedSentence)")
+                            .font(Font.custom("Watermelon", size: 32))
+                            .kerning(0.96)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
                             .padding(.top, 10)
                         
+                        if userViewModel.subscriptionType == .weekly {
+                            Text(weekHeart)
+                                .font(Font.custom("Temple Gems", size: 20))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                                .frame(width: 168, alignment: .center)
+                        } else if userViewModel.subscriptionType == .yearly {
+                            Text(yearHeart)
+                                .font(Font.custom("Temple Gems", size: 20))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                                .frame(width: 168, alignment: .center)
+                        }
                         
+                    } else {
+                        Text("\(heartManager.currentHeartCount) \(hearts.capitalizedSentence)")
+                            .font(Font.custom("Watermelon", size: 32))
+                            .kerning(0.96)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .padding(.top, 10)
+                        if heartManager.currentHeartCount == 5 {
+                            Text(fullHeart)
+                                .font(Font.custom("Temple Gems", size: 24))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                                .frame(width: 168, alignment: .center)
+                        } else {
+                            Text("\(next_hearts) \(heartManager.timeUntilNextHeartString)")
+                                .font(Font.custom("Temple Gems", size: 20))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
+                                .frame(width: 168, alignment: .center)
+                        }
                     }
                     
-                                        
                 }
+                .frame(width: 253, alignment: .center)
+
+            }
+            
+            //Buttons
+            VStack {
                 
-                
-                if userViewModel.isSubscriptionActive == false {
-                    if currentOffering != nil {
-                        VStack(spacing: 0) {
-                            HStack {
-                                ForEach(currentOffering!.availablePackages) { pkg in
-                                    Button(action: {
-                                        Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
-                                          if customerInfo?.entitlements["Unlimited"]?.isActive == true {
-                                              userViewModel.isSubscriptionActive = true
-                                          }
-                                        }
-                                    }, label: {
-                                        if pkg.identifier == "$rc_annual" {
-                                            Image("lifeTime")
-                                        } else if pkg.identifier == "$rc_weekly" {
-                                            Image("oneWeekLife")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(height: 48)
-                                        }
+                VStack(spacing: 0) {
+                    if !userViewModel.isSubscriptionActive {
+                        if heartManager.currentHeartCount < 5 {
+                            //Ads button
+                            Button {
+                                SoundManager.shared.stopBackgroundMusic()
+//                                self.rewardAd.showAd(rewardFunction: {
+                                if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+                                    rewardedAdManager.showAd(from: rootViewController) {
+                                        self.heartManager.currentHeartCount += 1
+                                    }
+                                }
+                            } label: {
+                                WatchVideo(text: "Free Life")
+                            }
+
+                            //Share button
+                            ShareButtonView()
+                                .padding(.top, 10)
+                        }
+                        if currentOffering != nil {
+                            VStack(spacing: 0) {
+                                HStack {
+                                    ForEach(currentOffering!.availablePackages) { pkg in
+                                        Button(action: {
+                                            Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
+                                                if customerInfo?.entitlements["Unlimited"]?.isActive == true {
+                                                    userViewModel.isSubscriptionActive = true
+                                                }
+                                            }
+                                        }, label: {
+                                            if pkg.identifier == "$rc_annual" {
+                                                Image("lifeTime")
+                                            } else if pkg.identifier == "$rc_weekly" {
+                                                Image("oneWeekLife")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(height: 48)
+                                            }
+                                            
+                                        })
+                                        .padding(.top, 10)
                                         
-                                    })
+                                        
+                                    }
+                                    
                                     
                                 }
-                          
-                                    
                             }
                         }
                     }
+                    
+                    //close button
+                    Button(action: {
+                        self.isPresent.toggle()
+                    }, label: {
+                        Image("closeTab")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 75)
+                    })
+                    
                 }
-                
-
-                Button(action: {
-                    self.isPresent.toggle()
-                }, label: {
-                    Image("closeTab")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 75)
-                })
-//                .offset(y: -90)
-
+                .padding(.top, UIScreen.main.bounds.height * 0.5)
+                Spacer()
             }
-            .offset(y: 170)
-            
-            
         }
         .onAppear {
             Purchases.shared.getOfferings { offerings, error in
@@ -235,23 +250,20 @@ struct HeartStatusView: View {
                     currentOffering = offer
                 }
             }
+//            rewardedAdManager.loadAd()
         }
-        
     }
-    
-    //    func localizedStringForKey(_ key: String, language: String) -> String {
-    //        let path = Bundle.main.path(forResource: language, ofType: "lproj")
-    //        let bundle = Bundle(path: path!)
-    //        return NSLocalizedString(key, tableName: nil, bundle: bundle!, value: "", comment: "")
-    //    }
 }
-//
+
 struct HeartStatusView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isPresentTrue = true
         @State var remainingTime = "9:27"
-        HeartStatusView(nextHeartTime: $remainingTime, isPresent: $isPresentTrue).environmentObject(AppLanguageManager()).environmentObject(GameCenterManager(currentPlayer: .player1))
-//            .environmentObject(HeartManager())
+        HeartStatusView(nextHeartTime: $remainingTime, isPresent: $isPresentTrue)
+            .environmentObject(AppLanguageManager())
+            .environmentObject(GameCenterManager(currentPlayer: .player1))
+            .environmentObject(HeartManager.shared)
+            .environmentObject(UserViewModel())
         
     }
 }
@@ -268,6 +280,30 @@ struct ActivityViewController: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // Update code here if needed
+    }
+}
+
+struct WatchVideo: View {
+    let text: String
+    var body: some View {
+        ZStack(alignment: .center) {
+            Rectangle()
+                .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+                .frame(width: 221, height: 44, alignment: .center)
+                .cornerRadius(14)
+                .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+            
+            Text(text)
+                .font(Font.custom("TempleGemsRegular", size: 24))
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+                .frame(width: 148, height: 42, alignment: .center)
+                .offset(y: 2)
+            Image("plusOneHeart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30)
+                .offset(x: 80)
+        }
     }
 }

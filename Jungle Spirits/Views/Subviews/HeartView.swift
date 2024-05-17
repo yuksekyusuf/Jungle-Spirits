@@ -11,6 +11,7 @@ struct HeartView: View {
 //    let hearts: Int
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var userViewModel: UserViewModel
     var body: some View {
         ZStack {
             Image("heartFrame")
@@ -23,15 +24,30 @@ struct HeartView: View {
                     .scaledToFit()
                     .frame(width: 32, height: 32)
                     .padding(.trailing, 2)
-                Text("\(heartManager.currentHeartCount)")
-                    .font(.custom("TempleGemsRegular", size: 30))
-                    .foregroundColor(.white)
-                    .stroke(color: .black, width: 1.0)
-                    .shadow(color: .black, radius: 0, x: 0, y: 3)
-                    .offset(x: -1, y: 1)
+                if userViewModel.isSubscriptionActive {
+                    Text("∞")
+                        .font(.custom("TempleGemsRegular", size: 30))
+                        .foregroundColor(.white)
+                        .stroke(color: .black, width: 1.0)
+                        .shadow(color: .black, radius: 0, x: 0, y: 3)
+                        .padding(.top, 5)
+//                        .offset(x: -1, y: 1)
+                } else {
+                    Text("\(heartManager.currentHeartCount)")
+                        .font(.custom("TempleGemsRegular", size: 30))
+                        .foregroundColor(.white)
+                        .stroke(color: .black, width: 1.0)
+                        .shadow(color: .black, radius: 0, x: 0, y: 3)
+                        .offset(x: -1, y: 1)
+                }
+                
                 
             }
-        }                .frame(width: 74, height: 50)
+        }      
+//        .onAppear(perform: {
+//            userViewModel.isSubscriptionActive = true
+//        })
+        .frame(width: 74, height: 50)
         
         
     }
@@ -39,6 +55,6 @@ struct HeartView: View {
 
 struct HeartView_Previews: PreviewProvider {
     static var previews: some View {
-        HeartView().environmentObject(GameCenterManager(currentPlayer: .player1))
+        HeartView().environmentObject(GameCenterManager(currentPlayer: .player1)).environmentObject(UserViewModel()).environmentObject(HeartManager.shared)
     }
 }

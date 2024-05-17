@@ -12,6 +12,7 @@ struct GameView: View {
     @StateObject private var board: Board
     @EnvironmentObject var gameCenterController: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
+    @EnvironmentObject var userViewModel: UserViewModel
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
@@ -479,43 +480,47 @@ struct GameView: View {
         }
         .navigationBarHidden(true)
         .onChange(of: board.gameOver, perform: { newValue in
-            if newValue == true {
-                //                gameCenterController.isGameOver = true
-                //                self.gameCenterController.isPaused = true
-                if gameType == .ai && winner == .player2 {
-//                    gameCenterController.remainingHearts -= 1
-//                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
-//                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
-//
-                    heartManager.loseHeart()
-                } else if gameType == .ai && winner == .player1 {
-                    guard let nextLevel = gameCenterController.currentLevel else { return }
-                    let nextLevelId = nextLevel.id + 1
-                    if gameCenterController.currentLevel == gameCenterController.achievedLevel {
-                        if nextLevelId <= 7 {
-                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                        } else if (nextLevelId > 7) && (nextLevelId < 15) {
-                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                            gameCenterController.currentBundle = .bundle2
-                            UserDefaults.standard.setValue(2, forKey: "currentBundle")
-                        } else {
-                            gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
-                            UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                            gameCenterController.currentBundle = .bundle3
-                            UserDefaults.standard.setValue(3, forKey: "currentBundle")
+                if newValue == true {
+                    //                gameCenterController.isGameOver = true
+                    //                self.gameCenterController.isPaused = true
+                    if gameType == .ai && winner == .player2 {
+    //                    gameCenterController.remainingHearts -= 1
+    //                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
+    //                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
+    //
+                        if userViewModel.isSubscriptionActive == false {
+                            heartManager.loseHeart()
+                        }
+                    } else if gameType == .ai && winner == .player1 {
+                        guard let nextLevel = gameCenterController.currentLevel else { return }
+                        let nextLevelId = nextLevel.id + 1
+                        if gameCenterController.currentLevel == gameCenterController.achievedLevel {
+                            if nextLevelId <= 7 {
+                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+                            } else if (nextLevelId > 7) && (nextLevelId < 15) {
+                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+                                gameCenterController.currentBundle = .bundle2
+                                UserDefaults.standard.setValue(2, forKey: "currentBundle")
+                            } else {
+                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
+                                gameCenterController.currentBundle = .bundle3
+                                UserDefaults.standard.setValue(3, forKey: "currentBundle")
+                            }
+                            
                         }
                         
-                    }
-                    
-                    gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
+                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
 
+                    }
+                    gameCenterController.isGameOver = true
+                    self.gameCenterController.isPaused = true
+                    self.showWinMenu = true
                 }
-                gameCenterController.isGameOver = true
-                self.gameCenterController.isPaused = true
-                self.showWinMenu = true
-            }
+            
+            
         })
         .onChange(of: gameCenterController.remainingTime, perform: { newValue in
             if newValue == 0 && gameType == .oneVone {

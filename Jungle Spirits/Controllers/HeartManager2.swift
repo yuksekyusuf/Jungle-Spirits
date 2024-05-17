@@ -30,7 +30,7 @@ class HeartManager: ObservableObject {
     private let heartCountKey = "hearts"
     private let lastHeartLostTimeKey = "lastHeartLostTimeKey"
     private let firstLaunchKey = "isFirstLaunch"
-    private let maxHearts = 5
+    private let maxHearts = 1
     private let heartReplenishTime: TimeInterval = 15 * 60 // 15 mins in secs
     
     private var timer: Timer?
@@ -39,19 +39,28 @@ class HeartManager: ObservableObject {
     
     private init() {
         // Try to fetch the current heart count from UserDefaults
-        let storedHeartCount = defaults.integer(forKey: heartCountKey)
         
-        if storedHeartCount == 0 {
-            // UserDefaults doesn't have a stored value, could be first launch or reinstall
-            // Optionally, check a value from Keychain here if you decide to use it for more persistence
-            
-            // Initialize with maxHearts
+        if defaults.object(forKey: firstLaunchKey) == nil {
             self.currentHeartCount = maxHearts
-            defaults.set(maxHearts, forKey: heartCountKey) // Ensure this is saved for future launches
+            defaults.set(maxHearts, forKey: heartCountKey)
+            defaults.set(false, forKey: firstLaunchKey)
         } else {
-            // A value was found, use it
-            self.currentHeartCount = storedHeartCount
+            let storedHeartCount = defaults.integer(forKey: heartCountKey)
+            if storedHeartCount == 0 {
+                // UserDefaults doesn't have a stored value, could be first launch or reinstall
+                // Optionally, check a value from Keychain here if you decide to use it for more persistence
+                
+                // Initialize with maxHearts
+                self.currentHeartCount = maxHearts
+                defaults.set(maxHearts, forKey: heartCountKey) // Ensure this is saved for future launches
+            } else {
+                // A value was found, use it
+                self.currentHeartCount = storedHeartCount
+            }
         }
+        
+        
+        
         
         // Start the replenishment timer if below max hearts
         if self.currentHeartCount < maxHearts {
