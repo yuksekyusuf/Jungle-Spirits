@@ -45,4 +45,17 @@
 "SEALED" = "Carte scellée";
 "FINISH_MAP" = "Terminez les autres cartes d'abord pour débloquer cette carte";
 "CONTINUE" = "Continuer";
-
+"SHARE" = "PARTAGER";
+"SELECT_PIECE" = "Sélectionnez l'esprit";
+"GETTING_IT" = "Vous y arrivez !";
+"ONE_MORE" = "Encore une fois !";
+"CLONE_YOURSELF" = "Puis clonez-vous";
+"TELEPORT_YOURSELF" = "Puis téléportez-vous";
+"COVERT_BLUE_RED" = "Convertir le bleu en rouge";
+"FULL" = "Plein";
+"NEXT_YEAR" = "jusqu'à l'année prochaine";
+"NEXT_WEEK" = "jusqu'à la semaine prochaine";
+"ONE_WEEK" = "UNE SEMAINE";
+"LIFE_TIME" = "À VIE";
+"RESTORE_PURCHASES" = "RESTAURER LES ACHATS";
+"FREE_HEART" = "CŒUR GRATUIT";

@@ -12,6 +12,7 @@ struct ButtonView: View {
     let text: String?
     let width: CGFloat
     let height: CGFloat
+    let size: CGFloat
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 50)
@@ -26,17 +27,19 @@ struct ButtonView: View {
                             .stroke(.black, lineWidth: 8)
                     )
                 .shadow(color: .black, radius: 0, x: 0, y: 4)
-                .frame(width: width, height: height)
             if let text {
-                TextView(text: text)
+                TextView(text: text, size: size)
             }
         }
+        .frame(width: width, height: height)
     }
 }
 
-struct JungleButtonView_Previews: PreviewProvider {
+struct ButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        JungleButtonView(text: "ENTER THE JUNGLE", width: 300, height: 50)
+        ButtonView(text: "RESTAURER LES ACHATS", width: 200, height: 50, size: 20)
+//        ButtonView(text: resetGame, width: 200, height: 50)
+
     }
 }
 

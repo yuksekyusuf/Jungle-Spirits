@@ -55,16 +55,3 @@ struct VideoPlayerView: UIViewControllerRepresentable {
     }
 }
 
-//struct CustomTestTabView: View {
-//    var body: some View {
-//        VideoPlayerView()
-//            .ignoresSafeArea()
-//    }
-//}
-
-//struct CustomTestTabView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CustomTestTabView()
-//    }
-//}
-

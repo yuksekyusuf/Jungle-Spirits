@@ -8,6 +8,48 @@
 import SwiftUI
 import UIKit
 import GameKit
+import Combine
+
+//REMAINING TIME
+
+extension GameCenterManager {
+    func startTimer(gameType: GameType) {
+           timer?.cancel() // Cancel any existing timer
+           timer = Timer.publish(every: 1.0, on: .main, in: .common)
+               .autoconnect()
+               .sink { [weak self] _ in
+                   self?.updateTimer(gameType: gameType)
+               }
+       }
+    
+    func stopTimer() {
+        timer?.cancel()
+        timer = nil
+    }
+    
+    private func updateTimer(gameType: GameType) {
+        guard !isPaused && remainingTime > 0 && !isCountDownVisible && !isQuitGame else { return }
+        
+        if gameType == .ai && !isPaused && remainingTime > 0 && !isCountDownVisible {
+            
+                remainingTime -= 1
+        } else if gameType == .multiplayer && !isPaused && remainingTime > 0 && !isCountDownVisible && !isQuitGame {
+            
+                remainingTime -= 1
+        } else {
+            timer?.cancel()
+        }
+        print("remaining time:", remainingTime)
+        
+    }
+    
+    func resetTimer(gameType: GameType) {
+        remainingTime = 15
+        startTimer(gameType: gameType)
+    }
+    
+}
+
 
 
 
@@ -33,6 +75,11 @@ struct GameState: Codable {
 
 class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPlayerListener {
     
+    var timer: AnyCancellable?
+    @Published var isCountDownVisible: Bool = true
+
+    @Published var isAdShown = false
+
     @Published var isPaused: Bool = false
     @Published var isGameOver: Bool = false
     @Published var currentPlayer: CellState
@@ -58,25 +105,11 @@ class GameCenterManager: NSObject, GKMatchDelegate, ObservableObject, GKLocalPla
     @Published var isSearchingForMatch = false
     @Published var isMatchFound = false
     @Published var invite: GKInvite?
-//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts")
     @Published var achievedLevel: GameLevel = GameLevel.level1_1
     @Published var currentLevel: GameLevel? = nil
     @Published var currentBundle: GameLevelBundle = GameLevelBundle.bundle1
     
-//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 5 : UserDefaults.standard.integer(forKey: "hearts")
-//    @Published var lastHeartTime: TimeInterval = UserDefaults.standard.double(forKey: "lastHeartTime")
-//    @Published var remainingHeartTime: String = "0:00"
 
-    
-    //MARK: - Heart Timer
-//    @Published var heartTimer: Timer?
-//    private let heartTimeInterval: TimeInterval = 900
-//    func startHeartTimer() {
-//        heartTimer?.invalidate()
-//        heartTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-//            self?.updateRemainingTime()
-//        }
-//    }
     
 
     

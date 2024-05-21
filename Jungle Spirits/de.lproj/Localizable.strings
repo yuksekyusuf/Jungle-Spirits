@@ -54,3 +54,17 @@
 "TELEPORT_YOURSELF" = "Teleportiere dich selbst";
 "COVERT_BLUE_RED" = "Verwandle Blau in Rot";
 "FULL" = "Voll";
+"SHARE" = "TEILEN";
+"SELECT_PIECE" = "Wähle den Geist";
+"GETTING_IT" = "Du hast es fast!";
+"ONE_MORE" = "Noch einmal!";
+"CLONE_YOURSELF" = "Dann klone dich selbst";
+"TELEPORT_YOURSELF" = "Dann teleportiere dich";
+"COVERT_BLUE_RED" = "Wandle Blau in Rot um";
+"FULL" = "Voll";
+"NEXT_YEAR" = "bis nächstes Jahr";
+"NEXT_WEEK" = "bis nächste Woche";
+"ONE_WEEK" = "EINE WOCHE";
+"LIFE_TIME" = "LEBENSLANG";
+"RESTORE_PURCHASES" = "KÄUFE WIEDERHERSTELLEN";
+"FREE_HEART" = "KOSTENLOSES HERZ";

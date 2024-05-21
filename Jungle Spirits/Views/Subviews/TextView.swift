@@ -9,20 +9,15 @@ import SwiftUI
 
 struct TextView: View {
     let text: String
+    let size: CGFloat
     var body: some View {
         ZStack {
             Text(text)
-                .font(.custom("TempleGemsRegular", size: 24))
+                .font(.custom("TempleGemsRegular", size: size))                .multilineTextAlignment(.center)
                 .foregroundColor(.white)
                 .stroke(color: .black, width: 1.0)
                 .shadow(color: .black, radius: 0, x: 0, y: 3)
                 .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
-            
-//            StrokeText(text: text, width: 1.75, color: .black)
-//                .font(.custom("TempleGemsRegular", size: 24))
-//                .foregroundColor(.white)
-//                .shadow(color: .black, radius: 0, x: 0, y: 3)
-//                .shadow(color: Color("ShadowColor"), radius: 0, x: 0, y: 4)
         }
     }
 }
@@ -47,7 +42,7 @@ struct StrokeText: View {
 
 struct test_Previews: PreviewProvider {
     static var previews: some View {
-        TextView(text: "Üsküdar")
+        TextView(text: "Üsküdar", size: 24)
     }
 }
 

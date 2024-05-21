@@ -18,26 +18,7 @@ struct LevelMapView: View {
     let gameLevelBundle: GameLevelBundle
     @Binding var showHeartStatus: Bool
     let isTutorial: Bool
-    //    @Binding var sealed: Bool
     var body: some View {
-        //        if sealed {
-        //            ZStack {
-        //                Image("sealedMap")
-        //                    .resizable()
-        //                    .scaledToFit()
-        //                    .frame(width: UIScreen.main.bounds.width * 0.95)
-        //                VStack {
-        //                    TextView(text: "Map is sealed")
-        //                    Text("Finish the other maps first to unseal this map")
-        //                        .font(.custom("TempleGemsRegular", size: 24))
-        //                    kerning(0.48)
-        //                    .multilineTextAlignment(.center)
-        //                    .foregroundColor(Color(red: 0.8, green: 0.8, blue: 1))
-        //                    .frame(width: 190, alignment: .center)
-        //                }
-        //            }
-        //
-        //        } else {
         Image(levelMapName(for: gameLevelBundle))
             .resizable()
             .scaledToFit()
@@ -126,68 +107,8 @@ struct LevelButtonNavigation: View {
                 }
                 .hidden() // Hide
             }
-            // Conditional NavigationLink that is activated programmatically
             
         }
-//        NavigationLink {
-//            GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
-//        } label: {
-//            LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
-//        }
-//        .simultaneousGesture(TapGesture().onEnded({
-//            if gameCenterController.remainingHearts > 0 {
-//                gameCenterController.currentLevel = gameLevel
-//                gameCenterController.path.append(gameLevel)
-//                isNavigationActive = true
-//            } else {
-//                showHeartStatus.toggle()
-//            }
-//        }))
-//        .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
-
-//        if gameCenterController.remainingHearts > 0 {
-//            NavigationLink {
-//                GameView(gameType: .ai, gameSize: (row: boardSize.rows, col: boardSize.cols), obstacles: obstacles)
-//            } label: {
-//                LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
-//            }
-//            .simultaneousGesture(TapGesture().onEnded({
-//                if gameCenterController.remainingHearts > 0 {
-//                    gameCenterController.currentLevel = gameLevel
-//                    gameCenterController.path.append(gameLevel)
-//                    isNavigationActive = true
-//                } else {
-//                    showHeartStatus.toggle()
-//                }
-//            }))
-//            .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
-//        } else {
-//            ZStack {
-//                NavigationLink {
-//                    EmptyView()
-//                } label: {
-//                    LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
-//                        .simultaneousGesture(TapGesture().onEnded({
-//                            if gameCenterController.remainingHearts > 0 {
-//                                gameCenterController.path.append(Int.random(in: 100...10000))
-//                                gameCenterController.currentLevel = gameLevel
-//                                isNavigationActive = true
-//                            } else {
-//                                showHeartStatus.toggle()
-//                            }
-//                        }))
-////                        .disabled(!(gameLevel.id <= gameCenterController.achievedLevel.id))
-////                        .disabled(!(gameCenterController.remainingHearts > 0))
-//                        .opacity(0.1)
-//                        .allowsHitTesting(false)
-//                    
-//                }
-//                //             LevelButton(level: gameLevel.id, currentLevel: gameCenterController.achievedLevel)
-//                //                    .onTapGesture {
-//                //                        showHeartStatus.toggle()
-//                //                    }
-//            }
-//        }
     }
 }
 

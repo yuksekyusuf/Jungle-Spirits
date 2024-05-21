@@ -145,7 +145,7 @@ struct HowToPlayView: View {
 //                            .scaledToFit()
 //                            .frame(width: 167)
                         
-                        ButtonView(text: next, width: 167, height: 50)
+                        ButtonView(text: next, width: 167, height: 50, size: 24)
                             .padding(.bottom, 20)
                     }
                 } else {
@@ -158,7 +158,7 @@ struct HowToPlayView: View {
 
                         }
                     } label: {
-                        ButtonView(text: gotIt, width: 167, height: 50)
+                        ButtonView(text: gotIt, width: 167, height: 50, size: 24)
 //                        Image("GotIt")
 //                            .resizable()
 //                            .scaledToFit()

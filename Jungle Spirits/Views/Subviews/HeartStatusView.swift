@@ -10,6 +10,8 @@ import RevenueCat
 import GoogleMobileAds
 
 
+
+
 struct HeartStatusView: View {
     //    var heartCount: Int
     @EnvironmentObject var appLanguageManager: AppLanguageManager
@@ -21,41 +23,19 @@ struct HeartStatusView: View {
 
 //    var rewardAd: RewardedAd
 
-    @Binding var nextHeartTime: String
+//    @Binding var nextHeartTime: String
     @Binding var isPresent: Bool
     @State var newHeart = 0
     
     
     @State var currentOffering: Offering?
     
-    var hearts: String {
-        appLanguageManager.localizedStringForKey("HEARTS", language: appLanguageManager.currentLanguage)
-    }
     
-    var next_hearts: String {
-        appLanguageManager.localizedStringForKey("NEXT_HEARTS", language: appLanguageManager.currentLanguage)
-    }
-    
-    var okay: String {
-        appLanguageManager.localizedStringForKey("OK", language: appLanguageManager.currentLanguage)
-    }
-    
-    var fullHeart: String {
-        appLanguageManager.localizedStringForKey("FULL", language: appLanguageManager.currentLanguage)
-    }
-    
-    var yearHeart: String {
-        appLanguageManager.localizedStringForKey("NEXT_YEAR", language: appLanguageManager.currentLanguage)
-    }
-    
-    var weekHeart: String {
-        appLanguageManager.localizedStringForKey("NEXT_WEEK", language: appLanguageManager.currentLanguage)
-    }
     
 //    var rewardAd: RewardedAd
     
-    init(nextHeartTime: Binding<String>, isPresent: Binding<Bool>) {
-        self._nextHeartTime = nextHeartTime // Use underscore to directly initialize @Binding properties
+    init(isPresent: Binding<Bool>) {
+//        self._nextHeartTime = nextHeartTime // Use underscore to directly initialize @Binding properties
         self._isPresent = isPresent
 //        self.rewardAd = RewardedAd()
 //        rewardAd.load()
@@ -96,13 +76,14 @@ struct HeartStatusView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 116)
-                        
+                            
                         } else if userViewModel.subscriptionType == .yearly {
                             Image("yearlyHearts")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 116)
                         }
+                        
 
                     } else if !(heartManager.currentHeartCount > 0) {
                         Image("noHeart")
@@ -190,7 +171,7 @@ struct HeartStatusView: View {
                                     }
                                 }
                             } label: {
-                                WatchVideo(text: "Free Life")
+                                WatchVideo(text: freeHeart)
                             }
 
                             //Share button
@@ -209,12 +190,10 @@ struct HeartStatusView: View {
                                             }
                                         }, label: {
                                             if pkg.identifier == "$rc_annual" {
-                                                Image("lifeTime")
+                                                PurchaseButtonView(type: .yearly)
+
                                             } else if pkg.identifier == "$rc_weekly" {
-                                                Image("oneWeekLife")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(height: 48)
+                                                PurchaseButtonView(type: .weekly)
                                             }
                                             
                                         })
@@ -250,16 +229,14 @@ struct HeartStatusView: View {
                     currentOffering = offer
                 }
             }
-//            rewardedAdManager.loadAd()
         }
     }
 }
-
+//
 struct HeartStatusView_Previews: PreviewProvider {
     static var previews: some View {
         @State var isPresentTrue = true
-        @State var remainingTime = "9:27"
-        HeartStatusView(nextHeartTime: $remainingTime, isPresent: $isPresentTrue)
+        HeartStatusView(isPresent: $isPresentTrue)
             .environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
             .environmentObject(HeartManager.shared)
@@ -267,6 +244,7 @@ struct HeartStatusView_Previews: PreviewProvider {
         
     }
 }
+
 
 
 struct ActivityViewController: UIViewControllerRepresentable {
@@ -305,5 +283,105 @@ struct WatchVideo: View {
                 .frame(width: 30)
                 .offset(x: 80)
         }
+    }
+}
+
+//MARK: Localization
+extension HeartStatusView {
+    var hearts: String {
+        appLanguageManager.localizedStringForKey("HEARTS", language: appLanguageManager.currentLanguage)
+    }
+    
+    var next_hearts: String {
+        appLanguageManager.localizedStringForKey("NEXT_HEARTS", language: appLanguageManager.currentLanguage)
+    }
+    
+    var okay: String {
+        appLanguageManager.localizedStringForKey("OK", language: appLanguageManager.currentLanguage)
+    }
+    
+    var fullHeart: String {
+        appLanguageManager.localizedStringForKey("FULL", language: appLanguageManager.currentLanguage)
+    }
+    
+    var yearHeart: String {
+        appLanguageManager.localizedStringForKey("NEXT_YEAR", language: appLanguageManager.currentLanguage)
+    }
+    
+    var weekHeart: String {
+        appLanguageManager.localizedStringForKey("NEXT_WEEK", language: appLanguageManager.currentLanguage)
+    }
+    
+    var freeHeart: String {
+        appLanguageManager.localizedStringForKey("FREE_HEART", language: appLanguageManager.currentLanguage)
+    }
+
+}
+
+struct PurchaseButtonView: View {
+    @EnvironmentObject var appLanguageManager: AppLanguageManager
+
+    let type: SubscriptionType
+    var body: some View {
+        ZStack {
+            Image("purchaseFrame")
+                .resizable()
+                .scaledToFit()
+            
+            subscriptionHStack()
+        }
+        .frame(width: 105)
+        
+    }
+    @ViewBuilder
+       private func subscriptionHStack() -> some View {
+           HStack {
+               icon
+                   .padding(.leading, 10)
+               
+               text
+                   .font(Font.custom("TempleGemsRegular", size: 15))
+                   .lineSpacing(1)
+                   .lineLimit(2)
+                   .multilineTextAlignment(.leading)
+                   .foregroundColor(textColor)
+               
+               Spacer()
+           }
+       }
+       
+       private var icon: Image {
+           switch type {
+           case .weekly:
+               return Image("weeklyHeartIcon")
+           case .yearly:
+               return Image("yearlyHeartIcon")
+           }
+       }
+       
+       private var text: Text {
+           switch type {
+           case .weekly:
+               return Text(oneWeek)
+           case .yearly:
+               return Text(lifeTime)
+           }
+       }
+       
+       private var textColor: Color {
+           switch type {
+           case .weekly:
+               return Color(#colorLiteral(red: 0.68, green: 1, blue: 1, alpha: 1))
+           case .yearly:
+               return Color(#colorLiteral(red: 1, green: 0.93, blue: 0.67, alpha: 1))
+           }
+       }
+    
+    var oneWeek: String {
+        appLanguageManager.localizedStringForKey("ONE_WEEK", language: appLanguageManager.currentLanguage)
+    }
+    
+    var lifeTime: String {
+        appLanguageManager.localizedStringForKey("LIFE_TIME", language: appLanguageManager.currentLanguage)
     }
 }

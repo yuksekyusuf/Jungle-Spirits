@@ -9,17 +9,19 @@ import SwiftUI
 
 
 struct WinView: View {
-    @Binding var showWinMenu: Bool
-    @Binding var isPaused: Bool
-    @Binding var remainingTime: Int
+    
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var board: Board
     @EnvironmentObject var userViewModel: UserViewModel
     @EnvironmentObject var rewardedAdManager: RewardedAdManager
     @EnvironmentObject var heartManager: HeartManager
+    @Binding var showWinMenu: Bool
+    @Binding var isPaused: Bool
+    @Binding var remainingTime: Int
+    @Binding var currentPlayer: CellState
+
     let gameType: GameType
     let winner: CellState
-    @Binding var currentPlayer: CellState
     @State private var degrees = 0.0
     @Binding var remainingHearts: Int
     @State private var nextLevel: Int = 0
@@ -112,35 +114,12 @@ struct WinView: View {
                                             .allowsHitTesting(false)
                                     }
                                     VStack {
-                                        
-                                        //MARK: - ADD GOOGLE AD MOBS HERE!!!
-//                                        if remainingHearts == 0 && userViewModel.isSubscriptionActive == false {
-//                                            Button {
-//                                                onContinue()
-//                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                                    withAnimation {
-//                                                        board.reset()
-//                                                        isPaused.toggle()
-//                                                        currentPlayer = .player1
-//                                                        remainingTime = 15
-//                                                    }
-//                                                }
-//                                            } label: {
-//                                                WatchVideo(text: "Watch Video")
-//                                                    .offset(y: 65)
-//                                            }
-//                                        }
-                                       
-
-                                        
                                         HStack {
-                                            
                                             Button {
                                                 onContinue()
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                     gameCenterManager.path = NavigationPath()
                                                 }
-                                                
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 14)
                                                     .foregroundColor(Color("AnotherPause"))
@@ -151,13 +130,13 @@ struct WinView: View {
                                             }
                                             if remainingHearts > 0 || userViewModel.isSubscriptionActive {
                                                 Button {
-                                                    onContinue()
                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                         withAnimation {
                                                             board.reset()
                                                             isPaused.toggle()
                                                             currentPlayer = .player1
                                                             remainingTime = 15
+                                                            onContinue()
 
                                                         }
                                                     }
@@ -171,23 +150,24 @@ struct WinView: View {
                                                 }
                                             } else {
                                                 Button {
-                                                    
+                                                    gameCenterManager.isAdShown = true
                                                     if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
                                                         rewardedAdManager.showAd(from: rootViewController) {
                                                             onContinue()
                                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                                 withAnimation {
                                                                     board.reset()
-                                                                    isPaused.toggle()
+                                                                    isPaused = false
                                                                     currentPlayer = .player1
-                                                                    remainingTime = 15
+                                                                    gameCenterManager.resetTimer(gameType: .ai)
+                                                                    gameCenterManager.isCountDownVisible = false
                                                                     self.heartManager.currentHeartCount += 1
-
+                                                                    gameCenterManager.isAdShown = false
                                                                 }
                                                             }
                                                         }
+
                                                     }
-                                                    
                                                 } label: {
                                                     RoundedRectangle(cornerRadius: 14)
                                                         .foregroundColor(Color("AnotherPause"))
@@ -203,7 +183,6 @@ struct WinView: View {
                                     }
                                     
                                     if winner == .player1 {
-                                        //MARK: - DEFINITELY FIX THIS
                                         if let nextLevel = gameCenterManager.currentLevel {
                                             NextLevelNavigation(boardSize: nextLevel.boardSize, obstacles: nextLevel.obstacles, onContinue: onContinue)
                                                 .offset(y: 130)
@@ -371,6 +350,9 @@ struct WinView: View {
             }
             
         }
+        .onChange(of: winner, perform: { value in
+            print("Winner is :", value)
+        })
     }
     
 }
@@ -385,7 +367,6 @@ struct NextLevelNavigation: View {
     var continueButton: String {
         appLanguageManager.localizedStringForKey("CONTINUE", language: appLanguageManager.currentLanguage)
     }
-    
     
     let boardSize: (rows: Int, cols: Int)
     let obstacles: [(Int, Int)]
@@ -420,17 +401,3 @@ struct NextLevelNavigation: View {
     }
 }
 
-struct WinView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var check = true
-        @State var player: CellState = .player1
-        @State var paused: Bool = true
-        @State var remainingTime = 15
-        @State var remainingHearts = 5
-        WinView(showWinMenu: $check, isPaused: $paused, remainingTime: $remainingTime, gameType: .ai, winner: .player1, currentPlayer: $player, remainingHearts: $remainingHearts, onContinue: {})
-            .environmentObject(GameCenterManager(currentPlayer: .player1))
-            .environmentObject(Board(cells: [], gameType: .ai))
-            .environmentObject(UserViewModel())
-            
-    }
-}

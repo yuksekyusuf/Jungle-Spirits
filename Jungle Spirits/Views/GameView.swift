@@ -10,20 +10,18 @@ import Pow
 
 struct GameView: View {
     @StateObject private var board: Board
-    @EnvironmentObject var gameCenterController: GameCenterManager
+    @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
     @EnvironmentObject var userViewModel: UserViewModel
+    
     init(gameType: GameType, gameSize: (row: Int, col: Int), obstacles: [(Int, Int)]) {
         _gameType = State(initialValue: gameType)
         _board = StateObject(wrappedValue: Board(size: (gameSize.row, gameSize.col), gameType: gameType, obstacles: obstacles))
         _showPauseMenu = State(initialValue: false)
         _showWinMenu = State(initialValue: false)
         _selectedCell = State(initialValue: nil)
-        _isCountDownVisible = State(initialValue: true)
         _showAlert = State(initialValue: false)
     }
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State private var isCountDownVisible: Bool
     @State private var showPauseMenu: Bool
     @State private var showWinMenu: Bool
     @State var selectedCell: (row: Int, col: Int)?
@@ -40,10 +38,10 @@ struct GameView: View {
     }
     
     var localPlayerName: String {
-        String(gameCenterController.localPlayer.displayName.prefix(8))
+        String(gameCenterManager.localPlayer.displayName.prefix(8))
     }
     var otherPlayerName: String {
-        String(gameCenterController.otherPlayer?.displayName.prefix(8) ?? "")
+        String(gameCenterManager.otherPlayer?.displayName.prefix(8) ?? "")
     }
     
     var body: some View {
@@ -67,12 +65,12 @@ struct GameView: View {
                                 HStack {
                                     VStack {
                                         HStack(alignment: .top) {
-                                            if gameCenterController.otherPlayerPlaying {
-                                                Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
+                                            if gameCenterManager.otherPlayerPlaying {
+                                                Image(gameCenterManager.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.leading, 20)
                                             } else {
-                                                Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                                Image(gameCenterManager.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.leading, 20)
                                             }
@@ -80,7 +78,7 @@ struct GameView: View {
                                                 VStack(alignment: .leading) {
                                                     PieceCountView(pieceCount: player1PieceCount, size: 25)
                                                         .padding(.top, 5)
-                                                    if gameCenterController.priority > gameCenterController.otherPriority {
+                                                    if gameCenterManager.priority > gameCenterManager.otherPriority {
                                                         Text(localPlayerName)
                                                             .foregroundColor(.white)
                                                             .truncationMode(.tail)
@@ -108,7 +106,7 @@ struct GameView: View {
                                             if gameType == .multiplayer {
                                                 showPauseMenu.toggle()
                                             } else {
-                                                gameCenterController.isPaused.toggle()
+                                                gameCenterManager.isPaused.toggle()
                                                 if showPauseMenu {
                                                     withAnimation {
                                                         showPauseMenu.toggle()
@@ -134,7 +132,7 @@ struct GameView: View {
                                                 VStack(alignment: .trailing){
                                                     PieceCountView(pieceCount: player2PieceCount, size: 25)
                                                         .padding(.top, 5)
-                                                    if gameCenterController.priority < gameCenterController.otherPriority{
+                                                    if gameCenterManager.priority < gameCenterManager.otherPriority{
                                                         Text(localPlayerName)
                                                             .foregroundColor(.white)
                                                             .truncationMode(.tail)
@@ -155,12 +153,12 @@ struct GameView: View {
                                                     .padding(.top, 5)
                                             }
                                             
-                                            if gameCenterController.otherPlayerPlaying {
-                                                Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
+                                            if gameCenterManager.otherPlayerPlaying {
+                                                Image(gameCenterManager.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.trailing, 20)
                                             } else {
-                                                Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                Image(gameCenterManager.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.trailing, 20)
                                             }
@@ -173,13 +171,13 @@ struct GameView: View {
                                 
                                 HStack {
                                     if gameType == .multiplayer {
-                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
+                                        TimeBarView(remainingTime: gameCenterManager.remainingTime, totalTime: 15, currentPlayer: gameCenterManager.currentPlayer, curretlyPlaying: gameCenterManager.currentlyPlaying, gameType: .multiplayer)
                                             .padding([.horizontal, .trailing], 5)
-                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                            .animation(.linear(duration: 1.0), value: gameCenterManager.remainingTime)
                                     } else {
-                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
+                                        TimeBarView(remainingTime: gameCenterManager.remainingTime, totalTime: 15, currentPlayer: gameCenterManager.currentPlayer, curretlyPlaying: gameCenterManager.currentlyPlaying, gameType: .ai)
                                             .padding([.horizontal, .trailing], 5)
-                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                            .animation(.linear(duration: 1.0), value: gameCenterManager.remainingTime)
                                     }
                                     
                                 }
@@ -191,12 +189,12 @@ struct GameView: View {
                                 HStack {
                                     VStack {
                                         HStack(alignment: .top) {
-                                            if gameCenterController.otherPlayerPlaying {
-                                                Image(gameCenterController.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
+                                            if gameCenterManager.otherPlayerPlaying {
+                                                Image(gameCenterManager.currentPlayer == .player2 ? "Red Eye Open" : "Red Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.leading, 20)
                                             } else {
-                                                Image(gameCenterController.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
+                                                Image(gameCenterManager.currentPlayer == .player1 ? "Red Eye Open" : "Red Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.leading, 20)
                                             }
@@ -205,7 +203,7 @@ struct GameView: View {
                                                     PieceCountView(pieceCount: player1PieceCount, size: 25)
                                                         .padding(.top, 5)
                                                     
-                                                    if gameCenterController.priority > gameCenterController.otherPriority {
+                                                    if gameCenterManager.priority > gameCenterManager.otherPriority {
                                                         Text(localPlayerName)
                                                             .foregroundColor(.white)
                                                             .truncationMode(.tail)
@@ -233,7 +231,7 @@ struct GameView: View {
                                             if gameType == .multiplayer {
                                                 showPauseMenu.toggle()
                                             } else {
-                                                gameCenterController.isPaused.toggle()
+                                                gameCenterManager.isPaused.toggle()
                                                 if showPauseMenu {
                                                     withAnimation {
                                                         showPauseMenu.toggle()
@@ -261,7 +259,7 @@ struct GameView: View {
                                                 VStack(alignment: .trailing){
                                                     PieceCountView(pieceCount: player2PieceCount, size: 25)
                                                         .padding(.top, 5)
-                                                    if gameCenterController.priority < gameCenterController.otherPriority{
+                                                    if gameCenterManager.priority < gameCenterManager.otherPriority{
                                                         Text(localPlayerName)
                                                             .foregroundColor(.white)
                                                             .truncationMode(.tail)
@@ -282,12 +280,12 @@ struct GameView: View {
                                                     .padding(.top, 5)
                                             }
                                             
-                                            if gameCenterController.otherPlayerPlaying {
-                                                Image(gameCenterController.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
+                                            if gameCenterManager.otherPlayerPlaying {
+                                                Image(gameCenterManager.currentPlayer == .player1 ? "Blue Eye Open" : "Blue Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.trailing, 20)
                                             } else {
-                                                Image(gameCenterController.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
+                                                Image(gameCenterManager.currentPlayer == .player2 ? "Blue Eye Open" : "Blue Eye Closed")
                                                     .frame(width: 55)
                                                     .padding(.trailing, 20)
                                             }
@@ -300,13 +298,13 @@ struct GameView: View {
                                 
                                 HStack {
                                     if gameType == .multiplayer {
-                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .multiplayer)
+                                        TimeBarView(remainingTime: gameCenterManager.remainingTime, totalTime: 15, currentPlayer: gameCenterManager.currentPlayer, curretlyPlaying: gameCenterManager.currentlyPlaying, gameType: .multiplayer)
                                             .padding([.horizontal, .trailing], 5)
-                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                            .animation(.linear(duration: 1.0), value: gameCenterManager.remainingTime)
                                     } else {
-                                        TimeBarView(remainingTime: gameCenterController.remainingTime, totalTime: 15, currentPlayer: gameCenterController.currentPlayer, curretlyPlaying: gameCenterController.currentlyPlaying, gameType: .ai)
+                                        TimeBarView(remainingTime: gameCenterManager.remainingTime, totalTime: 15, currentPlayer: gameCenterManager.currentPlayer, curretlyPlaying: gameCenterManager.currentlyPlaying, gameType: .ai)
                                             .padding([.horizontal, .trailing], 5)
-                                            .animation(.linear(duration: 1.0), value: gameCenterController.remainingTime)
+                                            .animation(.linear(duration: 1.0), value: gameCenterManager.remainingTime)
                                     }
                                     
                                 }
@@ -316,7 +314,7 @@ struct GameView: View {
                         Spacer()
                         HStack{
                             Spacer()
-                            BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterController.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
+                            BoardView(selectedCell: $selectedCell, currentPlayer: $gameCenterManager.currentPlayer, rows: board.size.rows, cols: board.size.columns, cellSize: cellSize, onMoveCompleted: { move in onMoveCompleted(move)}, gameType: gameType)
                                 .frame(maxWidth: boardWidth, minHeight: boardWidth, maxHeight: geometry.size.height * 0.7)
                                 .allowsHitTesting(!showPauseMenu)
                                 .overlay {
@@ -343,7 +341,7 @@ struct GameView: View {
                                 if showPauseMenu {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0)) {
                                         showPauseMenu.toggle()
-                                        gameCenterController.isPaused.toggle()
+                                        gameCenterManager.isPaused.toggle()
                                         
                                     }
                                 }
@@ -367,10 +365,13 @@ struct GameView: View {
                         }
                         .onDisappear {
                             showOverLay = false
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                SoundManager.shared.playLowerBackground()
-                               
+                            if !gameCenterManager.isAdShown {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                    SoundManager.shared.playLowerBackground()
+                                    
+                                }
                             }
+
                         }
                     }
                     
@@ -426,13 +427,13 @@ struct GameView: View {
                         }
                     }
                     
-                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterController.currentPlayer)
+                    PauseMenuView(showPauseMenu: $showPauseMenu, isPaused: $gameCenterManager.isPaused, remainingTime: $gameCenterManager.remainingTime, selectedCell: $selectedCell, gameType: gameType, currentPlayer: $gameCenterManager.currentPlayer)
                         .scaleEffect(showPauseMenu ? 1 : 0)
                         .allowsHitTesting(showPauseMenu)
                         .animation(showPauseMenu ? .spring(response: 0.5, dampingFraction: 0.8, blendDuration: 0) : .linear(duration: 0.001), value: showPauseMenu)
                     
-                    if isCountDownVisible {
-                        CountDownView(isVisible: $isCountDownVisible)
+                    if gameCenterManager.isCountDownVisible {
+                        CountDownView(isVisible: $gameCenterManager.isCountDownVisible)
                     }
                     LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -463,7 +464,7 @@ struct GameView: View {
 
         }
         .edgesIgnoringSafeArea(.all)
-        .onChange(of: gameCenterController.connectionLost, perform: { newValue in
+        .onChange(of: gameCenterManager.connectionLost, perform: { newValue in
             if newValue && gameType == .multiplayer {
                 showAlert = true
             }
@@ -474,7 +475,7 @@ struct GameView: View {
                 message: Text("The other player disconnected from the match!"),
                 dismissButton: .default(Text("OK"), action: {
                     // Handle what should happen when the user dismisses the alert
-                    gameCenterController.resetGame()
+                    gameCenterManager.resetGame()
                 })
             )
         }
@@ -484,66 +485,62 @@ struct GameView: View {
                     //                gameCenterController.isGameOver = true
                     //                self.gameCenterController.isPaused = true
                     if gameType == .ai && winner == .player2 {
-    //                    gameCenterController.remainingHearts -= 1
-    //                    let hearts = UserDefaults.standard.integer(forKey: "hearts") - 1
-    //                    UserDefaults.standard.setValue(hearts, forKey: "hearts")
-    //
                         if userViewModel.isSubscriptionActive == false {
                             heartManager.loseHeart()
                         }
                     } else if gameType == .ai && winner == .player1 {
-                        guard let nextLevel = gameCenterController.currentLevel else { return }
+                        guard let nextLevel = gameCenterManager.currentLevel else { return }
                         let nextLevelId = nextLevel.id + 1
-                        if gameCenterController.currentLevel == gameCenterController.achievedLevel {
+                        if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
                             if nextLevelId <= 7 {
-                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
                                 UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
                             } else if (nextLevelId > 7) && (nextLevelId < 15) {
-                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
                                 UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                                gameCenterController.currentBundle = .bundle2
+                                gameCenterManager.currentBundle = .bundle2
                                 UserDefaults.standard.setValue(2, forKey: "currentBundle")
                             } else {
-                                gameCenterController.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterController.achievedLevel
+                                gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
                                 UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-                                gameCenterController.currentBundle = .bundle3
+                                gameCenterManager.currentBundle = .bundle3
                                 UserDefaults.standard.setValue(3, forKey: "currentBundle")
                             }
                             
                         }
                         
-                        gameCenterController.currentLevel = GameLevel(rawValue: nextLevelId)
+                        gameCenterManager.currentLevel = GameLevel(rawValue: nextLevelId)
 
                     }
-                    gameCenterController.isGameOver = true
-                    self.gameCenterController.isPaused = true
+                    gameCenterManager.isGameOver = true
+                    self.gameCenterManager.isPaused = true
                     self.showWinMenu = true
                 }
             
             
         })
-        .onChange(of: gameCenterController.remainingTime, perform: { newValue in
+        .onChange(of: gameCenterManager.remainingTime, perform: { newValue in
             if newValue == 0 && gameType == .oneVone {
                 switchPlayer()
-                gameCenterController.remainingTime = 15
+                gameCenterManager.remainingTime = 15
                 selectedCell = nil
                 //                gameCenterController.isSelected = false
                 selectedCell = nil
             } else if newValue == 0 && gameType == .ai {
-                gameCenterController.remainingTime = 15
+                gameCenterManager.remainingTime = 15
                 //                gameCenterController.isSelected = false
                 selectedCell = nil
                 switchPlayer()
                 performAIMoveAfterDelay()
             } else if newValue == 0 && gameType == .multiplayer {
-                gameCenterController.remainingTime = 15
-                gameCenterController.otherPlayerPlaying.toggle()
-                gameCenterController.currentlyPlaying.toggle()
-                let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
+                gameCenterManager.remainingTime = 15
+                gameCenterManager.otherPlayerPlaying.toggle()
+                gameCenterManager.currentlyPlaying.toggle()
+                let gameState = GameState(isPaused: gameCenterManager.isPaused, isGameOver: gameCenterManager.isGameOver, currentPlayer: gameCenterManager.currentPlayer, currentlyPlaying: gameCenterManager.currentlyPlaying, priority: gameCenterManager.priority)
                 let message = GameMessage(messageType: .move, move: nil, gameState: gameState)
-                if let data = gameCenterController.encodeMessage(message) {
+                if let data = gameCenterManager.encodeMessage(message) {
                     do {
-                        try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                        try gameCenterManager.match?.sendData(toAllPlayers: data, with: .reliable)
                     } catch {
                         print("Failed to send move: ", error)
                         
@@ -551,42 +548,28 @@ struct GameView: View {
                 }
             }
         })
-        .onReceive(timer) { _ in
-            
-            if gameType == .ai && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible {
-                
-                    gameCenterController.remainingTime -= 1
-
-                
-
-
-            } else if gameType == .multiplayer && !gameCenterController.isPaused && gameCenterController.remainingTime > 0 && !isCountDownVisible && !gameCenterController.isQuitGame {
-                
-                    gameCenterController.remainingTime -= 1
-
-                
-            }
-            print("remaining time:", gameCenterController.remainingTime)
-        }
         .onAppear {
-            gameCenterController.remainingTime = 15
-            gameCenterController.board = self.board
-            gameCenterController.isQuitGame = false
+            gameCenterManager.startTimer(gameType: gameType)
+            gameCenterManager.remainingTime = 15
+            gameCenterManager.board = self.board
+            gameCenterManager.isQuitGame = false
             SoundManager.shared.turnDownMusic()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 SoundManager.shared.playCountDown()
             }
+            gameCenterManager.isCountDownVisible = true
         }
         .environmentObject(board)
         .onDisappear {
-            self.gameCenterController.isPaused = false
-            self.gameCenterController.isGameOver = false
-            self.gameCenterController.currentPlayer = .player1
-            self.gameCenterController.remainingTime = 15
-            self.gameCenterController.isQuitGame = true
-            self.timer.upstream.connect().cancel()
+            self.gameCenterManager.isPaused = false
+            self.gameCenterManager.isGameOver = false
+            self.gameCenterManager.currentPlayer = .player1
+            self.gameCenterManager.remainingTime = 15
+            self.gameCenterManager.isQuitGame = true
+//            self.timer.upstream.connect().cancel()
+            self.gameCenterManager.stopTimer()
             SoundManager.shared.turnUpMusic()
-            self.isCountDownVisible = false
+            self.gameCenterManager.isCountDownVisible = false
         }
         
     }
@@ -628,47 +611,47 @@ struct GameView: View {
                 gameOverSounds()
             }
             // Prepare the game over status
-            let gameState = GameState(isPaused: true, isGameOver: true, currentPlayer: self.gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: self.gameCenterController.priority)
+            let gameState = GameState(isPaused: true, isGameOver: true, currentPlayer: self.gameCenterManager.currentPlayer, currentlyPlaying: gameCenterManager.currentlyPlaying, priority: self.gameCenterManager.priority)
             let codableMove = CodableMove.fromMove(move)
             let message = GameMessage(messageType: .gameState, move: codableMove, gameState: gameState)
             // Send the game over status to the other player
-            if let data = gameCenterController.encodeMessage(message) {
+            if let data = gameCenterManager.encodeMessage(message) {
                 do {
-                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                    try gameCenterManager.match?.sendData(toAllPlayers: data, with: .reliable)
                 } catch {
                     print("Failed to send game over status: ", error)
                 }
             }
-            self.gameCenterController.isGameOver = true
-            self.gameCenterController.isPaused = true
+            self.gameCenterManager.isGameOver = true
+            self.gameCenterManager.isPaused = true
             return
         }
         
         if gameType == .multiplayer {
-            gameCenterController.otherPlayerPlaying.toggle()
-            gameCenterController.currentlyPlaying.toggle()
+            gameCenterManager.otherPlayerPlaying.toggle()
+            gameCenterManager.currentlyPlaying.toggle()
             let codableMove = CodableMove.fromMove(move)
-            let gameState = GameState(isPaused: gameCenterController.isPaused, isGameOver: gameCenterController.isGameOver, currentPlayer: gameCenterController.currentPlayer, currentlyPlaying: gameCenterController.currentlyPlaying, priority: gameCenterController.priority)
+            let gameState = GameState(isPaused: gameCenterManager.isPaused, isGameOver: gameCenterManager.isGameOver, currentPlayer: gameCenterManager.currentPlayer, currentlyPlaying: gameCenterManager.currentlyPlaying, priority: gameCenterManager.priority)
             let message = GameMessage(messageType: .move, move: codableMove, gameState: gameState)
-            if let data = gameCenterController.encodeMessage(message) {
+            if let data = gameCenterManager.encodeMessage(message) {
                 do {
-                    try gameCenterController.match?.sendData(toAllPlayers: data, with: .reliable)
+                    try gameCenterManager.match?.sendData(toAllPlayers: data, with: .reliable)
                 } catch {
                     print("Failed to send move: ", error)
                     
                 }
             }
-            gameCenterController.remainingTime = 15
+            gameCenterManager.remainingTime = 15
         }
         else {
-            gameCenterController.currentPlayer = gameCenterController.currentPlayer == .player1 ? .player2 : .player1
-            gameCenterController.remainingTime = 15
+            gameCenterManager.currentPlayer = gameCenterManager.currentPlayer == .player1 ? .player2 : .player1
+            gameCenterManager.remainingTime = 15
             SoundManager.shared.playMoveSound()
             if !board.hasLegalMoves(player: .player1) || !board.hasLegalMoves(player: .player2) {
-                self.gameCenterController.isGameOver = true
-                self.gameCenterController.isPaused.toggle()
+                self.gameCenterManager.isGameOver = true
+                self.gameCenterManager.isPaused.toggle()
             }
-            else if gameType == .ai && gameCenterController.currentPlayer == .player2 {
+            else if gameType == .ai && gameCenterManager.currentPlayer == .player2 {
                 // Use a single main thread delay, instead of nested or global ones.
                 
                 performAIMoveAfterDelay()
@@ -677,7 +660,7 @@ struct GameView: View {
         }
     }
     func switchPlayer() {
-        gameCenterController.currentPlayer = (gameCenterController.currentPlayer == .player1) ? .player2 : .player1
+        gameCenterManager.currentPlayer = (gameCenterManager.currentPlayer == .player1) ? .player2 : .player1
     }
     
     func performAIMoveAfterDelay() {
@@ -688,8 +671,8 @@ struct GameView: View {
                 
                 // Update convertedCells and previouslyConvertedCells on the main thread.
                 for piece in convertedPieces {
-                    gameCenterController.convertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
-                    gameCenterController.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterController.currentPlayer))
+                    gameCenterManager.convertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterManager.currentPlayer))
+                    gameCenterManager.previouslyConvertedCells.append((row: piece.row, col: piece.col, byPlayer: gameCenterManager.currentPlayer))
                 }
                 
                 // Play the conversion sound if any pieces were converted.
@@ -700,14 +683,14 @@ struct GameView: View {
                 // Check if the game is over.
                 if board.isGameOver() {
                     gameOverSounds()
-                    self.gameCenterController.isGameOver = true
-                    self.gameCenterController.isPaused = true
+                    self.gameCenterManager.isGameOver = true
+                    self.gameCenterManager.isPaused = true
                     return
                 }
                 
                 // Switch the current player and reset the timer.
-                self.gameCenterController.currentPlayer = .player1
-                self.gameCenterController.remainingTime = 15
+                self.gameCenterManager.currentPlayer = .player1
+                self.gameCenterManager.remainingTime = 15
                 
                 // Play move sound.
                 SoundManager.shared.playMoveSound()
@@ -716,7 +699,7 @@ struct GameView: View {
     }
     
     func configurePauseMenu() {
-        gameCenterController.isPaused.toggle()
+        gameCenterManager.isPaused.toggle()
         showPauseMenu.toggle()
     }
     private func gameOverSounds() {

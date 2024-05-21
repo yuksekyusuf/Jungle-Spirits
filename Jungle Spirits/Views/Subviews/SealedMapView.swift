@@ -9,14 +9,6 @@ import SwiftUI
 
 struct SealedMapView: View {
     @EnvironmentObject var appLanguageManager: AppLanguageManager
-
-    var sealed: String {
-        appLanguageManager.localizedStringForKey("SEALED", language: appLanguageManager.currentLanguage)
-    }
-    
-    var finishMap: String {
-        appLanguageManager.localizedStringForKey("FINISH_MAP", language: appLanguageManager.currentLanguage)
-    }
     
     var body: some View {
         ZStack {
@@ -43,5 +35,17 @@ struct SealedMapView: View {
 struct SealedMapView_Previews: PreviewProvider {
     static var previews: some View {
         SealedMapView()
+    }
+}
+
+//Localization
+
+extension SealedMapView {
+    var sealed: String {
+        appLanguageManager.localizedStringForKey("SEALED", language: appLanguageManager.currentLanguage)
+    }
+    
+    var finishMap: String {
+        appLanguageManager.localizedStringForKey("FINISH_MAP", language: appLanguageManager.currentLanguage)
     }
 }

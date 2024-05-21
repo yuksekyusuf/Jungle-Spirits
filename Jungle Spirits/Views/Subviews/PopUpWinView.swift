@@ -19,7 +19,7 @@ struct PopUpWinView: View {
     var body: some View {
         ZStack{
             if isAdded {
-                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, gameType: gameType, winner: winner, currentPlayer: $gameCenterController.currentPlayer, remainingHearts: $heartManager.currentHeartCount, onContinue: {
+                WinView(showWinMenu: $isAdded, isPaused: $gameCenterController.isPaused, remainingTime: $gameCenterController.remainingTime, currentPlayer: $gameCenterController.currentPlayer, gameType: gameType, winner: winner, remainingHearts: $heartManager.currentHeartCount, onContinue: {
                         withAnimation {
                             isAdded.toggle()
                             showWinView.toggle()
@@ -34,7 +34,6 @@ struct PopUpWinView: View {
         
     }
 }
-
 
 
 

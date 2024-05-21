@@ -1,67 +1,118 @@
-//////
-//////  HeartManager.swift
-//////  Temple Beasts
-//////
-//////  Created by Ahmet Yusuf Yuksek on 22.02.2024.
-//////
-////
-//import SwiftUI
 //
-//class HeartManager: ObservableObject {
-//    @Published var remainingHeartTime: String = "0:00"
-//    @Published var remainingHearts: Int = UserDefaults.standard.integer(forKey: "hearts") == 0 ? 100 : UserDefaults.standard.integer(forKey: "hearts")
-//    private var timer: Timer?
-//    private let heartTimeInterval: TimeInterval = 900 // 15 minutes
-//    private var lastHeartTime: TimeInterval {
-//        get { UserDefaults.standard.double(forKey: "lastHeartTime") }
-//        set { UserDefaults.standard.set(newValue, forKey: "lastHeartTime") }
-//    }
-//    
-//    init() {
-//        updateRemainingTime()
-//    }
-//    func startHeartTimer() {
-//        timer?.invalidate()
-//        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-//            self?.updateRemainingTime()
-//            self?.updateHeartsBasedOnTimeElapsed()
-//        }
-//    }
-//    
-//    private func timeUntilNextHeart() -> TimeInterval {
-//        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
-//        let elapsedTime = Date().timeIntervalSince(lastTime)
-//        let remainingTime = heartTimeInterval - (elapsedTime.truncatingRemainder(dividingBy: heartTimeInterval))
-//        return max(0, remainingTime)
-//    }
-//    
-//    func updateHeartsBasedOnTimeElapsed() {
-//        let lastTime = Date(timeIntervalSinceReferenceDate: lastHeartTime)
-//        let elapsedTime = Date().timeIntervalSince(lastTime)
-//        
-//        let heartIntervals = Int(elapsedTime / heartTimeInterval)
-//        
-//        if heartIntervals > 0 {
-//            let newHearts = min(remainingHearts + heartIntervals, 5)
-//            self.remainingHearts = newHearts
-//            UserDefaults.standard.set(newHearts, forKey: "hearts")
-//            lastHeartTime = Date().timeIntervalSinceReferenceDate // Update lastHeartTime
-//        }
-//    }
-//    
-//    private func formatTimeForDisplay(seconds: TimeInterval) -> String {
-//        let minutes = Int(seconds) / 60
-//        let remainingSeconds = Int(seconds) % 60
-//        return "\(minutes):\(String(format: "%02d", remainingSeconds))"
-//    }
-//    
-//    private func updateRemainingTime() {
-//        let time = timeUntilNextHeart()
-//        remainingHeartTime = formatTimeForDisplay(seconds: time)
-//    }
-//    
-//    deinit {
-//        timer?.invalidate()
-//    }
+//  HeartManager2.swift
+//  Jungle Spirits
 //
-//}
+//  Created by Ahmet Yusuf Yuksek on 24.03.2024.
+//
+
+import Foundation
+import Combine
+
+class HeartManager: ObservableObject {
+    static let shared = HeartManager()
+    
+    @Published var currentHeartCount: Int {
+        didSet {
+            UserDefaults.standard.set(currentHeartCount, forKey: heartCountKey)
+            if currentHeartCount >= maxHearts {
+                timer?.invalidate()
+                timeUntilNextHeart = 0
+            }
+        }
+    }
+    
+    @Published var timeUntilNextHeart: TimeInterval = 0
+    
+    var timeUntilNextHeartString: String {
+        let time = Int(timeUntilNextHeart)
+        let minutes = time / 60
+        let seconds = time % 60
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    private let defaults = UserDefaults.standard
+    private let heartCountKey = "hearts"
+    private let lastHeartLostTimeKey = "lastHeartLostTimeKey"
+    private let firstLaunchKey = "isFirstLaunch"
+    private let maxHearts = 5
+    private let heartReplenishTime: TimeInterval = 15 * 60 // 15 mins in secs
+    
+    private var timer: Timer?
+    
+    
+    
+    private init() {
+        // Try to fetch the current heart count from UserDefaults
+        
+        if defaults.object(forKey: firstLaunchKey) == nil {
+            self.currentHeartCount = maxHearts
+            defaults.set(maxHearts, forKey: heartCountKey)
+            defaults.set(false, forKey: firstLaunchKey)
+        } else {
+            let storedHeartCount = defaults.integer(forKey: heartCountKey)
+            if storedHeartCount == 0 {
+                // UserDefaults doesn't have a stored value, could be first launch or reinstall
+                // Optionally, check a value from Keychain here if you decide to use it for more persistence
+                
+                // Initialize with maxHearts
+                self.currentHeartCount = maxHearts
+                defaults.set(maxHearts, forKey: heartCountKey) // Ensure this is saved for future launches
+            } else {
+                // A value was found, use it
+                self.currentHeartCount = storedHeartCount
+            }
+        }
+        // Start the replenishment timer if below max hearts
+        if self.currentHeartCount < maxHearts {
+            startHeartReplenishmentTimer()
+        }
+    }
+    
+    
+    func loseHeart() {
+        guard currentHeartCount > 0 else { return }
+        let wasAtMaxHearts = currentHeartCount == maxHearts
+        currentHeartCount -= 1
+        if wasAtMaxHearts {
+            defaults.set(Date(), forKey: lastHeartLostTimeKey)
+            startHeartReplenishmentTimer()
+
+        }
+    }
+    
+    private func startHeartReplenishmentTimer() {
+        timer?.invalidate() // Invalidate any existing timer.
+        
+        updateTimeUntilNextHeart() // Initial update
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.updateTimeUntilNextHeart()
+        }
+    }
+    
+    private func updateTimeUntilNextHeart() {
+        guard let lastLost = defaults.object(forKey: lastHeartLostTimeKey) as? Date else {
+            timeUntilNextHeart = heartReplenishTime
+            return
+        }
+        
+        let elapsed = Date().timeIntervalSince(lastLost)
+        let remaining = max(0, heartReplenishTime - elapsed)
+        timeUntilNextHeart = remaining
+        if remaining <= 0 {
+            replenishHeart()
+        }
+        print("Time for next heart: ", remaining)
+
+    }
+    
+    private func replenishHeart() {
+        currentHeartCount = min(maxHearts, currentHeartCount + 1)
+        if currentHeartCount < maxHearts {
+            defaults.set(Date(), forKey: lastHeartLostTimeKey)
+            updateTimeUntilNextHeart() // Ensure timer continues if not at max hearts.
+        } else {
+            timer?.invalidate() // No need for the timer if hearts are full.
+        }
+    }
+}

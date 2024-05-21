@@ -53,3 +53,17 @@
 "TELEPORT_YOURSELF" = "然后传送自己";
 "COVERT_BLUE_RED" = "将蓝色转换为红色";
 "FULL" = "满";
+"SHARE" = "分享";
+"SELECT_PIECE" = "选择精神";
+"GETTING_IT" = "你掌握了！";
+"ONE_MORE" = "再来一次！";
+"CLONE_YOURSELF" = "然后克隆自己";
+"TELEPORT_YOURSELF" = "然后传送自己";
+"COVERT_BLUE_RED" = "把蓝色转为红色";
+"FULL" = "满";
+"NEXT_YEAR" = "直到明年";
+"NEXT_WEEK" = "直到下周";
+"ONE_WEEK" = "一周";
+"LIFE_TIME" = "终身";
+"RESTORE_PURCHASES" = "恢复购买";
+"FREE_HEART" = "免费心形";

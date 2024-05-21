@@ -345,7 +345,7 @@ struct TutorialView: View {
                                 .frame(width: 200, height: 50)
                             ZStack {
                                 if tutorialViewModel.taskDone {
-                                    TextView(text: "NEXT")
+                                    TextView(text: "NEXT", size: 24)
                                 } else {
                                     Text("NEXT")
                                         .font(.custom("TempleGemsRegular", size: 24))

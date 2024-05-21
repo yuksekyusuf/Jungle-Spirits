@@ -8,6 +8,7 @@
 import SwiftUI
 import StoreKit
 import Pow
+import RevenueCat
 //import GoogleMobileAds
 
 
@@ -17,6 +18,7 @@ struct MenuView: View {
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var appLanguageManager: AppLanguageManager
     @EnvironmentObject var gameCenterController: GameCenterManager
+    @EnvironmentObject var userViewModel: UserViewModel
 //    @EnvironmentObject var navCoordinator: NavigationCoordinator
 //    @EnvironmentObject var heartManager: HeartManager
     
@@ -154,6 +156,12 @@ struct MenuView: View {
         appLanguageManager.localizedStringForKey("RESET_GAME_2", language: appLanguageManager.currentLanguage)
     }
     
+    
+    
+    
+    var restorePurchases: String {
+        appLanguageManager.localizedStringForKey("RESTORE_PURCHASES", language: appLanguageManager.currentLanguage)
+    }
 
     let buttonWidth = UIScreen.main.bounds.width * 0.8
     let singleButtonWidth = UIScreen.main.bounds.width * 0.40
@@ -394,7 +402,7 @@ struct MenuView: View {
                                             self.gameCenterController.isMatchmakingPresented = true
                                         } label: {
                                             
-                                            ButtonView(text: onlineBattle, width: buttonWidth, height: 48)
+                                            ButtonView(text: onlineBattle, width: buttonWidth, height: 48, size: 24)
                                             
                                         }
                                         .sheet(isPresented: $gameCenterController.isMatchmakingPresented) {
@@ -478,7 +486,7 @@ struct MenuView: View {
                                 
                                 HStack(spacing: 0) {
                                     Spacer()
-                                    ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                    ButtonView(text: nil, width: smallButtonWidth, height: 44, size: 24)
                                         .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                         .overlay{
                                             Image(soundState ? "soundOn" : "soundOff")
@@ -490,7 +498,7 @@ struct MenuView: View {
                                             soundState.toggle()
                                             UserDefaults.standard.set(soundState, forKey: "sound")
                                         }
-                                    ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                    ButtonView(text: nil, width: smallButtonWidth, height: 44, size: 24)
                                         .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                         .overlay{
                                             Image(musicState ? "musicOn" : "musicOff" )
@@ -510,7 +518,7 @@ struct MenuView: View {
                                             }
                                         }
                                     
-                                    ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                    ButtonView(text: nil, width: smallButtonWidth, height: 44, size: 24)
                                         .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                         .overlay {
                                             Image(hapticState ? "vibrationOn" : "vibrationOff")
@@ -526,7 +534,7 @@ struct MenuView: View {
                                                 HapticManager.shared.notification(type: .error)
                                             }
                                         }
-                                    ButtonView(text: nil, width: smallButtonWidth, height: 44)
+                                    ButtonView(text: nil, width: smallButtonWidth, height: 44, size: 24)
                                         .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 4)
                                         .overlay {
                                             Image("Language")
@@ -614,7 +622,7 @@ struct MenuView: View {
                             }
                         }
                 }
-                HeartStatusView(nextHeartTime: $remainingTime, isPresent: $showHeartAlert)
+                HeartStatusView(isPresent: $showHeartAlert)
                     .padding(.bottom, 100)
                     .scaleEffect(showHeartAlert ? 1 : 0)
                     .allowsHitTesting(showHeartAlert)
@@ -643,7 +651,7 @@ struct MenuView: View {
                         Button {
                             gameCenterController.path.append(Destination.tutorialPage)
                         } label: {
-                            ButtonView(text: howToPlay, width: 200, height: 50)
+                            ButtonView(text: howToPlay, width: 200, height: 50, size: 24)
                                 .padding(.top, 30)
                         }
                     }
@@ -685,14 +693,14 @@ struct MenuView: View {
                         requestReview()
                         
                     } label: {
-                        ButtonView(text: rateUs, width: 200, height: 50)
+                        ButtonView(text: rateUs, width: 200, height: 50, size: 24)
                             .padding(.top, 10)
                     }
                     
                     Button {
                         showResetGameAlert = true
                     } label: {
-                        ButtonView(text: resetGame, width: 200, height: 50)
+                        ButtonView(text: resetGame, width: 200, height: 50, size: 24)
                             .padding(.top, 10)
 
                     }
@@ -708,6 +716,24 @@ struct MenuView: View {
                         Button(cancel, role: .cancel) { }
                     } message: {
                         Text(loseProgress)
+                    }
+                    
+                    Button {
+                        Purchases.shared.restorePurchases { customerInfo, error in
+                            self.userViewModel.isSubscriptionActive = customerInfo?.entitlements.all["Unlimited"]?.isActive == true
+                            let subscription =  customerInfo?.entitlements.all["Unlimited"]?.productIdentifier
+                            
+                            if subscription == "js_099_1w" {
+                                self.userViewModel.subscriptionType = .weekly
+                            } else if subscription == "js_999_1y_1w0" {
+                                self.userViewModel.subscriptionType = .yearly
+                            }
+                        }
+                       
+                        
+                    } label: {
+                        ButtonView(text: restorePurchases, width: 200, height: 50, size: 20)
+                            .padding(.top, 10)
                     }
                     Spacer()
 
@@ -855,7 +881,6 @@ struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView().environmentObject(AppLanguageManager())
             .environmentObject(GameCenterManager(currentPlayer: .player1))
-//            .environmentObject(HeartManager())
     }
 }
 

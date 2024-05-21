@@ -13,12 +13,10 @@ struct TimeBarView: View {
     let currentPlayer: CellState
     let curretlyPlaying: Bool
     let gameType: GameType
-//    let width = UIScreen.main.bounds.width * CGFloat(remainingTime) / CGFloat
     var body: some View {
         GeometryReader { geo in
-//            var width = UIScreen.main.bounds.width * CGFloat(remainingTime) / CGFloat(totalTime)
-                let width = geo.size.width * CGFloat(remainingTime) / CGFloat(totalTime)
-
+            let width = geo.size.width * CGFloat(remainingTime) / CGFloat(totalTime)
+            
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(.black)
