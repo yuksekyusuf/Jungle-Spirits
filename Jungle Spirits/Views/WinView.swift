@@ -160,7 +160,6 @@ struct WinView: View {
                                                                     isPaused = false
                                                                     currentPlayer = .player1
                                                                     gameCenterManager.resetTimer(gameType: .ai)
-                                                                    gameCenterManager.isCountDownVisible = false
                                                                     self.heartManager.currentHeartCount += 1
                                                                     gameCenterManager.isAdShown = false
                                                                 }
@@ -380,6 +379,7 @@ struct NextLevelNavigation: View {
             onContinue()
             DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                 navigateToGame = true
+                gameCenterController.isCountDownVisible = true
             }
         } label: {
             HStack{

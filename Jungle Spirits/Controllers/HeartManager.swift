@@ -36,7 +36,7 @@ class HeartManager: ObservableObject {
     private let firstLaunchKey = "isFirstLaunch"
     private let maxHearts = 5
     private let heartReplenishTime: TimeInterval = 15 * 60 // 15 mins in secs
-    
+
     private var timer: Timer?
     
     

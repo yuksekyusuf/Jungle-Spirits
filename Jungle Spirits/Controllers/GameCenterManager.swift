@@ -28,17 +28,21 @@ extension GameCenterManager {
     }
     
     private func updateTimer(gameType: GameType) {
-        guard !isPaused && remainingTime > 0 && !isCountDownVisible && !isQuitGame else { return }
-        
+//        guard !isPaused && remainingTime > 0 && !isCountDownVisible && !isQuitGame else { return }
+        print("gametype: ", gameType)
+        print("Countdown: ", isCountDownVisible)
+        print("quitgame: ", isQuitGame)
+        print("paused: ", isPaused)
         if gameType == .ai && !isPaused && remainingTime > 0 && !isCountDownVisible {
             
                 remainingTime -= 1
         } else if gameType == .multiplayer && !isPaused && remainingTime > 0 && !isCountDownVisible && !isQuitGame {
             
                 remainingTime -= 1
-        } else {
-            timer?.cancel()
-        }
+        } 
+//        else {
+//            timer?.cancel()
+//        }
         print("remaining time:", remainingTime)
         
     }

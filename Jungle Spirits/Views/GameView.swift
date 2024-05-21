@@ -434,6 +434,11 @@ struct GameView: View {
                     
                     if gameCenterManager.isCountDownVisible {
                         CountDownView(isVisible: $gameCenterManager.isCountDownVisible)
+                            .onAppear(perform: {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    SoundManager.shared.playCountDown()
+                                }
+                            })
                     }
                     LottieView(animationName: "particles", ifActive: false, contentMode: true, isLoop: true)
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -479,6 +484,7 @@ struct GameView: View {
                 })
             )
         }
+        
         .navigationBarHidden(true)
         .onChange(of: board.gameOver, perform: { newValue in
                 if newValue == true {
@@ -554,10 +560,17 @@ struct GameView: View {
             gameCenterManager.board = self.board
             gameCenterManager.isQuitGame = false
             SoundManager.shared.turnDownMusic()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                SoundManager.shared.playCountDown()
+            
+            
+            if gameCenterManager.isPaused == false {
+                NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { _ in
+                            gameCenterManager.isPaused = true
+                            showPauseMenu = true
+                        }
             }
-            gameCenterManager.isCountDownVisible = true
+            if gameCenterManager.isCountDownVisible == false {
+                gameCenterManager.isCountDownVisible = true
+            }
         }
         .environmentObject(board)
         .onDisappear {
@@ -566,10 +579,10 @@ struct GameView: View {
             self.gameCenterManager.currentPlayer = .player1
             self.gameCenterManager.remainingTime = 15
             self.gameCenterManager.isQuitGame = true
-//            self.timer.upstream.connect().cancel()
-            self.gameCenterManager.stopTimer()
+//            self.gameCenterManager.stopTimer()
             SoundManager.shared.turnUpMusic()
-            self.gameCenterManager.isCountDownVisible = false
+            NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+
         }
         
     }

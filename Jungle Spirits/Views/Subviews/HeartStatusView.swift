@@ -77,7 +77,7 @@ struct HeartStatusView: View {
                                 .scaledToFit()
                                 .frame(width: 116)
                             
-                        } else if userViewModel.subscriptionType == .yearly {
+                        } else if userViewModel.subscriptionType == .lifetime {
                             Image("yearlyHearts")
                                 .resizable()
                                 .scaledToFit()
@@ -108,7 +108,7 @@ struct HeartStatusView: View {
                 VStack(spacing: 6) {
                     if userViewModel.isSubscriptionActive {
                         Text("∞ \(hearts.capitalizedSentence)")
-                            .font(Font.custom("Watermelon", size: 32))
+                            .font(Font.custom("TempleGemsRegular", size: 32))
                             .kerning(0.96)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
@@ -116,13 +116,13 @@ struct HeartStatusView: View {
                         
                         if userViewModel.subscriptionType == .weekly {
                             Text(weekHeart)
-                                .font(Font.custom("Temple Gems", size: 20))
+                                .font(Font.custom("TempleGemsRegular", size: 20))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                                 .frame(width: 168, alignment: .center)
-                        } else if userViewModel.subscriptionType == .yearly {
-                            Text(yearHeart)
-                                .font(Font.custom("Temple Gems", size: 20))
+                        } else if userViewModel.subscriptionType == .lifetime {
+                            Text(lifetimeHearts)
+                                .font(Font.custom("TempleGemsRegular", size: 20))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                                 .frame(width: 168, alignment: .center)
@@ -130,20 +130,20 @@ struct HeartStatusView: View {
                         
                     } else {
                         Text("\(heartManager.currentHeartCount) \(hearts.capitalizedSentence)")
-                            .font(Font.custom("Watermelon", size: 32))
+                            .font(Font.custom("TempleGemsRegular", size: 32))
                             .kerning(0.96)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .padding(.top, 10)
                         if heartManager.currentHeartCount == 5 {
                             Text(fullHeart)
-                                .font(Font.custom("Temple Gems", size: 24))
+                                .font(Font.custom("TempleGemsRegular", size: 24))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                                 .frame(width: 168, alignment: .center)
                         } else {
                             Text("\(next_hearts) \(heartManager.timeUntilNextHeartString)")
-                                .font(Font.custom("Temple Gems", size: 20))
+                                .font(Font.custom("TempleGemsRegular", size: 20))
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color(red: 0.84, green: 0.82, blue: 1))
                                 .frame(width: 168, alignment: .center)
@@ -163,13 +163,16 @@ struct HeartStatusView: View {
                         if heartManager.currentHeartCount < 5 {
                             //Ads button
                             Button {
-                                SoundManager.shared.stopBackgroundMusic()
+//                                SoundManager.shared.stopBackgroundMusic()
 //                                self.rewardAd.showAd(rewardFunction: {
-                                if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-                                    rewardedAdManager.showAd(from: rootViewController) {
-                                        self.heartManager.currentHeartCount += 1
+                                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                        if let rootViewController = scene.windows.first?.rootViewController {
+                                            SoundManager.shared.stopBackgroundMusic()
+                                            rewardedAdManager.showAd(from: rootViewController) {
+                                                self.heartManager.currentHeartCount += 1
+                                            }
+                                        }
                                     }
-                                }
                             } label: {
                                 WatchVideo(text: freeHeart)
                             }
@@ -189,8 +192,8 @@ struct HeartStatusView: View {
                                                 }
                                             }
                                         }, label: {
-                                            if pkg.identifier == "$rc_annual" {
-                                                PurchaseButtonView(type: .yearly)
+                                            if pkg.identifier == "$rc_lifetime" {
+                                                PurchaseButtonView(type: .lifetime)
 
                                             } else if pkg.identifier == "$rc_weekly" {
                                                 PurchaseButtonView(type: .weekly)
@@ -272,7 +275,7 @@ struct WatchVideo: View {
                 .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
             
             Text(text)
-                .font(Font.custom("TempleGemsRegular", size: 24))
+                .font(Font.custom("TempleGemsRegular", size: 20))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
                 .frame(width: 148, height: 42, alignment: .center)
@@ -304,8 +307,8 @@ extension HeartStatusView {
         appLanguageManager.localizedStringForKey("FULL", language: appLanguageManager.currentLanguage)
     }
     
-    var yearHeart: String {
-        appLanguageManager.localizedStringForKey("NEXT_YEAR", language: appLanguageManager.currentLanguage)
+    var lifetimeHearts: String {
+        appLanguageManager.localizedStringForKey("LIFETIME_HEARTS", language: appLanguageManager.currentLanguage)
     }
     
     var weekHeart: String {
@@ -340,7 +343,7 @@ struct PurchaseButtonView: View {
                    .padding(.leading, 10)
                
                text
-                   .font(Font.custom("TempleGemsRegular", size: 15))
+                   .font(Font.custom("TempleGemsRegular", size: 12))
                    .lineSpacing(1)
                    .lineLimit(2)
                    .multilineTextAlignment(.leading)
@@ -354,7 +357,7 @@ struct PurchaseButtonView: View {
            switch type {
            case .weekly:
                return Image("weeklyHeartIcon")
-           case .yearly:
+           case .lifetime:
                return Image("yearlyHeartIcon")
            }
        }
@@ -363,7 +366,7 @@ struct PurchaseButtonView: View {
            switch type {
            case .weekly:
                return Text(oneWeek)
-           case .yearly:
+           case .lifetime:
                return Text(lifeTime)
            }
        }
@@ -372,7 +375,7 @@ struct PurchaseButtonView: View {
            switch type {
            case .weekly:
                return Color(#colorLiteral(red: 0.68, green: 1, blue: 1, alpha: 1))
-           case .yearly:
+           case .lifetime:
                return Color(#colorLiteral(red: 1, green: 0.93, blue: 0.67, alpha: 1))
            }
        }

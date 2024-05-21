@@ -53,9 +53,24 @@
 "TELEPORT_YOURSELF" = "Puis téléportez-vous";
 "COVERT_BLUE_RED" = "Convertir le bleu en rouge";
 "FULL" = "Plein";
-"NEXT_YEAR" = "jusqu'à l'année prochaine";
+"LIFETIME_HEARTS" = "pour la vie";
 "NEXT_WEEK" = "jusqu'à la semaine prochaine";
 "ONE_WEEK" = "UNE SEMAINE";
 "LIFE_TIME" = "À VIE";
 "RESTORE_PURCHASES" = "RESTAURER LES ACHATS";
-"FREE_HEART" = "CŒUR GRATUIT";
+"FREE_HEART" = "COEUR";
+
+"TUTORIAL_CLONEPIECE" = "Je suis Reddy, ton acolyte de la jungle ! Prêt à maîtriser les esprits ?";
+"TUTORIAL_TELEPORTPIECE" = "Ensuite : Téléportation";
+"TUTORIAL_CONVERTPIECE" = "Convertissons des esprits !";
+"TUTORIAL_COMPLEXCONVERT" = "L'aventure commence vraiment maintenant...";
+
+"TUTORIAL_TITLE_CLONEPIECE" = "Salut!";
+"TUTORIAL_TITLE_TELEPORTPIECE" = "Beau travail!";
+"TUTORIAL_TITLE_CONVERTPIECE" = "Prêt pour plus?";
+"TUTORIAL_TITLE_COMPLEXCONVERT" = "Excellent travail!";
+"WELL_DONE" = "Bien joué !";
+"YOU_CLONED_SPIRIT" = "Vous avez cloné un esprit!";
+"YOU_TELEPORTED" = "Vous vous êtes téléporté";
+"YOU_TURNED_BLUE_RED" = "Vous avez transformé le bleu en rouge";
+"CONTINUE_CAPITAL" = "CONTINUER";

@@ -725,8 +725,8 @@ struct MenuView: View {
                             
                             if subscription == "js_099_1w" {
                                 self.userViewModel.subscriptionType = .weekly
-                            } else if subscription == "js_999_1y_1w0" {
-                                self.userViewModel.subscriptionType = .yearly
+                            } else if subscription == "js_1999_lt" {
+                                self.userViewModel.subscriptionType = .lifetime
                             }
                         }
                        

@@ -273,8 +273,8 @@ struct TutorialView: View {
                 VStack {
                     VStack(spacing: 0) {
                         VStack {
-                            Text(selectText).font(.custom("Watermelon", size: 28)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
-                            Text(taskText).font(.custom("Watermelon", size: 24)).foregroundColor(Color(taskColor)).multilineTextAlignment(.center)
+                            Text(selectText).font(.custom("TempleGemsRegular", size: 28)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))).multilineTextAlignment(.center)
+                            Text(taskText).font(.custom("TempleGemsRegular", size: 24)).foregroundColor(Color(taskColor)).multilineTextAlignment(.center)
                                 .padding(
                                     .top, 1)
                         }
@@ -345,9 +345,9 @@ struct TutorialView: View {
                                 .frame(width: 200, height: 50)
                             ZStack {
                                 if tutorialViewModel.taskDone {
-                                    TextView(text: "NEXT", size: 24)
+                                    TextView(text: nextButton, size: 24)
                                 } else {
-                                    Text("NEXT")
+                                    Text(nextButton)
                                         .font(.custom("TempleGemsRegular", size: 24))
                                         .foregroundColor(.white).opacity(0.25)
                                 }
@@ -388,7 +388,7 @@ struct TutorialView: View {
                                             .fill(Color("ButtonColor4"))
                                             .frame(width: 169, height: 42)
                                             .cornerRadius(14)
-                                        Text("CONTINUE")
+                                        Text(continueButton)
                                             .font(.custom("TempleGemsRegular", size: 20))
                                             .textCase(.uppercase)
                                             .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
@@ -457,7 +457,7 @@ struct TutorialView: View {
                                             .fill(Color("ButtonColor4"))
                                             .frame(width: 169, height: 42)
                                             .cornerRadius(14)
-                                        Text("CONTINUE")
+                                        Text(continueButton)
                                             .font(.custom("TempleGemsRegular", size: 20))
                                             .textCase(.uppercase)
                                             .foregroundColor(Color(#colorLiteral(red: 0.83, green: 0.85, blue: 1, alpha: 1)))
@@ -547,16 +547,24 @@ struct TutorialView: View {
     
     //MARK: - HELPER VARIABLES
     
+    private var continueButton: String {
+        appLanguageManager.localizedStringForKey("CONTINUE_CAPITAL", language: appLanguageManager.currentLanguage)
+    }
+    
+    private var nextButton: String {
+        appLanguageManager.localizedStringForKey("NEXT", language: appLanguageManager.currentLanguage)
+    }
+    
     private var tutorialText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
-            return "I'm Reddy, your jungle sidekick! Ready to master the spirits?"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_CLONEPIECE", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
-            return "Next up: Teleporting"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_TELEPORTPIECE", language: appLanguageManager.currentLanguage)
         case .convertPiece:
-            return "Let’s convert some spirits!"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_CONVERTPIECE", language: appLanguageManager.currentLanguage)
         case .complextConvert:
-            return "Now the real adventure begins..."
+            return appLanguageManager.localizedStringForKey("TUTORIAL_COMPLEXCONVERT", language: appLanguageManager.currentLanguage)
         case .none:
             return ""
         }
@@ -565,34 +573,33 @@ struct TutorialView: View {
     private var tutorialTitle: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
-            return "Hey There!"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_TITLE_CLONEPIECE", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
-            return "Awesome work!"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_TITLE_TELEPORTPIECE", language: appLanguageManager.currentLanguage)
         case .convertPiece:
-            return "Ready for more?"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_TITLE_CONVERTPIECE", language: appLanguageManager.currentLanguage)
         case .complextConvert:
-            return "Great work!"
+            return appLanguageManager.localizedStringForKey("TUTORIAL_TITLE_COMPLEXCONVERT", language: appLanguageManager.currentLanguage)
         case .none:
             return ""
         }
     }
-    
-    
+
     private var selectText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
             if tutorialViewModel.taskDone {
-                return "Well done!"
+                return appLanguageManager.localizedStringForKey("WELL_DONE", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
             if tutorialViewModel.taskDone {
-                return "Well done!"
+                return appLanguageManager.localizedStringForKey("WELL_DONE", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("SELECT_PIECE", language: appLanguageManager.currentLanguage)
         case .convertPiece:
             if tutorialViewModel.taskDone {
-                return "Well done!"
+                return appLanguageManager.localizedStringForKey("WELL_DONE", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("GETTING_IT", language: appLanguageManager.currentLanguage)
         case .complextConvert:
@@ -601,23 +608,23 @@ struct TutorialView: View {
             return ""
         }
     }
+
     
     private var taskText: String {
         switch tutorialViewModel.board.tutorialStep {
         case .clonePiece:
             if tutorialViewModel.taskDone {
-                return "You've cloned a spirit!"
+                return appLanguageManager.localizedStringForKey("YOU_CLONED_SPIRIT", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("CLONE_YOURSELF", language: appLanguageManager.currentLanguage)
         case .teleportPiece:
             if tutorialViewModel.taskDone {
-                return "You've teleported"
+                return appLanguageManager.localizedStringForKey("YOU_TELEPORTED", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("TELEPORT_YOURSELF", language: appLanguageManager.currentLanguage)
         case .convertPiece:
-            
             if tutorialViewModel.taskDone {
-                return "You turned blue to red"
+                return appLanguageManager.localizedStringForKey("YOU_TURNED_BLUE_RED", language: appLanguageManager.currentLanguage)
             }
             return appLanguageManager.localizedStringForKey("COVERT_BLUE_RED", language: appLanguageManager.currentLanguage)
         case .complextConvert:
@@ -626,6 +633,7 @@ struct TutorialView: View {
             return ""
         }
     }
+
     
     private var taskColor: String {
         switch tutorialViewModel.board.tutorialStep {

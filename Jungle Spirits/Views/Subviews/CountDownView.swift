@@ -12,12 +12,13 @@ struct CountDownView: View {
     @State private var scale: CGFloat = 0.1
     @State private var opacity: Double = 0.0
     @Binding var isVisible: Bool
+//    var onAppear: () -> Void
+
     var body: some View {
         ZStack {
-            
-            
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
+            
             if counter > 0 {
                 Text("\(counter)")
                     .font(Font.custom("Tricky Jimmy", size: 90))
@@ -32,37 +33,39 @@ struct CountDownView: View {
                     )
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            runAnimation()
+                            self.runAnimation()
                         }
                     }
             }
         }
     }
+    
     private func runAnimation() {
         withAnimation(.easeInOut) {
-            scale = 2
-            opacity = 1.0
+            self.scale = 2
+            self.opacity = 1.0
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             withAnimation(.easeInOut) {
-                scale = 2
-                opacity = 0.0
+                self.scale = 2
+                self.opacity = 0.0
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                if counter > 1 {
-                    counter -= 1
-                    scale = 0.1
-                    opacity = 1.0
-                    runAnimation()
+                if self.counter > 1 {
+                    self.counter -= 1
+                    self.scale = 0.1
+                    self.opacity = 1.0
+                    self.runAnimation()
                 } else {
-                    isVisible = false
+                    self.isVisible = false
                 }
             }
         }
     }
 }
+
 
 struct CountDownView_Previews: PreviewProvider {
     static var previews: some View {

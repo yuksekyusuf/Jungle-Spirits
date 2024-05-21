@@ -10,7 +10,7 @@ import RevenueCat
 
 enum SubscriptionType {
     case weekly
-    case yearly
+    case lifetime
 }
 
 class UserViewModel: ObservableObject {
@@ -25,8 +25,8 @@ class UserViewModel: ObservableObject {
             
             if subscription == "js_099_1w" {
                 self.subscriptionType = .weekly
-            } else if subscription == "js_999_1y_1w0" {
-                self.subscriptionType = .yearly
+            } else if subscription == "js_1999_lt" {
+                self.subscriptionType = .lifetime
             }
         }
     }

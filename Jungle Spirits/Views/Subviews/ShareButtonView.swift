@@ -28,7 +28,7 @@ struct ShareButtonView: View {
                             .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
                         
                         Text(share)
-                            .font(Font.custom("TempleGemsRegular", size: 24))
+                            .font(Font.custom("TempleGemsRegular", size: 20))
                             .multilineTextAlignment(.center)
                             .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
                             .frame(width: 148, height: 42, alignment: .center)

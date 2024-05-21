@@ -11,13 +11,13 @@ import SwiftUI
 
 class RewardedAdManager: NSObject, GADFullScreenContentDelegate, ObservableObject {
     private var rewardedAd: GADRewardedAd?
-    let myReward: String = "ca-app-pub-6611029765689882/1173559792"
+    let myReward: String = "ca-app-pub-6611029765689882/1235710290"
     let testReward: String = "ca-app-pub-3940256099942544/1712485313"
 
     @Published var isAdLoaded = false
     
     func loadAd() {
-        let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+        let adUnitID = "ca-app-pub-6611029765689882/1235710290"
         GADRewardedAd.load(withAdUnitID: adUnitID, request: GADRequest()) { ad, error in
             if let error = error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")

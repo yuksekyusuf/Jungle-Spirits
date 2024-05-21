@@ -7,20 +7,21 @@
 */
 
 
+//"HOW_TO_PLAY_TITLE" = "Nasıl Oynanır";
+//"SELECTING_A_GEM_TITLE" = "Bir Mücevher Seçmek";
+//"SELECTING_A_GEM_DESC" = "Bir mücevher seçin. Yeşil ve sarı alanları fark ettiniz mi? İşte büyünün gerçekleştiği yer burası!";
+//"CLONING_TITLE" = "Klonlama";
+//"CLONING_DESC" = "Yeşil bir alana hareket edin ve mücevheriniz kendini klonlar. İki kat eğlence!";
+//"TELEPORTATION_TITLE" = "Işınlanma";
+//"TELEPORTATION_DESC" = "Sarı bir alana atlayın ve mücevheriniz ışınlanır. Bu iki karo atlamadır!";
+//"CONVERTING_ENEMIES_TITLE" = "Düşmanları Dönüştürme";
+//"CONVERTING_ENEMIES_DESC" = "Mücevheriniz bir düşmana - ister yatay, ister dikey, ister çapraz - dokunduğunda, onlar sizin saflarınıza katılır! Dönüşümleri en üst düzeye çıkarmak için strateji yapın.";
+//"OBJECTIVE_TITLE" = "Amaç";
+//"OBJECTIVE_DESC" = "Tahtayı yönetin, daha fazla düşman dönüştürün ve rakibinizi alt edin. Fethetmeye hazır mısınız?";
+
 "VERSUS_AI" = "ORMANA GİRİN";
 "LOCAL_DUEL" = "YEREL DÜELLO";
 "ONLINE_BATTLE" = "ÇEVRİMİÇİ";
-"HOW_TO_PLAY_TITLE" = "Nasıl Oynanır";
-"SELECTING_A_GEM_TITLE" = "Bir Mücevher Seçmek";
-"SELECTING_A_GEM_DESC" = "Bir mücevher seçin. Yeşil ve sarı alanları fark ettiniz mi? İşte büyünün gerçekleştiği yer burası!";
-"CLONING_TITLE" = "Klonlama";
-"CLONING_DESC" = "Yeşil bir alana hareket edin ve mücevheriniz kendini klonlar. İki kat eğlence!";
-"TELEPORTATION_TITLE" = "Işınlanma";
-"TELEPORTATION_DESC" = "Sarı bir alana atlayın ve mücevheriniz ışınlanır. Bu iki karo atlamadır!";
-"CONVERTING_ENEMIES_TITLE" = "Düşmanları Dönüştürme";
-"CONVERTING_ENEMIES_DESC" = "Mücevheriniz bir düşmana - ister yatay, ister dikey, ister çapraz - dokunduğunda, onlar sizin saflarınıza katılır! Dönüşümleri en üst düzeye çıkarmak için strateji yapın.";
-"OBJECTIVE_TITLE" = "Amaç";
-"OBJECTIVE_DESC" = "Tahtayı yönetin, daha fazla düşman dönüştürün ve rakibinizi alt edin. Fethetmeye hazır mısınız?";
 "NEXT" = "İLERİ";
 "GOT_IT" = "ANLADIM!";
 "MUSIC" = "MÜZİK";
@@ -62,9 +63,22 @@
 "TELEPORT_YOURSELF" = "Sonra kendini ışınla";
 "COVERT_BLUE_RED" = "Maviyi kırmızıya çevir";
 "FULL" = "Dolu";
-"NEXT_YEAR" = "gelecek yıl kadar";
+"LIFETIME_HEARTS" = "ömür boyu";
 "NEXT_WEEK" = "gelecek hafta kadar";
 "ONE_WEEK" = "BİR HAFTA";
 "LIFE_TIME" = "ÖMÜR BOYU";
 "RESTORE_PURCHASES" = "SATIN ALMALARI GERİ YÜKLE";
-"FREE_HEART" = "ÜCRETSİZ KALP";
+"FREE_HEART" = "CAN KAZAN";
+"TUTORIAL_CLONEPIECE" = "Ben Reddy, senin orman yoldaşın! Ruhları kontrol etmeye hazır mısın?";
+"TUTORIAL_TELEPORTPIECE" = "Sıradaki: Teleportasyon";
+"TUTORIAL_CONVERTPIECE" = "Haydi ruhları dönüştürelim!";
+"TUTORIAL_COMPLEXCONVERT" = "Şimdi gerçek macera başlıyor...";
+"TUTORIAL_TITLE_CLONEPIECE" = "Merhaba!";
+"TUTORIAL_TITLE_TELEPORTPIECE" = "Harika iş!";
+"TUTORIAL_TITLE_CONVERTPIECE" = "Daha fazlasına hazır mısın?";
+"TUTORIAL_TITLE_COMPLEXCONVERT" = "Müthiş iş!";
+"WELL_DONE" = "Aferin!";
+"YOU_CLONED_SPIRIT" = "Bir ruhu klonladın!";
+"YOU_TELEPORTED" = "Teleport oldun";
+"YOU_TURNED_BLUE_RED" = "Maviyi kırmızıya çevirdin";
+"CONTINUE_CAPITAL" = "DEVAM ET";

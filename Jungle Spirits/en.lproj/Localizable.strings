@@ -54,7 +54,7 @@
 "COVERT_BLUE_RED" = "Convert the blue to red";
 "FULL" = "Full";
 
-"NEXT_YEAR" = "until next year";
+"LIFETIME_HEARTS" = "for lifetime";
 "NEXT_WEEK" = "until next week";
 
 "ONE_WEEK" = "ONE WEEK";
@@ -62,3 +62,17 @@
 "RESTORE_PURCHASES" = "RESTORE PURCHASES";
 
 "FREE_HEART" = "FREE HEART";
+
+"TUTORIAL_CLONEPIECE" = "I'm Reddy, your jungle sidekick! Ready to master the spirits?";
+"TUTORIAL_TELEPORTPIECE" = "Next up: Teleporting";
+"TUTORIAL_CONVERTPIECE" = "Let’s convert some spirits!";
+"TUTORIAL_COMPLEXCONVERT" = "Now the real adventure begins...";
+"TUTORIAL_TITLE_CLONEPIECE" = "Hey There!";
+"TUTORIAL_TITLE_TELEPORTPIECE" = "Awesome work!";
+"TUTORIAL_TITLE_CONVERTPIECE" = "Ready for more?";
+"TUTORIAL_TITLE_COMPLEXCONVERT" = "Great work!";
+"WELL_DONE" = "Well done!";
+"YOU_CLONED_SPIRIT" = "You've cloned a spirit!";
+"YOU_TELEPORTED" = "You've teleported";
+"YOU_TURNED_BLUE_RED" = "You turned blue to red";
+"CONTINUE_CAPITAL" = "CONTINUE";
