@@ -67,6 +67,7 @@
 		4D84BBB32B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4D84BBB22B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf */; };
 		4D84BBB52B927A0300AE2638 /* story.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 4D84BBB42B927A0300AE2638 /* story.mp4 */; };
 		4D84F5D52A30BF5100B6E35C /* GameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84F5D42A30BF5100B6E35C /* GameType.swift */; };
+		4D8A1EEC2C019CA600783CA1 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D8A1EEB2C019CA600783CA1 /* NetworkMonitor.swift */; };
 		4D8C8C2C2B1E663000FAC725 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = 4D8C8C2B2B1E663000FAC725 /* Pow */; };
 		4D930D462A897107006D139B /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D930D452A897107006D139B /* LottieView.swift */; };
 		4D930D482A897467006D139B /* redNonActiveAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D930D472A897467006D139B /* redNonActiveAnimation.json */; };
@@ -176,6 +177,7 @@
 		4D84BBB22B8D9E2700AE2638 /* Yasir -Speech BubbleRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Yasir -Speech BubbleRegular.otf"; path = "../../../../../Downloads/Yasir -Speech BubbleRegular.otf"; sourceTree = "<group>"; };
 		4D84BBB42B927A0300AE2638 /* story.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = story.mp4; path = ../../../../../Downloads/story.mp4; sourceTree = "<group>"; };
 		4D84F5D42A30BF5100B6E35C /* GameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameType.swift; sourceTree = "<group>"; };
+		4D8A1EEB2C019CA600783CA1 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		4D930D452A897107006D139B /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		4D930D472A897467006D139B /* redNonActiveAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redNonActiveAnimation.json; sourceTree = "<group>"; };
 		4D9518782A50A58100ED284D /* WinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinView.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				4D42AF252BB0D5DA00E91E6F /* HeartManager.swift */,
 				4DC4B67A2BF7032100FE9D45 /* UserViewModel.swift */,
 				4D7538AA2BF82C2A002C81FE /* RewardedAdManager.swift */,
+				4D8A1EEB2C019CA600783CA1 /* NetworkMonitor.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 				4DC62BFA2A1A73F700CD2007 /* MenuView.swift in Sources */,
 				4D15F0B82A0C355E00539383 /* GameView.swift in Sources */,
 				4DED05592A3145D400B2362A /* CustomToggleView.swift in Sources */,
+				4D8A1EEC2C019CA600783CA1 /* NetworkMonitor.swift in Sources */,
 				4D231DDD2AB08FA300F2D12A /* Move.swift in Sources */,
 				4D5E69462AB9CD030089CAB6 /* CreditView.swift in Sources */,
 				4DED05532A31413600B2362A /* PieceCountView.swift in Sources */,
@@ -748,7 +752,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -766,7 +770,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
 				PRODUCT_NAME = "Jungle Spirits";
@@ -789,7 +793,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Jungle Spirits/Preview Content\"";
 				DEVELOPMENT_TEAM = 62739J54F9;
@@ -807,7 +811,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "Ahmet-Yusuf-Yuksek.1Temple-Beasts";
 				PRODUCT_NAME = "Jungle Spirits";

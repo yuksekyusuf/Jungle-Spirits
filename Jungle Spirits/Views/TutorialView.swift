@@ -110,7 +110,6 @@ class TutorialViewModel: ObservableObject {
                     let identifier = "\(piece.row)_\(piece.col)"
                     if !uniqueCheckSet.contains(identifier) {
                         let newPiece: (row: Int, col: Int, byPlayer: CellState) = (row: piece.row, col: piece.col, byPlayer: .player1)
-                        print(newPiece)
                         self.convertedPieces.append(newPiece)
                         self.previouslyConvertedPieces.append(newPiece)
                         SoundManager.shared.playConvertSound()

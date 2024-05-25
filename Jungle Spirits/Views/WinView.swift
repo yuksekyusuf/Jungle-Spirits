@@ -15,6 +15,8 @@ struct WinView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @EnvironmentObject var rewardedAdManager: RewardedAdManager
     @EnvironmentObject var heartManager: HeartManager
+    @ObservedObject private var networkMonitor = NetworkMonitor.shared
+
     @Binding var showWinMenu: Bool
     @Binding var isPaused: Bool
     @Binding var remainingTime: Int
@@ -149,31 +151,55 @@ struct WinView: View {
                                                         .frame(width: 94.5, height: 42)
                                                 }
                                             } else {
-                                                Button {
-                                                    gameCenterManager.isAdShown = true
-                                                    if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-                                                        rewardedAdManager.showAd(from: rootViewController) {
-                                                            onContinue()
-                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                                withAnimation {
-                                                                    board.reset()
-                                                                    isPaused = false
-                                                                    currentPlayer = .player1
-                                                                    gameCenterManager.resetTimer(gameType: .ai)
-                                                                    self.heartManager.currentHeartCount += 1
-                                                                    gameCenterManager.isAdShown = false
+                                                if networkMonitor.isConnected {
+                                                    Button {
+                                                        Task {
+                                                            gameCenterManager.isAdShown = true
+                                                            if let scene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene {
+                                                                if let rootViewController = scene.windows.first?.rootViewController {
+                                                                    await rewardedAdManager.showAd(from: rootViewController) {
+                                                                        onContinue()
+                                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                                            withAnimation {
+                                                                                board.reset()
+                                                                                isPaused = false
+                                                                                currentPlayer = .player1
+                                                                                gameCenterManager.resetTimer(gameType: .ai)
+                                                                                self.heartManager.currentHeartCount += 1
+                                                                                gameCenterManager.isAdShown = false
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    
                                                                 }
                                                             }
                                                         }
-
+    //                                                    gameCenterManager.isAdShown = true
+    //                                                    if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
+    //                                                        rewardedAdManager.showAd(from: rootViewController) {
+    //                                                            onContinue()
+    //                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    //                                                                withAnimation {
+    //                                                                    board.reset()
+    //                                                                    isPaused = false
+    //                                                                    currentPlayer = .player1
+    //                                                                    gameCenterManager.resetTimer(gameType: .ai)
+    //                                                                    self.heartManager.currentHeartCount += 1
+    //                                                                    gameCenterManager.isAdShown = false
+    //                                                                }
+    //                                                            }
+    //                                                        }
+    //
+                                                        //                                                    }
+                                                    } label: {
+                                                        RoundedRectangle(cornerRadius: 14)
+                                                            .foregroundColor(Color("AnotherPause"))
+                                                            .overlay {
+                                                                Image("plusOneHeart")
+                                                            }
+                                                            .frame(width: 94.5, height: 42)
                                                     }
-                                                } label: {
-                                                    RoundedRectangle(cornerRadius: 14)
-                                                        .foregroundColor(Color("AnotherPause"))
-                                                        .overlay {
-                                                            Image("plusOneHeart")
-                                                        }
-                                                        .frame(width: 94.5, height: 42)
+                                                    
                                                 }
                                             }
                                             

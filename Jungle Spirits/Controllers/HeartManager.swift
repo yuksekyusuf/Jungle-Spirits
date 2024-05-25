@@ -102,7 +102,6 @@ class HeartManager: ObservableObject {
         if remaining <= 0 {
             replenishHeart()
         }
-        print("Time for next heart: ", remaining)
 
     }
     

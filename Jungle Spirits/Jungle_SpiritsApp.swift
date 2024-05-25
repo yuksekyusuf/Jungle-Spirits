@@ -112,11 +112,22 @@ extension EnvironmentValues {
 //    }
 //}
 
+//
+//class AppDelegate: NSObject, UIApplicationDelegate {
+//    func application(_ application: UIApplication,
+//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        // Any additional setup can be done here
+//        return true
+//    }
+//}
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Any additional setup can be done here
-        return true
-    }
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+  func application(_ application: UIApplication,
+      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    GADMobileAds.sharedInstance().start(completionHandler: nil)
+
+    return true
+  }
 }

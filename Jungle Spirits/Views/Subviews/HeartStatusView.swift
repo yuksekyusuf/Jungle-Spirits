@@ -18,7 +18,8 @@ struct HeartStatusView: View {
     @EnvironmentObject var gameCenterManager: GameCenterManager
     @EnvironmentObject var heartManager: HeartManager
     @EnvironmentObject var userViewModel: UserViewModel
-    
+    @ObservedObject private var networkMonitor = NetworkMonitor.shared
+
     @EnvironmentObject private var rewardedAdManager: RewardedAdManager
 
 //    var rewardAd: RewardedAd
@@ -30,7 +31,7 @@ struct HeartStatusView: View {
     
     @State var currentOffering: Offering?
     
-    
+    @State private var showAlert = false
     
 //    var rewardAd: RewardedAd
     
@@ -162,20 +163,23 @@ struct HeartStatusView: View {
                     if !userViewModel.isSubscriptionActive {
                         if heartManager.currentHeartCount < 5 {
                             //Ads button
-                            Button {
-//                                SoundManager.shared.stopBackgroundMusic()
-//                                self.rewardAd.showAd(rewardFunction: {
-                                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                                        if let rootViewController = scene.windows.first?.rootViewController {
-                                            SoundManager.shared.stopBackgroundMusic()
-                                            rewardedAdManager.showAd(from: rootViewController) {
-                                                self.heartManager.currentHeartCount += 1
+                            if networkMonitor.isConnected {
+                                Button {
+                                    Task {
+                                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                            if let rootViewController = scene.windows.first?.rootViewController {
+                                                SoundManager.shared.stopBackgroundMusic()
+                                                await rewardedAdManager.showAd(from: rootViewController) {
+                                                    self.heartManager.currentHeartCount += 1
+                                                }
                                             }
                                         }
                                     }
-                            } label: {
-                                WatchVideo(text: freeHeart)
+                                } label: {
+                                    WatchVideo(text: freeHeart)
+                                }
                             }
+                            
 
                             //Share button
                             ShareButtonView()
@@ -232,6 +236,13 @@ struct HeartStatusView: View {
                     currentOffering = offer
                 }
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("No Internet Connection"),
+                message: Text("Please check your internet connection and try again."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

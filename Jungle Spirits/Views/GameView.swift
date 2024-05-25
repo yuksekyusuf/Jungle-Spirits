@@ -560,13 +560,13 @@ struct GameView: View {
             gameCenterManager.board = self.board
             gameCenterManager.isQuitGame = false
             SoundManager.shared.turnDownMusic()
-            
+            gameCenterManager.isPaused = false
             
             if gameCenterManager.isPaused == false {
-                NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { _ in
-                            gameCenterManager.isPaused = true
-                            showPauseMenu = true
-                        }
+                NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { _ in
+                    gameCenterManager.isPaused = true
+                    showPauseMenu = true
+                }
             }
             if gameCenterManager.isCountDownVisible == false {
                 gameCenterManager.isCountDownVisible = true
@@ -581,8 +581,7 @@ struct GameView: View {
             self.gameCenterManager.isQuitGame = true
 //            self.gameCenterManager.stopTimer()
             SoundManager.shared.turnUpMusic()
-            NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-
+            NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
         
     }
