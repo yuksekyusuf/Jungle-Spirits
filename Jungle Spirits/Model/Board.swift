@@ -421,8 +421,8 @@ extension Board {
             cells[middle.row - 2][middle.col - 1] = .player2
             obstacles = [(middle.row, middle.col), (0, 0), (1, 0), (5, 0), (6, 0), (0, 4), (1, 4), (5, 4), (6, 4)]
             for obstacle in obstacles {
-                   cells[obstacle.0][obstacle.1] = .obstacle
-               }
+                cells[obstacle.0][obstacle.1] = .obstacle
+            }
         }
         tutorialStep = step
     }
@@ -440,15 +440,19 @@ extension Board {
         }
     }
     private func performCloneMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
-        if isCloneMove(from: source, to: destination) {
+        if isCloneMove(from: source, to: destination) && isEmptyCell(at: destination) {
             _ = performMove(from: source, to: destination, player: .player1)
             return true
         }
         return false
     }
     
+    private func isEmptyCell(at position: (row: Int, col: Int)) -> Bool {
+        return cells[position.row][position.col] == .empty
+    }
+    
     private func performTeleportMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
-        if isTeleportMove(from: source, to: destination) {
+        if isTeleportMove(from: source, to: destination) && isEmptyCell(at: destination) {
             _ = performMove(from: source, to: destination, player: .player1)
             return true
         }
@@ -456,12 +460,16 @@ extension Board {
     }
     
     private func performConversionMove(from source: (row: Int, col: Int), to destination: (row: Int, col: Int)) -> Bool {
-        convertedCells += performMove(from: source, to: destination, player: .player1)
-        if tutorialStep == .convertPiece {
-            return !convertedCells.isEmpty
-        } else {
-            return convertedCells.count >= 6
+        if isEmptyCell(at: destination) {
+            convertedCells += performMove(from: source, to: destination, player: .player1)
+            if tutorialStep == .convertPiece {
+                return !convertedCells.isEmpty
+            } else {
+                return convertedCells.count >= 6
+            }
         }
+        return false
+        
     }
     
     

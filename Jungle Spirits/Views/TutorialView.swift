@@ -117,23 +117,6 @@ class TutorialViewModel: ObservableObject {
                         uniqueCheckSet.insert(identifier)
                     }
                 }
-                
-                //                    let convertedCells = board.convertedCells
-                //                    for piece in convertedCells {
-                //                        let newPiece: (row: Int, col: Int, byPlayer: CellState) = (row: piece.row, col: piece.col, byPlayer: .player1)
-                //
-                //                        // Check if the newPiece is not already in convertedPieces before adding
-                //                        if !convertedPieces.contains(where: { $0.row == newPiece.row && $0.col == newPiece.col && $0.byPlayer == newPiece.byPlayer }) {
-                //                            self.convertedPieces.append(newPiece)
-                //                            self.previouslyConvertedPieces.append(newPiece)
-                //
-                //                        }
-                //
-                //                    }
-                //                    if self.convertedPieces.count > previouslyConvertedPieces.count {
-                //                        SoundManager.shared.playConvertSound()
-                //                        HapticManager.shared.notification(type: .success)
-                //                    }
                 selectedCell = nil
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                     self.convertedPieces.removeAll()
@@ -143,13 +126,6 @@ class TutorialViewModel: ObservableObject {
             
         }
         
-        
-        //        if !previouslyConvertedPieces.isEmpty {
-        //            SoundManager.shared.playConvertSound()
-        //            HapticManager.shared.notification(type: .success)
-        //
-        //        }
-        
     }
     
     func moveToNextTutorialStep(storyMode: Bool) {
@@ -158,9 +134,7 @@ class TutorialViewModel: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 withAnimation {
                     self.setupBoard(for: .teleportPiece)
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         self.taskDone = false
-//                    }
 
                 }
             }
@@ -181,18 +155,6 @@ class TutorialViewModel: ObservableObject {
                 }            }
         case .complextConvert:
             break
-            //            if storyMode {
-            //                if gameCenterManager.currentLevel == gameCenterManager.achievedLevel {
-            //                    guard let nextLevel = gameCenterManager.currentLevel else { return }
-            //                    let nextLevelId = nextLevel.id + 1
-            //                    gameCenterManager.achievedLevel = GameLevel(rawValue: nextLevelId) ?? gameCenterManager.achievedLevel
-            //                    UserDefaults.standard.setValue(nextLevelId, forKey: "achievedLevel")
-            //                }
-            //                self.navigateToGame = true
-            //            } else {
-            ////                navCoordinator.gotoHomePage()
-            //                gameCenterManager.path = NavigationPath()
-            //            }
         case .none:
             break
         }
