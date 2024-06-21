@@ -8,7 +8,8 @@
 import SwiftUI
 import RevenueCat
 import GoogleMobileAds
-
+import SuperwallKit
+import RevenueCatUI
 
 
 
@@ -33,6 +34,7 @@ struct HeartStatusView: View {
     
     @State private var showAlert = false
     
+    @State private var paywallPresented = false
 //    var rewardAd: RewardedAd
     
     init(isPresent: Binding<Bool>) {
@@ -165,6 +167,7 @@ struct HeartStatusView: View {
                             //Ads button
                             if networkMonitor.isConnected {
                                 Button {
+                                    
                                     Task {
                                         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                                             if let rootViewController = scene.windows.first?.rootViewController {
@@ -186,32 +189,64 @@ struct HeartStatusView: View {
                                 .padding(.top, 10)
                         }
                         if currentOffering != nil {
-                            VStack(spacing: 0) {
-                                HStack {
-                                    ForEach(currentOffering!.availablePackages) { pkg in
-                                        Button(action: {
-                                            Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
-                                                if customerInfo?.entitlements["Unlimited"]?.isActive == true {
-                                                    userViewModel.isSubscriptionActive = true
-                                                }
-                                            }
-                                        }, label: {
-                                            if pkg.identifier == "$rc_lifetime" {
-                                                PurchaseButtonView(type: .lifetime)
+                            
+                            Button(action: {
+                                
+                                paywallPresented = true
+                            }, label: {
+                                UnlimitedHeartsButton(text: unlimitedHearts)
+                            })
+                            .padding(.top, 10)
 
-                                            } else if pkg.identifier == "$rc_weekly" {
-                                                PurchaseButtonView(type: .weekly)
-                                            }
-                                            
-                                        })
-                                        .padding(.top, 10)
-                                        
-                                        
-                                    }
-                                    
-                                    
-                                }
-                            }
+                            
+//                            VStack(spacing: 0) {
+//                                HStack {
+//                                    ForEach(currentOffering!.availablePackages) { pkg in
+//                                        Button(action: {
+////                                            Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
+////                                                if customerInfo?.entitlements["Unlimited"]?.isActive == true {
+////                                                    userViewModel.isSubscriptionActive = true
+////
+////                                                }
+////                                                print("Purchased Info: ", customerInfo?.entitlements["Unlimited"]?.description)
+////
+////                                                
+////                                                
+////                                            }
+//                                            Purchases.shared.purchase(package: pkg) { (transaction, customerInfo, error, userCancelled) in
+//                                                print("Transaction: \(String(describing: transaction))")
+//                                                print("CustomerInfo: \(String(describing: customerInfo))")
+//                                                print("Error: \(String(describing: error))")
+//                                                print("User Cancelled: \(userCancelled)")
+//
+//                                                if let entitlements = customerInfo?.entitlements["Unlimited"] {
+//                                                    print("Entitlement isActive: \(entitlements.isActive)")
+//                                                    print("Entitlement Product Identifier: \(entitlements.productIdentifier)")
+//                                                    userViewModel.isSubscriptionActive = entitlements.isActive
+//                                                    if entitlements.productIdentifier == "js_099_1w" {
+//                                                        userViewModel.subscriptionType = .weekly
+//                                                    } else if entitlements.productIdentifier == "js_1999_lt" {
+//                                                        userViewModel.subscriptionType = .lifetime
+//                                                    }
+//                                                }
+//                                            }
+//                                        }, label: {
+//                                            if pkg.identifier == "$rc_lifetime" {
+//                                                PurchaseButtonView(type: .lifetime)
+//
+//                                            } else if pkg.identifier == "$rc_weekly" {
+//                                                PurchaseButtonView(type: .weekly)
+//                                            }
+//                                            
+//                                        })
+//                                        .padding(.top, 10)
+//                                        
+//                                        
+//                                    }
+//                                    
+//                                    
+//                                }
+//                            }
                         }
                     }
                     
@@ -230,13 +265,38 @@ struct HeartStatusView: View {
                 Spacer()
             }
         }
+        .sheet(isPresented: $paywallPresented,
+               onDismiss: {
+            Task {
+                do {
+                    let customerInfo = try await Purchases.shared.customerInfo()
+                    userViewModel.isSubscriptionActive = customerInfo.entitlements.all["Unlimited"]?.isActive == true
+                    let subscription =  customerInfo.entitlements.all["Unlimited"]?.productIdentifier
+                    print("!!!!Subscription type: ", subscription)
+                    if subscription == "js_099_1w" {
+                        userViewModel.subscriptionType = .weekly
+                    } else if subscription == "js_1999_lt" {
+                        userViewModel.subscriptionType = .lifetime
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }) {
+            PaywallView(displayCloseButton: true)
+        }
         .onAppear {
             Purchases.shared.getOfferings { offerings, error in
                 if let offer = offerings?.current, error == nil {
                     currentOffering = offer
                 }
             }
+            
+            print("Subscription type: ", userViewModel.subscriptionType)
         }
+        .onChange(of: userViewModel.subscriptionType, perform: { new in
+            print("Subscription type changed: ", new)
+        })
         .alert(isPresented: $showAlert) {
             Alert(
                 title: Text("No Internet Connection"),
@@ -244,6 +304,18 @@ struct HeartStatusView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .onChange(of: userViewModel.subscriptionType, perform: { value in
+            Purchases.shared.getCustomerInfo { customerInfo, error in
+                userViewModel.isSubscriptionActive = customerInfo?.entitlements.all["Unlimited"]?.isActive == true
+                let subscription =  customerInfo?.entitlements.all["Unlimited"]?.productIdentifier
+                
+                if subscription == "js_099_1w" {
+                    userViewModel.subscriptionType = .weekly
+                } else if subscription == "js_1999_lt" {
+                    userViewModel.subscriptionType = .lifetime
+                }
+            }
+        })
     }
 }
 //
@@ -300,6 +372,34 @@ struct WatchVideo: View {
     }
 }
 
+
+struct UnlimitedHeartsButton: View {
+    let text: String
+    var body: some View {
+        ZStack(alignment: .center) {
+            Rectangle()
+                .fill(Color(red: 0.48, green: 0.4, blue: 0.98))
+                .frame(width: 221, height: 44, alignment: .center)
+                .cornerRadius(14)
+                .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 4)
+            
+            Image("yearlyHeartIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30)
+                .offset(x: -65)
+            
+            Text(text)
+                .font(Font.custom("TempleGemsRegular", size: 20))
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color(red: 0.83, green: 0.85, blue: 1))
+                .frame(width: 148, height: 42, alignment: .center)
+                .offset(y: 2)
+            
+        }
+    }
+}
+
 //MARK: Localization
 extension HeartStatusView {
     var hearts: String {
@@ -328,6 +428,10 @@ extension HeartStatusView {
     
     var freeHeart: String {
         appLanguageManager.localizedStringForKey("FREE_HEART", language: appLanguageManager.currentLanguage)
+    }
+    
+    var unlimitedHearts: String {
+        appLanguageManager.localizedStringForKey("UNLIMITED_HEARTS", language: appLanguageManager.currentLanguage)
     }
 
 }

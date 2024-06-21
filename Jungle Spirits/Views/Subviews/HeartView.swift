@@ -44,9 +44,9 @@ struct HeartView: View {
         .frame(width: 100, height: 50)
     }
 }
-
-struct HeartView_Previews: PreviewProvider {
-    static var previews: some View {
-        HeartView().environmentObject(UserViewModel()).environmentObject(HeartManager.shared)
-    }
-}
+//
+//struct HeartView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HeartView().environmentObject(UserViewModel().environmentObject(HeartManager.shared)
+//    }
+//}

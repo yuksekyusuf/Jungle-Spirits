@@ -10,6 +10,8 @@ import AmplitudeSwift
 import Combine
 import GoogleMobileAds
 import RevenueCat
+import SuperwallKit
+
 
 let REVENUECATID = "app69847db565"
 let REVENUECAT = "appl_rIynXzEHyTQFnjkLHVEvofZNVUc"
@@ -41,7 +43,7 @@ struct Jungle_SpiritsApp: App {
 //        initMobileAds()
         Purchases.logLevel = .debug
         Purchases.configure(withAPIKey: REVENUECAT)
-        
+//        Superwall.configure(apiKey: "pk_85df30eeac6cb8adf1c65fbccabe2e087dfc7bc80c33e7e0", purchaseController: controller)
 //        if UserDefaults.standard.value(forKey: "hearts") == nil {
 //            UserDefaults.standard.set(100, forKey: "hearts") // Set default hearts to 5
 //        }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "0f632519b164ea216dca7a6ddc3293d96f1347b652b7742c25010eef6a91d571",
+  "originHash" : "2a85ebda6c8ad2458d1f4a0138a91f982f58ebb7d124e9c5b9b74f093d8d21c3",
   "pins" : [
     {
       "identity" : "amplitude-swift",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "966743b0d4353fae28300df677fe303607fd75d0",
         "version" : "4.41.2"
+      }
+    },
+    {
+      "identity" : "superwall-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/superwall/Superwall-iOS",
+      "state" : {
+        "revision" : "99d89e2f097db3697d5141680d0b7ea77780c308",
+        "version" : "3.6.5"
       }
     },
     {
