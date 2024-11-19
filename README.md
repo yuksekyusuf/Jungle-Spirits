@@ -39,7 +39,7 @@ Get the game now on the [App Store](https://apps.apple.com/us/app/jungle-spirits
 
 - **Game Engine**: SwiftUI
 - **Programming Language**: Swift
-- **Multiplayer**: GameKit
+- **Multiplayer**: GameCenter
 - **Design Tools**: Figma for UI/UX design
 
 
